@@ -28,10 +28,11 @@ model_module/
 
 ## 安装
 
-建议 Python 3.11。先进入本目录：
+建议 Python 3.11。先从 GitHub 克隆仓库，再进入项目目录：
 
 ```powershell
-cd "C:\University Courses\大创项目\model_module"
+git clone <GITHUB_REPO_URL>
+cd model_module
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -U pip
@@ -50,7 +51,7 @@ python -m pip install -e .
 
 ```powershell
 python -m onestroke_model.scripts.audit_data `
-  --data-root "C:\path\to\OneStroke\StrokeSegmentation\data\output_img" `
+  --data-root "<LOCAL_ONESTROKE_PATH>\StrokeSegmentation\data\output_img" `
   --out-dir ".\artifacts\data_audit"
 ```
 

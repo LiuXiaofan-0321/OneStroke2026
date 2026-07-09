@@ -7,10 +7,11 @@
 
 ## 0. 当前背景
 
-当前模型工程已经建立在：
+当前模型工程已经建立为独立 GitHub 仓库。请先从 GitHub 克隆项目，再进入项目目录：
 
-```text
-C:\University Courses\大创项目\model_module
+```powershell
+git clone <GITHUB_REPO_URL>
+cd model_module
 ```
 
 已有内容：
@@ -47,7 +48,7 @@ C:\University Courses\大创项目\model_module
 进入模型工程目录：
 
 ```powershell
-cd "C:\University Courses\大创项目\model_module"
+cd model_module
 ```
 
 建议新建虚拟环境：
@@ -262,7 +263,7 @@ test:  120
 ### 3.3 安装训练依赖
 
 ```powershell
-cd "C:\University Courses\大创项目\model_module"
+cd model_module
 python -m pip install -e ".[train]"
 ```
 
@@ -497,4 +498,3 @@ artifacts/runs/unet_rebaseline/preview_images/
 ```
 
 这样能更快定位问题。
-
