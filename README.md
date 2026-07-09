@@ -1,15 +1,20 @@
-# “一笔成章”模型模块
+# OneStroke2026 模型模块
 
-本目录是 2026 年项目的独立模型工程。旧 OneStroke 仓库只作为数据、标签和 U-Net 权重来源参考，不继承旧训练框架。
+coding：fy、zrh、lxf
+
+本仓库是 2026 年“一笔成章”项目的独立模型工程。旧 OneStroke 仓库只作为数据、标签生成逻辑和 U-Net 权重来源参考，不继承旧训练框架。
 
 ## 当前阶段目标
 
-7 月 9 日前先完成数据与评测地基：
+7 月先完成数据、训练、评测和推理闭环：
 
 - 审计旧数据目录，生成 `manifest.csv`
 - 固定 `train/val/test` 划分，生成 `splits.csv`
 - 固定六通道 schema：`vec1, vec2, vec3, vec4, vec5, keypoint`
-- 为 U-Net 重测基线、SegFormer-B2 主线和 SAM2 受控实验准备统一入口
+- 重测 U-Net baseline
+- 推进 SegFormer-B2 云端高精度主线
+- 准备 SAM2 受控实验和笔画实例数据
+- 为字体/书家风格选择功能预留 `target_style_id` 接口
 
 ## 重要设计文档
 
@@ -19,10 +24,10 @@
 ## 推荐目录
 
 ```text
-model_module/
+OneStroke2026/
   configs/              # 数据、训练、模型配置
   src/onestroke_model/  # Python 包源码
-  scripts/              # 命令行脚本
+  docs/                 # 设计文档和任务文档
   artifacts/            # 生成的 manifest、split、报告、checkpoint（默认不提交）
 ```
 
@@ -87,7 +92,7 @@ python -m onestroke_model.scripts.make_hardset_template `
 
 ```powershell
 python train.py --config ".\configs\train_unet.yaml"
-python eval.py --config ".\configs\train_unet.yaml" --checkpoint ".\artifacts\checkpoints\best.pt"
+python eval.py --config ".\configs\train_unet.yaml" --checkpoint ".\artifacts\runs\unet_rebaseline\checkpoints\best.pt"
 python infer.py --config ".\configs\train_segformer_b2.yaml" --checkpoint ".\artifacts\checkpoints\best.pt" --image ".\demo.png"
 ```
 
@@ -100,3 +105,4 @@ python infer.py --config ".\configs\train_segformer_b2.yaml" --checkpoint ".\art
 - 单图推理输出原图尺寸 `[H,W,6]` 概率图和二值 mask
 
 SegFormer 训练需要联网下载 Hugging Face 预训练权重，建议在云 GPU 环境运行。
+
