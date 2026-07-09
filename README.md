@@ -13,7 +13,7 @@
 
 ## 重要设计文档
 
-- [字体选择功能下的模型模块推进计划](docs/font_aware_model_plan.md)
+- [SAM2 + SegFormer-B2 + 字体风格选择 + 云端/端侧双模型完整训练路线](docs/font_aware_model_plan.md)
 
 ## 推荐目录
 
