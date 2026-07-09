@@ -11,6 +11,10 @@
 - 固定六通道 schema：`vec1, vec2, vec3, vec4, vec5, keypoint`
 - 为 U-Net 重测基线、SegFormer-B2 主线和 SAM2 受控实验准备统一入口
 
+## 重要设计文档
+
+- [字体选择功能下的模型模块推进计划](docs/font_aware_model_plan.md)
+
 ## 推荐目录
 
 ```text
