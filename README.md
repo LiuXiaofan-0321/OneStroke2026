@@ -20,6 +20,7 @@ coding：fy、zrh、lxf
 
 - [SAM2 + SegFormer-B2 + 字体风格选择 + 云端/端侧双模型完整训练路线](docs/font_aware_model_plan.md)
 - [张荣昊阶段任务：数据问题复核 + U-Net 重测基线](docs/zhang_ronghao_task_1_3.md)
+- [刘小凡任务二：困难样本集整理](docs/liuxiaofan_task_2_hardset.md)
 
 ## 推荐目录
 
@@ -105,4 +106,3 @@ python infer.py --config ".\configs\train_segformer_b2.yaml" --checkpoint ".\art
 - 单图推理输出原图尺寸 `[H,W,6]` 概率图和二值 mask
 
 SegFormer 训练需要联网下载 Hugging Face 预训练权重，建议在云 GPU 环境运行。
-
