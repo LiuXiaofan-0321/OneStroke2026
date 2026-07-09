@@ -1,0 +1,48 @@
+experiment_name: segformer_b2_teacher_candidate
+seed: 20260709
+device: auto
+
+data:
+  manifest: artifacts/data_audit/manifest.csv
+  splits: artifacts/data_audit/splits.csv
+  image_size: 512
+  batch_size: 4
+  num_workers: 4
+
+model:
+  name: segformer
+  backbone: nvidia/segformer-b2-finetuned-ade-512-512
+  out_channels: 6
+  freeze_encoder: false
+  decoder_lr_scale: 10.0
+
+loss:
+  direction:
+    bce_weight: 1.0
+    dice_weight: 1.0
+  keypoint:
+    focal_weight: 1.0
+    dice_weight: 1.0
+    focal_gamma: 2.0
+  boundary_weight: 0.2
+
+optim:
+  name: adamw
+  encoder_lr: 0.00003
+  decoder_lr: 0.0003
+  weight_decay: 0.01
+  epochs: 120
+  early_stop_patience: 15
+  amp: true
+  scheduler: cosine
+
+thresholds:
+  vec1: 0.5
+  vec2: 0.5
+  vec3: 0.5
+  vec4: 0.5
+  vec5: 0.5
+  keypoint: 0.45
+
+output_dir: artifacts/runs/segformer_b2_teacher_candidate
+

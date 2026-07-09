@@ -1,0 +1,25 @@
+project: onestroke_model
+schema_version: 1
+
+channels:
+  - vec1
+  - vec2
+  - vec3
+  - vec4
+  - vec5
+  - keypoint
+
+image_size: 512
+old_data_root: null
+manifest: artifacts/data_audit/manifest.csv
+splits: artifacts/data_audit/splits.csv
+
+label_files:
+  stacked: 0.npy
+  vec1: mask_1.npy
+  vec2: mask_2.npy
+  vec3: mask_3.npy
+  vec4: mask_4.npy
+  vec5: mask_5.npy
+  keypoint: mask_key_point.npy
+

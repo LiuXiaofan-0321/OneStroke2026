@@ -1,0 +1,36 @@
+experiment_name: unet_rebaseline
+seed: 20260709
+device: auto
+
+data:
+  manifest: artifacts/data_audit/manifest.csv
+  splits: artifacts/data_audit/splits.csv
+  image_size: 512
+  batch_size: 8
+  num_workers: 4
+
+model:
+  name: unet
+  in_channels: 3
+  out_channels: 6
+  base_channels: 64
+
+loss:
+  direction:
+    bce_weight: 1.0
+    dice_weight: 1.0
+  keypoint:
+    focal_weight: 1.0
+    dice_weight: 1.0
+  boundary_weight: 0.2
+
+optim:
+  name: adamw
+  lr: 0.0003
+  weight_decay: 0.01
+  epochs: 80
+  early_stop_patience: 12
+  amp: true
+
+output_dir: artifacts/runs/unet_rebaseline
+
