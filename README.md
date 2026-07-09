@@ -14,6 +14,7 @@
 ## 重要设计文档
 
 - [SAM2 + SegFormer-B2 + 字体风格选择 + 云端/端侧双模型完整训练路线](docs/font_aware_model_plan.md)
+- [张荣昊阶段任务：数据问题复核 + U-Net 重测基线](docs/zhang_ronghao_task_1_3.md)
 
 ## 推荐目录
 
