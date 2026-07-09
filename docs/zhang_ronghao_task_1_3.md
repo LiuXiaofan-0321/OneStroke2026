@@ -10,8 +10,8 @@
 当前模型工程已经建立为独立 GitHub 仓库。请先从 GitHub 克隆项目，再进入项目目录：
 
 ```powershell
-git clone <GITHUB_REPO_URL>
-cd model_module
+git clone https://github.com/LiuXiaofan-0321/OneStroke2026.git
+cd OneStroke2026
 ```
 
 已有内容：

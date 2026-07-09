@@ -31,8 +31,8 @@ model_module/
 建议 Python 3.11。先从 GitHub 克隆仓库，再进入项目目录：
 
 ```powershell
-git clone <GITHUB_REPO_URL>
-cd model_module
+git clone https://github.com/LiuXiaofan-0321/OneStroke2026.git
+cd OneStroke2026
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -U pip
