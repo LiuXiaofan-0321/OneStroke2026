@@ -63,22 +63,24 @@ artifacts/data_audit/manifest.csv
 - 查本机图片路径
 - 确认样本是否完整可用
 
-### 3.2 自动生成的候选困难样本模板
+### 3.2 自动生成的候选困难样本与预览图
 
 ```text
 artifacts/data_audit/hardset_template.csv
 ```
 
-如果本地没有，可以运行：
+先运行下面命令。它会优先从 `test`、`val` 中选取候选，按字符均衡抽取，并按掩码的多通道重叠程度排序；同时生成一张带 `sample_id` 的预览联系表。自动分数仅用于节省挑选时间，最终困难类型必须人工判断。
 
 ```powershell
-python -m onestroke_model.scripts.make_hardset_template `
+python -m onestroke_model.scripts.prepare_hardset_review `
   --manifest ".\artifacts\data_audit\manifest.csv" `
-  --output ".\artifacts\data_audit\hardset_template.csv" `
+  --splits ".\artifacts\data_audit\splits.csv" `
+  --output ".\reviews\hardset_review.csv" `
+  --contact-sheet ".\artifacts\data_audit\hardset_candidates.png" `
   --limit 50
 ```
 
-注意：这个文件在 `artifacts/` 下，默认不提交 GitHub，因为里面可能含有本机绝对路径。
+输出的 `reviews/hardset_review.csv` 不含本机绝对路径，可以直接提交 GitHub；预览图在 `artifacts/` 下，默认不提交。
 
 ### 3.3 可提交的评审模板
 
@@ -100,7 +102,7 @@ artifacts/data_audit/hardset_review.csv
 
 ## 4. 输出文件建议
 
-推荐最终输出为：
+推荐最终输出为（上面命令会直接生成初版）：
 
 ```text
 reviews/hardset_review.csv
@@ -203,10 +205,10 @@ reviews/hardset_review.csv
 先打开：
 
 ```text
-artifacts/data_audit/hardset_template.csv
+artifacts/data_audit/hardset_candidates.png
 ```
 
-逐个查看图像，判断是否真的困难。
+图上每个格子的标题就是要填进 CSV 的 `sample_id`。逐个查看原图，判断是否真的困难。
 
 如果模板样本不够典型，可以替换。但最终保持约 50 个样本即可，不必强行完全固定为模板里的 50 个。
 
@@ -335,14 +337,16 @@ artifacts/data_audit/splits.csv
 artifacts/data_audit/hardset_template.csv
 ```
 
-3. 复制模板：
+3. 生成候选困难集和预览图：
 
 ```powershell
 New-Item -ItemType Directory -Force reviews
-Copy-Item ".\templates\hardset_review_template.csv" ".\reviews\hardset_review.csv"
+python -m onestroke_model.scripts.prepare_hardset_review `
+  --manifest ".\artifacts\data_audit\manifest.csv" `
+  --splits ".\artifacts\data_audit\splits.csv" `
+  --output ".\reviews\hardset_review.csv"
 ```
 
-4. 打开 `manifest.csv` 和图片，开始填 `reviews/hardset_review.csv`。
+4. 打开 `hardset_candidates.png` 和原图，开始填 `reviews/hardset_review.csv`。
 
 5. 第一版先整理 20 个高优先级样本，不必一口气做完 50 个。
-
