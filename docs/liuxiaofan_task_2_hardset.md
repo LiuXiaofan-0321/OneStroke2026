@@ -350,3 +350,16 @@ python -m onestroke_model.scripts.prepare_hardset_review `
 4. 打开 `hardset_candidates.png` 和原图，开始填 `reviews/hardset_review.csv`。
 
 5. 第一版先整理 20 个高优先级样本，不必一口气做完 50 个。
+
+### 表格软件导出后的合并
+
+如果用 Excel/WPS 编辑后另存为新文件，可能会把 `6/18` 自动显示为日期，或导出为 GBK 编码。不要手动改样本 ID；使用下面命令按 `char_id + sample_index` 恢复原始 ID，并将已填写的行合并回标准 UTF-8 文件：
+
+```powershell
+python -m onestroke_model.scripts.merge_hardset_review `
+  --base ".\reviews\hardset_review.csv" `
+  --review ".\reviews\hardset_review_前20行初审完成.csv" `
+  --output ".\reviews\hardset_review.csv"
+```
+
+执行后，只提交标准文件 `reviews/hardset_review.csv`；原始导出文件可本地保留作备份。
