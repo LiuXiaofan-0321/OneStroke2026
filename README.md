@@ -97,6 +97,14 @@ python eval.py --config ".\configs\train_unet.yaml" --checkpoint ".\artifacts\ru
 python infer.py --config ".\configs\train_segformer_b2.yaml" --checkpoint ".\artifacts\checkpoints\best.pt" --image ".\demo.png"
 ```
 
+首次在新环境或云 GPU 上训练前，先运行只含一个训练 batch 和一个验证 batch 的集成检查：
+
+```powershell
+python train.py --config ".\configs\train_unet_smoke.yaml"
+```
+
+该检查会验证六通道数据加载、自动类别权重、边界损失、前向/反向传播、余弦调度、checkpoint 和验证指标链路；其输出位于 `artifacts/runs/unet_smoke/`，不应作为正式基线结果。
+
 当前实现包含：
 
 - 六通道 U-Net 基线模型

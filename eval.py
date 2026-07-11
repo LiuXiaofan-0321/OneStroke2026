@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+import numpy as np
+
 from onestroke_model.config import load_yaml
 from onestroke_model.constants import CHANNELS
 from onestroke_model.utils.io import write_json
@@ -42,6 +44,10 @@ def main() -> None:
     model.eval()
 
     data_cfg = cfg["data"]
+    threshold_cfg = cfg.get("thresholds", {})
+    threshold_array = np.asarray(
+        [float(threshold_cfg.get(channel, 0.5)) for channel in CHANNELS], dtype=np.float32
+    ).reshape(1, len(CHANNELS), 1, 1)
     loader = make_torch_loader(
         data_cfg["manifest"],
         data_cfg["splits"],
@@ -59,9 +65,10 @@ def main() -> None:
             logits = model(images)
             probs = torch.sigmoid(logits).cpu().numpy()
             targets = masks.cpu().numpy()
-            meter.update(probs > 0.5, targets > 0.5)
+            meter.update(probs >= threshold_array, targets > 0.5)
     metrics = meter.compute()
     metrics["split"] = args.split
+    metrics["thresholds"] = {channel: float(threshold_array[0, i, 0, 0]) for i, channel in enumerate(CHANNELS)}
     metrics["checkpoint"] = str(Path(args.checkpoint).resolve())
     print(metrics)
     if args.output:

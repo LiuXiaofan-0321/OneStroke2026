@@ -1,40 +1,41 @@
-experiment_name: unet_rebaseline
-seed: 20260709
+# CPU-safe integration check only. Do not use its metrics as a baseline.
+experiment_name: unet_smoke_test
+seed: 20260712
 device: auto
 
 data:
   manifest: artifacts/data_audit/manifest.csv
   splits: artifacts/data_audit/splits.csv
-  image_size: 512
-  batch_size: 8
-  num_workers: 4
+  image_size: 64
+  batch_size: 1
+  num_workers: 0
 
 model:
   name: unet
   in_channels: 3
   out_channels: 6
-  base_channels: 64
+  base_channels: 8
 
 loss:
   direction:
     bce_weight: 1.0
     dice_weight: 1.0
-    # Estimated from evenly sampled training masks and clipped to avoid instability.
     pos_weight: auto
-    pos_weight_max_samples: 200
+    pos_weight_max_samples: 20
     pos_weight_max: 100.0
   keypoint:
     focal_weight: 1.0
     dice_weight: 1.0
+    focal_gamma: 2.0
   boundary_weight: 0.2
 
 optim:
   name: adamw
   lr: 0.0003
   weight_decay: 0.01
-  epochs: 80
-  early_stop_patience: 12
-  amp: true
+  epochs: 1
+  early_stop_patience: 1
+  amp: false
   scheduler: cosine
   min_lr: 0.000001
 
@@ -46,4 +47,8 @@ thresholds:
   vec5: 0.5
   keypoint: 0.45
 
-output_dir: artifacts/runs/unet_rebaseline
+debug:
+  max_train_batches: 1
+  max_val_batches: 1
+
+output_dir: artifacts/runs/unet_smoke

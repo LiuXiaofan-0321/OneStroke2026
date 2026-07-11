@@ -20,6 +20,10 @@ loss:
   direction:
     bce_weight: 1.0
     dice_weight: 1.0
+    # Estimated from evenly sampled training masks and clipped to avoid instability.
+    pos_weight: auto
+    pos_weight_max_samples: 200
+    pos_weight_max: 100.0
   keypoint:
     focal_weight: 1.0
     dice_weight: 1.0
@@ -35,6 +39,7 @@ optim:
   early_stop_patience: 15
   amp: true
   scheduler: cosine
+  min_lr: 0.000001
 
 thresholds:
   vec1: 0.5
@@ -45,4 +50,3 @@ thresholds:
   keypoint: 0.45
 
 output_dir: artifacts/runs/segformer_b2_teacher_candidate
-

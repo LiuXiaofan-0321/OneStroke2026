@@ -89,3 +89,43 @@ def make_torch_loader(
         num_workers=num_workers,
         pin_memory=True,
     )
+
+
+def estimate_direction_pos_weight(
+    manifest_path: str | Path,
+    splits_path: str | Path,
+    max_samples: int = 200,
+    max_weight: float = 100.0,
+) -> dict[str, object]:
+    """Estimate stable positive weights from evenly sampled training masks.
+
+    We scan original-resolution masks because letterboxing preserves foreground
+    occupancy ratios well enough while avoiding GPU/data-loader startup costs.
+    """
+    dataset = OneStrokeSegmentationDataset(manifest_path, splits_path, "train")
+    if not dataset.rows:
+        raise ValueError("cannot estimate class weights: training split is empty")
+    if max_samples <= 0 or max_samples >= len(dataset.rows):
+        selected = dataset.rows
+    else:
+        indices = np.linspace(0, len(dataset.rows) - 1, num=max_samples, dtype=int)
+        selected = [dataset.rows[i] for i in indices]
+
+    positives = np.zeros(5, dtype=np.float64)
+    total_pixels = np.zeros(5, dtype=np.float64)
+    for row in selected:
+        for i, channel in enumerate(CHANNELS[:5]):
+            mask = np.asarray(np.load(row[f"{channel}_path"])) > 0
+            positives[i] += float(mask.sum())
+            total_pixels[i] += float(mask.size)
+    negatives = total_pixels - positives
+    weights = np.divide(negatives, np.maximum(positives, 1.0))
+    weights = np.clip(weights, 1.0, max_weight)
+    return {
+        "method": "negatives_over_positives",
+        "num_samples": len(selected),
+        "max_weight": float(max_weight),
+        "positive_pixels": positives.tolist(),
+        "positive_ratio": (positives / np.maximum(total_pixels, 1.0)).tolist(),
+        "direction_pos_weight": weights.tolist(),
+    }
