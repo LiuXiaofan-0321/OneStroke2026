@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import argparse
 import csv
+import re
 from pathlib import Path
 
 from onestroke_model.scripts.prepare_hardset_review import REVIEW_FIELDS
-from onestroke_model.utils.io import read_csv_rows, write_csv_rows
+from onestroke_model.utils.io import write_csv_rows
 
 
 ANNOTATION_FIELDS = [
@@ -34,7 +35,7 @@ MANUAL_SIGNAL_FIELDS = [
 ]
 
 
-def _read_manual_csv(path: str | Path) -> list[dict[str, str]]:
+def _read_csv_with_fallback(path: str | Path) -> list[dict[str, str]]:
     """Accept common spreadsheet exports while keeping canonical output UTF-8."""
     raw = Path(path).read_bytes()
     for encoding in ("utf-8-sig", "utf-8", "gb18030"):
@@ -49,6 +50,18 @@ def _row_key(row: dict[str, str]) -> tuple[str, str]:
     return row.get("char_id", "").strip(), row.get("sample_index", "").strip()
 
 
+def _canonical_sample_id(row: dict[str, str]) -> str:
+    sample_id = row.get("sample_id", "").strip()
+    if re.fullmatch(r"\d+/\d+", sample_id):
+        return sample_id
+    char_id, sample_index = _row_key(row)
+    if char_id.isdigit() and sample_index.isdigit():
+        # The legacy data schema defines the stable ID as <char_id>/<sample_index>.
+        # This also repairs spreadsheet date conversion such as "6月18日".
+        return f"{char_id}/{sample_index}"
+    raise ValueError(f"cannot recover canonical sample_id from {sample_id!r}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Merge manual hard-set annotations safely.")
     parser.add_argument("--base", default="reviews/hardset_review.csv")
@@ -56,12 +69,13 @@ def main() -> None:
     parser.add_argument("--output", default="reviews/hardset_review.csv")
     args = parser.parse_args()
 
-    base_rows = read_csv_rows(args.base)
-    review_rows = _read_manual_csv(args.review)
-    base_by_id = {row["sample_id"]: row for row in base_rows}
-    base_by_key = {_row_key(row): row for row in base_rows}
+    base_rows = _read_csv_with_fallback(args.base)
+    review_rows = _read_csv_with_fallback(args.review)
+    normalized_base_rows = [{**row, "sample_id": _canonical_sample_id(row)} for row in base_rows]
+    base_by_id = {row["sample_id"]: row for row in normalized_base_rows}
+    base_by_key = {_row_key(row): row for row in normalized_base_rows}
 
-    merged = {row["sample_id"]: dict(row) for row in base_rows}
+    merged = {row["sample_id"]: dict(row) for row in normalized_base_rows}
     updated, recovered_ids, ignored = 0, 0, 0
     for review in review_rows:
         # Blank tail rows from the template are not annotations.
@@ -92,7 +106,7 @@ def main() -> None:
         if row.get("keep") not in {"yes", "no"}:
             raise ValueError(f"{row['sample_id']}: keep must be yes or no")
 
-    write_csv_rows(args.output, [merged[row["sample_id"]] for row in base_rows], REVIEW_FIELDS)
+    write_csv_rows(args.output, [merged[row["sample_id"]] for row in normalized_base_rows], REVIEW_FIELDS)
     print(f"merged {updated} reviewed rows; recovered {recovered_ids} changed sample IDs; ignored {ignored} blank rows")
     print(f"wrote UTF-8 CSV to {args.output}")
 
