@@ -48,7 +48,7 @@ checkpoint 采用 schema v1，通道顺序与当前工程一致：`vec1, vec2, v
 
 ## 4. 交付与复现说明
 
-- 原始 checkpoint 约 93 MB，不提交普通 Git；建议团队后续用 Git LFS、GitHub Release 或项目网盘管理。
+- checkpoint 约 93 MB，已用 Git LFS 同步为 `checkpoints/unet_rebaseline_v1/best.pt`。克隆后需执行 `git lfs pull` 才会得到真实权重文件。
 - 原始 JSON 指标与完整异常样本复核表保留在项目共享交付目录；它们包含机器绝对路径，未直接提交到仓库。
 - 当前训练、评测和推理入口均已支持 `auto: CUDA → MPS → CPU`；MPS 走稳定的 fp32 路径，CUDA 才启用 AMP。
 
