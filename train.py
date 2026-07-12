@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import nullcontext
 from pathlib import Path
 from typing import Any
 
@@ -22,8 +23,23 @@ def _require_torch():
 
 def _device(name: str, torch_module):
     if name == "auto":
-        return torch_module.device("cuda" if torch_module.cuda.is_available() else "cpu")
+        if torch_module.cuda.is_available():
+            return torch_module.device("cuda")
+        mps = getattr(torch_module.backends, "mps", None)
+        if mps is not None and mps.is_available():
+            return torch_module.device("mps")
+        return torch_module.device("cpu")
     return torch_module.device(name)
+
+
+def _autocast_and_scaler(torch_module, device, requested_amp: bool):
+    """Use CUDA AMP only; MPS currently runs the stable fp32 path."""
+    if device.type == "cuda":
+        return (
+            lambda: torch_module.amp.autocast(device_type="cuda", enabled=requested_amp),
+            torch_module.amp.GradScaler("cuda", enabled=requested_amp),
+        )
+    return nullcontext, None
 
 
 def _threshold_array(cfg: dict[str, Any]) -> np.ndarray:
@@ -187,7 +203,7 @@ def main() -> None:
     debug_cfg = cfg.get("debug", {})
     max_train_batches = int(debug_cfg.get("max_train_batches", 0))
     max_val_batches = int(debug_cfg.get("max_val_batches", 0))
-    scaler = torch.cuda.amp.GradScaler(enabled=bool(optim_cfg.get("amp", True)) and device.type == "cuda")
+    autocast_context, scaler = _autocast_and_scaler(torch, device, bool(optim_cfg.get("amp", True)))
     epochs = int(optim_cfg.get("epochs", 80))
     patience = int(optim_cfg.get("early_stop_patience", 12))
     best_macro_dice = -1.0
@@ -207,12 +223,16 @@ def main() -> None:
             images = batch["image"].to(device=device, dtype=torch.float32)
             masks = batch["mask"].to(device=device, dtype=torch.float32)
             optimizer.zero_grad(set_to_none=True)
-            with torch.cuda.amp.autocast(enabled=scaler.is_enabled()):
+            with autocast_context():
                 logits = model(images)
                 loss = loss_fn(logits, masks)
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
+            if scaler is not None:
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                loss.backward()
+                optimizer.step()
             total_loss += float(loss.item())
             train_batches += 1
             if max_train_batches > 0 and train_batches >= max_train_batches:

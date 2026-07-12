@@ -1,0 +1,52 @@
+# Exact architecture and data-loader settings used for Zhang Ronghao's 2026-07-12 baseline.
+# It is preserved separately so the generic train_unet.yaml can remain a larger-model candidate.
+experiment_name: unet_rebaseline_v1
+seed: 20260709
+device: auto
+
+data:
+  manifest: artifacts/data_audit/manifest.csv
+  splits: artifacts/data_audit/splits.csv
+  image_size: 512
+  batch_size: 8
+  # Required for stable Apple Silicon MPS training; also valid on CUDA/CPU.
+  num_workers: 0
+
+model:
+  name: unet
+  in_channels: 3
+  out_channels: 6
+  base_channels: 32
+
+loss:
+  direction:
+    bce_weight: 1.0
+    dice_weight: 1.0
+    pos_weight: auto
+    pos_weight_max_samples: 200
+    pos_weight_max: 100.0
+  keypoint:
+    focal_weight: 1.0
+    dice_weight: 1.0
+    focal_gamma: 2.0
+  boundary_weight: 0.2
+
+optim:
+  name: adamw
+  lr: 0.0003
+  weight_decay: 0.01
+  epochs: 80
+  early_stop_patience: 12
+  amp: true
+  scheduler: cosine
+  min_lr: 0.000001
+
+thresholds:
+  vec1: 0.5
+  vec2: 0.5
+  vec3: 0.5
+  vec4: 0.5
+  vec5: 0.5
+  keypoint: 0.45
+
+output_dir: artifacts/runs/unet_rebaseline_v1

@@ -20,7 +20,12 @@ def _require_torch():
 
 def _device(name: str, torch_module):
     if name == "auto":
-        return torch_module.device("cuda" if torch_module.cuda.is_available() else "cpu")
+        if torch_module.cuda.is_available():
+            return torch_module.device("cuda")
+        mps = getattr(torch_module.backends, "mps", None)
+        if mps is not None and mps.is_available():
+            return torch_module.device("mps")
+        return torch_module.device("cpu")
     return torch_module.device(name)
 
 
