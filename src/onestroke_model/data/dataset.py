@@ -7,6 +7,7 @@ import numpy as np
 from PIL import Image
 
 from onestroke_model.constants import CHANNELS
+from onestroke_model.data.transforms import LabelSafeAugmenter, normalize_rgb
 from onestroke_model.utils.io import read_csv_rows
 
 
@@ -35,11 +36,15 @@ class OneStrokeSegmentationDataset:
         splits_path: str | Path,
         split: str,
         image_size: int = 512,
+        normalization: str = "none",
+        augmentation: dict[str, object] | None = None,
     ) -> None:
         manifest = {r["sample_id"]: r for r in read_csv_rows(manifest_path)}
         split_ids = {r["sample_id"] for r in read_csv_rows(splits_path) if r["split"] == split}
         self.rows = [manifest[sid] for sid in sorted(split_ids) if sid in manifest]
         self.image_size = image_size
+        self.normalization = normalization
+        self.augmenter = LabelSafeAugmenter(augmentation) if augmentation else None
 
     def __len__(self) -> int:
         return len(self.rows)
@@ -48,13 +53,14 @@ class OneStrokeSegmentationDataset:
         row = self.rows[idx]
         image = Image.open(row["image_path"]).convert("RGB")
         image = _letterbox_image(image, self.image_size, Image.Resampling.BILINEAR)
-        image_arr = np.asarray(image).astype(np.float32) / 255.0
-        image_arr = np.transpose(image_arr, (2, 0, 1))
 
         masks = []
         for channel in CHANNELS:
             mask = np.load(row[f"{channel}_path"])
             masks.append(_letterbox_mask(mask, self.image_size))
+        if self.augmenter is not None:
+            image, masks = self.augmenter(image, masks)
+        image_arr = normalize_rgb(image, self.normalization)
         mask_arr = np.stack(masks, axis=0).astype(np.float32)
 
         return {
@@ -73,13 +79,22 @@ def make_torch_loader(
     batch_size: int,
     num_workers: int = 0,
     shuffle: bool | None = None,
+    normalization: str = "none",
+    augmentation: dict[str, object] | None = None,
 ):
     try:
         from torch.utils.data import DataLoader
     except ImportError as exc:  # pragma: no cover - optional dependency
         raise ImportError("Install training extras first: pip install -e '.[train]'") from exc
 
-    dataset = OneStrokeSegmentationDataset(manifest_path, splits_path, split, image_size)
+    dataset = OneStrokeSegmentationDataset(
+        manifest_path,
+        splits_path,
+        split,
+        image_size,
+        normalization=normalization,
+        augmentation=augmentation,
+    )
     if shuffle is None:
         shuffle = split == "train"
     return DataLoader(

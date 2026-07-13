@@ -77,7 +77,9 @@ def _build_loss(cfg: dict[str, Any], output_dir: Path):
         direction_bce_weight=float(direction_cfg.get("bce_weight", 1.0)),
         direction_dice_weight=float(direction_cfg.get("dice_weight", 1.0)),
         keypoint_focal_weight=float(keypoint_cfg.get("focal_weight", 1.0)),
+        keypoint_bce_weight=float(keypoint_cfg.get("bce_weight", 1.0)),
         keypoint_dice_weight=float(keypoint_cfg.get("dice_weight", 1.0)),
+        keypoint_loss_type=str(keypoint_cfg.get("loss_type", "focal")),
         focal_gamma=float(keypoint_cfg.get("focal_gamma", 2.0)),
         focal_alpha=float(keypoint_cfg.get("focal_alpha", 0.25)),
         boundary_weight=float(loss_cfg.get("boundary_weight", 0.2)),
@@ -113,10 +115,27 @@ def _build_scheduler(optimizer, cfg: dict[str, Any], torch_module):
     if name in {"none", "off", ""}:
         return None
     if name == "cosine":
-        return torch_module.optim.lr_scheduler.CosineAnnealingLR(
+        epochs = int(optim_cfg.get("epochs", 80))
+        warmup_epochs = int(optim_cfg.get("warmup_epochs", 0))
+        cosine = torch_module.optim.lr_scheduler.CosineAnnealingLR(
             optimizer,
-            T_max=int(optim_cfg.get("epochs", 80)),
+            T_max=max(1, epochs - warmup_epochs),
             eta_min=float(optim_cfg.get("min_lr", 1e-6)),
+        )
+        if warmup_epochs <= 0:
+            return cosine
+        if warmup_epochs >= epochs:
+            raise ValueError("optim.warmup_epochs must be smaller than optim.epochs")
+        warmup = torch_module.optim.lr_scheduler.LinearLR(
+            optimizer,
+            start_factor=float(optim_cfg.get("warmup_start_factor", 0.1)),
+            end_factor=1.0,
+            total_iters=warmup_epochs,
+        )
+        return torch_module.optim.lr_scheduler.SequentialLR(
+            optimizer,
+            schedulers=[warmup, cosine],
+            milestones=[warmup_epochs],
         )
     raise ValueError(f"unsupported optim.scheduler: {name}")
 
@@ -172,6 +191,8 @@ def main() -> None:
         int(data_cfg.get("batch_size", 4)),
         int(data_cfg.get("num_workers", 0)),
         shuffle=True,
+        normalization=str(data_cfg.get("normalization", "none")),
+        augmentation=data_cfg.get("augmentation"),
     )
     val_loader = make_torch_loader(
         data_cfg["manifest"],
@@ -181,6 +202,7 @@ def main() -> None:
         int(data_cfg.get("batch_size", 4)),
         int(data_cfg.get("num_workers", 0)),
         shuffle=False,
+        normalization=str(data_cfg.get("normalization", "none")),
     )
     optimizer, parameter_groups = _build_optimizer(model, cfg, torch)
     scheduler = _build_scheduler(optimizer, cfg, torch)
@@ -204,6 +226,7 @@ def main() -> None:
     max_train_batches = int(debug_cfg.get("max_train_batches", 0))
     max_val_batches = int(debug_cfg.get("max_val_batches", 0))
     autocast_context, scaler = _autocast_and_scaler(torch, device, bool(optim_cfg.get("amp", True)))
+    grad_clip_norm = float(optim_cfg.get("grad_clip_norm", 0.0))
     epochs = int(optim_cfg.get("epochs", 80))
     patience = int(optim_cfg.get("early_stop_patience", 12))
     best_macro_dice = -1.0
@@ -228,10 +251,15 @@ def main() -> None:
                 loss = loss_fn(logits, masks)
             if scaler is not None:
                 scaler.scale(loss).backward()
+                if grad_clip_norm > 0:
+                    scaler.unscale_(optimizer)
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip_norm)
                 scaler.step(optimizer)
                 scaler.update()
             else:
                 loss.backward()
+                if grad_clip_norm > 0:
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip_norm)
                 optimizer.step()
             total_loss += float(loss.item())
             train_batches += 1

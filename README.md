@@ -21,6 +21,8 @@ coding：fy、zrh、lxf
 - [SAM2 + SegFormer-B2 + 字体风格选择 + 云端/端侧双模型完整训练路线](docs/font_aware_model_plan.md)
 - [张荣昊阶段任务：数据问题复核 + U-Net 重测基线](docs/zhang_ronghao_task_1_3.md)
 - [刘小凡任务二：困难样本集整理](docs/liuxiaofan_task_2_hardset.md)
+- [SegFormer-B2 v1 上云训练前检查单](docs/segformer_v1_preflight.md)
+- [U-Net 重测基线报告（v1）](docs/unet_rebaseline_report_2026-07-12.md)
 
 ## 推荐目录
 
@@ -104,6 +106,8 @@ python train.py --config ".\configs\train_unet_smoke.yaml"
 ```
 
 该检查会验证六通道数据加载、自动类别权重、边界损失、前向/反向传播、余弦调度、checkpoint 和验证指标链路；其输出位于 `artifacts/runs/unet_smoke/`，不应作为正式基线结果。
+
+SegFormer-B2 的云端训练顺序、三组消融、增强人工检查和验证集阈值校准均以 [v1 上云训练前检查单](docs/segformer_v1_preflight.md) 为准。
 
 当前实现包含：
 

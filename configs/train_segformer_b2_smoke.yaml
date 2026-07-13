@@ -1,0 +1,61 @@
+# One train batch + one validation batch on a real 512x512 SegFormer-B2.
+# Run this on the cloud GPU before any long experiment.
+experiment_name: segformer_b2_v1_smoke
+seed: 20260713
+device: auto
+
+data:
+  manifest: artifacts/data_audit/manifest.csv
+  splits: artifacts/data_audit/splits.csv
+  image_size: 512
+  batch_size: 1
+  num_workers: 0
+  normalization: imagenet
+  augmentation:
+    enabled: false
+
+model:
+  name: segformer
+  backbone: nvidia/segformer-b2-finetuned-ade-512-512
+  out_channels: 6
+
+loss:
+  direction:
+    bce_weight: 1.0
+    dice_weight: 1.0
+    pos_weight: auto
+    pos_weight_max_samples: 20
+    pos_weight_max: 100.0
+  keypoint:
+    loss_type: focal
+    focal_weight: 1.0
+    dice_weight: 1.0
+    focal_gamma: 2.0
+    focal_alpha: 0.75
+  boundary_weight: 0.2
+
+optim:
+  name: adamw
+  encoder_lr: 0.00003
+  decoder_lr: 0.0003
+  weight_decay: 0.01
+  epochs: 1
+  early_stop_patience: 1
+  amp: true
+  scheduler: cosine
+  min_lr: 0.000001
+  grad_clip_norm: 1.0
+
+thresholds:
+  vec1: 0.5
+  vec2: 0.5
+  vec3: 0.5
+  vec4: 0.5
+  vec5: 0.5
+  keypoint: 0.45
+
+debug:
+  max_train_batches: 1
+  max_val_batches: 1
+
+output_dir: artifacts/runs/segformer_b2_v1_smoke

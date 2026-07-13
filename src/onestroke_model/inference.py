@@ -9,14 +9,18 @@ from PIL import Image
 
 from onestroke_model.constants import CHANNELS, SCHEMA_VERSION
 from onestroke_model.data.dataset import _letterbox_image
+from onestroke_model.data.transforms import normalize_rgb
 
 
-def prepare_image(path: str | Path, image_size: int) -> tuple[np.ndarray, tuple[int, int]]:
+def prepare_image(
+    path: str | Path,
+    image_size: int,
+    normalization: str = "none",
+) -> tuple[np.ndarray, tuple[int, int]]:
     image = Image.open(path).convert("RGB")
     original_size = (image.height, image.width)
     boxed = _letterbox_image(image, image_size, Image.Resampling.BILINEAR)
-    arr = np.asarray(boxed).astype(np.float32) / 255.0
-    return np.transpose(arr, (2, 0, 1))[None, ...], original_size
+    return normalize_rgb(boxed, normalization)[None, ...], original_size
 
 
 def restore_letterbox_probabilities(probabilities: np.ndarray, original_size: tuple[int, int]) -> np.ndarray:

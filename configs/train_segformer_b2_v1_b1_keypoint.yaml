@@ -1,5 +1,6 @@
-experiment_name: segformer_b2_v1_b2_boundary
-seed: 20260709
+# v1 ablation B1: B0 plus Focal + Dice for sparse keypoints.
+experiment_name: segformer_b2_v1_b1_keypoint
+seed: 20260713
 device: auto
 
 data:
@@ -8,11 +9,9 @@ data:
   image_size: 512
   batch_size: 4
   num_workers: 4
-  # Required to match the Hugging Face ImageNet-pretrained encoder.
   normalization: imagenet
   augmentation:
     enabled: true
-    # Direction-channel semantics make rotation and flip intentionally unavailable.
     translate_px: 12
     scale_min: 0.90
     scale_max: 1.10
@@ -28,14 +27,11 @@ model:
   name: segformer
   backbone: nvidia/segformer-b2-finetuned-ade-512-512
   out_channels: 6
-  freeze_encoder: false
-  decoder_lr_scale: 10.0
 
 loss:
   direction:
     bce_weight: 1.0
     dice_weight: 1.0
-    # Estimated from evenly sampled training masks and clipped to avoid instability.
     pos_weight: auto
     pos_weight_max_samples: 200
     pos_weight_max: 100.0
@@ -44,9 +40,8 @@ loss:
     focal_weight: 1.0
     dice_weight: 1.0
     focal_gamma: 2.0
-    # Sparse keypoints need more positive emphasis than the generic 0.25 default.
     focal_alpha: 0.75
-  boundary_weight: 0.2
+  boundary_weight: 0.0
 
 optim:
   name: adamw
@@ -70,4 +65,4 @@ thresholds:
   vec5: 0.5
   keypoint: 0.45
 
-output_dir: artifacts/runs/segformer_b2_v1_b2_boundary
+output_dir: artifacts/runs/segformer_b2_v1_b1_keypoint

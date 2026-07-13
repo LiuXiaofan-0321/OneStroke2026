@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import numpy as np
@@ -35,6 +36,7 @@ def main() -> None:
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--split", default="test", choices=["train", "val", "test"])
     parser.add_argument("--output", default=None)
+    parser.add_argument("--thresholds-json", default=None, help="Optional validation-calibration JSON from calibrate_thresholds.")
     args = parser.parse_args()
     cfg = load_yaml(args.config)
     torch = _require_torch()
@@ -49,7 +51,11 @@ def main() -> None:
     model.eval()
 
     data_cfg = cfg["data"]
-    threshold_cfg = cfg.get("thresholds", {})
+    threshold_cfg = dict(cfg.get("thresholds", {}))
+    if args.thresholds_json:
+        payload = json.loads(Path(args.thresholds_json).read_text(encoding="utf-8"))
+        calibrated = payload.get("best_thresholds", payload)
+        threshold_cfg.update({channel: float(calibrated[channel]) for channel in CHANNELS if channel in calibrated})
     threshold_array = np.asarray(
         [float(threshold_cfg.get(channel, 0.5)) for channel in CHANNELS], dtype=np.float32
     ).reshape(1, len(CHANNELS), 1, 1)
@@ -61,6 +67,7 @@ def main() -> None:
         int(data_cfg.get("batch_size", 4)),
         int(data_cfg.get("num_workers", 0)),
         shuffle=False,
+        normalization=str(data_cfg.get("normalization", "none")),
     )
     meter = SegmentationMeter(num_channels=len(CHANNELS))
     with torch.no_grad():

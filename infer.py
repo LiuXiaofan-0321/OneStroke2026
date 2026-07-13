@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import numpy as np
@@ -35,6 +36,7 @@ def main() -> None:
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--image", required=True)
     parser.add_argument("--output", default=None, help="Optional .npz output path.")
+    parser.add_argument("--thresholds-json", default=None, help="Optional validation-calibration JSON.")
     args = parser.parse_args()
     cfg = load_yaml(args.config)
     torch = _require_torch()
@@ -42,13 +44,18 @@ def main() -> None:
 
     device = _device(str(cfg.get("device", "auto")), torch)
     image_size = int(cfg.get("data", {}).get("image_size", 512))
-    thresholds = cfg.get("thresholds", {c: 0.5 for c in CHANNELS})
+    normalization = str(cfg.get("data", {}).get("normalization", "none"))
+    thresholds = dict(cfg.get("thresholds", {c: 0.5 for c in CHANNELS}))
+    if args.thresholds_json:
+        payload = json.loads(Path(args.thresholds_json).read_text(encoding="utf-8"))
+        calibrated = payload.get("best_thresholds", payload)
+        thresholds.update({channel: float(calibrated[channel]) for channel in CHANNELS if channel in calibrated})
     model = build_model(cfg["model"]).to(device)
     checkpoint = torch.load(args.checkpoint, map_location=device)
     model.load_state_dict(checkpoint["model_state"])
     model.eval()
 
-    arr, original_size = prepare_image(args.image, image_size)
+    arr, original_size = prepare_image(args.image, image_size, normalization=normalization)
     start = now_ms()
     with torch.no_grad():
         tensor = torch.from_numpy(arr).to(device=device, dtype=torch.float32)

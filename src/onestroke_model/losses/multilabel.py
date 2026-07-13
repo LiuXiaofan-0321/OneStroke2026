@@ -58,7 +58,9 @@ class MultiLabelStrokeLoss(nn.Module):
         direction_bce_weight: float = 1.0,
         direction_dice_weight: float = 1.0,
         keypoint_focal_weight: float = 1.0,
+        keypoint_bce_weight: float = 1.0,
         keypoint_dice_weight: float = 1.0,
+        keypoint_loss_type: str = "focal",
         focal_gamma: float = 2.0,
         focal_alpha: float = 0.25,
         boundary_weight: float = 0.2,
@@ -74,7 +76,9 @@ class MultiLabelStrokeLoss(nn.Module):
         self.direction_bce_weight = float(direction_bce_weight)
         self.direction_dice_weight = float(direction_dice_weight)
         self.keypoint_focal_weight = float(keypoint_focal_weight)
+        self.keypoint_bce_weight = float(keypoint_bce_weight)
         self.keypoint_dice_weight = float(keypoint_dice_weight)
+        self.keypoint_loss_type = str(keypoint_loss_type).lower()
         self.focal_gamma = float(focal_gamma)
         self.focal_alpha = float(focal_alpha)
         self.boundary_weight = float(boundary_weight)
@@ -93,18 +97,25 @@ class MultiLabelStrokeLoss(nn.Module):
             pos_weight=self.direction_pos_weight,
         )
         direction_dice = dice_loss_from_logits(direction_logits, direction_targets)
-        keypoint_focal = focal_loss_from_logits(
-            keypoint_logits,
-            keypoint_targets,
-            gamma=self.focal_gamma,
-            alpha=self.focal_alpha,
-        )
+        if self.keypoint_loss_type == "focal":
+            keypoint_primary = focal_loss_from_logits(
+                keypoint_logits,
+                keypoint_targets,
+                gamma=self.focal_gamma,
+                alpha=self.focal_alpha,
+            )
+            keypoint_primary_weight = self.keypoint_focal_weight
+        elif self.keypoint_loss_type == "bce":
+            keypoint_primary = F.binary_cross_entropy_with_logits(keypoint_logits, keypoint_targets)
+            keypoint_primary_weight = self.keypoint_bce_weight
+        else:
+            raise ValueError("keypoint_loss_type must be 'focal' or 'bce'")
         keypoint_dice = dice_loss_from_logits(keypoint_logits, keypoint_targets)
         boundary = boundary_loss_from_logits(logits, targets)
         return (
             self.direction_bce_weight * direction_bce
             + self.direction_dice_weight * direction_dice
-            + self.keypoint_focal_weight * keypoint_focal
+            + keypoint_primary_weight * keypoint_primary
             + self.keypoint_dice_weight * keypoint_dice
             + self.boundary_weight * boundary
         )
