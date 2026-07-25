@@ -42,11 +42,15 @@ def _morphological_boundary(masks: torch.Tensor) -> torch.Tensor:
 
 def boundary_loss_from_logits(logits: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
     """Supervise predicted contour strength using boundaries derived from masks."""
-    probabilities = torch.sigmoid(logits)
-    predicted_boundary = _morphological_boundary(probabilities)
-    target_boundary = _morphological_boundary(targets)
-    bce = F.binary_cross_entropy(predicted_boundary.clamp(1e-5, 1 - 1e-5), target_boundary)
-    return bce + dice_loss_from_probs(predicted_boundary, target_boundary)
+    # ``binary_cross_entropy`` is not autocast-safe.  Keep this small
+    # morphology branch in float32 while the main loss remains AMP-enabled.
+    with torch.autocast(device_type=logits.device.type, enabled=False):
+        probabilities = torch.sigmoid(logits.float())
+        predicted_boundary = _morphological_boundary(probabilities)
+        target_boundary = _morphological_boundary(targets.float())
+        bce = F.binary_cross_entropy(predicted_boundary.clamp(1e-5, 1 - 1e-5), target_boundary)
+        dice = dice_loss_from_probs(predicted_boundary, target_boundary)
+    return bce + dice
 
 
 class MultiLabelStrokeLoss(nn.Module):
