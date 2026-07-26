@@ -32,6 +32,23 @@ def boundary_map(mask: np.ndarray) -> np.ndarray:
     return np.logical_or.reduce(neighborhoods) ^ np.logical_and.reduce(neighborhoods)
 
 
+def binary_dilate(mask: np.ndarray, radius: int) -> np.ndarray:
+    """Square-kernel dilation for boolean [N,H,W] arrays without SciPy."""
+    if mask.ndim != 3:
+        raise ValueError("binary_dilate expects [N, H, W]")
+    if radius < 0:
+        raise ValueError("radius must be non-negative")
+    result = mask.astype(bool)
+    for _ in range(radius):
+        padded = np.pad(result, ((0, 0), (1, 1), (1, 1)), constant_values=False)
+        height, width = result.shape[-2:]
+        neighborhoods = [
+            padded[:, dy : dy + height, dx : dx + width] for dy in range(3) for dx in range(3)
+        ]
+        result = np.logical_or.reduce(neighborhoods)
+    return result
+
+
 def dice_iou_precision_recall(pred: np.ndarray, target: np.ndarray) -> dict[str, list[float] | float]:
     c = multilabel_confusion(pred, target)
     dice = []
@@ -56,13 +73,17 @@ def dice_iou_precision_recall(pred: np.ndarray, target: np.ndarray) -> dict[str,
 
 
 class SegmentationMeter:
-    def __init__(self, num_channels: int = 6) -> None:
+    def __init__(self, num_channels: int = 6, keypoint_tolerances: tuple[int, ...] = ()) -> None:
         self.tp = np.zeros(num_channels, dtype=np.float64)
         self.fp = np.zeros(num_channels, dtype=np.float64)
         self.fn = np.zeros(num_channels, dtype=np.float64)
         self.boundary_tp = np.zeros(num_channels, dtype=np.float64)
         self.boundary_fp = np.zeros(num_channels, dtype=np.float64)
         self.boundary_fn = np.zeros(num_channels, dtype=np.float64)
+        self.keypoint_tolerances = tuple(sorted(set(keypoint_tolerances)))
+        self.keypoint_tolerance_counts = {
+            radius: np.zeros(4, dtype=np.float64) for radius in self.keypoint_tolerances
+        }
 
     def update(self, pred: np.ndarray, target: np.ndarray) -> None:
         c = multilabel_confusion(pred, target)
@@ -73,8 +94,22 @@ class SegmentationMeter:
         self.boundary_tp += boundary["tp"]
         self.boundary_fp += boundary["fp"]
         self.boundary_fn += boundary["fn"]
+        if self.keypoint_tolerances and pred.shape[1] > 5:
+            pred_keypoint = pred[:, 5].astype(bool)
+            target_keypoint = target[:, 5].astype(bool)
+            for radius in self.keypoint_tolerances:
+                pred_matches = np.logical_and(
+                    pred_keypoint, binary_dilate(target_keypoint, radius)
+                ).sum()
+                target_matches = np.logical_and(
+                    target_keypoint, binary_dilate(pred_keypoint, radius)
+                ).sum()
+                self.keypoint_tolerance_counts[radius] += np.asarray(
+                    [pred_matches, pred_keypoint.sum(), target_matches, target_keypoint.sum()],
+                    dtype=np.float64,
+                )
 
-    def compute(self) -> dict[str, list[float] | float]:
+    def compute(self) -> dict[str, object]:
         dice = []
         iou = []
         precision = []
@@ -88,7 +123,7 @@ class SegmentationMeter:
             _safe_div(2 * tp, 2 * tp + fp + fn)
             for tp, fp, fn in zip(self.boundary_tp, self.boundary_fp, self.boundary_fn, strict=True)
         ]
-        return {
+        result = {
             "dice": dice,
             "iou": iou,
             "precision": precision,
@@ -99,3 +134,19 @@ class SegmentationMeter:
             "boundary_f1_per_channel": boundary_f1,
             "boundary_f1": float(np.mean(boundary_f1[:5])),
         }
+        if self.keypoint_tolerances:
+            tolerance_metrics = {}
+            for radius, counts in self.keypoint_tolerance_counts.items():
+                pred_matches, pred_total, target_matches, target_total = counts
+                tolerant_precision = _safe_div(pred_matches, pred_total)
+                tolerant_recall = _safe_div(target_matches, target_total)
+                tolerance_metrics[str(radius)] = {
+                    "precision": tolerant_precision,
+                    "recall": tolerant_recall,
+                    "f1": _safe_div(
+                        2 * tolerant_precision * tolerant_recall,
+                        tolerant_precision + tolerant_recall,
+                    ),
+                }
+            result["keypoint_tolerance"] = tolerance_metrics
+        return result

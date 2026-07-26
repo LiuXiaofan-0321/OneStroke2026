@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 
-def build_model(config: dict[str, Any]):
+def build_model(config: dict[str, Any], load_pretrained: bool = True):
     name = config.get("name")
     if name == "unet":
         from .unet import UNet
@@ -19,6 +19,6 @@ def build_model(config: dict[str, Any]):
         return SegFormerMultiLabel(
             backbone=str(config.get("backbone", "nvidia/segformer-b2-finetuned-ade-512-512")),
             out_channels=int(config.get("out_channels", 6)),
+            load_pretrained=load_pretrained,
         )
     raise ValueError(f"Unknown model name: {name}")
-

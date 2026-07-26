@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "model_version": "segformer-b2-v1",
+  "input": {
+    "type": "RGB image",
+    "preprocessing": "white-background letterbox to 512x512, ImageNet normalization"
+  },
+  "channels": ["vec1", "vec2", "vec3", "vec4", "vec5", "keypoint"],
+  "activation": "independent sigmoid",
+  "output": {
+    "probabilities": "float32 [H,W,6]",
+    "binary_masks": "uint8 [H,W,6]",
+    "coordinates": "original-image pixel coordinates"
+  },
+  "capabilities": {
+    "segmentation": true,
+    "keypoint_localization": true,
+    "style_conditioning": false,
+    "style_scoring": false,
+    "natural_language_feedback": false,
+    "stroke_order_analysis": false
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "model_version": "segformer-b2-v1",
+  "release_date": "2026-07-26",
+  "status": "frozen_teacher_candidate",
+  "architecture": "SegFormer-B2 six-channel multi-label segmentation",
+  "checkpoint": {
+    "path": "checkpoints/segformer_b2_v1/best.pt",
+    "size_bytes": 328624482,
+    "sha256": "64df27aafc0eeecc07c0ac52c6ff00eef6b290ae7baf964cd5cf786262f395ce",
+    "selected_epoch": 71,
+    "best_validation_macro_dice": 0.9610823717843233
+  },
+  "data": {
+    "version": "legacy-complete-840-v1",
+    "complete_samples": 840,
+    "split_counts": {"train": 600, "val": 120, "test": 120},
+    "manifest_sha256": "d1ea20cd03f59451acd6395088ee32f64123def93dc9b78b53b2b557fc1ec05f",
+    "splits_sha256": "3504de2113e6640b762392ebadac8f4dccfe4f35df3f87354ccd475b74942abf"
+  },
+  "files": {
+    "training_config": "configs/train_segformer_b2_v1_b2_boundary.yaml",
+    "delivery_config": "configs/segformer_b2_v1_delivery.yaml",
+    "thresholds": "releases/segformer_b2_v1/thresholds_val.json",
+    "metrics": "releases/segformer_b2_v1/test_metrics.json",
+    "schema": "releases/segformer_b2_v1/schema.json",
+    "model_card": "docs/model_card_segformer_b2_v1.md"
+  }
+}

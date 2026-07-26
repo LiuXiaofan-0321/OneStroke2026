@@ -8,3 +8,7 @@ artifacts/
 *.pth
 *.onnx
 
+# The frozen B2 delivery checkpoint is intentionally versioned through Git LFS.
+!checkpoints/
+!checkpoints/segformer_b2_v1/
+!checkpoints/segformer_b2_v1/best.pt

@@ -1,0 +1,17 @@
+{
+  "split": "test",
+  "num_samples": 120,
+  "threshold": 0.25822222232818604,
+  "pixel_tolerance": {
+    "0": {"precision": 0.7083998403830806, "recall": 0.7237056665307786, "f1": 0.7159709618874772},
+    "1": {"precision": 0.9444333599361532, "recall": 0.8590161706753635, "f1": 0.899701948449126},
+    "3": {"precision": 0.9741620111731844, "recall": 0.886669384427232, "f1": 0.9283588323171221},
+    "5": {"precision": 0.9775538707102953, "recall": 0.8967590705258867, "f1": 0.9354150859236724}
+  },
+  "sample_counts": {
+    "no_prediction": 0,
+    "strict_f1_below_0_5": 1,
+    "tolerance_5_f1_below_0_8": 4
+  },
+  "note": "Tolerance metrics supplement but do not replace strict pixel F1. The tiny difference from cloud strict F1 is caused by rounded threshold serialization in the local diagnostic."
+}

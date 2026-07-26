@@ -1,0 +1,71 @@
+# Frozen training configuration for the selected B2 experiment.
+experiment_name: segformer_b2_v1_b2_boundary
+seed: 20260709
+device: auto
+
+data:
+  manifest: artifacts/data_audit/manifest.csv
+  splits: artifacts/data_audit/splits.csv
+  image_size: 512
+  batch_size: 4
+  num_workers: 4
+  normalization: imagenet
+  augmentation:
+    enabled: true
+    translate_px: 12
+    scale_min: 0.90
+    scale_max: 1.10
+    brightness_min: 0.85
+    brightness_max: 1.15
+    contrast_min: 0.90
+    contrast_max: 1.10
+    blur_probability: 0.15
+    blur_radius_min: 0.1
+    blur_radius_max: 0.8
+
+model:
+  name: segformer
+  backbone: nvidia/segformer-b2-finetuned-ade-512-512
+  out_channels: 6
+  freeze_encoder: false
+  decoder_lr_scale: 10.0
+
+loss:
+  direction:
+    bce_weight: 1.0
+    dice_weight: 1.0
+    pos_weight: auto
+    pos_weight_max_samples: 200
+    pos_weight_max: 100.0
+  keypoint:
+    loss_type: focal
+    focal_weight: 1.0
+    dice_weight: 1.0
+    focal_gamma: 2.0
+    focal_alpha: 0.75
+  boundary_weight: 0.2
+
+optim:
+  name: adamw
+  encoder_lr: 0.00003
+  decoder_lr: 0.0003
+  weight_decay: 0.01
+  epochs: 120
+  early_stop_patience: 15
+  amp: true
+  scheduler: cosine
+  min_lr: 0.000001
+  warmup_epochs: 3
+  warmup_start_factor: 0.1
+  grad_clip_norm: 1.0
+
+# These are the thresholds used during training-time validation only.
+thresholds:
+  vec1: 0.5
+  vec2: 0.5
+  vec3: 0.5
+  vec4: 0.5
+  vec5: 0.5
+  keypoint: 0.45
+
+output_dir: artifacts/runs/segformer_b2_v1_b2_boundary

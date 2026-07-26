@@ -1,0 +1,29 @@
+{
+  "test_split": "frozen-120-v1",
+  "experiments": {
+    "unet_rebaseline_v1": {
+      "macro_dice": 0.8913501527643763,
+      "macro_iou": 0.8048751323474305,
+      "keypoint_f1": 0.7530104643213966,
+      "boundary_f1": 0.738528855647575
+    },
+    "segformer_b2_v1_b0_base": {
+      "macro_dice": 0.9552815619008361,
+      "macro_iou": 0.9144149163874727,
+      "keypoint_f1": 0.713027634375949,
+      "boundary_f1": 0.808363822340409
+    },
+    "segformer_b2_v1_b1_keypoint": {
+      "macro_dice": 0.955414374663494,
+      "macro_iou": 0.9146572482603549,
+      "keypoint_f1": 0.7138543546836255,
+      "boundary_f1": 0.8076715078963851
+    },
+    "segformer_b2_v1_b2_boundary": {
+      "macro_dice": 0.9610486371005166,
+      "macro_iou": 0.9250510462770342,
+      "keypoint_f1": 0.7159348691838484,
+      "boundary_f1": 0.8347529045827409
+    }
+  }
+}

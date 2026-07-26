@@ -36,7 +36,14 @@ def main() -> None:
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--split", default="test", choices=["train", "val", "test"])
     parser.add_argument("--output", default=None)
+    parser.add_argument("--manifest", default=None, help="Optional manifest path override.")
+    parser.add_argument("--splits", default=None, help="Optional frozen split path override.")
     parser.add_argument("--thresholds-json", default=None, help="Optional validation-calibration JSON from calibrate_thresholds.")
+    parser.add_argument(
+        "--keypoint-tolerances",
+        default="0,1,3,5",
+        help="Comma-separated pixel radii for supplementary keypoint localization metrics.",
+    )
     args = parser.parse_args()
     cfg = load_yaml(args.config)
     torch = _require_torch()
@@ -45,12 +52,17 @@ def main() -> None:
     from onestroke_model.models import build_model
 
     device = _device(str(cfg.get("device", "auto")), torch)
-    model = build_model(cfg["model"]).to(device)
-    checkpoint = torch.load(args.checkpoint, map_location=device)
+    checkpoint = torch.load(args.checkpoint, map_location=device, weights_only=False)
+    model_cfg = checkpoint.get("config", {}).get("model", cfg["model"])
+    model = build_model(model_cfg, load_pretrained=False).to(device)
     model.load_state_dict(checkpoint["model_state"])
     model.eval()
 
-    data_cfg = cfg["data"]
+    data_cfg = dict(cfg["data"])
+    if args.manifest:
+        data_cfg["manifest"] = args.manifest
+    if args.splits:
+        data_cfg["splits"] = args.splits
     threshold_cfg = dict(cfg.get("thresholds", {}))
     if args.thresholds_json:
         payload = json.loads(Path(args.thresholds_json).read_text(encoding="utf-8"))
@@ -69,7 +81,12 @@ def main() -> None:
         shuffle=False,
         normalization=str(data_cfg.get("normalization", "none")),
     )
-    meter = SegmentationMeter(num_channels=len(CHANNELS))
+    keypoint_tolerances = tuple(
+        int(value.strip()) for value in args.keypoint_tolerances.split(",") if value.strip()
+    )
+    meter = SegmentationMeter(
+        num_channels=len(CHANNELS), keypoint_tolerances=keypoint_tolerances
+    )
     with torch.no_grad():
         for batch in loader:
             images = batch["image"].to(device=device, dtype=torch.float32)

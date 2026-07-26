@@ -8,7 +8,13 @@ import numpy as np
 
 from onestroke_model.config import load_yaml
 from onestroke_model.constants import CHANNELS
-from onestroke_model.inference import now_ms, package_prediction, prepare_image, restore_letterbox_probabilities
+from onestroke_model.inference import (
+    now_ms,
+    package_prediction,
+    prepare_image,
+    restore_letterbox_probabilities,
+    save_prediction_assets,
+)
 
 
 def _require_torch():
@@ -36,6 +42,12 @@ def main() -> None:
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--image", required=True)
     parser.add_argument("--output", default=None, help="Optional .npz output path.")
+    parser.add_argument(
+        "--output-dir",
+        default=None,
+        help="Optional directory for result.json, masks, overlay and prediction.npz.",
+    )
+    parser.add_argument("--model-version", default="segformer-b2-v1")
     parser.add_argument("--thresholds-json", default=None, help="Optional validation-calibration JSON.")
     args = parser.parse_args()
     cfg = load_yaml(args.config)
@@ -50,8 +62,9 @@ def main() -> None:
         payload = json.loads(Path(args.thresholds_json).read_text(encoding="utf-8"))
         calibrated = payload.get("best_thresholds", payload)
         thresholds.update({channel: float(calibrated[channel]) for channel in CHANNELS if channel in calibrated})
-    model = build_model(cfg["model"]).to(device)
-    checkpoint = torch.load(args.checkpoint, map_location=device)
+    checkpoint = torch.load(args.checkpoint, map_location=device, weights_only=False)
+    model_cfg = checkpoint.get("config", {}).get("model", cfg["model"])
+    model = build_model(model_cfg, load_pretrained=False).to(device)
     model.load_state_dict(checkpoint["model_state"])
     model.eval()
 
@@ -82,6 +95,19 @@ def main() -> None:
             channels=np.array(packaged["channels"]),
             thresholds=np.array([thresholds[c] for c in CHANNELS], dtype=np.float32),
             latency_ms=np.array([latency_ms], dtype=np.float32),
+        )
+    if args.output_dir:
+        result = save_prediction_assets(
+            args.image,
+            packaged,
+            args.output_dir,
+            model_version=args.model_version,
+        )
+        print(
+            {
+                "result_json": str(Path(args.output_dir).resolve() / "result.json"),
+                "keypoints": len(result["keypoints"]),
+            }
         )
 
 

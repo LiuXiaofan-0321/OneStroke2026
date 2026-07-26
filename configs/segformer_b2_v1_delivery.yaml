@@ -1,0 +1,25 @@
+# Inference/evaluation configuration for the frozen segformer-b2-v1 release.
+experiment_name: segformer_b2_v1_delivery
+device: auto
+
+data:
+  manifest: artifacts/data_audit/manifest.csv
+  splits: artifacts/data_audit/splits.csv
+  image_size: 512
+  batch_size: 4
+  num_workers: 4
+  normalization: imagenet
+
+model:
+  name: segformer
+  backbone: nvidia/segformer-b2-finetuned-ade-512-512
+  out_channels: 6
+
+# Calibrated only on the validation split; the test split was not searched.
+thresholds:
+  vec1: 0.9108889102935791
+  vec2: 0.8713333606719971
+  vec3: 0.9108889102935791
+  vec4: 0.9306666851043701
+  vec5: 0.9306666851043701
+  keypoint: 0.25822222232818604
