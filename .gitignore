@@ -11,6 +11,7 @@ artifacts/
 # Licensed external reference images are reproducible from their tracked manifests,
 # but must not be redistributed through this repository.
 references/images/
+references/cache/
 references/*.report.json
 
 # The frozen B2 delivery checkpoint is intentionally versioned through Git LFS.
