@@ -1,0 +1,57 @@
+# Stable style identifiers for reference-based evaluation.
+# A style remains disabled until its exact source version, licensing, and
+# calligraphy review have all been completed.
+schema_version: 1
+
+alignment_policy:
+  canvas_size: 512
+  allow_translation: true
+  allow_isotropic_scale: true
+  min_scale: 0.80
+  max_scale: 1.20
+  max_rotation_degrees: 3.0
+  allow_nonuniform_scale: false
+  allow_deformable_warp: false
+
+styles:
+  - style_id: wang_xizhi_lanting_xingshu
+    display_name: 王羲之《兰亭序》行书
+    author_id: wang_xizhi
+    author_name: 王羲之
+    script_style: xingshu
+    reference_work_id: lantingxu_version_pending
+    reference_work_name: 《兰亭序》待确认版本
+    enabled: false
+    status: source_version_pending
+    scoring_focus:
+      - overall_balance
+      - stroke_direction
+      - keypoint_relation
+      - connected_stroke_rhythm
+    required_review_fields:
+      - source_url
+      - source_license
+      - source_version
+      - reviewer
+      - review_date
+
+  - style_id: ouyang_xun_xiaokai
+    display_name: 欧阳询小楷
+    author_id: ouyang_xun
+    author_name: 欧阳询
+    script_style: xiaokai
+    reference_work_id: ouyang_xun_xiaokai_work_pending
+    reference_work_name: 欧阳询小楷待确认作品
+    enabled: false
+    status: source_work_pending
+    scoring_focus:
+      - central_structure
+      - proportion
+      - stroke_direction
+      - endpoint_position
+    required_review_fields:
+      - source_url
+      - source_license
+      - source_version
+      - reviewer
+      - review_date

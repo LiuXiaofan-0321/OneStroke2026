@@ -1,0 +1,2 @@
+schema_version,reference_id,style_id,target_char,image_path,source_type,source_url,source_license,source_work_id,source_version,bbox_left,bbox_top,bbox_right,bbox_bottom,author_id,script_style,is_synthetic,review_status,reviewer,review_date,notes
+1,example_reference_id,wang_xizhi_lanting_xingshu,水,images/wang_xizhi_lanting_xingshu/水_example.png,manual_curated,https://example.org/source,source_license_required,lantingxu_version_pending,version_required,0,0,512,512,wang_xizhi,xingshu,false,pending,,,Replace this row with an audited reference record.
