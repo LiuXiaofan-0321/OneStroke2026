@@ -157,6 +157,8 @@ def score_masks(user_masks: np.ndarray, reference_masks: np.ndarray) -> tuple[di
     height, width = user_ink.shape
     diagonal = float(np.hypot(height, width))
     raw_center_distance = float(np.hypot(user_center[0] - reference_center[0], user_center[1] - reference_center[1]))
+    center_offset_x = float(user_center[0] - reference_center[0])
+    center_offset_y = float(user_center[1] - reference_center[1])
     raw_area_ratio = float(reference_ink.sum() / max(1, user_ink.sum()))
     aligned_reference, transform = align_reference_masks(user_masks, reference_masks)
 
@@ -181,6 +183,11 @@ def score_masks(user_masks: np.ndarray, reference_masks: np.ndarray) -> tuple[di
         "pre_alignment": {
             "center_distance_pixels": raw_center_distance,
             "center_distance_normalized": raw_center_distance / diagonal,
+            "center_offset_pixels": {"x": center_offset_x, "y": center_offset_y},
+            "center_offset_normalized": {
+                "x": center_offset_x / diagonal,
+                "y": center_offset_y / diagonal,
+            },
             "reference_to_user_ink_area_ratio": raw_area_ratio,
         },
         "alignment_policy": {

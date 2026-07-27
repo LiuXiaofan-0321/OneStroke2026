@@ -1,0 +1,27 @@
+# Course-level wrappers around the approved Calli-Tongji Beta references.
+# These names intentionally describe dataset-labelled practice packs, not a
+# specific historical copybook such as Lanting Xu or Jiucheng Palace.
+schema_version: 1
+
+courses:
+  - course_id: ouyang_xun_regular_100_beta
+    display_name: 欧阳询楷书·100字练习包（Beta）
+    style_id: ouyang_xun_regular_calli_tongji_beta
+    manifest: references/calli_tongji_beta_manifest.csv
+    cache_index: references/cache/segformer_b2_v1/index.json
+    source_dataset: Calli-Tongji Beta
+    source_license: CC-BY-NC-4.0
+    status: beta_reference_pack
+    enabled: true
+    scoring_label: 参考结构匹配度
+
+  - course_id: wang_xizhi_running_100_beta
+    display_name: 王羲之行书·100字练习包（Beta）
+    style_id: wang_xizhi_running_calli_tongji_beta
+    manifest: references/calli_tongji_beta_manifest.csv
+    cache_index: references/cache/segformer_b2_v1/index.json
+    source_dataset: Calli-Tongji Beta
+    source_license: CC-BY-NC-4.0
+    status: beta_reference_pack
+    enabled: true
+    scoring_label: 参考结构匹配度

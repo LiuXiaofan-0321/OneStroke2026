@@ -109,6 +109,68 @@ def extract_keypoints(
     return sorted(points, key=lambda item: (float(item["y"]), float(item["x"])))
 
 
+def extract_stroke_regions(
+    direction_masks: np.ndarray,
+    min_area: int = 8,
+) -> list[dict[str, float | int | str | dict[str, int]]]:
+    """Extract connected regions from the five directional mask layers.
+
+    Regions are visual interaction units, not recovered chronological strokes.
+    A character can contain multiple regions in one direction layer and an
+    intersection can belong to multiple layers by design.
+    """
+    masks = np.asarray(direction_masks, dtype=bool)
+    if masks.ndim != 3 or masks.shape[-1] < 5:
+        raise ValueError("direction_masks must have shape [H,W,>=5]")
+    height, width = masks.shape[:2]
+    regions: list[dict[str, float | int | str | dict[str, int]]] = []
+    for channel_index, channel in enumerate(CHANNELS[:5]):
+        mask = masks[..., channel_index]
+        visited = np.zeros((height, width), dtype=bool)
+        channel_components: list[dict[str, float | int | str | dict[str, int]]] = []
+        for start_y, start_x in np.argwhere(mask):
+            if visited[start_y, start_x]:
+                continue
+            queue = deque([(int(start_y), int(start_x))])
+            visited[start_y, start_x] = True
+            component: list[tuple[int, int]] = []
+            while queue:
+                y, x = queue.popleft()
+                component.append((y, x))
+                for next_y in range(max(0, y - 1), min(height, y + 2)):
+                    for next_x in range(max(0, x - 1), min(width, x + 2)):
+                        if mask[next_y, next_x] and not visited[next_y, next_x]:
+                            visited[next_y, next_x] = True
+                            queue.append((next_y, next_x))
+            if len(component) < min_area:
+                continue
+            ys = np.asarray([item[0] for item in component], dtype=np.int32)
+            xs = np.asarray([item[1] for item in component], dtype=np.int32)
+            channel_components.append(
+                {
+                    "channel": channel,
+                    "area": int(len(component)),
+                    "centroid": {"x": float(xs.mean()), "y": float(ys.mean())},
+                    "bbox": {
+                        "left": int(xs.min()),
+                        "top": int(ys.min()),
+                        "right": int(xs.max()) + 1,
+                        "bottom": int(ys.max()) + 1,
+                    },
+                }
+            )
+        channel_components.sort(
+            key=lambda item: (
+                int(item["bbox"]["top"]),  # type: ignore[index]
+                int(item["bbox"]["left"]),  # type: ignore[index]
+            )
+        )
+        for region_index, component in enumerate(channel_components, start=1):
+            component["region_id"] = f"{channel}_{region_index:03d}"
+            regions.append(component)
+    return regions
+
+
 def save_prediction_assets(
     image_path: str | Path,
     packaged: dict[str, Any],
@@ -162,6 +224,7 @@ def save_prediction_assets(
     keypoints = extract_keypoints(
         masks[..., keypoint_index], probabilities[..., keypoint_index]
     )
+    stroke_regions = extract_stroke_regions(masks[..., :5])
     draw = ImageDraw.Draw(overlay_image)
     for point in keypoints:
         x, y = float(point["x"]), float(point["y"])
@@ -175,6 +238,7 @@ def save_prediction_assets(
         "capabilities": {
             "segmentation": True,
             "keypoint_localization": True,
+            "stroke_region_extraction": True,
             "style_conditioning": False,
             "style_scoring": False,
             "natural_language_feedback": False,
@@ -188,6 +252,7 @@ def save_prediction_assets(
         "mask_assets": mask_assets,
         "overlay_asset": overlay_name,
         "keypoints": keypoints,
+        "stroke_regions": stroke_regions,
         "scores": None,
         "feedback": [],
     }

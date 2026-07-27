@@ -25,4 +25,6 @@ def test_score_reports_pre_alignment_layout_difference() -> None:
     evidence, _ = score_masks(_masks(30, 24), _masks(10, 8))
 
     assert evidence["pre_alignment"]["center_distance_normalized"] > 0.1
+    assert evidence["pre_alignment"]["center_offset_normalized"]["x"] > 0
+    assert evidence["pre_alignment"]["center_offset_normalized"]["y"] > 0
     assert evidence["alignment_policy"]["deformable_warp"] is False

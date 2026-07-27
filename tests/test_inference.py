@@ -5,7 +5,12 @@ import json
 import numpy as np
 from PIL import Image
 
-from onestroke_model.inference import extract_keypoints, package_prediction, save_prediction_assets
+from onestroke_model.inference import (
+    extract_keypoints,
+    extract_stroke_regions,
+    package_prediction,
+    save_prediction_assets,
+)
 
 
 def test_extract_keypoints_returns_component_centroids() -> None:
@@ -20,6 +25,18 @@ def test_extract_keypoints_returns_component_centroids() -> None:
     assert points[0]["x"] == 2.5
     assert points[0]["y"] == 1.5
     assert points[0]["area"] == 4
+
+
+def test_extract_stroke_regions_keeps_direction_layers_separate() -> None:
+    masks = np.zeros((20, 20, 6), dtype=np.uint8)
+    masks[2:7, 2:5, 0] = 1
+    masks[10:15, 12:15, 0] = 1
+    masks[3:8, 10:13, 1] = 1
+
+    regions = extract_stroke_regions(masks)
+
+    assert [item["region_id"] for item in regions] == ["vec1_001", "vec1_002", "vec2_001"]
+    assert regions[0]["bbox"] == {"left": 2, "top": 2, "right": 5, "bottom": 7}
 
 
 def test_save_prediction_assets_declares_unavailable_future_capabilities(tmp_path) -> None:
@@ -45,7 +62,9 @@ def test_save_prediction_assets_declares_unavailable_future_capabilities(tmp_pat
 
     assert result["model_version"] == "test-model"
     assert saved["capabilities"]["segmentation"] is True
+    assert saved["capabilities"]["stroke_region_extraction"] is True
     assert saved["capabilities"]["style_scoring"] is False
     assert len(saved["keypoints"]) == 1
+    assert saved["stroke_regions"] == []
     assert (tmp_path / "result" / "overlay.png").exists()
     assert (tmp_path / "result" / "mask_keypoint.png").exists()
