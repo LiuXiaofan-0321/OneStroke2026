@@ -14,6 +14,48 @@ alignment_policy:
   allow_deformable_warp: false
 
 styles:
+  - style_id: ouyang_xun_regular_calli_tongji_beta
+    display_name: 欧阳询楷书（Calli-Tongji Beta）
+    author_id: ouyang_xun
+    author_name: 欧阳询
+    script_style: kaishu
+    reference_work_id: calli_tongji_beta
+    reference_work_name: Calli-Tongji Beta 官方单字子集
+    enabled: true
+    status: beta_dataset_pilot
+    scoring_focus:
+      - central_structure
+      - proportion
+      - stroke_direction
+      - endpoint_position
+    required_review_fields:
+      - source_url
+      - source_license
+      - source_version
+      - reviewer
+      - review_date
+
+  - style_id: wang_xizhi_running_calli_tongji_beta
+    display_name: 王羲之行书（Calli-Tongji Beta）
+    author_id: wang_xizhi
+    author_name: 王羲之
+    script_style: xingshu
+    reference_work_id: calli_tongji_beta
+    reference_work_name: Calli-Tongji Beta 官方单字子集
+    enabled: true
+    status: beta_dataset_pilot
+    scoring_focus:
+      - overall_balance
+      - stroke_direction
+      - keypoint_relation
+      - connected_stroke_rhythm
+    required_review_fields:
+      - source_url
+      - source_license
+      - source_version
+      - reviewer
+      - review_date
+
   - style_id: wang_xizhi_lanting_xingshu
     display_name: 王羲之《兰亭序》行书
     author_id: wang_xizhi
