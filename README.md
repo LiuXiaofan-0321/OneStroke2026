@@ -47,6 +47,13 @@ python -m pip install -U pip
 python -m pip install -e ".[train]"
 ```
 
+HTTP 模型服务联调还需要安装 `serve` 依赖，部署与接口文档见
+[`docs/http_api_handoff.md`](docs/http_api_handoff.md)：
+
+```powershell
+python -m pip install -e ".[train,serve]"
+```
+
 如果只是先跑数据审计，基础依赖即可：
 
 ```powershell
