@@ -15,7 +15,7 @@ def test_smoke_config_isolated_from_formal_outputs() -> None:
     }
     assert smoke["optim"]["epochs"] == 1
     assert smoke["optim"]["warmup_epochs"] == 0
-    assert smoke["data"]["batch_size"] == 2
+    assert smoke["data"]["batch_size"] == formal["data"]["batch_size"]
     assert formal["optim"]["epochs"] == 120
     assert formal["output_dir"].endswith(
         "main_qc/runs/deeplabv3plus_seed_20260811"

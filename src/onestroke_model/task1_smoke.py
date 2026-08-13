@@ -27,7 +27,6 @@ def build_smoke_config(
     config = json.loads(json.dumps(formal_config))
     config["experiment_name"] = f"task1_smoke_{model_key}"
     config["formal_training"] = False
-    config["data"]["batch_size"] = 2
     config["data"]["num_workers"] = 0
     config["optim"]["epochs"] = 1
     config["optim"]["early_stop_patience"] = 1
