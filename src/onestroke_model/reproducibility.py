@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import csv
 import hashlib
+import io
 import json
 import platform
 import shlex
@@ -28,6 +30,27 @@ def sha256_file(path: str | Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def canonical_csv_sha256(path: str | Path) -> str:
+    """Hash CSV content independently of LF/CRLF checkout differences."""
+
+    value = Path(path)
+    with value.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None:
+            raise ValueError(f"CSV has no header: {value}")
+        fieldnames = list(reader.fieldnames)
+        rows = list(reader)
+    buffer = io.StringIO(newline="")
+    writer = csv.DictWriter(
+        buffer,
+        fieldnames=fieldnames,
+        lineterminator="\r\n",
+    )
+    writer.writeheader()
+    writer.writerows(rows)
+    return hashlib.sha256(buffer.getvalue().encode("utf-8")).hexdigest()
 
 
 def git_commit(project_root: str | Path | None = None) -> str | None:

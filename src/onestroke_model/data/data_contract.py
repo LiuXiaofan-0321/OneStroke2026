@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from onestroke_model.reproducibility import sha256_file
+from onestroke_model.reproducibility import canonical_csv_sha256
 from onestroke_model.utils.io import read_csv_rows
 
 
@@ -94,14 +94,14 @@ def validate_data_contract(
         raise ValueError(f"data manifest has missing files: {missing_files}")
 
     expected_manifest_hash = str(data_config.get("expected_manifest_sha256", "")).strip()
-    actual_manifest_hash = sha256_file(manifest_path)
+    actual_manifest_hash = canonical_csv_sha256(manifest_path)
     if expected_manifest_hash and actual_manifest_hash != expected_manifest_hash:
         raise ValueError(
             "manifest SHA-256 mismatch: "
             f"expected={expected_manifest_hash} actual={actual_manifest_hash}"
         )
     expected_split_hash = str(data_config.get("expected_splits_sha256", "")).strip()
-    actual_split_hash = sha256_file(splits_path)
+    actual_split_hash = canonical_csv_sha256(splits_path)
     if expected_split_hash and actual_split_hash != expected_split_hash:
         raise ValueError(
             "split SHA-256 mismatch: "
@@ -122,7 +122,7 @@ def validate_data_contract(
         exclusions_path = _resolve(data_config["qc_exclusions"], root)
         if not exclusions_path.is_file():
             raise ValueError(f"QC exclusions file not found: {exclusions_path}")
-        exclusion_hash = sha256_file(exclusions_path)
+        exclusion_hash = canonical_csv_sha256(exclusions_path)
         expected_exclusion_hash = str(
             data_config.get("expected_qc_exclusions_sha256", "")
         ).strip()

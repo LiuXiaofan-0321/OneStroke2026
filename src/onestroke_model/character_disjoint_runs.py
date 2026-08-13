@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from onestroke_model.config import load_yaml
-from onestroke_model.reproducibility import sha256_file
+from onestroke_model.reproducibility import canonical_csv_sha256, sha256_file
 from onestroke_model.utils.io import read_csv_rows
 
 DEFAULT_CONFIGS = (
@@ -53,7 +53,7 @@ def _validate_frozen_split(
     expected_sample_counts: dict[str, int] = EXPECTED_SPLIT_SAMPLE_COUNTS,
     expected_character_counts: dict[str, int] = EXPECTED_SPLIT_CHARACTER_COUNTS,
 ) -> dict[str, Any]:
-    actual_hash = sha256_file(split_path)
+    actual_hash = canonical_csv_sha256(split_path)
     if actual_hash != expected_split_sha256:
         raise ValueError(
             "frozen character-disjoint split hash mismatch: "

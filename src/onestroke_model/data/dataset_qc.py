@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import csv
 import hashlib
-import io
 import json
 import math
 from collections import Counter, defaultdict
@@ -17,7 +16,11 @@ from PIL import Image
 
 from onestroke_model.constants import CHANNELS
 from onestroke_model.data.legacy_gt_recovery import MASK_FILENAMES
-from onestroke_model.reproducibility import sha256_file, utc_now_iso
+from onestroke_model.reproducibility import (
+    canonical_csv_sha256,
+    sha256_file,
+    utc_now_iso,
+)
 
 QC_SCHEMA_VERSION = 1
 QC_VERSION = "dataset_qc_v1"
@@ -65,26 +68,6 @@ def _write_exclusion_contract(
 
     ordered = sorted(rows, key=lambda row: _sample_sort_key(str(row["sample_id"])))
     _write_csv(path, ordered, EXCLUSION_CONTRACT_FIELDS)
-
-
-def _canonical_csv_sha256(path: Path) -> str:
-    """Hash CSV records independently of checkout line endings."""
-
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
-        reader = csv.DictReader(handle)
-        if reader.fieldnames is None:
-            raise ValueError(f"CSV has no header: {path}")
-        rows = list(reader)
-        fields = list(reader.fieldnames)
-    buffer = io.StringIO(newline="")
-    writer = csv.DictWriter(
-        buffer,
-        fieldnames=fields,
-        lineterminator="\r\n",
-    )
-    writer.writeheader()
-    writer.writerows(rows)
-    return hashlib.sha256(buffer.getvalue().encode("utf-8")).hexdigest()
 
 
 def _truthy(value: object) -> bool:
@@ -580,7 +563,7 @@ def build_dataset_qc(
     character_clean_report = _split_report(
         character_clean,
         split_csv=character_clean_path,
-        source_split_sha256=_canonical_csv_sha256(character_splits),
+        source_split_sha256=canonical_csv_sha256(character_splits),
         exclusion_csv=exclusion_contract_path,
     )
     character_clean_report_path.write_text(
@@ -626,11 +609,11 @@ def build_dataset_qc(
         "inputs": {
             "manifest": _portable_path(manifest, project_root),
             "manifest_sha256": sha256_file(manifest),
-            "manifest_canonical_csv_sha256": _canonical_csv_sha256(manifest),
+            "manifest_canonical_csv_sha256": canonical_csv_sha256(manifest),
             "dataset_root": _portable_path(root, project_root),
             "standard_splits": _portable_path(standard_splits, project_root),
             "standard_splits_sha256": sha256_file(standard_splits),
-            "standard_splits_canonical_csv_sha256": _canonical_csv_sha256(
+            "standard_splits_canonical_csv_sha256": canonical_csv_sha256(
                 standard_splits
             ),
             "character_disjoint_splits": _portable_path(
@@ -638,7 +621,7 @@ def build_dataset_qc(
             ),
             "character_disjoint_splits_sha256": sha256_file(character_splits),
             "character_disjoint_splits_canonical_csv_sha256": (
-                _canonical_csv_sha256(character_splits)
+                canonical_csv_sha256(character_splits)
             ),
         },
         "outputs": {
@@ -670,12 +653,16 @@ def build_dataset_qc(
         {
             "audit_csv_sha256": sha256_file(audit_path),
             "exclusions_csv_sha256": sha256_file(exclusions_path),
-            "exclusion_contract_csv_sha256": sha256_file(
+            "exclusion_contract_csv_sha256": canonical_csv_sha256(
                 exclusion_contract_path
             ),
-            "clean_manifest_sha256": sha256_file(clean_manifest_path),
-            "standard_splits_qc_sha256": sha256_file(standard_clean_path),
-            "character_disjoint_splits_qc_sha256": sha256_file(character_clean_path),
+            "clean_manifest_sha256": canonical_csv_sha256(clean_manifest_path),
+            "standard_splits_qc_sha256": canonical_csv_sha256(
+                standard_clean_path
+            ),
+            "character_disjoint_splits_qc_sha256": canonical_csv_sha256(
+                character_clean_path
+            ),
             "character_disjoint_splits_qc_report_sha256": sha256_file(
                 character_clean_report_path
             ),
