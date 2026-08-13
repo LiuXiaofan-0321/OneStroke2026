@@ -1,0 +1,143 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Main segmentation accuracy}
+
+\placeholder{TASK1\_MAIN\_BENCHMARK}
+
+The frozen single-release SegFormer-B2 result is retained only as preliminary
+engineering evidence: direction Macro Dice \(0.9610\), Macro IoU \(0.9251\),
+Boundary F1 \(0.8348\), and strict keypoint F1 \(0.7159\). It must not substitute
+for the planned multi-seed Task~1 comparison. No exact duplicate group crosses
+the original standard train/validation/test split, so this preliminary score is
+not attributable to exact train-to-test duplicate leakage. However, its
+training data contained 12 source-image/GT mismatches and duplicate-weighted
+observations; the formal comparison therefore uses the frozen 769-sample
+QC-clean population.
+
+\subsection{Controlled perturbation behaviour}
+
+\input{tables/controlled_perturbation}
+
+Table~\ref{tab:controlled} shows that nuisance performance is not uniform.
+Translation is exactly recovered in all 800 valid observations. Rotation has a
+mean absolute penalty of \(5.395\), while scale-up and scale-down produce larger
+penalties of \(13.653\) and \(16.356\), respectively. Scale-up also has a
+49.0\% invalid fraction because larger transformed foregrounds risk clipping.
+The compound transform has a 54.0\% invalid fraction. These cases are not
+silently counted as robustness failures.
+
+Structural perturbations generally decrease the score monotonically. Direction
+dilation and erosion have the largest average penalties, followed by terminal
+deletion and added fragments. Local fragment displacement and keypoint shifts
+are more weakly penalized. The result supports sensitivity to local structure
+but also identifies scale invariance as the main nuisance weakness.
+
+\subsection{Paired alignment ablation}
+
+\input{tables/alignment_ablation}
+
+Relative to no alignment, the constrained method reduces the nuisance penalty
+by \(30.118\) points (reference-bootstrap 95\% CI \(29.506\)--\(30.727\)) and
+increases the preserved structural penalty by \(11.189\) points
+(95\% CI \(10.094\)--\(12.322\)). Both per-reference signed-rank comparisons
+are strongly nonzero with rank-biserial effect size \(1.0\).
+
+The wider alignment is not superior. The current range has a \(2.896\)-point
+lower nuisance penalty (95\% CI \(2.757\)--\(3.034\)), while the wider range
+preserves \(0.284\) points more structural penalty on average. Thus the
+preregistered expectation that a wider transform would better suppress
+nuisance while clearly masking structural errors is not supported. The current
+range provides the better nuisance result, whereas the small structural
+difference favours the wider range.
+
+The perturbation-level paired breakdown is reported in
+Supplementary Table~\ref{tab:alignment-breakdown}; it is derived from the same
+reference/perturbation/severity tuples and is not an unpaired post-hoc
+comparison.
+
+\subsection{Structure-score audit}
+
+\input{tables/structure_score_audit}
+
+Forty-one of 200 references contain at least one inactive direction channel:
+36 contain one inactive channel and five contain two. No reference contains
+three or more inactive channels. The distribution is similar across the two
+styles, although two-channel inactivity occurs more often in the Wang Xizhi
+subset (4/100) than the Ouyang Xun subset (1/100).
+
+Empty-channel agreement affects 1,252 valid perturbation observations. Replacing
+the all-five mean with an active-channel mean produces an average downward
+correction of \(0.289\) points and a maximum of \(15.402\) points. The largest
+cases combine two inactive direction channels with severe perturbation of an
+active channel: the fixed all-five macro receives perfect Dice credit from the
+empty channels while the active-channel evidence degrades. The audit motivates
+expert review of score semantics but does not authorize a production formula
+change.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]
+  {../artifacts/paper_ijdar/journal_statistics/coverage_correction_qualitative.png}
+  \caption{Coverage-correction cases selected by correction quantiles rather
+  than appearance. Purple denotes aligned overlap, blue missing-reference ink,
+  and red extra-user ink.}
+  \label{fig:coverage-cases}
+\end{figure*}
+
+\subsection{Cross-reference semantics}
+
+\input{tables/cross_reference}
+
+The seven same-character cross-style pairs have a mean score of \(20.239\)
+(95\% bootstrap CI \(15.639\)--\(25.069\)), compared with \(9.741\)
+(\(8.584\)--\(10.970\)) for 50 different-character negatives. Cliff's delta is
+\(0.84\). This supports a reference-conditioned same-character signal, but the
+small cross-style sample and absence of same-style different-instance pairs
+preclude a strong generalization claim.
+
+\subsection{Diagnostic feedback and failure analysis}
+
+\input{tables/feedback_failure_taxonomy}
+
+Required Recall@3 remains \(0.701\) before and after the audited wording change,
+while exact region localization is only \(0.109\). Failure taxonomy shows that
+53.9\% of exact-region failures arise when the perturbation truth covers
+multiple grid cells although the metric requires an exact single-cell result.
+Wrong direction channels account for 24.6\%, and absence of a local finding
+from the top three accounts for 20.1\%. Wrong missing/extra type and
+alignment-residual region shifts are comparatively rare. These results support
+keeping the feedback benchmark secondary and revising future evaluation design
+rather than tuning rules on the current benchmark.
+
+\subsection{Blinded human structural validation}
+
+\input{tables/human_validation}
+\input{tables/rater_reliability}
+
+Across 150 canonical pairs, the production score has a positive but modest
+association with the mean blinded human rating
+(\(\rho=0.297\), character-cluster bootstrap 95\% CI
+\(0.148\)--\(0.441\), \(p=0.00023\)). The coverage-aware audit score is more
+strongly associated with the same ratings
+(\(\rho=0.429\), 95\% CI \(0.313\)--\(0.535\),
+\(p<10^{-7}\)). The paired bootstrap difference in correlation is \(0.132\)
+(95\% CI \(0.062\)--\(0.197\), Monte Carlo \(p<0.001\)). This result supports
+the semantic concern raised by inactive direction channels, but the
+coverage-aware score remains an audit quantity rather than a retroactive
+replacement for the frozen production formula.
+
+Canonical inter-rater reliability is \(0.448\) for ICC(2,1) and \(0.709\) for
+ICC(2,\(k\)). Across the 45 rater-level hidden-repeat comparisons, exact
+agreement is 48.9\%, agreement within one scale point is 93.3\%, mean absolute
+difference is 0.578, and pooled quadratic weighted kappa is 0.634. Individual
+rater correlations with the production score range from \(0.174\) to \(0.350\)
+and are positive for all three raters. These results provide convergent
+evidence for reference-conditioned structural similarity while also showing
+that the ordinal task and rater pool contain meaningful subjectivity.
+
+\subsection{Pending generalization and real-world validity}
+
+\placeholder{CHARACTER\_DISJOINT}
+
+\placeholder{SMARTPHONE}

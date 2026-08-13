@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\caption{Paired alignment comparison. Positive benefit differences favour the
+current constrained alignment. Wilcoxon tests use per-reference mean paired
+differences.}
+\label{tab:alignment}
+\centering
+\small
+\begin{tabular}{llrrrrrrr}
+\toprule
+Comparison & Family & Refs & Ours & Comparator & Benefit 95\% CI & $p$ & RBC \\
+\midrule
+Ours--no\_alignment & nuisance & 200 & 8.455 & 38.573 & [29.506, 30.727] & 0.00 & 1.000 \\
+Ours--no\_alignment & structural & 200 & 14.865 & 3.677 & [10.094, 12.322] & 0.00 & 1.000 \\
+Ours--wide\_similarity & nuisance & 200 & 8.455 & 11.351 & [2.757, 3.034] & 0.00 & 1.000 \\
+Ours--wide\_similarity & structural & 200 & 14.865 & 15.149 & [-0.355, -0.213] & 0.00 & -0.683 \\
+\bottomrule
+\end{tabular}
+\end{table*}

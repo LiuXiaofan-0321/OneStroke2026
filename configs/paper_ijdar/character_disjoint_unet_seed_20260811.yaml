@@ -1,0 +1,51 @@
+experiment_name: character_disjoint_unet_seed_20260811
+seed: 20260811
+device: auto
+data:
+  manifest: artifacts/data_qc/manifest_qc_v1.csv
+  splits: artifacts/data_qc/character_disjoint_splits_qc_v1.csv
+  image_size: 512
+  batch_size: 8
+  num_workers: 0
+  qc_exclusions: artifacts/data_qc/dataset_qc_exclusions_v1.csv
+  expected_manifest_sha256: c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4
+  expected_splits_sha256: e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b
+  expected_qc_exclusions_sha256: 6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467
+  expected_split_counts:
+    train: 539
+    val: 114
+    test: 116
+model:
+  name: unet
+  in_channels: 3
+  out_channels: 6
+  base_channels: 32
+loss:
+  direction:
+    bce_weight: 1.0
+    dice_weight: 1.0
+    pos_weight: auto
+    pos_weight_max_samples: 200
+    pos_weight_max: 100.0
+  keypoint:
+    focal_weight: 1.0
+    dice_weight: 1.0
+    focal_gamma: 2.0
+  boundary_weight: 0.2
+optim:
+  name: adamw
+  lr: 0.0003
+  weight_decay: 0.01
+  epochs: 80
+  early_stop_patience: 12
+  amp: true
+  scheduler: cosine
+  min_lr: 1.0e-06
+thresholds:
+  vec1: 0.5
+  vec2: 0.5
+  vec3: 0.5
+  vec4: 0.5
+  vec5: 0.5
+  keypoint: 0.45
+output_dir: artifacts/paper_ijdar/character_disjoint/runs/unet_seed_20260811

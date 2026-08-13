@@ -6,10 +6,17 @@ from pathlib import Path
 
 from onestroke_model.controlled_perturbations import DEFAULT_PERTURBATIONS
 from onestroke_model.perturbation_benchmark import (
+    BenchmarkInputError,
     load_reference_cache,
     run_benchmark,
     synthetic_references,
     write_benchmark_outputs,
+)
+from onestroke_model.reproducibility import (
+    build_run_manifest,
+    exact_command,
+    utc_now_iso,
+    write_run_manifest,
 )
 
 
@@ -19,6 +26,7 @@ def _parse_csv_set(value: str) -> set[str] | None:
 
 
 def main() -> None:
+    started_at = utc_now_iso()
     parser = argparse.ArgumentParser(
         description=(
             "Audit OneStroke reference-conditioned structural scoring with deterministic "
@@ -70,23 +78,48 @@ def main() -> None:
     if args.limit_per_style < 0:
         parser.error("--limit-per-style must be >= 0")
 
+    output_dir = Path(args.output_dir)
     if args.synthetic_smoke:
         input_metadata, references = synthetic_references(args.synthetic_canvas_size)
     else:
-        input_metadata, references = load_reference_cache(
-            args.cache_index,
-            style_ids=_parse_csv_set(args.style_ids),
-            target_chars=_parse_csv_set(args.target_chars),
-            limit_per_style=args.limit_per_style,
-        )
+        try:
+            input_metadata, references = load_reference_cache(
+                args.cache_index,
+                style_ids=_parse_csv_set(args.style_ids),
+                target_chars=_parse_csv_set(args.target_chars),
+                limit_per_style=args.limit_per_style,
+            )
+        except BenchmarkInputError as exc:
+            output_dir.mkdir(parents=True, exist_ok=True)
+            (output_dir / "BLOCKED.md").write_text(
+                "# Controlled Perturbation Formal Run Blocked\n\n"
+                f"{exc}\n\nNo synthetic scores were substituted.\n",
+                encoding="utf-8",
+            )
+            write_run_manifest(
+                output_dir,
+                build_run_manifest(
+                    experiment_name="onestroke_controlled_perturbation_v1",
+                    status="BLOCKED",
+                    started_at=started_at,
+                    ended_at=utc_now_iso(),
+                    command=exact_command(),
+                    seed="deterministic_sha256_internal",
+                    input_paths=[args.cache_index],
+                    additional={"blocking_error": str(exc), "formal_paper_run": False},
+                ),
+            )
+            print(json.dumps({"status": "BLOCKED", "error": str(exc)}, ensure_ascii=False, indent=2))
+            return
 
     results, baselines = run_benchmark(
         references,
         definitions=DEFAULT_PERTURBATIONS,
         progress=True,
     )
+    (output_dir / "BLOCKED.md").unlink(missing_ok=True)
     report = write_benchmark_outputs(
-        Path(args.output_dir),
+        output_dir,
         input_metadata=input_metadata,
         results=results,
         baselines=baselines,
@@ -112,6 +145,25 @@ def main() -> None:
         "validity": report["audit"]["validity"],
         "output_dir": str(Path(args.output_dir).resolve()),
     }
+    write_run_manifest(
+        output_dir,
+        build_run_manifest(
+            experiment_name="onestroke_controlled_perturbation_v1",
+            status="SMOKE" if args.synthetic_smoke else "COMPLETE",
+            started_at=started_at,
+            ended_at=utc_now_iso(),
+            command=exact_command(),
+            seed="deterministic_sha256_internal",
+            input_paths=[] if args.synthetic_smoke else [args.cache_index],
+            additional={
+                "formal_paper_run": not args.synthetic_smoke and args.limit_per_style == 0,
+                "selected_references": report["input"]["selected_references"],
+                "synthetic_smoke": args.synthetic_smoke,
+                "cache_model_version": input_metadata.get("model_version"),
+                "cache_checkpoint_sha256": input_metadata.get("checkpoint_sha256"),
+            },
+        ),
+    )
     print(json.dumps(compact, ensure_ascii=False, indent=2))
 
 

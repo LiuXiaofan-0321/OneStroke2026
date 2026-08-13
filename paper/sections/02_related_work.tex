@@ -1,0 +1,69 @@
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Chinese-character recognition and stroke structure}
+
+Large handwriting databases such as CASIA-HWDB established recognition
+benchmarks for online and offline Chinese characters
+\cite{liu2013casia}. Recognition labels, however, do not directly supervise the
+overlapping direction regions and keypoint evidence needed for localized
+practice feedback. Our task is closer to structured foreground parsing than to
+closed-set character classification.
+
+Encoder--decoder segmentation networks provide the technical basis for this
+parsing. U-Net introduced a widely used multiscale convolutional design
+\cite{ronneberger2015unet}; DeepLabV3+ combines atrous spatial pyramids with a
+decoder \cite{chen2018deeplabv3plus}; and SegFormer uses hierarchical
+transformer features with a lightweight decoder
+\cite{xie2021segformer}. We use these as model families rather than claiming a
+new architecture. The distinguishing element is the overlapping label schema:
+five direction masks and one keypoint mask are predicted with independent
+sigmoid activations, not a mutually exclusive softmax.
+
+\subsection{Calligraphy modelling and assessment}
+
+Prior computational calligraphy work has often emphasized recognition, style
+classification, or glyph generation. Conditional image-translation systems
+such as zi2zi demonstrated cross-style Chinese glyph synthesis
+\cite{tian2017zi2zi}. More recent resources, including UniCalli, broaden the
+available author, script, glyph, and page-level metadata
+\cite{unicalli2026}. These directions are complementary to the present problem:
+we do not generate a calligraphic glyph and do not infer universal artistic
+quality. Instead, we compare a learner's structure against a specified
+reference within a finite course package.
+
+Automated assessment also requires careful claim boundaries. A reference
+agreement score may support feedback about position, scale, directional
+regions, and keypoints, but it is not equivalent to an expert judgment of
+brushwork, historical authenticity, rhythm, or beauty. We therefore validate
+only structural similarity with a blinded human rating study and retain
+explicit limits on aesthetic interpretation.
+
+\subsection{Reference-based handwriting evaluation}
+
+Template and reference-based systems make differences observable but are
+sensitive to nuisance geometry. Direct overlap can penalize an otherwise
+similar glyph for harmless placement variation, whereas an overly flexible
+warp can remove precisely the local error that feedback should identify. This
+trade-off motivates our use of a deliberately constrained similarity transform
+and a paired ablation over no alignment, the production range, and a wider
+benchmark-only range.
+
+\subsection{Image registration and robust alignment}
+
+Image registration methods range from classical parametric alignment to learned
+spatial transformers \cite{zitova2003registration,jaderberg2015stn}. Our
+objective is not unrestricted registration. We search only global translation,
+isotropic scale, and small rotation on a fixed grid. Nonuniform scaling,
+affine shear, and deformable warping are prohibited. The controlled
+perturbation benchmark separately measures nuisance suppression and
+structural-error preservation.
+
+\subsection{Explainable diagnostic feedback}
+
+Pixel metrics alone do not state what should be changed. Our system therefore
+extracts structured evidence---dominant direction channel, missing or extra
+foreground, grid region, center offset, scale ratio, and keypoint
+agreement---before producing feedback. The benchmark evaluates these normalized
+evidence labels without calling a language model. Optional text generation is a
+surface-realization layer and is outside the primary claims of this manuscript.

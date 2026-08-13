@@ -1,0 +1,106 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from onestroke_model.paper_results import build_ijdar_paper_results
+
+
+def _write_json(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value), encoding="utf-8")
+
+
+def test_aggregator_rejects_smoke_and_blocked_artifacts(tmp_path: Path) -> None:
+    paper = tmp_path / "artifacts" / "paper_ijdar"
+    _write_json(
+        paper / "controlled_perturbation" / "run_manifest.json",
+        {
+            "status": "SMOKE",
+            "additional": {"formal_paper_run": False},
+        },
+    )
+    (paper / "controlled_perturbation" / "perturbation_summary.csv").write_text(
+        "value\n999\n",
+        encoding="utf-8",
+    )
+    _write_json(
+        paper / "alignment_ablation" / "run_manifest.json",
+        {
+            "status": "BLOCKED",
+            "additional": {"formal_paper_run": False, "cache_error": "missing"},
+        },
+    )
+    _write_json(
+        paper / "preflight" / "preflight_report.json",
+        {"task1": {"status": "PENDING_TASK1"}},
+    )
+    _write_json(
+        paper / "expert_validation" / "study_package" / "expert_study_metadata.json",
+        {"status": "PENDING_PAIR_SCORES_AND_HUMAN_RATINGS"},
+    )
+    _write_json(
+        paper / "real_world" / "templates" / "smartphone_protocol_metadata.json",
+        {"status": "PENDING_DATA_COLLECTION"},
+    )
+    report = build_ijdar_paper_results(tmp_path)
+    assert report["formal_table_count"] == 0
+    inventory = json.loads(
+        (
+            paper / "final_statistics" / "formal_result_inventory.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert inventory["smoke_results_included"] is False
+    assert not (paper / "final_tables" / "controlled_perturbation.csv").exists()
+    readiness = (paper / "IJDAR_EXPERIMENT_READINESS_REPORT.md").read_text(
+        encoding="utf-8"
+    )
+    assert "Expert correlation and smartphone generalization remain pending" in readiness
+
+
+def test_aggregator_copies_only_complete_formal_table(tmp_path: Path) -> None:
+    paper = tmp_path / "artifacts" / "paper_ijdar"
+    _write_json(
+        paper / "cross_reference" / "run_manifest.json",
+        {
+            "status": "COMPLETE",
+            "additional": {"formal_paper_run": True},
+        },
+    )
+    source = paper / "cross_reference" / "cross_reference_summary.csv"
+    source.parent.mkdir(parents=True, exist_ok=True)
+    source.write_text("pair_type,mean\ncross,50\n", encoding="utf-8")
+    _write_json(
+        paper / "preflight" / "preflight_report.json",
+        {"task1": {"status": "PENDING_TASK1"}},
+    )
+    report = build_ijdar_paper_results(tmp_path)
+    assert report["formal_table_count"] == 1
+    assert (paper / "final_tables" / "cross_reference.csv").read_text(
+        encoding="utf-8"
+    ) == source.read_text(encoding="utf-8")
+
+
+def test_aggregator_accepts_only_formal_feedback_summary(tmp_path: Path) -> None:
+    paper = tmp_path / "artifacts" / "paper_ijdar"
+    _write_json(
+        paper / "feedback_diagnostic" / "run_manifest.json",
+        {
+            "status": "COMPLETE",
+            "additional": {"formal_paper_run": True},
+        },
+    )
+    source = paper / "feedback_diagnostic" / "feedback_diagnostic_summary.csv"
+    source.parent.mkdir(parents=True, exist_ok=True)
+    source.write_text("rule_variant,required_recall_at_3\ncurrent,0.8\n", encoding="utf-8")
+    _write_json(
+        paper / "preflight" / "preflight_report.json",
+        {"task1": {"status": "PENDING_TASK1"}},
+    )
+
+    report = build_ijdar_paper_results(tmp_path)
+
+    assert report["formal_table_count"] == 1
+    assert (paper / "final_tables" / "feedback_diagnostic.csv").read_text(
+        encoding="utf-8"
+    ) == source.read_text(encoding="utf-8")

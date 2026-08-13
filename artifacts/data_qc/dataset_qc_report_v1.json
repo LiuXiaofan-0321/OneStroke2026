@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "qc_version": "dataset_qc_v1",
+  "generated_at_utc": "2026-08-13T10:56:13.242207+00:00",
+  "decision_policy": "Exclude only explicit source-image/GT mismatches below the frozen IoU threshold and non-canonical members of exact image+mask duplicate groups.",
+  "mismatch_iou_threshold": 0.8,
+  "complete_gt_sample_count": 840,
+  "mismatch_sample_count": 12,
+  "mismatch_sample_ids": [
+    "27/12",
+    "28/12",
+    "29/12",
+    "30/12",
+    "31/12",
+    "32/12",
+    "33/12",
+    "34/12",
+    "35/12",
+    "36/4",
+    "37/4",
+    "38/4"
+  ],
+  "duplicate_group_count": 55,
+  "duplicate_group_size_distribution": {
+    "2": 52,
+    "3": 2,
+    "4": 1
+  },
+  "duplicate_group_member_count": 114,
+  "duplicate_noncanonical_sample_count": 59,
+  "duplicate_noncanonical_sample_ids": [
+    "0/14",
+    "1/14",
+    "10/14",
+    "11/14",
+    "12/14",
+    "13/14",
+    "14/14",
+    "15/14",
+    "16/14",
+    "17/14",
+    "18/14",
+    "19/14",
+    "19/8",
+    "2/14",
+    "29/13",
+    "3/14",
+    "30/11",
+    "30/13",
+    "30/3",
+    "31/11",
+    "31/13",
+    "31/3",
+    "32/11",
+    "32/13",
+    "32/3",
+    "33/11",
+    "33/13",
+    "33/3",
+    "34/11",
+    "34/13",
+    "34/3",
+    "35/11",
+    "35/13",
+    "35/3",
+    "36/10",
+    "36/11",
+    "36/13",
+    "36/3",
+    "37/11",
+    "37/13",
+    "37/3",
+    "38/1",
+    "38/10",
+    "38/11",
+    "38/12",
+    "38/13",
+    "38/3",
+    "39/1",
+    "39/11",
+    "39/12",
+    "39/13",
+    "39/17",
+    "39/3",
+    "4/14",
+    "5/14",
+    "6/14",
+    "7/14",
+    "8/14",
+    "9/14"
+  ],
+  "mismatch_duplicate_overlap_count": 0,
+  "clean_sample_count": 769,
+  "labels_generated_or_fabricated": false,
+  "reference_cache_used_as_ground_truth": false,
+  "inputs": {
+    "manifest": "artifacts/data_recovery/source_manifest_identity_v1.csv",
+    "manifest_sha256": "7ead21e34d3469faec99dcb73e04299d8906ad5f5494feaf0b13f645df3a124a",
+    "dataset_root": "data/legacy_gt_v1/output_img",
+    "standard_splits": "artifacts/data_audit/splits.csv",
+    "standard_splits_sha256": "3504de2113e6640b762392ebadac8f4dccfe4f35df3f87354ccd475b74942abf",
+    "character_disjoint_splits": "artifacts/paper_ijdar/character_disjoint/splits_character_disjoint.csv",
+    "character_disjoint_splits_sha256": "eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e"
+  },
+  "outputs": {
+    "audit_csv": "artifacts/data_qc/dataset_qc_audit_v1.csv",
+    "exclusions_csv": "artifacts/data_qc/dataset_qc_exclusions_v1.csv",
+    "clean_manifest": "artifacts/data_qc/manifest_qc_v1.csv",
+    "standard_splits_qc": "artifacts/data_qc/standard_splits_qc_v1.csv",
+    "character_disjoint_splits_qc": "artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+    "character_disjoint_splits_qc_report": "artifacts/data_qc/character_disjoint_splits_qc_v1_report.json",
+    "audit_csv_sha256": "3e30e49014d1ba5255e021685c3c89e7e763b4d64d52359e207405c787676fb7",
+    "exclusions_csv_sha256": "6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467",
+    "clean_manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+    "standard_splits_qc_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+    "character_disjoint_splits_qc_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+    "character_disjoint_splits_qc_report_sha256": "146fab963f330e45f0450f55b2c482afbb59b4aa897d3445cce79806d2498517",
+    "report_json": "artifacts/data_qc/dataset_qc_report_v1.json"
+  },
+  "splits": {
+    "standard": {
+      "counts_before": {
+        "train": 600,
+        "val": 120,
+        "test": 120
+      },
+      "counts_after": {
+        "train": 530,
+        "val": 119,
+        "test": 120
+      },
+      "mismatch_exclusions": {
+        "train": 12
+      },
+      "duplicate_noncanonical_exclusions": {
+        "train": 58,
+        "val": 1
+      },
+      "cross_split_exact_duplicate_group_count": 0,
+      "cross_split_exact_duplicate_groups": {}
+    },
+    "character_disjoint": {
+      "counts_before": {
+        "train": 588,
+        "val": 126,
+        "test": 126
+      },
+      "counts_after": {
+        "train": 539,
+        "val": 114,
+        "test": 116
+      },
+      "mismatch_exclusions": {
+        "train": 7,
+        "val": 3,
+        "test": 2
+      },
+      "duplicate_noncanonical_exclusions": {
+        "train": 42,
+        "val": 9,
+        "test": 8
+      },
+      "cross_split_exact_duplicate_group_count": 0,
+      "cross_split_exact_duplicate_groups": {}
+    }
+  }
+}

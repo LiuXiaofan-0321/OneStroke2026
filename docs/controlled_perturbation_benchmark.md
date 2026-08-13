@@ -146,6 +146,7 @@ style_perturbation_summary.csv    # style-stratified severity curves
 behavior_summary.csv              # per-family invariance/monotonicity audit
 benchmark_report.json             # machine-readable protocol + provenance + audit
 benchmark_report.md               # compact human-readable review report
+CONTROLLED_PERTURBATION_FORMAL_REPORT.md  # fixed paper-handoff report name
 ```
 
 `perturbation_results.csv` includes the selected alignment transform and serialized

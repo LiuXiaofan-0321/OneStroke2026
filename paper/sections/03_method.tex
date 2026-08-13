@@ -1,0 +1,83 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{Overlapping six-channel representation}
+
+For an RGB character image \(I\), the parser predicts
+\[
+P=f_{\theta}(I)\in[0,1]^{H\times W\times 6}.
+\]
+The channel order is fixed as
+\[
+(\mathrm{vec1},\mathrm{vec2},\mathrm{vec3},\mathrm{vec4},
+\mathrm{vec5},\mathrm{keypoint}).
+\]
+The first five masks represent direction-oriented stroke regions; the sixth
+represents keypoint evidence. Because crossing or adhering strokes may support
+multiple direction labels at the same pixel, each channel uses an independent
+sigmoid. A softmax would incorrectly force mutual exclusion.
+
+Images are converted to RGB and letterboxed to \(512\times512\), preserving
+aspect ratio. Masks use nearest-neighbour resizing. Training losses combine
+class-weighted binary cross entropy and Dice loss on the direction channels,
+focal and Dice losses on the keypoint channel, and a boundary term. The current
+frozen production parser is SegFormer-B2; architecture comparisons belong to
+Task~1.
+
+\subsection{Reference cache}
+
+Each course item identifies a target character, style, and approved reference.
+The frozen parser converts each reference image once into a binary
+\(512\times512\times6\) cache. The cache is versioned by model, checkpoint
+SHA-256, threshold set, channel schema, and reference identifier. It reduces
+runtime cost but remains model-derived evidence; it is never used as
+segmentation ground truth.
+
+\subsection{Constrained reference alignment}
+
+Let \(U\) and \(R\) be the user and reference binary masks. The production
+alignment searches
+\[
+s\in[0.8,1.2],\qquad \phi\in[-3^\circ,3^\circ],
+\]
+with isotropic scale, small rotation, and centroid-derived translation. The
+search maximizes direction-ink intersection-over-union. Nonuniform scale,
+affine shear, and deformable warping are disabled. This deliberately restricts
+the model's ability to ``repair'' a local mistake through registration.
+
+\subsection{Structure agreement}
+
+For the five direction channels, let \(D_c\) be the Dice agreement after
+alignment and let
+\[
+\overline{D}=\frac{1}{5}\sum_{c=1}^{5}D_c.
+\]
+Let \(J_{\mathrm{ink}}\) be the IoU between the unions of the five direction
+channels, and let \(F_{\mathrm{kp}}^{(3)}\) be keypoint F1 with a three-pixel
+tolerance. The frozen production score is
+\[
+S=100\left(
+0.55\overline{D}
++0.25J_{\mathrm{ink}}
++0.20F_{\mathrm{kp}}^{(3)}
+\right).
+\]
+The weights are not retuned on the controlled benchmark. \(S\) is interpreted
+as prototype structure agreement, not a calibrated calligraphy grade.
+
+\subsection{Evidence extraction and diagnostics}
+
+The system retains the score components, alignment transform, pre-alignment
+center offset, foreground-area ratio, channel-level agreements, and keypoint
+agreement. Direction-mask differences are summarized into a \(3\times3\)
+spatial grid, producing a normalized finding with:
+\begin{itemize}
+  \item a finding category such as center offset, scale, keypoint relation, or
+  local direction structure;
+  \item an optional direction channel;
+  \item missing-reference or extra-user structure;
+  \item an optional grid region.
+\end{itemize}
+The deterministic evidence can be returned directly or rendered into text by a
+separate language model. The latter is not required for segmentation, scoring,
+or the diagnostic benchmark.

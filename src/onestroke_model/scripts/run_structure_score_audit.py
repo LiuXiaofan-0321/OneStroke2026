@@ -7,9 +7,16 @@ import hashlib
 from pathlib import Path
 
 from onestroke_model.perturbation_benchmark import (
+    BenchmarkInputError,
     collect_runtime_metadata,
     load_reference_cache,
     synthetic_references,
+)
+from onestroke_model.reproducibility import (
+    build_run_manifest,
+    exact_command,
+    utc_now_iso,
+    write_run_manifest,
 )
 from onestroke_model.structure_score_audit_benchmark import (
     run_structure_score_audit,
@@ -62,6 +69,7 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def main() -> None:
+    started_at = utc_now_iso()
     args = _parser().parse_args()
     if args.limit_per_style < 0:
         raise SystemExit("--limit-per-style must be >= 0")
@@ -79,18 +87,42 @@ def main() -> None:
         }
     else:
         assert args.cache_index is not None
-        input_metadata, references = load_reference_cache(
-            args.cache_index,
-            style_ids=set(args.style_id) or None,
-            target_chars=set(args.target_char) or None,
-            limit_per_style=args.limit_per_style,
-        )
+        try:
+            input_metadata, references = load_reference_cache(
+                args.cache_index,
+                style_ids=set(args.style_id) or None,
+                target_chars=set(args.target_char) or None,
+                limit_per_style=args.limit_per_style,
+            )
+        except BenchmarkInputError as exc:
+            args.output_dir.mkdir(parents=True, exist_ok=True)
+            (args.output_dir / "BLOCKED.md").write_text(
+                "# Structure Score Audit Formal Run Blocked\n\n"
+                f"{exc}\n\nNo synthetic scores were substituted.\n",
+                encoding="utf-8",
+            )
+            write_run_manifest(
+                args.output_dir,
+                build_run_manifest(
+                    experiment_name="onestroke_structure_score_audit_v1",
+                    status="BLOCKED",
+                    started_at=started_at,
+                    ended_at=utc_now_iso(),
+                    command=exact_command(),
+                    seed="deterministic_sha256_internal",
+                    input_paths=[args.cache_index],
+                    additional={"blocking_error": str(exc), "formal_paper_run": False},
+                ),
+            )
+            print(f"blocked: {exc}")
+            return
         input_metadata = {
             **input_metadata,
             "formal_paper_run": args.limit_per_style == 0,
         }
 
     rows, coverage_rows = run_structure_score_audit(references)
+    (args.output_dir / "BLOCKED.md").unlink(missing_ok=True)
     runtime = collect_runtime_metadata()
     core_path = Path(__file__).resolve().parents[1] / "structure_score_audit.py"
     benchmark_path = Path(__file__).resolve().parents[1] / "structure_score_audit_benchmark.py"
@@ -106,6 +138,24 @@ def main() -> None:
         coverage_rows,
         input_metadata=input_metadata,
         runtime_metadata=runtime,
+    )
+    write_run_manifest(
+        args.output_dir,
+        build_run_manifest(
+            experiment_name="onestroke_structure_score_audit_v1",
+            status="SMOKE" if args.synthetic_smoke else "COMPLETE",
+            started_at=started_at,
+            ended_at=utc_now_iso(),
+            command=exact_command(),
+            seed="deterministic_sha256_internal",
+            input_paths=[] if args.synthetic_smoke else [args.cache_index],
+            additional={
+                "formal_paper_run": bool(input_metadata.get("formal_paper_run")),
+                "synthetic_smoke": args.synthetic_smoke,
+                "cache_model_version": input_metadata.get("model_version"),
+                "cache_checkpoint_sha256": input_metadata.get("checkpoint_sha256"),
+            },
+        ),
     )
 
     overall = {row["score_variant"]: row for row in report["score_variant_overall"]}

@@ -1,0 +1,139 @@
+\section{Experimental Protocol}
+\label{sec:protocol}
+
+\subsection{Legacy segmentation data}
+
+The recovered legacy corpus contains 894 complete-character sample directories
+across 43 character IDs. Of these, 840 samples from character IDs \(0\)--\(39\)
+contain a complete RGB image, five direction masks, a keypoint mask, and a
+stacked six-channel mask. Fifty-four samples from IDs \(40\)--\(42\) lack
+direction mappings and are excluded rather than pseudo-labelled. File-level
+completeness was followed by semantic QC: 12 source-image/GT mismatches and 59
+non-canonical members of exact image-and-mask duplicate groups were excluded
+under a frozen rule, leaving 769 unique QC-clean observations. The two
+exclusion sets do not overlap. The masks were generated from human
+stroke-isolated images and a fixed, character-specific direction mapping. The
+recovery and QC provenance are documented in `DATA_RECOVERY_REPORT.md` and
+`artifacts/data_qc/DATASET_QC_REPORT_V1.md`.
+
+The original standard assignment contains 600/120/120 samples; after frozen QC
+it contains 530/119/120 train/validation/test observations. It is
+group-disjoint but not character-disjoint. A second character assignment was
+frozen before model evaluation: 28/6/6 characters and originally 588/126/126
+samples. Applying the same QC exclusion list yields 539/114/116 observations
+with zero character overlap. The source character-assignment SHA-256 is
+\texttt{eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e};
+the derived QC-clean split SHA-256 is
+\texttt{e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b}.
+
+\subsection{Reference library}
+
+The structural experiments use all 200 approved references in the local cache:
+100 attributed to the Calli-Tongji Beta Ouyang Xun regular-script category and
+100 to the Wang Xizhi running-script category. The cache was created by
+SegFormer-B2 v1 and contains six binary masks per reference. It supports seven
+same-character cross-style comparisons but no same-style
+different-instance comparison.
+
+\subsection{Main segmentation experiments}
+
+\placeholder{TASK1\_MAIN\_BENCHMARK}
+
+The frozen protocol requires U-Net, the available Task~1 CNN baseline
+(preferably DeepLabV3+), and SegFormer-B2, with validation-only threshold
+calibration and test-only final evaluation. Metrics are five-direction Macro
+Dice and Macro IoU, per-channel precision/recall/Dice, Boundary F1, strict
+keypoint F1, and tolerant keypoint F1. Multi-seed means and standard deviations
+will be reported without reducing the declared seed count after observing
+results.
+
+\subsection{Character-disjoint generalization}
+
+\placeholder{CHARACTER\_DISJOINT}
+
+The character split is immutable. Test characters may not inform thresholds,
+learning rate, augmentation, stopping, or architecture selection.
+
+\subsection{Controlled perturbation}
+
+To isolate score and alignment behaviour from segmentation error, deterministic
+perturbations are applied directly to the cached real reference masks.
+Nuisance families are translation, rotation, up/down scale, and a compound
+allowed transform. Structural families are terminal deletion, added fragment,
+local fragment shift, direction dilation/erosion, and keypoint shift. Cases
+that risk canvas clipping are retained as invalid with a reason and excluded
+from valid-score summaries.
+
+For each perturbation we report \(N\), mean, median, sample standard deviation,
+5th and 95th percentiles, a 95\% bootstrap confidence interval over references,
+invalid fraction, within-reference severity Spearman correlation, and adjacent
+non-increasing rate.
+
+\subsection{Alignment ablation}
+
+The same perturbations are evaluated with no alignment, the current constrained
+alignment, and a preregistered wider similarity range
+(\(s\in[0.6,1.4]\), \(\phi\in[-12^\circ,12^\circ]\)). Comparisons are paired on
+reference, perturbation, and severity. Uncertainty is estimated by bootstrap
+resampling references. Wilcoxon signed-rank tests and rank-biserial effect sizes
+use per-reference mean paired differences.
+
+\subsection{Structure-score audit}
+
+The audit recomputes the production score, examines inactive direction
+channels, and compares the current five-channel mean with a coverage-aware
+candidate. The candidate remains an audit quantity and does not replace the
+production score. Qualitative cases are selected by correction quantiles
+(maximum, upper quartile, median, lower quartile, and near-zero positive), not
+by visual preference.
+
+\subsection{Cross-reference test}
+
+Pairs are selected independently of their score. The current library supports
+seven same-character cross-style pairs and 50 different-character negative
+pairs. Self-pairs are prohibited. The absent same-character, same-style,
+different-instance condition is reported as unsupported.
+
+\subsection{Diagnostic benchmark}
+
+Perturbation cause supplies deterministic diagnostic ground truth; it is not an
+expert aesthetic label. We evaluate required Recall@3, Top-1 cause, direction
+channel, missing/extra classification, exact/overlap grid-region localization,
+specificity, and center-direction wording. Because broad improvements were not
+observed, diagnostic results are treated as secondary and failure analysis is
+preferred over further rule tuning.
+
+\subsection{Blinded human structural validation}
+
+We selected 150 natural same-character, different-instance pairs from the 769
+QC-clean instances within the recovered 840-file-complete corpus before
+collecting ratings. The selection spans all
+40 available character identities, with three or four pairs per character.
+Writer identity and verified style provenance were unavailable and are not
+claimed. The pair set, images, blinded identifiers, and presentation order were
+frozen before the first rating. System scores, source-pair identifiers, and
+repeat identities were hidden from the raters.
+
+Three consenting human raters independently judged structural similarity on a
+five-point ordinal scale. Their self-reported backgrounds were one calligraphy
+teacher with one year of learning and teaching experience, one rater with two
+years of other relevant experience, and one rater reporting no prior
+calligraphy experience. We therefore use the terms ``human raters'' and
+``human structural validation'', rather than treating the group as three
+qualified calligraphy experts. Each rater evaluated the 150 canonical pairs
+and 15 randomly interspersed hidden repeats, for 165 presentations.
+
+System validity is measured by Spearman correlation between score and the
+three-rater mean on the 150 canonical presentations. Confidence intervals use
+10,000 bootstrap resamples clustered by target character. We report both the
+frozen production score and the coverage-aware audit score; the comparison
+does not authorize a post-hoc production-formula change. Inter-rater
+reliability is estimated by two-way random-effects absolute-agreement
+ICC(2,1) and ICC(2,\(k\)) on canonical pairs only. Hidden repeats are excluded
+from correlation and ICC and are used solely for within-rater exact agreement,
+agreement within one scale point, mean absolute difference, and quadratic
+weighted kappa.
+
+\subsection{Pending real-world validation}
+
+\placeholder{SMARTPHONE}

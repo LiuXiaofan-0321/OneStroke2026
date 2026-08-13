@@ -1,0 +1,61 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Chinese calligraphy practice is a document-analysis problem with an unusually
+strong interaction between recognition, geometry, and pedagogy. A learner does
+not only need to know whether an image contains the intended character. They
+also need evidence about the spatial organization of stroke-like regions,
+intersections and endpoints, and how these properties differ from a selected
+reference style. A useful system must therefore operate between pixel
+segmentation and natural-language tutoring.
+
+This setting is challenging for three reasons. First, independently written
+strokes overlap and adhere in the final raster image, so mutually exclusive
+semantic segmentation is an unsuitable representation. Second, naive
+pixel-to-pixel comparison confounds structural disagreement with translation,
+scale, rotation, and acquisition variation. Third, a numerical match score is
+not automatically a valid aesthetic grade: without expert calibration, it
+should be interpreted only as reference-conditioned structural agreement.
+
+We address these issues through the pipeline
+\[
+\text{multi-label stroke parsing}
+\rightarrow \text{constrained alignment}
+\rightarrow \text{structure agreement}
+\rightarrow \text{localized evidence}
+\rightarrow \text{diagnostic feedback}.
+\]
+The representation contains five independently activated direction channels
+and one keypoint channel. It deliberately permits channel overlap. The
+reference comparison uses a fixed, low-capacity similarity search rather than
+deformable registration, so that global nuisance variation may be reduced
+without freely warping away local structural errors.
+
+The work is explicitly positioned as low-resource structural analysis rather
+than a new segmentation architecture. The frozen production parser uses a
+SegFormer-B2 backbone \cite{xie2021segformer}, but the scientific questions are
+whether the representation, alignment, agreement score, and diagnostic
+evidence behave in a controlled and auditable manner. The segmentation
+comparison itself includes standard convolutional baselines such as U-Net
+\cite{ronneberger2015unet} and, when available from the frozen Task~1 pipeline,
+DeepLabV3+ \cite{chen2018deeplabv3plus}.
+
+The present manuscript makes the following contributions:
+\begin{enumerate}
+  \item an overlapping six-channel representation for direction-oriented
+  stroke regions and keypoints in complete Chinese-character images;
+  \item a reference-conditioned analysis pipeline with constrained global
+  alignment and a fixed, interpretable structure-agreement decomposition;
+  \item a real-reference controlled-perturbation benchmark that separates
+  nuisance invariance from structural sensitivity;
+  \item paired alignment ablations and an inactive-channel score audit that
+  expose both strengths and failure modes instead of tuning the production
+  formula to the evaluation suite;
+  \item a diagnostic benchmark and failure taxonomy that evaluates localized
+  evidence independently of optional language-model surface realization.
+\end{enumerate}
+
+Three experiments remain mandatory before submission:
+\placeholder{TASK1\_MAIN\_BENCHMARK},
+\placeholder{CHARACTER\_DISJOINT},
+and \placeholder{SMARTPHONE}. No values are imputed for these experiments.

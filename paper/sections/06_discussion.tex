@@ -1,0 +1,50 @@
+\section{Discussion}
+\label{sec:discussion}
+
+The experiments support two conclusions. First, constrained alignment is
+essential: without it, nuisance transformations dominate the score and local
+structural perturbations are comparatively weak. Second, alignment is not a
+complete solution. The present discretized search handles translation well but
+remains sensitive to scale and, to a lesser degree, rotation. Widening the
+search range did not improve the nuisance result, so further alignment tuning
+on the same benchmark would risk evaluation overfitting.
+
+The inactive-channel audit exposes a semantic decision hidden by a simple
+macro-average. When a direction is absent from both masks, a Dice score of one
+is mathematically conventional but may grant credit unrelated to the active
+structure. The mean effect is small, yet a limited number of cases receive a
+large correction. The blinded human study strengthens this concern:
+coverage-aware scoring correlates more strongly with the human mean than the
+production score, with a positive character-cluster bootstrap interval for the
+correlation difference. Nevertheless, because this comparison was motivated by
+the audit and evaluated on the same human study, it is evidence for a future
+preregistered score revision rather than permission to replace the frozen
+production formula post hoc.
+
+The diagnostic analysis also separates model limitations from metric
+limitations. Exact single-cell localization is ill matched to perturbations
+that cross grid boundaries or occupy multiple cells. A future benchmark should
+represent affected regions as a set or pixel support and score set overlap.
+This observation does not justify retroactively altering the current ground
+truth or tuning the rules to the present cases.
+
+The study has important limitations. The legacy segmentation corpus contains
+only 40 fully labelled character identities and incomplete writer/source
+metadata. The reference library contains two style categories, only seven
+cross-style same-character pairs, and no same-style different-instance pairs.
+All completed robustness experiments operate on cached masks and therefore
+isolate scoring from segmentation errors. End-to-end robustness still requires
+the pending smartphone and unseen-writer study. The human validation includes
+only three raters with heterogeneous self-reported backgrounds. Its moderate
+single-rater reliability and higher average-rating reliability support a
+structural-similarity claim, but neither the raters nor the task establish
+expert aesthetic calibration.
+
+\subsection{Deployment implications}
+
+The frozen SegFormer-B2 parser benefits from a GPU for responsive inference,
+whereas alignment, scoring, and deterministic feedback can run on CPU after
+masks are available. Reference masks are precomputed. A low-cost deployment can
+therefore use one on-demand model service and an external text API, while future
+work may distil the parser for ONNX/INT8 edge inference. Deployment
+optimization is outside the current scientific claims.

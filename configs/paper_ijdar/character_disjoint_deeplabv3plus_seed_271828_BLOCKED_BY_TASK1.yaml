@@ -1,0 +1,26 @@
+# BLOCKED_BY_TASK1
+# Replace this placeholder only with the authoritative Task 1 implementation
+# and frozen hyperparameters. It must not be executed in its current form.
+research_status: BLOCKED_BY_TASK1
+experiment_name: character_disjoint_deeplabv3plus_seed_271828_pending_task1
+seed: 271828
+device: auto
+data:
+  manifest: artifacts/data_qc/manifest_qc_v1.csv
+  splits: artifacts/data_qc/character_disjoint_splits_qc_v1.csv
+  image_size: 512
+  batch_size: 4
+  num_workers: 4
+  normalization: imagenet
+  qc_exclusions: artifacts/data_qc/dataset_qc_exclusions_v1.csv
+  expected_manifest_sha256: c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4
+  expected_splits_sha256: e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b
+  expected_qc_exclusions_sha256: 6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467
+  expected_split_counts:
+    train: 539
+    val: 114
+    test: 116
+model:
+  name: deeplabv3plus
+  out_channels: 6
+output_dir: artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_271828

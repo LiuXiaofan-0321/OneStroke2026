@@ -7,8 +7,8 @@ from typing import Any
 
 import numpy as np
 
-from onestroke_model.constants import CHANNELS, SCHEMA_VERSION
 from onestroke_model.config import load_yaml
+from onestroke_model.constants import CHANNELS, SCHEMA_VERSION
 from onestroke_model.utils.io import ensure_dir, write_json
 from onestroke_model.utils.seed import seed_everything
 
@@ -172,6 +172,7 @@ def main() -> None:
     args = parser.parse_args()
     cfg = load_yaml(args.config)
     torch = _require_torch()
+    from onestroke_model.data.data_contract import validate_data_contract
     from onestroke_model.data.dataset import make_torch_loader
     from onestroke_model.models import build_model
 
@@ -180,6 +181,7 @@ def main() -> None:
     data_cfg = cfg["data"]
     output_dir = ensure_dir(cfg.get("output_dir", "artifacts/runs/default"))
     ckpt_dir = ensure_dir(output_dir / "checkpoints")
+    data_contract = validate_data_contract(data_cfg)
     loss_fn, statistics = _build_loss(cfg, output_dir)
     model = build_model(cfg["model"]).to(device)
     loss_fn = loss_fn.to(device)
@@ -218,6 +220,7 @@ def main() -> None:
             "parameter_groups": parameter_groups,
             "thresholds": thresholds,
             "class_weight_statistics": statistics,
+            "data_contract": data_contract,
         },
     )
 

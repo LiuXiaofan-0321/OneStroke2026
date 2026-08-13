@@ -125,3 +125,80 @@ SegFormer-B2 的云端训练顺序、三组消融、增强人工检查和验证�
 - 单图推理输出原图尺寸 `[H,W,6]` 概率图和二值 mask
 
 SegFormer 训练需要联网下载 Hugging Face 预训练权重，建议在云 GPU 环境运行。
+
+## IJDAR 投稿实验入口
+
+当前研究管线围绕多标签笔画结构解析、受限参考对齐、结构一致性、
+受控鲁棒性和局部诊断反馈建立。先运行统一预检：
+
+```powershell
+$env:PYTHONPATH = "$PWD\src"
+python -m onestroke_model.scripts.run_ijdar_preflight `
+  --project-root . `
+  --output-dir artifacts/paper_ijdar/preflight
+```
+
+先从已取证的旧项目归档恢复并全量校验 840 个原始 GT 文件（该命令只恢复
+原文件，不生成标签）：
+
+```powershell
+python -m onestroke_model.scripts.restore_legacy_gt `
+  --archive "C:\path\to\OneStroke-main.tar.gz" `
+  --destination data/legacy_gt_v1/output_img `
+  --source-manifest artifacts/data_recovery/source_manifest_identity_v1.csv `
+  --resolved-manifest artifacts/data_recovery/manifest_resolved.csv `
+  --report artifacts/data_recovery/verification_report.json
+```
+
+恢复后必须建立冻结 QC 层。840 是“文件完整”数量，不是正式训练数量：
+
+```powershell
+python -m onestroke_model.scripts.build_dataset_qc
+```
+
+QC v1 排除 12 个原图/GT错配和 59 个完全重复非主实例，得到 769 个
+QC-clean 独立样本。正式 Task 1 和 character-disjoint 实验只能使用
+`artifacts/data_qc/` 下的固定 manifest、exclusion 和 split。
+
+随后可生成不依赖 GPU 的冻结实验设计：
+
+```powershell
+python -m onestroke_model.scripts.build_character_disjoint_split `
+  --manifest artifacts/data_audit/manifest.csv
+
+python -m onestroke_model.scripts.run_character_disjoint_benchmark
+python -m onestroke_model.scripts.run_controlled_perturbation_benchmark `
+  --cache-index references/cache/segformer_b2_v1/index.json `
+  --output-dir artifacts/paper_ijdar/controlled_perturbation
+python -m onestroke_model.scripts.run_structure_score_audit `
+  --cache-index references/cache/segformer_b2_v1/index.json `
+  --output-dir artifacts/paper_ijdar/structure_score_audit
+python -m onestroke_model.scripts.run_cross_reference_benchmark
+python -m onestroke_model.scripts.run_alignment_ablation
+python -m onestroke_model.scripts.run_feedback_diagnostic_benchmark `
+  --cache-index references/cache/segformer_b2_v1/index.json `
+  --output-dir artifacts/paper_ijdar/feedback_diagnostic
+python -m onestroke_model.scripts.prepare_expert_study_templates
+python -m onestroke_model.scripts.prepare_real_world_smartphone_templates
+python -m onestroke_model.scripts.build_ijdar_paper_results
+python -m onestroke_model.scripts.build_ijdar_paper_figures
+```
+
+`build_character_disjoint_split` 仅用于复现原始字符分配；正式训练使用在该字符
+分配后应用 QC 的派生 split，不允许重新随机分字符。
+
+正式 reference 实验只在
+`references/cache/segformer_b2_v1/index.json` 通过 schema、provenance 和
+artifact 校验后运行。缺少真实 cache 时脚本输出 `BLOCKED` 和
+`run_manifest.json`，不会用 synthetic smoke 数字代替论文结果。
+
+主要协议：
+
+- [Controlled Perturbation Benchmark](docs/controlled_perturbation_benchmark.md)
+- [Structure Score Audit](docs/structure_score_audit.md)
+- [Alignment Ablation](docs/alignment_ablation.md)
+- [Feedback Diagnostic Accuracy Benchmark](docs/feedback_diagnostic_accuracy_benchmark.md)
+- [Feedback Diagnostic Rules v2](docs/feedback_diagnostic_fixes_v2.md)
+- [Character-Disjoint Generalization](docs/character_disjoint_protocol.md)
+- [Expert Study Ethics Checklist](docs/expert_study_ethics_checklist.md)
+- [Smartphone / Unseen-Writer Protocol](docs/real_world_smartphone_protocol.md)

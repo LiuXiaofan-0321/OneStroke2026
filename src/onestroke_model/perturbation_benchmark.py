@@ -10,9 +10,11 @@ import platform
 import subprocess
 import sys
 from collections import defaultdict
+from collections.abc import Sequence
 from dataclasses import asdict
+from itertools import pairwise
 from pathlib import Path
-from typing import Any, Iterable, Sequence
+from typing import Any
 
 import numpy as np
 from PIL import __version__ as pillow_version
@@ -692,9 +694,7 @@ def summarize_behavior(
                 valid_curves += 1
             # Only compare truly adjacent configured severity levels. Missing invalid
             # levels are not silently bridged into a synthetic adjacent pair.
-            for first_severity, second_severity in zip(
-                configured[:-1], configured[1:], strict=True
-            ):
+            for first_severity, second_severity in pairwise(configured):
                 if first_severity not in severity_map or second_severity not in severity_map:
                     continue
                 first_score = float(
@@ -882,7 +882,7 @@ def overall_audit_summary(
             ),
         },
         "nuisance_invariance": {
-            "n_valid_observations": int(len(nuisance_drops)),
+            "n_valid_observations": len(nuisance_drops),
             "mean_abs_score_drop": (
                 float(np.mean(np.abs(nuisance_drops))) if len(nuisance_drops) else None
             ),
@@ -895,7 +895,7 @@ def overall_audit_summary(
             "per_perturbation": nuisance_behaviors,
         },
         "structural_sensitivity": {
-            "n_valid_observations": int(len(structural_drops)),
+            "n_valid_observations": len(structural_drops),
             "mean_score_drop": float(np.mean(structural_drops)) if len(structural_drops) else None,
             "median_score_drop": (
                 float(np.median(structural_drops)) if len(structural_drops) else None
@@ -983,8 +983,10 @@ def _write_markdown_report(
     lines = [
         "# OneStroke Controlled Perturbation Benchmark",
         "",
-        "> This is a mask-space audit of deterministic reference alignment and structural scoring. "
-        "It is not an end-to-end segmentation robustness benchmark.",
+        (
+            "> This is a mask-space audit of deterministic reference alignment and structural "
+            "scoring. It is not an end-to-end segmentation robustness benchmark."
+        ),
         "",
         "## Input provenance",
         "",
@@ -996,8 +998,10 @@ def _write_markdown_report(
         "## Identity sanity check",
         "",
         f"- Minimum identity score: **{_fmt(audit['baseline_identity']['min_score'])}**",
-        "- Maximum absolute deviation from 100: "
-        f"**{_fmt(audit['baseline_identity']['max_abs_deviation_from_100'], 6)}**",
+        (
+            "- Maximum absolute deviation from 100: "
+            f"**{_fmt(audit['baseline_identity']['max_abs_deviation_from_100'], 6)}**"
+        ),
         "",
         "## Nuisance invariance",
         "",
@@ -1022,8 +1026,10 @@ def _write_markdown_report(
             "",
             "## Structural sensitivity",
             "",
-            "| Perturbation | Complete curves | Median rho | Non-increasing pairs | "
-            "Strict-decrease pairs | Mean max drop | Mean normalized drop AUC |",
+            (
+                "| Perturbation | Complete curves | Median rho | Non-increasing pairs | "
+                "Strict-decrease pairs | Mean max drop | Mean normalized drop AUC |"
+            ),
             "|---|---:|---:|---:|---:|---:|---:|",
         ]
     )
@@ -1048,12 +1054,18 @@ def _write_markdown_report(
             "",
             "## Descriptive family separation",
             "",
-            "- Max-severity nuisance mean absolute drop: "
-            f"**{_fmt(separation['max_severity_nuisance_mean_abs_drop'])}**",
-            "- Max-severity structural mean drop: "
-            f"**{_fmt(separation['max_severity_structural_mean_drop'])}**",
-            "- Structural minus nuisance drop: "
-            f"**{_fmt(separation['max_severity_structural_minus_nuisance_drop'])}**",
+            (
+                "- Max-severity nuisance mean absolute drop: "
+                f"**{_fmt(separation['max_severity_nuisance_mean_abs_drop'])}**"
+            ),
+            (
+                "- Max-severity structural mean drop: "
+                f"**{_fmt(separation['max_severity_structural_mean_drop'])}**"
+            ),
+            (
+                "- Structural minus nuisance drop: "
+                f"**{_fmt(separation['max_severity_structural_minus_nuisance_drop'])}**"
+            ),
             "",
             "## Validity",
             "",
@@ -1063,15 +1075,23 @@ def _write_markdown_report(
             "",
             "## Interpretation guardrails",
             "",
-            "- Nuisance drops measure the current discretized nearest-neighbor "
-            "mask-space implementation, not an ideal continuous optimizer.",
-            "- Structural perturbations operate on semantic direction regions, not "
-            "manually annotated stroke instances.",
-            "- The prototype structure score remains an agreement score and is not "
-            "a calibrated calligraphy/aesthetic grade.",
-            "- Family-separation summaries compare preregistered maximum severity "
-            "within each perturbation but severity units differ, so they are descriptive "
-            "and not a matched-effect-size test.",
+            (
+                "- Nuisance drops measure the current discretized nearest-neighbor "
+                "mask-space implementation, not an ideal continuous optimizer."
+            ),
+            (
+                "- Structural perturbations operate on semantic direction regions, not "
+                "manually annotated stroke instances."
+            ),
+            (
+                "- The prototype structure score remains an agreement score and is not "
+                "a calibrated calligraphy/aesthetic grade."
+            ),
+            (
+                "- Family-separation summaries compare preregistered maximum severity "
+                "within each perturbation but severity units differ, so they are descriptive "
+                "and not a matched-effect-size test."
+            ),
             "",
         ]
     )
@@ -1129,20 +1149,30 @@ def write_benchmark_outputs(
         "input": input_metadata,
         "runtime": collect_runtime_metadata(),
         "protocol_notes": [
-            "The benchmark perturbs cached six-channel masks, not source images, "
-            "to isolate scoring behavior from segmentation error.",
-            "Rotation/scale/compound nuisance severities are deliberately off the "
-            "7x9 production alignment search grid to measure robustness of the current "
-            "discrete nearest-neighbor mask-space implementation rather than only exact "
-            "grid recovery.",
-            "Global rotation/scale/compound perturbations use a conservative "
-            "foreground-bounding-box precheck; cases at risk of canvas clipping are "
-            "retained as invalid rather than mixed into nuisance-invariance estimates.",
-            "Local structural target channels are selected by a stable SHA-256 rule "
-            "among non-empty direction channels; selection never uses model errors or "
-            "score outcomes.",
-            "Invalid perturbations are retained in the raw results with a reason and "
-            "are never silently dropped.",
+            (
+                "The benchmark perturbs cached six-channel masks, not source images, "
+                "to isolate scoring behavior from segmentation error."
+            ),
+            (
+                "Rotation/scale/compound nuisance severities are deliberately off the "
+                "7x9 production alignment search grid to measure robustness of the current "
+                "discrete nearest-neighbor mask-space implementation rather than only exact "
+                "grid recovery."
+            ),
+            (
+                "Global rotation/scale/compound perturbations use a conservative "
+                "foreground-bounding-box precheck; cases at risk of canvas clipping are "
+                "retained as invalid rather than mixed into nuisance-invariance estimates."
+            ),
+            (
+                "Local structural target channels are selected by a stable SHA-256 rule "
+                "among non-empty direction channels; selection never uses model errors or "
+                "score outcomes."
+            ),
+            (
+                "Invalid perturbations are retained in the raw results with a reason and "
+                "are never silently dropped."
+            ),
         ],
         "statistical_protocol": {
             "severity_curve_mean_ci": (
@@ -1169,7 +1199,13 @@ def write_benchmark_outputs(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     _write_markdown_report(output_dir / "benchmark_report.md", report, behavior_summary)
+    _write_markdown_report(
+        output_dir / "CONTROLLED_PERTURBATION_FORMAL_REPORT.md",
+        report,
+        behavior_summary,
+    )
     report["files"]["human_readable_report"] = "benchmark_report.md"
+    report["files"]["formal_report"] = "CONTROLLED_PERTURBATION_FORMAL_REPORT.md"
     # Rewrite JSON once so its file manifest includes the Markdown report itself.
     (output_dir / "benchmark_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"

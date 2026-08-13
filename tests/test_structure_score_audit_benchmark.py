@@ -12,10 +12,10 @@ from onestroke_model.structure_score_audit_benchmark import (
     component_correlations,
     coverage_summary,
     run_structure_score_audit,
+    summarize_weight_sensitivity,
     variant_behavior,
     variant_overall_summary,
     weight_sensitivity_grid,
-    summarize_weight_sensitivity,
     write_structure_score_audit_outputs,
 )
 
@@ -123,6 +123,7 @@ def test_weight_sensitivity_is_audit_grid_not_hidden_tuning() -> None:
 def test_output_bundle_contains_raw_and_summary_artifacts(tmp_path: Path) -> None:
     metadata, references = synthetic_references(128)
     rows, coverage = run_structure_score_audit(references[:1], _small_suite())
+    (tmp_path / "BLOCKED.md").write_text("stale", encoding="utf-8")
     report = write_structure_score_audit_outputs(
         tmp_path,
         rows,
@@ -147,5 +148,6 @@ def test_output_bundle_contains_raw_and_summary_artifacts(tmp_path: Path) -> Non
         "structure_score_audit_report.md",
     }
     assert expected.issubset({path.name for path in tmp_path.iterdir()})
+    assert not (tmp_path / "BLOCKED.md").exists()
     parsed = json.loads((tmp_path / "structure_score_audit_report.json").read_text(encoding="utf-8"))
     assert parsed["audit_name"] == report["audit_name"]

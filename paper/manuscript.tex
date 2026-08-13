@@ -1,0 +1,99 @@
+\documentclass[iicol,pdflatex,sn-basic]{sn-jnl}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{url}
+
+\newcommand{\placeholder}[1]{\textcolor{red}{\textbf{[#1]}}}
+
+\begin{document}
+
+\title[Reference-conditioned calligraphy structure analysis]
+{Reference-Conditioned Multi-Label Stroke Structure Analysis for
+Low-Resource Chinese Calligraphy Practice}
+
+\author*[1]{\fnm{Xiaofan} \sur{Liu}}\email{[AUTHOR EMAIL]}
+\author[1]{\fnm{Ronghao} \sur{Zhang}}
+\author[1]{\fnm{Yiran} \sur{Gao}}
+\affil*[1]{\orgdiv{[DEPARTMENT]}, \orgname{[UNIVERSITY]},
+\orgaddress{\city{[CITY]}, \country{China}}}
+
+\abstract{%
+\textbf{Purpose}\quad Digital calligraphy-learning systems require more than
+whole-character recognition: they must expose local structural evidence,
+compare a practice sample against an intended reference, and express
+diagnostic suggestions without presenting an opaque aesthetic score as expert
+judgment. We study reference-conditioned structural analysis in a
+low-resource Chinese calligraphy setting.
+
+\textbf{Methods}\quad We represent each character with five overlapping
+direction-oriented stroke-region channels and one keypoint channel. A
+segmentation model predicts this representation, constrained similarity
+alignment suppresses limited placement variation, and a fixed agreement
+function combines direction overlap, foreground overlap, and tolerant
+keypoint agreement. Post-segmentation behaviour is evaluated on 200 real
+cached references using controlled mask perturbations, paired alignment
+ablation, a structure-score audit, cross-reference comparisons, and a
+diagnostic benchmark.
+
+\textbf{Results}\quad Translation is fully recovered in 800 valid trials,
+whereas rotation and especially scale remain challenging. Relative to no
+alignment, the constrained method reduces nuisance penalties by 30.118 points
+(95\% confidence interval 29.506--30.727) while preserving an additional
+11.189 points of structural penalty (10.094--12.322). Forty-one of 200
+references contain inactive direction channels, producing coverage
+corrections up to 15.402 points. On 150 natural same-character pairs, the
+production score correlates with the mean blinded human structural-similarity
+rating at \(\rho=0.297\) (95\% CI 0.148--0.441), versus
+\(\rho=0.429\) (0.313--0.535) for the coverage-aware audit. Average-rating
+reliability is ICC(2,\(k\)) \(=0.709\).
+
+\textbf{Conclusion}\quad The pipeline provides auditable structural evidence
+and a human-validated structural signal, while exposing clear failure modes.
+It is not an expert-calibrated measure of calligraphic beauty. Main
+segmentation, character-disjoint, and smartphone results remain explicit
+pending experiments until real evidence is available.}
+
+\keywords{Chinese calligraphy, stroke segmentation, multi-label parsing,
+reference-based assessment, image registration, diagnostic feedback}
+
+\maketitle
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_method}
+\input{sections/04_experimental_protocol}
+\input{sections/05_results}
+\input{sections/06_discussion}
+\input{sections/07_conclusion}
+
+\section*{Supplementary statistical tables}
+\input{tables/alignment_ablation_breakdown}
+
+\backmatter
+
+\bmhead{Acknowledgements}
+[ACKNOWLEDGEMENTS]
+
+\section*{Declarations}
+\begin{itemize}
+  \item Funding: [FUNDING]
+  \item Conflict of interest: The authors declare no competing interests.
+  \item Ethics and consent: The blinded human structural-similarity study used
+  consenting participants identified only by evaluator codes. The author team
+  must insert the institution-specific ethics approval, exemption, or review
+  statement before submission. The smartphone study remains pending.
+  \item Data availability: The legacy training data and Calli-Tongji-derived
+  reference data are subject to their respective ownership and license
+  constraints. Reproducibility artifacts release IDs, hashes, and scripts
+  without redistributing restricted reference images.
+  \item Code availability: [ANONYMIZED OR PUBLIC REPOSITORY]
+\end{itemize}
+
+\bibliography{references}
+
+\end{document}

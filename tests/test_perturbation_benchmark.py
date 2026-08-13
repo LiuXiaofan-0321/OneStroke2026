@@ -7,10 +7,10 @@ import numpy as np
 
 from onestroke_model.controlled_perturbations import DEFAULT_PERTURBATIONS
 from onestroke_model.perturbation_benchmark import (
+    bootstrap_mean_ci95,
     load_reference_cache,
     run_benchmark,
     spearman_rho,
-    bootstrap_mean_ci95,
     structural_target_channel_distribution,
     summarize_behavior,
     synthetic_references,
@@ -88,6 +88,8 @@ def test_smoke_benchmark_writes_reproducible_outputs(tmp_path: Path) -> None:
     assert (tmp_path / "perturbation_summary.csv").is_file()
     assert (tmp_path / "behavior_summary.csv").is_file()
     assert (tmp_path / "benchmark_report.json").is_file()
+    assert (tmp_path / "benchmark_report.md").is_file()
+    assert (tmp_path / "CONTROLLED_PERTURBATION_FORMAL_REPORT.md").is_file()
     behaviors = summarize_behavior(results, definitions=definitions)
     deletion = next(
         row

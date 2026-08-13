@@ -63,6 +63,9 @@ def main() -> None:
         data_cfg["manifest"] = args.manifest
     if args.splits:
         data_cfg["splits"] = args.splits
+    from onestroke_model.data.data_contract import validate_data_contract
+
+    data_contract = validate_data_contract(data_cfg)
     threshold_cfg = dict(cfg.get("thresholds", {}))
     if args.thresholds_json:
         payload = json.loads(Path(args.thresholds_json).read_text(encoding="utf-8"))
@@ -99,6 +102,7 @@ def main() -> None:
     metrics["split"] = args.split
     metrics["thresholds"] = {channel: float(threshold_array[0, i, 0, 0]) for i, channel in enumerate(CHANNELS)}
     metrics["checkpoint"] = str(Path(args.checkpoint).resolve())
+    metrics["data_contract"] = data_contract
     print(metrics)
     if args.output:
         write_json(args.output, metrics)

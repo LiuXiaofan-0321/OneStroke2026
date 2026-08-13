@@ -1,500 +1,594 @@
-# 张荣昊阶段任务：数据问题复核 + U-Net 重测基线
+# 论文 Task 1 修改版：QC-clean 主分割基准与 Character-disjoint 对照
 
-负责人：张荣昊  
-协作对象：刘小凡  
-任务时间：建议 7 月 9–13 日优先完成  
-任务范围：只做数据审计复核和 U-Net baseline，不改 SegFormer/SAM2 主线代码，避免和主模型开发互相影响。
+负责人：张荣昊
+对接人：刘小凡
+发布日期：2026-08-13
+任务状态：等待执行
 
-## 0. 当前背景
+> 这份文档替换旧版“任务 1/3”。旧版的 54 个缺标签样本复核和 U-Net
+> 初步重测已经完成；现在的 **论文 Task 1** 是一项新的正式多模型比较任务。
 
-当前模型工程已经建立为独立 GitHub 仓库。请先从 GitHub 克隆项目，再进入项目目录：
+## 1. 任务目标
 
-```powershell
+在完全一致的数据、损失、训练策略、阈值标定和评测指标下，完成：
+
+1. U-Net；
+2. DeepLabV3+；
+3. SegFormer-B2；
+
+三种六通道分割模型的正式比较，并交付：
+
+- 标准 QC-clean split 的主分割结果；
+- 冻结 character-disjoint split 的未见字符泛化结果；
+- 三随机种子的均值和样本标准差；
+- 完整 checkpoint、日志、阈值、配置、环境与运行清单。
+
+本任务不是为了追求某个模型“赢”，而是得到论文可以审计、复现和诚实报告的
+主基准。负面结果也必须保留。
+
+## 2. 数据口径已修改，禁止继续直接使用 840
+
+旧数据恢复结论仍然成立：
+
+```text
+894 个样本目录
+840 个文件完整的六通道 GT
+54 个标签不完整样本（继续排除）
+```
+
+但完整文件不等于语义合格、也不等于独立观测。统一 QC 后：
+
+```text
+840 个完整 GT
+- 12 个明确的原图/GT错配
+- 59 个完全重复的非主实例
+= 769 个 QC-clean 独立样本
+```
+
+12 个 mismatch 和 59 个 duplicate 没有重叠。
+
+正式训练必须使用：
+
+```text
+artifacts/data_qc/manifest_qc_v1.csv
+artifacts/data_qc/dataset_qc_exclusions_v1.csv
+```
+
+禁止使用：
+
+```text
+artifacts/data_recovery/manifest_resolved.csv  # 含 840 条，只用于取证
+artifacts/data_audit/manifest.csv              # 旧口径
+references/cache/segformer_b2_v1/              # 模型输出，绝不是 GT
+```
+
+固定哈希：
+
+```text
+QC-clean manifest SHA-256:
+c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4
+
+QC exclusion SHA-256:
+6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467
+```
+
+### 2.1 12 个原图/GT错配
+
+判定口径：
+
+```text
+原图前景 与 五方向 GT 并集的 IoU < 0.80
+```
+
+样本：
+
+```text
+27/12
+28/12
+29/12
+30/12
+31/12
+32/12
+33/12
+34/12
+35/12
+36/4
+37/4
+38/4
+```
+
+### 2.2 59 个完全重复非主实例
+
+严格同时满足：
+
+```text
+image_pixel_sha256 完全相同
+mask_content_sha256 完全相同
+```
+
+统计：
+
+```text
+55 个重复组
+114 个成员
+59 个冗余非主实例
+52 个二元组、2 个三元组、1 个四元组
+```
+
+检测是全局进行的，不限制 `char_id`。
+
+### 2.3 旧 B2 是否发生 train→test 精确重复泄漏
+
+没有。
+
+旧标准 600/120/120 split 中：
+
+```text
+54 个重复组全部在 train
+1 个重复组全部在 val
+test 无重复组
+跨 train/val/test exact duplicate = 0
+```
+
+因此旧 B2 的 `0.9610` 不是被精确 train→test 重复直接抬高。但是旧训练集包含
+12 个 mismatch 和 58 个重复副本，验证集也有 1 个重复副本，所以该结果只能作为
+preliminary engineering evidence，不能代替本次正式论文基准。
+
+## 3. 两套正式 split
+
+## 3.1 标准 QC-clean split
+
+保留原 600/120/120 样本分配，只应用冻结 QC 排除：
+
+| Split | 原始数量 | QC-clean 数量 |
+|---|---:|---:|
+| Train | 600 | 530 |
+| Validation | 120 | 119 |
+| Test | 120 | 120 |
+
+文件：
+
+```text
+artifacts/data_qc/standard_splits_qc_v1.csv
+```
+
+SHA-256：
+
+```text
+d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18
+```
+
+这套 split 用于论文的主分割比较。
+
+## 3.2 Character-disjoint QC-clean split
+
+原冻结字符分配不变：
+
+```text
+Train: 28 chars
+Val:    6 chars
+Test:   6 chars
+```
+
+原始字符分配 SHA-256 继续保留：
+
+```text
+eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e
+```
+
+在该分配之后应用同一 QC 排除清单，派生数量为：
+
+| Split | 原始数量 | QC-clean 数量 |
+|---|---:|---:|
+| Train | 588 | 539 |
+| Validation | 126 | 114 |
+| Test | 126 | 116 |
+
+文件：
+
+```text
+artifacts/data_qc/character_disjoint_splits_qc_v1.csv
+artifacts/data_qc/character_disjoint_splits_qc_v1_report.json
+```
+
+派生 split SHA-256：
+
+```text
+e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b
+```
+
+禁止重新随机分字符。QC 只是冻结后的排除层，不允许看模型结果后修改。
+
+## 4. 你需要实现的部分
+
+仓库已有：
+
+- 六通道数据集和训练器；
+- U-Net；
+- SegFormer-B2；
+- BCE/Dice/Focal/Boundary loss；
+- validation-only threshold calibration；
+- test evaluation；
+- character-disjoint launcher；
+- 三个待替换的 DeepLabV3+ 配置；
+- 数据哈希和 QC 强制校验。
+
+你主要需要完成：
+
+### 4.1 DeepLabV3+
+
+新增：
+
+```text
+src/onestroke_model/models/deeplabv3plus.py
+```
+
+并在：
+
+```text
+src/onestroke_model/models/factory.py
+```
+
+注册：
+
+```text
+model.name: deeplabv3plus
+```
+
+要求：
+
+- 输入 `[B,3,H,W]`；
+- 输出 logits `[B,6,H,W]`；
+- 六通道独立 Sigmoid，模型内部不要 Softmax；
+- 优先使用 ImageNet 预训练 encoder；
+- 推荐 ResNet-50 backbone；
+- ASPP + decoder 结构要明确；
+- 输出恢复到输入空间大小；
+- 不修改六通道含义：
+  `vec1, vec2, vec3, vec4, vec5, keypoint`。
+
+可以用成熟开源组件，但必须记录：
+
+- 依赖包和版本；
+- backbone；
+- pretrained 权重来源；
+- license；
+- 参数量；
+- 是否修改默认结构。
+
+### 4.2 三随机种子
+
+固定：
+
+```text
+20260811
+314159
+271828
+```
+
+不得看结果后删掉表现差的 seed。
+
+正式论文目标：
+
+| 模型 | 标准 split | Character-disjoint |
+|---|---:|---:|
+| U-Net | 3 seeds | 至少 1 seed；时间允许则 3 |
+| DeepLabV3+ | 3 seeds | 3 seeds |
+| SegFormer-B2 | 3 seeds | 3 seeds |
+
+如果四天时间不足，优先级：
+
+1. 标准 QC-clean：三模型各 3 seeds；
+2. Character-disjoint：DeepLabV3+ 与 B2 各 3 seeds；
+3. Character-disjoint：U-Net 补到 3 seeds。
+
+任何减少必须在报告中写明原因，不能隐藏。
+
+## 5. 公平比较规则
+
+以下内容三模型必须一致：
+
+- 输入尺寸：`512×512` 等比例填充；
+- RGB 输入；
+- 六通道多标签输出；
+- 同一个 manifest；
+- 同一个 split；
+- 同一个 QC exclusion；
+- 标签安全增强；
+- loss 定义；
+- validation-only threshold calibration；
+- early stopping 只看 validation；
+- test 只在模型与阈值固定后评测；
+- 指标实现。
+
+允许因模型结构而不同：
+
+- batch size；
+- encoder/decoder 分层学习率；
+- normalization；
+- 显存相关的 gradient accumulation。
+
+不允许：
+
+- 用 test 选择 epoch；
+- 用 test 调阈值；
+- 针对某模型单独删除困难样本；
+- 为了漂亮数字改变 split、QC、指标或通道；
+- 把模型生成的 reference mask 当 GT；
+- 只提交最好 seed。
+
+## 6. 训练和评测指标
+
+主指标：
+
+```text
+五方向 Macro Dice
+五方向 Macro IoU
+Boundary F1
+strict Keypoint F1
+```
+
+补充指标：
+
+```text
+每通道 Dice
+每通道 IoU
+每通道 Precision
+每通道 Recall
+Keypoint tolerant F1: 1 px / 3 px / 5 px
+```
+
+每个模型报告：
+
+```text
+mean
+sample std
+三个 seed 的原始值
+```
+
+不要只给最优一次。
+
+## 7. 环境准备
+
+```bash
 git clone https://github.com/LiuXiaofan-0321/OneStroke2026.git
 cd OneStroke2026
+git lfs install
+git lfs pull
+
+python -m pip install -e ".[train,dev,paper]"
+export PYTHONPATH="$PWD/src"
 ```
 
-已有内容：
-
-- 数据审计脚本
-- 固定六通道 schema：`vec1, vec2, vec3, vec4, vec5, keypoint`
-- `manifest.csv` 生成逻辑
-- `splits.csv` 固定划分逻辑
-- U-Net baseline 训练入口
-- 评测入口
-
-旧数据初步审计结果：
+恢复后的原始 GT 不上传 GitHub。请从刘小凡处取得归档：
 
 ```text
-字符目录：43
-总样本：894
-完整可用样本：840
-存在问题样本：54
-固定划分：
-  train: 600
-  val:   120
-  test:  120
+OneStroke-main.tar.gz
 ```
 
-你这阶段优先做两个任务：
-
-1. 复核 54 个问题样本。
-2. 跑 U-Net 重测基线。
-
-这两个任务和刘小凡的 SegFormer-B2 / SAM2 主线互不阻塞。
-
-## 1. 环境准备
-
-进入模型工程目录：
-
-```powershell
-cd model_module
-```
-
-建议新建虚拟环境：
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -U pip
-```
-
-安装基础依赖：
-
-```powershell
-python -m pip install -e .
-```
-
-如果要训练 U-Net，需要安装训练依赖：
-
-```powershell
-python -m pip install -e ".[train]"
-```
-
-如果 PyTorch 安装失败，先记录错误信息，不要长时间卡住，可以把报错发给刘小凡一起处理。
-
-## 2. 任务一：复核旧数据问题样本
-
-### 2.1 任务目标
-
-确认 `manifest.csv` 中 `errors` 不为空的样本到底是什么问题，判断是否能修复，以及是否应该从训练集中剔除。
-
-这一步的意义：
-
-- 防止坏数据进入训练。
-- 防止 U-Net / SegFormer 指标被错误标签影响。
-- 为后续报告提供可信的数据审计说明。
-
-### 2.2 输入文件
-
-主要输入：
+固定归档 SHA-256：
 
 ```text
-artifacts/data_audit/manifest.csv
-artifacts/data_audit/audit_report.json
+b9924007099033cc8b62128dc2139ea9cb04a66a48e56c46518407677254450d
 ```
 
-如果你本地还没有这些文件，先重新生成：
+恢复：
 
-```powershell
-python -m onestroke_model.scripts.audit_data `
-  --data-root "你的旧OneStroke数据路径\StrokeSegmentation\data\output_img" `
-  --out-dir ".\artifacts\data_audit"
-
-python -m onestroke_model.scripts.build_splits `
-  --manifest ".\artifacts\data_audit\manifest.csv" `
-  --output ".\artifacts\data_audit\splits.csv"
+```bash
+python -m onestroke_model.scripts.restore_legacy_gt \
+  --archive "/path/to/OneStroke-main.tar.gz" \
+  --destination "data/legacy_gt_v1/output_img" \
+  --source-manifest "artifacts/data_recovery/source_manifest_identity_v1.csv" \
+  --resolved-manifest "artifacts/data_recovery/manifest_resolved.csv" \
+  --report "artifacts/data_recovery/verification_report.json"
 ```
 
-注意：`--data-root` 要换成你本机旧数据真实路径。
+仓库跟踪的 identity manifest 仅保留 894 个 sample ID、完整性和数组形状等
+取证字段，不含历史机器绝对路径。恢复生成的正式 `manifest_qc_v1.csv` 使用
+仓库相对路径。
 
-### 2.3 具体操作
+恢复后先运行：
 
-打开：
+```bash
+python -m onestroke_model.scripts.build_dataset_qc
+```
+
+输出必须与仓库固定哈希完全一致。如果不一致，停止训练并反馈，不要自行修正。
+
+## 8. 开始训练前的强制检查
+
+```bash
+python - <<'PY'
+from onestroke_model.config import load_yaml
+from onestroke_model.data.data_contract import validate_data_contract
+
+cfg = load_yaml(
+    "configs/paper_ijdar/"
+    "character_disjoint_segformer_b2_seed_20260811.yaml"
+)
+print(validate_data_contract(cfg["data"]))
+PY
+```
+
+应看到：
 
 ```text
-artifacts/data_audit/manifest.csv
+active_sample_count: 769
+split_counts: train=539, val=114, test=116
+qc_exclusion_count: 71
+reference_cache_used_as_ground_truth: false
 ```
 
-筛选：
+如果看到 840，说明还在用旧口径，禁止继续。
+
+## 9. 标准 QC-clean 主基准
+
+请为三种模型各建立三个标准 split 配置，建议命名：
 
 ```text
-errors != 空
+configs/paper_ijdar/main_qc_unet_seed_20260811.yaml
+configs/paper_ijdar/main_qc_unet_seed_314159.yaml
+configs/paper_ijdar/main_qc_unet_seed_271828.yaml
+
+configs/paper_ijdar/main_qc_deeplabv3plus_seed_20260811.yaml
+configs/paper_ijdar/main_qc_deeplabv3plus_seed_314159.yaml
+configs/paper_ijdar/main_qc_deeplabv3plus_seed_271828.yaml
+
+configs/paper_ijdar/main_qc_segformer_b2_seed_20260811.yaml
+configs/paper_ijdar/main_qc_segformer_b2_seed_314159.yaml
+configs/paper_ijdar/main_qc_segformer_b2_seed_271828.yaml
 ```
 
-逐个查看 54 个问题样本。
-
-重点检查：
-
-- 原图是否存在。
-- 原图能否正常打开。
-- `mask_1.npy` 是否存在。
-- `mask_2.npy` 是否存在。
-- `mask_3.npy` 是否存在。
-- `mask_4.npy` 是否存在。
-- `mask_5.npy` 是否存在。
-- `mask_key_point.npy` 是否存在。
-- `0.npy` 六通道堆叠标签是否存在。
-- mask 尺寸是否和其他通道一致。
-- 文件是否损坏。
-
-### 2.4 问题类型定义
-
-建议把问题归为以下几类：
-
-| error_type | 含义 |
-| --- | --- |
-| `missing_image` | 原图缺失 |
-| `bad_image` | 原图损坏或无法读取 |
-| `missing_mask` | 某个通道 mask 缺失 |
-| `bad_mask` | `.npy` mask 损坏或无法读取 |
-| `shape_mismatch` | 多个 mask 尺寸不一致 |
-| `empty_mask` | 标签为空，需要判断是否合理 |
-| `unknown` | 暂时无法判断 |
-
-### 2.5 是否修复的判断标准
-
-可以修复：
-
-- 缺少 `0.npy`，但六个独立 mask 都存在，可以后续重新堆叠。
-- 某个文件路径或命名明显错误，但能从同目录找到正确文件。
-- 单个样本的附属文件缺失，但不影响六通道标签，可以记录后继续使用。
-
-不建议修复：
-
-- 原图缺失。
-- 关键 mask 缺失且无法从其他文件恢复。
-- mask 文件损坏。
-- mask 尺寸严重异常。
-- 不确定标签是否正确。
-
-原则：
-
-> 宁可少用一部分不可靠数据，也不要把错误标签混进训练集。
-
-### 2.6 输出文件
-
-创建：
-
-```text
-artifacts/data_audit/bad_samples_review.csv
-```
-
-建议字段：
-
-```text
-sample_id
-char_id
-sample_index
-image_path
-original_errors
-error_type
-can_fix
-fix_method
-decision
-reviewer
-notes
-```
-
-字段说明：
-
-| 字段 | 说明 |
-| --- | --- |
-| `sample_id` | 样本 ID，例如 `0/12` |
-| `char_id` | 字符目录 ID |
-| `sample_index` | 样本编号 |
-| `image_path` | 原图路径 |
-| `original_errors` | manifest 里的原始错误 |
-| `error_type` | 归类后的错误类型 |
-| `can_fix` | `yes` / `no` / `uncertain` |
-| `fix_method` | 如果能修复，写修复方法 |
-| `decision` | `keep` / `fix_then_keep` / `drop` / `need_discussion` |
-| `reviewer` | 填你的名字 |
-| `notes` | 备注 |
-
-### 2.7 任务一验收标准
-
-完成后应能回答：
-
-- 54 个问题样本分别是什么问题。
-- 有多少可以修复。
-- 有多少必须剔除。
-- 是否存在系统性数据生成 bug。
-- 是否需要重新生成部分标签。
-
-最终交付：
-
-```text
-artifacts/data_audit/bad_samples_review.csv
-```
-
-## 3. 任务三：U-Net 重测基线
-
-### 3.1 任务目标
-
-使用新工程、新数据划分、新指标，重新训练和评测 U-Net baseline。
-
-这一步不是为了证明 U-Net 很强，而是为了建立一个可信对照：
-
-> 后续 SegFormer-B2 必须在这个重测 baseline 上明显提升。
-
-### 3.2 训练前检查
-
-确认以下文件存在：
-
-```text
-artifacts/data_audit/manifest.csv
-artifacts/data_audit/splits.csv
-configs/train_unet.yaml
-train.py
-eval.py
-```
-
-确认 `splits.csv` 里大致是：
-
-```text
-train: 600
-val:   120
-test:  120
-```
-
-如果你的数据路径不同，需要先重新生成 manifest 和 splits。
-
-### 3.3 安装训练依赖
-
-```powershell
-cd model_module
-python -m pip install -e ".[train]"
-```
-
-确认 PyTorch：
-
-```powershell
-python -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
-```
-
-如果 `torch.cuda.is_available()` 是 `False`，可以先用 CPU 做 smoke test，但正式训练建议用 GPU。
-
-### 3.4 Smoke test
-
-先不要一上来跑满 80 epoch。建议先把 `configs/train_unet.yaml` 临时复制一份：
-
-```text
-configs/train_unet_smoke.yaml
-```
-
-把里面的 epoch 改小，例如：
+每个配置必须包含：
 
 ```yaml
-optim:
-  epochs: 1
+data:
+  manifest: artifacts/data_qc/manifest_qc_v1.csv
+  splits: artifacts/data_qc/standard_splits_qc_v1.csv
+  qc_exclusions: artifacts/data_qc/dataset_qc_exclusions_v1.csv
+  expected_manifest_sha256: c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4
+  expected_splits_sha256: d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18
+  expected_qc_exclusions_sha256: 6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467
+  expected_split_counts:
+    train: 530
+    val: 119
+    test: 120
 ```
 
-然后运行：
+每个 seed 的执行顺序：
 
-```powershell
-python train.py --config ".\configs\train_unet_smoke.yaml"
+```bash
+python train.py --config "<config>"
+
+python -m onestroke_model.scripts.calibrate_thresholds \
+  --config "<config>" \
+  --checkpoint "<run_dir>/checkpoints/best.pt" \
+  --output "<run_dir>/thresholds_val.json"
+
+python eval.py \
+  --config "<config>" \
+  --checkpoint "<run_dir>/checkpoints/best.pt" \
+  --thresholds-json "<run_dir>/thresholds_val.json" \
+  --split test \
+  --output "<run_dir>/test_metrics.json"
 ```
 
-确认：
+## 10. Character-disjoint benchmark
 
-- 能正确读取数据。
-- 能开始训练。
-- loss 不为 NaN。
-- 能保存 checkpoint。
-
-Smoke test 只是环境检查，不作为正式结果。
-
-### 3.5 正式训练
-
-运行：
-
-```powershell
-python train.py --config ".\configs\train_unet.yaml"
-```
-
-默认输出目录：
+仓库内 B2/U-Net 配置已经切换到 QC-clean split。DeepLabV3+ 当前配置名带：
 
 ```text
-artifacts/runs/unet_rebaseline
+BLOCKED_BY_TASK1
 ```
 
-重点观察：
+实现并完成 smoke test 后：
 
-- loss 是否稳定下降。
-- val Macro Dice 是否上升。
-- keypoint F1 是否极低。
-- 是否 early stopping。
-- 是否出现显存不足。
+1. 复制为不带 `BLOCKED_BY_TASK1` 的正式配置；
+2. 删除 YAML 内 `research_status: BLOCKED_BY_TASK1`；
+3. 保留固定 seed、数据路径和所有 SHA；
+4. 更新 `src/onestroke_model/character_disjoint_runs.py` 中默认配置名；
+5. 不改字符分配。
 
-### 3.6 正式评测
+先 dry-run：
 
-训练完成后运行：
-
-```powershell
-python eval.py `
-  --config ".\configs\train_unet.yaml" `
-  --checkpoint ".\artifacts\runs\unet_rebaseline\checkpoints\best.pt" `
-  --split test `
-  --output ".\artifacts\runs\unet_rebaseline\test_metrics.json"
+```bash
+python -m onestroke_model.scripts.run_character_disjoint_benchmark
 ```
 
-如果需要评测 val：
+所有计划运行必须是 `READY`，然后才允许：
 
-```powershell
-python eval.py `
-  --config ".\configs\train_unet.yaml" `
-  --checkpoint ".\artifacts\runs\unet_rebaseline\checkpoints\best.pt" `
-  --split val `
-  --output ".\artifacts\runs\unet_rebaseline\val_metrics.json"
+```bash
+python -m onestroke_model.scripts.run_character_disjoint_benchmark --execute
 ```
 
-### 3.7 需要记录的指标
+## 11. Smoke test 要求
 
-至少记录：
+正式训练前，三模型都做一轮短 smoke test：
+
+- 能读到正确数量；
+- logits 为 `[B,6,512,512]`；
+- loss 为有限值；
+- AMP 可用；
+- checkpoint 可保存和重新加载；
+- threshold calibration 可运行；
+- test 脚本能写 JSON；
+- `data_contract` 被记录进输出。
+
+Smoke 结果不得进入论文表格。
+
+## 12. 交付目录
+
+代码与小型文本制品提交到 GitHub；大 checkpoint 使用 Git LFS 或另行打包。
+
+建议：
 
 ```text
-macro_dice
-macro_iou
-keypoint_f1
-每通道 dice
-每通道 iou
-每通道 precision
-每通道 recall
+artifacts/paper_ijdar/task1_main/
+  run_manifest.json
+  results_per_seed.csv
+  results_summary.csv
+  environment.json
+  notes.md
+  runs/
+    <experiment_name>/
+      run_metadata.json
+      data_statistics.json
+      metrics_history.json
+      thresholds_val.json
+      test_metrics.json
+      benchmark.log
+      checkpoints/best.pt
 ```
-
-通道顺序固定：
-
-```text
-vec1, vec2, vec3, vec4, vec5, keypoint
-```
-
-### 3.8 训练记录文档
-
-创建：
-
-```text
-artifacts/runs/unet_rebaseline/notes.md
-```
-
-建议内容：
-
-```markdown
-# U-Net Rebaseline Notes
-
-## Environment
-
-- Date:
-- Machine:
-- GPU:
-- Python:
-- PyTorch:
-
-## Data
-
-- manifest:
-- splits:
-- train/val/test counts:
-
-## Config
-
-- config:
-- image_size:
-- batch_size:
-- epochs:
-- lr:
-- loss:
-
-## Results
-
-- best epoch:
-- val macro dice:
-- test macro dice:
-- test macro iou:
-- test keypoint f1:
-
-## Observations
-
-- loss 是否稳定下降：
-- keypoint 是否难学：
-- 哪些字符失败较多：
-- 哪些通道失败较多：
-
-## Problems
-
-- 训练中遇到的问题：
-- 需要刘小凡确认的问题：
-```
-
-### 3.9 任务三交付物
 
 必须交付：
 
 ```text
-artifacts/runs/unet_rebaseline/checkpoints/best.pt
-artifacts/runs/unet_rebaseline/test_metrics.json
-artifacts/runs/unet_rebaseline/notes.md
+src/onestroke_model/models/deeplabv3plus.py
+src/onestroke_model/models/factory.py 的修改
+正式 YAML 配置
+DeepLabV3+ 单元测试
+三模型逐 seed 指标
+均值/标准差汇总
+validation thresholds
+训练日志
+checkpoint SHA-256
+环境版本
+失败/异常说明
+Git commit ID
 ```
 
-如果时间允许，额外交付：
+## 13. 验收清单
+
+- [ ] 使用 769 个 QC-clean 样本，而不是原始 840；
+- [ ] exclusion SHA-256 完全一致；
+- [ ] 标准 split 为 530/119/120；
+- [ ] character-disjoint 为 539/114/116；
+- [ ] 原字符分配 SHA 保留；
+- [ ] DeepLabV3+ 是真实实现，不是名称占位；
+- [ ] 输出六通道 logits，不用 Softmax；
+- [ ] 三个 seed 都保留；
+- [ ] threshold 只用 validation；
+- [ ] test 不参与选择；
+- [ ] 输出严格与容忍 keypoint 指标；
+- [ ] 所有结果带 config/checkpoint/threshold/result 哈希；
+- [ ] 没有把 reference cache 当 GT；
+- [ ] 没有伪造或重建标签；
+- [ ] 负面结果没有隐藏；
+- [ ] 代码测试通过。
+
+## 14. 遇到问题时反馈
+
+请一次性提供：
 
 ```text
-artifacts/runs/unet_rebaseline/val_metrics.json
-artifacts/runs/unet_rebaseline/failure_cases.csv
-artifacts/runs/unet_rebaseline/preview_images/
+1. 执行命令
+2. 完整报错文本
+3. git rev-parse HEAD
+4. Python/PyTorch/torchvision 版本
+5. GPU 型号与显存
+6. 使用的 config
+7. validate_data_contract 输出
+8. 对应日志路径
 ```
 
-注意：
-
-- checkpoint 文件不要直接提交到 GitHub，除非团队明确使用 Git LFS 或网盘。
-- `artifacts/` 默认被 `.gitignore` 忽略，这是正常的。
-- 结果可以先通过压缩包、网盘或截图同步。
-
-### 3.10 任务三验收标准
-
-完成后应能回答：
-
-- U-Net 在新划分下的正式 Macro Dice 是多少。
-- keypoint F1 是多少。
-- 哪几个通道表现最差。
-- 是否复现了旧项目大致表现。
-- 后续 SegFormer-B2 至少需要提升多少才算有效。
-
-## 4. 和刘小凡的分工边界
-
-你这阶段主要负责：
-
-- 数据问题样本复核。
-- U-Net baseline 训练。
-- U-Net 结果记录。
-- 把发现的问题整理清楚。
-
-刘小凡同步负责：
-
-- SegFormer-B2 主线模型。
-- SAM2 数据格式和训练方案。
-- 字体选择接口与 `target_style_id` 设计。
-- 云端/端侧双模型路线。
-
-避免互相影响：
-
-- 你暂时不要改 `src/onestroke_model/models/segformer.py`。
-- 你暂时不要改 `configs/train_segformer_b2.yaml`。
-- 如果需要改 `train.py` 或 `eval.py`，先说明原因。
-- 你可以在 `artifacts/` 下自由生成实验结果。
-
-## 5. 遇到问题时优先反馈这些信息
-
-如果训练或数据检查出问题，请不要只说“跑不了”，尽量附上：
-
-```text
-1. 执行的命令
-2. 完整报错截图或文本
-3. 当前所在目录
-4. Python 版本
-5. PyTorch 版本
-6. 是否有 GPU
-7. 出问题的 sample_id，如果是数据问题
-```
-
-这样能更快定位问题。
+不要自行改变数据、split、QC、seed 或测试协议来绕过错误。

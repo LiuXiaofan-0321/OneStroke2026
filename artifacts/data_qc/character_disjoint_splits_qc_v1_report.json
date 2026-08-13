@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "qc_version": "dataset_qc_v1",
+  "split_type": "character_disjoint_qc_filtered",
+  "source_character_assignment_sha256": "eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e",
+  "split_csv": "artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+  "split_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+  "qc_exclusions": "artifacts/data_qc/dataset_qc_exclusions_v1.csv",
+  "qc_exclusions_sha256": "6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467",
+  "actual_sample_counts": {
+    "train": 539,
+    "val": 114,
+    "test": 116
+  },
+  "actual_character_counts": {
+    "train": 28,
+    "val": 6,
+    "test": 6
+  },
+  "characters": {
+    "train": [
+      "0",
+      "1",
+      "3",
+      "4",
+      "5",
+      "7",
+      "8",
+      "9",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "22",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "30",
+      "35",
+      "36",
+      "37",
+      "38",
+      "39"
+    ],
+    "val": [
+      "2",
+      "10",
+      "21",
+      "29",
+      "32",
+      "33"
+    ],
+    "test": [
+      "6",
+      "11",
+      "20",
+      "23",
+      "31",
+      "34"
+    ]
+  },
+  "character_overlap": {
+    "train_val": [],
+    "train_test": [],
+    "val_test": []
+  },
+  "assertions": {
+    "train_val_character_overlap_zero": true,
+    "train_test_character_overlap_zero": true,
+    "val_test_character_overlap_zero": true,
+    "all_active_samples_assigned_once": true
+  },
+  "freeze_policy": "The original character assignment is immutable. This derived split only applies the frozen QC exclusion list and must not be regenerated in response to model results."
+}

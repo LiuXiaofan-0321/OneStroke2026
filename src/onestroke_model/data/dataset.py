@@ -11,6 +11,18 @@ from onestroke_model.data.transforms import LabelSafeAugmenter, normalize_rgb
 from onestroke_model.utils.io import read_csv_rows
 
 
+def _resolve_manifest_value(manifest_path: str | Path, value: str) -> Path:
+    path = Path(value)
+    if path.is_absolute():
+        return path
+    manifest = Path(manifest_path).resolve()
+    project_root = next(
+        (parent for parent in manifest.parents if (parent / "pyproject.toml").is_file()),
+        manifest.parent,
+    )
+    return (project_root / path).resolve()
+
+
 def _letterbox_image(image: Image.Image, size: int, resample: int) -> Image.Image:
     w, h = image.size
     scale = min(size / w, size / h)
@@ -41,7 +53,13 @@ class OneStrokeSegmentationDataset:
     ) -> None:
         manifest = {r["sample_id"]: r for r in read_csv_rows(manifest_path)}
         split_ids = {r["sample_id"] for r in read_csv_rows(splits_path) if r["split"] == split}
-        self.rows = [manifest[sid] for sid in sorted(split_ids) if sid in manifest]
+        missing = sorted(split_ids - set(manifest))
+        if missing:
+            raise ValueError(
+                f"{split} split references samples absent from manifest: {missing[:10]}"
+            )
+        self.rows = [manifest[sid] for sid in sorted(split_ids)]
+        self.manifest_path = Path(manifest_path)
         self.image_size = image_size
         self.normalization = normalization
         self.augmenter = LabelSafeAugmenter(augmentation) if augmentation else None
@@ -51,12 +69,19 @@ class OneStrokeSegmentationDataset:
 
     def __getitem__(self, idx: int) -> dict[str, Any]:
         row = self.rows[idx]
-        image = Image.open(row["image_path"]).convert("RGB")
+        image = Image.open(
+            _resolve_manifest_value(self.manifest_path, row["image_path"])
+        ).convert("RGB")
         image = _letterbox_image(image, self.image_size, Image.Resampling.BILINEAR)
 
         masks = []
         for channel in CHANNELS:
-            mask = np.load(row[f"{channel}_path"])
+            mask = np.load(
+                _resolve_manifest_value(
+                    self.manifest_path,
+                    row[f"{channel}_path"],
+                )
+            )
             masks.append(_letterbox_mask(mask, self.image_size))
         if self.augmenter is not None:
             image, masks = self.augmenter(image, masks)
@@ -130,7 +155,14 @@ def estimate_direction_pos_weight(
     total_pixels = np.zeros(5, dtype=np.float64)
     for row in selected:
         for i, channel in enumerate(CHANNELS[:5]):
-            mask = np.asarray(np.load(row[f"{channel}_path"])) > 0
+            mask = np.asarray(
+                np.load(
+                    _resolve_manifest_value(
+                        dataset.manifest_path,
+                        row[f"{channel}_path"],
+                    )
+                )
+            ) > 0
             positives[i] += float(mask.sum())
             total_pixels[i] += float(mask.size)
     negatives = total_pixels - positives

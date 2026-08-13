@@ -45,11 +45,13 @@ def main() -> None:
 
     cfg = load_yaml(args.config)
     torch = _require_torch()
+    from onestroke_model.data.data_contract import validate_data_contract
     from onestroke_model.data.dataset import make_torch_loader
     from onestroke_model.models import build_model
 
     device = _device(str(cfg.get("device", "auto")), torch)
     data_cfg = cfg["data"]
+    data_contract = validate_data_contract(data_cfg)
     loader = make_torch_loader(
         data_cfg["manifest"],
         data_cfg["splits"],
@@ -92,6 +94,7 @@ def main() -> None:
         "best_thresholds": best_thresholds,
         "best_dice": {channel: float(dice[i, best_indexes[i]]) for i, channel in enumerate(CHANNELS)},
         "dice_by_channel": {channel: dice[i].tolist() for i, channel in enumerate(CHANNELS)},
+        "data_contract": data_contract,
     }
     write_json(args.output, result)
     print("best_thresholds=", best_thresholds)

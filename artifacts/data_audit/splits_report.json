@@ -1,0 +1,12 @@
+{
+  "manifest": ".\\artifacts\\data_audit\\manifest.csv",
+  "output": ".\\artifacts\\data_audit\\splits.csv",
+  "num_usable_samples": 840,
+  "num_groups": 21,
+  "grouping_rule": "writer_id > source_id > sample_index > split_group_key > sample_id",
+  "counts": {
+    "train": 600,
+    "val": 120,
+    "test": 120
+  }
+}

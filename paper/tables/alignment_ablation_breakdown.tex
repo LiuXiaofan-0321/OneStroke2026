@@ -1,0 +1,35 @@
+\begin{table*}[t]
+\caption{Paired alignment comparisons by perturbation family. Positive
+benefit differences favour the current constrained alignment.}
+\label{tab:alignment-breakdown}
+\centering
+\scriptsize
+\begin{tabular}{llrrrrrr}
+\toprule
+Comparison & Perturbation & Refs & Ours & Comparator & Benefit 95\% CI & $p$ & RBC \\
+\midrule
+Ours--no\_alignment & compound\_allowed\_transform & 156 & 8.143 & 43.947 & [34.353, 37.172] & 0.00 & 1.000 \\
+Ours--no\_alignment & direction\_terminal\_deletion & 200 & 19.757 & 2.135 & [15.447, 19.802] & 0.00 & 1.000 \\
+Ours--no\_alignment & direction\_width\_dilate & 200 & 24.034 & 4.624 & [17.685, 21.234] & 0.00 & 1.000 \\
+Ours--no\_alignment & direction\_width\_erode & 200 & 22.225 & 4.641 & [15.636, 19.565] & 0.00 & 1.000 \\
+Ours--no\_alignment & extra\_direction\_fragment & 200 & 11.398 & 0.923 & [9.021, 11.985] & 0.00 & 1.000 \\
+Ours--no\_alignment & global\_rotation & 180 & 5.395 & 15.927 & [10.176, 10.871] & 0.00 & 1.000 \\
+Ours--no\_alignment & global\_scale\_down & 200 & 16.356 & 48.355 & [31.504, 32.517] & 0.00 & 1.000 \\
+Ours--no\_alignment & global\_scale\_up & 170 & 13.653 & 35.869 & [20.706, 23.708] & 0.00 & 0.988 \\
+Ours--no\_alignment & global\_translation & 200 & 0.000 & 43.034 & [42.054, 44.005] & 0.00 & 1.000 \\
+Ours--no\_alignment & keypoint\_shift & 200 & 7.468 & 7.468 & [0.000, 0.000] & 1.00 & 0.000 \\
+Ours--no\_alignment & local\_fragment\_shift & 200 & 4.310 & 2.270 & [1.684, 2.427] & 0.00 & 1.000 \\
+Ours--wide\_similarity & compound\_allowed\_transform & 156 & 8.143 & 22.951 & [14.336, 15.312] & 0.00 & 1.000 \\
+Ours--wide\_similarity & direction\_terminal\_deletion & 200 & 19.757 & 20.231 & [-0.639, -0.317] & 0.00 & -0.696 \\
+Ours--wide\_similarity & direction\_width\_dilate & 200 & 24.034 & 24.605 & [-0.751, -0.410] & 0.00 & -0.623 \\
+Ours--wide\_similarity & direction\_width\_erode & 200 & 22.225 & 22.730 & [-0.682, -0.341] & 0.00 & -0.577 \\
+Ours--wide\_similarity & extra\_direction\_fragment & 200 & 11.398 & 11.560 & [-0.280, -0.054] & 0.01 & -0.407 \\
+Ours--wide\_similarity & global\_rotation & 180 & 5.395 & 12.019 & [6.344, 6.908] & 0.00 & 1.000 \\
+Ours--wide\_similarity & global\_scale\_down & 200 & 16.356 & 16.861 & [0.439, 0.571] & 0.00 & 0.919 \\
+Ours--wide\_similarity & global\_scale\_up & 170 & 13.653 & 14.107 & [0.377, 0.533] & 0.00 & 0.841 \\
+Ours--wide\_similarity & global\_translation & 200 & 0.000 & 0.000 & [0.000, 0.000] & 1.00 & 0.000 \\
+Ours--wide\_similarity & keypoint\_shift & 200 & 7.468 & 7.468 & [0.000, 0.000] & 1.00 & 0.000 \\
+Ours--wide\_similarity & local\_fragment\_shift & 200 & 4.310 & 4.302 & [-0.006, 0.024] & 0.26 & 0.444 \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -12,8 +12,10 @@ import csv
 import json
 import math
 from collections import defaultdict
+from collections.abc import Iterable, Mapping, Sequence
+from itertools import pairwise
 from pathlib import Path
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any
 
 import numpy as np
 
@@ -658,9 +660,14 @@ def component_sensitivity(
         ]
         if not subset:
             continue
-        def mean_loss(field: str, availability: str | None = None) -> float | None:
+        def mean_loss(
+            field: str,
+            availability: str | None = None,
+            *,
+            current_subset: Sequence[Mapping[str, Any]] = subset,
+        ) -> float | None:
             values: list[float] = []
-            for row in subset:
+            for row in current_subset:
                 if availability and not bool(row.get(availability)):
                     continue
                 value = _numeric(row, field)
@@ -762,7 +769,7 @@ def variant_behavior(
             max_drops: list[float] = []
             aucs: list[float] = []
             for severity_map in by_reference.values():
-                for first_severity, second_severity in zip(configured[:-1], configured[1:], strict=True):
+                for first_severity, second_severity in pairwise(configured):
                     if first_severity not in severity_map or second_severity not in severity_map:
                         continue
                     first_score = float(severity_map[first_severity][score_field])
@@ -936,7 +943,7 @@ def weight_sensitivity_grid(
     if step <= 0 or step > 1:
         raise ValueError("weight-grid step must be in (0, 1]")
     divisions_float = 1.0 / float(step)
-    divisions = int(round(divisions_float))
+    divisions = round(divisions_float)
     if not math.isclose(divisions * float(step), 1.0, rel_tol=0.0, abs_tol=1e-9):
         raise ValueError("weight-grid step must divide 1 exactly within tolerance")
 
@@ -1227,6 +1234,7 @@ def write_structure_score_audit_outputs(
 ) -> dict[str, Any]:
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
+    (output / "BLOCKED.md").unlink(missing_ok=True)
     definitions = tuple(definitions)
 
     correlations = component_correlations(rows)
