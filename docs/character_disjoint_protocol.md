@@ -20,8 +20,14 @@ assignment:
 - 28/6/6 characters and 539/114/116 active train/validation/test samples;
 - derived split SHA-256:
   `e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b`;
-- exclusion-list SHA-256:
-  `6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467`.
+- stable exclusion-contract SHA-256:
+  `bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a`.
+
+The full diagnostic exclusion CSV retains decoded-pixel hashes and IoU values.
+It is not the cross-platform training contract because JPEG decoders can
+produce a few different intensity values across `libjpeg` versions. The
+71-row stable contract contains only the frozen exclusion decisions, reasons,
+and canonical duplicate representatives.
 
 The original six-channel GT is restored from the pinned legacy archive with:
 
@@ -53,26 +59,28 @@ threshold calibration, and evaluation validate their hashes and counts.
 Generate or verify the frozen benchmark plan without training:
 
 ```bash
-python -m onestroke_model.scripts.run_character_disjoint_benchmark
+python -m onestroke_model.scripts.run_task1_benchmark
 ```
 
-The default is always dry-run. The plan contains:
+The default is always dry-run. The complete plan contains:
 
-- one U-Net baseline run;
-- three pre-registered SegFormer-B2 seeds;
-- three DeepLabV3+ seed placeholders marked `BLOCKED_BY_TASK1`.
+- three models: U-Net, DeepLabV3+, and SegFormer-B2;
+- two splits: standard QC-clean and character-disjoint QC-clean;
+- three pre-registered seeds per model and split;
+- 18 formal runs in total.
 
 Thresholds must be calibrated on validation only. The test split is evaluated
 once per completed run after the checkpoint and thresholds are fixed. The
 original character assignment and the QC exclusion list must not change.
 
-After Task 1 has supplied the authoritative DeepLabV3+ implementation and
-replaced the three blocked placeholders, actual execution requires an explicit
-flag:
+The real ResNet-50/ASPP/low-level-decoder DeepLabV3+ implementation and all
+18 configs are present. Actual execution still requires an explicit flag:
 
 ```bash
-python -m onestroke_model.scripts.run_character_disjoint_benchmark --execute
+python -m onestroke_model.scripts.run_task1_benchmark --execute
 ```
 
-The launcher refuses execution if the data, split hash, split counts, or any
-Task 1 run is not ready.
+The launcher validates all data contracts before training and skips only runs
+that already contain a checkpoint, validation-calibrated thresholds, and final
+test metrics. Formal training results remain pending until the 18-run matrix
+has actually completed.

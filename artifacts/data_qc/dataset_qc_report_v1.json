@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "qc_version": "dataset_qc_v1",
-  "generated_at_utc": "2026-08-13T10:56:13.242207+00:00",
+  "generated_at_utc": "2026-08-13T12:21:17.392103+00:00",
   "decision_policy": "Exclude only explicit source-image/GT mismatches below the frozen IoU threshold and non-canonical members of exact image+mask duplicate groups.",
   "mismatch_iou_threshold": 0.8,
   "complete_gt_sample_count": 840,
@@ -96,25 +96,30 @@
   "inputs": {
     "manifest": "artifacts/data_recovery/source_manifest_identity_v1.csv",
     "manifest_sha256": "7ead21e34d3469faec99dcb73e04299d8906ad5f5494feaf0b13f645df3a124a",
+    "manifest_canonical_csv_sha256": "fc8f932be97ef920773ed665eaca358e1fced70d8f7cb9d450d536eda842aac9",
     "dataset_root": "data/legacy_gt_v1/output_img",
     "standard_splits": "artifacts/data_audit/splits.csv",
     "standard_splits_sha256": "3504de2113e6640b762392ebadac8f4dccfe4f35df3f87354ccd475b74942abf",
+    "standard_splits_canonical_csv_sha256": "72017c7d43759ba41b5e8d1232e5e41a343d5083a1241bccee2f322eb25f4b68",
     "character_disjoint_splits": "artifacts/paper_ijdar/character_disjoint/splits_character_disjoint.csv",
-    "character_disjoint_splits_sha256": "eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e"
+    "character_disjoint_splits_sha256": "eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e",
+    "character_disjoint_splits_canonical_csv_sha256": "eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e"
   },
   "outputs": {
     "audit_csv": "artifacts/data_qc/dataset_qc_audit_v1.csv",
     "exclusions_csv": "artifacts/data_qc/dataset_qc_exclusions_v1.csv",
+    "exclusion_contract_csv": "artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
     "clean_manifest": "artifacts/data_qc/manifest_qc_v1.csv",
     "standard_splits_qc": "artifacts/data_qc/standard_splits_qc_v1.csv",
     "character_disjoint_splits_qc": "artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
     "character_disjoint_splits_qc_report": "artifacts/data_qc/character_disjoint_splits_qc_v1_report.json",
     "audit_csv_sha256": "3e30e49014d1ba5255e021685c3c89e7e763b4d64d52359e207405c787676fb7",
     "exclusions_csv_sha256": "6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467",
+    "exclusion_contract_csv_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
     "clean_manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
     "standard_splits_qc_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
     "character_disjoint_splits_qc_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
-    "character_disjoint_splits_qc_report_sha256": "146fab963f330e45f0450f55b2c482afbb59b4aa897d3445cce79806d2498517",
+    "character_disjoint_splits_qc_report_sha256": "40690be5d8ea60933c8cf337fe8240132495f5ffde7cde12f0f2fecb279a2f4b",
     "report_json": "artifacts/data_qc/dataset_qc_report_v1.json"
   },
   "splits": {

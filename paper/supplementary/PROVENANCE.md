@@ -12,6 +12,7 @@ Paper-eligible result sources:
 - `artifacts/data_recovery/manifest_resolved.csv`
 - `artifacts/data_qc/dataset_qc_report_v1.json`
 - `artifacts/data_qc/dataset_qc_exclusions_v1.csv`
+- `artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv`
 - `artifacts/data_qc/manifest_qc_v1.csv`
 - `artifacts/data_qc/standard_splits_qc_v1.csv`
 - `artifacts/data_qc/character_disjoint_splits_qc_v1.csv`
@@ -47,8 +48,8 @@ Frozen facts:
   `eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e`;
 - QC-clean character-disjoint split SHA-256:
   `e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b`;
-- dataset QC exclusion-list SHA-256:
-  `6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467`;
+- stable dataset QC exclusion-contract SHA-256:
+  `bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a`;
 - recovered legacy archive SHA-256:
   `b9924007099033cc8b62128dc2139ea9cb04a66a48e56c46518407677254450d`.
 - frozen human-validation pair file SHA-256:

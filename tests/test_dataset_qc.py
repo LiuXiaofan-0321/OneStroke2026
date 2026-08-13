@@ -7,6 +7,7 @@ import numpy as np
 from PIL import Image
 
 from onestroke_model.data.dataset_qc import build_dataset_qc
+from onestroke_model.reproducibility import sha256_file
 
 
 def _write_sample(
@@ -99,3 +100,12 @@ def test_dataset_qc_excludes_mismatch_and_exact_duplicate(tmp_path: Path) -> Non
     assert report["reference_cache_used_as_ground_truth"] is False
     assert report["labels_generated_or_fabricated"] is False
     assert Path(report["outputs"]["clean_manifest"]).is_file()
+    contract = Path(report["outputs"]["exclusion_contract_csv"])
+    assert contract.is_file()
+    assert report["outputs"]["exclusion_contract_csv_sha256"] == sha256_file(
+        contract
+    )
+    with contract.open(encoding="utf-8-sig", newline="") as handle:
+        contract_rows = list(csv.DictReader(handle))
+    assert {row["sample_id"] for row in contract_rows} == {"1/0", "2/0"}
+    assert all(row["decision"] == "EXCLUDE" for row in contract_rows)

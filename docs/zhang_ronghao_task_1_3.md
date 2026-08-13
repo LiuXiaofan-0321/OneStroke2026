@@ -51,8 +51,14 @@
 
 ```text
 artifacts/data_qc/manifest_qc_v1.csv
-artifacts/data_qc/dataset_qc_exclusions_v1.csv
+artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv
 ```
+
+`dataset_qc_exclusions_v1.csv` 仍保留完整像素哈希、IoU 和诊断字段，但不再作为
+跨机器训练合同。原因是同一 JPEG 在不同 `libjpeg` 版本下可能有极少数解码像素
+差异，导致详细审计 CSV 的字节哈希变化，而排除样本、排除理由与重复主实例并未
+变化。稳定合同只保存 71 条决策所需字段，已经在 Windows 与 AutoDL Linux 上
+独立重算验证一致。
 
 禁止使用：
 
@@ -68,8 +74,8 @@ references/cache/segformer_b2_v1/              # 模型输出，绝不是 GT
 QC-clean manifest SHA-256:
 c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4
 
-QC exclusion SHA-256:
-6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467
+QC exclusion contract SHA-256:
+bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a
 ```
 
 ### 2.1 12 个原图/GT错配
@@ -199,62 +205,50 @@ e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b
 
 禁止重新随机分字符。QC 只是冻结后的排除层，不允许看模型结果后修改。
 
-## 4. 你需要实现的部分
+## 4. 已准备好的模型与执行工程
 
 仓库已有：
 
 - 六通道数据集和训练器；
 - U-Net；
 - SegFormer-B2；
+- 真实 DeepLabV3+；
 - BCE/Dice/Focal/Boundary loss；
 - validation-only threshold calibration；
 - test evaluation；
-- character-disjoint launcher；
-- 三个待替换的 DeepLabV3+ 配置；
+- 18 组正式配置；
+- 可续跑的 Task 1 一键启动器；
 - 数据哈希和 QC 强制校验。
-
-你主要需要完成：
 
 ### 4.1 DeepLabV3+
 
-新增：
+实现位置：
 
 ```text
 src/onestroke_model/models/deeplabv3plus.py
 ```
 
-并在：
+模型工厂注册位置：
 
 ```text
 src/onestroke_model/models/factory.py
 ```
 
-注册：
-
-```text
-model.name: deeplabv3plus
-```
-
-要求：
+当前冻结实现：
 
 - 输入 `[B,3,H,W]`；
 - 输出 logits `[B,6,H,W]`；
 - 六通道独立 Sigmoid，模型内部不要 Softmax；
-- 优先使用 ImageNet 预训练 encoder；
-- 推荐 ResNet-50 backbone；
-- ASPP + decoder 结构要明确；
+- ImageNet 预训练 ResNet-50 encoder；
+- output stride 16；
+- ASPP rates 为 `6/12/18`；
+- stride-4 low-level feature decoder；
 - 输出恢复到输入空间大小；
 - 不修改六通道含义：
   `vec1, vec2, vec3, vec4, vec5, keypoint`。
 
-可以用成熟开源组件，但必须记录：
-
-- 依赖包和版本；
-- backbone；
-- pretrained 权重来源；
-- license；
-- 参数量；
-- 是否修改默认结构。
+不得临时替换成 torchvision 的 DeepLabV3，也不得把模型名称改成
+DeepLabV3+ 但实际复用其他网络。
 
 ### 4.2 三随机种子
 
@@ -272,17 +266,12 @@ model.name: deeplabv3plus
 
 | 模型 | 标准 split | Character-disjoint |
 |---|---:|---:|
-| U-Net | 3 seeds | 至少 1 seed；时间允许则 3 |
+| U-Net | 3 seeds | 3 seeds |
 | DeepLabV3+ | 3 seeds | 3 seeds |
 | SegFormer-B2 | 3 seeds | 3 seeds |
 
-如果四天时间不足，优先级：
-
-1. 标准 QC-clean：三模型各 3 seeds；
-2. Character-disjoint：DeepLabV3+ 与 B2 各 3 seeds；
-3. Character-disjoint：U-Net 补到 3 seeds。
-
-任何减少必须在报告中写明原因，不能隐藏。
+正式矩阵共 `3 models × 2 splits × 3 seeds = 18 runs`。不得因某个 seed
+表现较差而删除；如果算力中断，使用一键启动器续跑。
 
 ## 5. 公平比较规则
 
@@ -423,7 +412,7 @@ reference_cache_used_as_ground_truth: false
 
 ## 9. 标准 QC-clean 主基准
 
-请为三种模型各建立三个标准 split 配置，建议命名：
+三种模型各三个标准 split 配置已经生成：
 
 ```text
 configs/paper_ijdar/main_qc_unet_seed_20260811.yaml
@@ -439,67 +428,71 @@ configs/paper_ijdar/main_qc_segformer_b2_seed_314159.yaml
 configs/paper_ijdar/main_qc_segformer_b2_seed_271828.yaml
 ```
 
-每个配置必须包含：
+配置中的冻结数据合同为：
 
 ```yaml
 data:
   manifest: artifacts/data_qc/manifest_qc_v1.csv
   splits: artifacts/data_qc/standard_splits_qc_v1.csv
-  qc_exclusions: artifacts/data_qc/dataset_qc_exclusions_v1.csv
+  qc_exclusions: artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv
   expected_manifest_sha256: c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4
   expected_splits_sha256: d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18
-  expected_qc_exclusions_sha256: 6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467
+  expected_qc_exclusions_sha256: bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a
   expected_split_counts:
     train: 530
     val: 119
     test: 120
 ```
 
-每个 seed 的执行顺序：
+所有配置可由下面的命令无模型结果参与地重新生成：
 
 ```bash
-python train.py --config "<config>"
-
-python -m onestroke_model.scripts.calibrate_thresholds \
-  --config "<config>" \
-  --checkpoint "<run_dir>/checkpoints/best.pt" \
-  --output "<run_dir>/thresholds_val.json"
-
-python eval.py \
-  --config "<config>" \
-  --checkpoint "<run_dir>/checkpoints/best.pt" \
-  --thresholds-json "<run_dir>/thresholds_val.json" \
-  --split test \
-  --output "<run_dir>/test_metrics.json"
+python -m onestroke_model.scripts.generate_task1_configs
 ```
 
 ## 10. Character-disjoint benchmark
 
-仓库内 B2/U-Net 配置已经切换到 QC-clean split。DeepLabV3+ 当前配置名带：
+Character-disjoint 的9份配置已经完成，不再存在
+`BLOCKED_BY_TASK1` 占位配置。原字符分配不变：
 
 ```text
-BLOCKED_BY_TASK1
+eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e
 ```
 
-实现并完成 smoke test 后：
-
-1. 复制为不带 `BLOCKED_BY_TASK1` 的正式配置；
-2. 删除 YAML 内 `research_status: BLOCKED_BY_TASK1`；
-3. 保留固定 seed、数据路径和所有 SHA；
-4. 更新 `src/onestroke_model/character_disjoint_runs.py` 中默认配置名；
-5. 不改字符分配。
-
-先 dry-run：
+## 10.1 18组正式实验统一预检
 
 ```bash
-python -m onestroke_model.scripts.run_character_disjoint_benchmark
+python -m onestroke_model.scripts.run_task1_benchmark
 ```
 
-所有计划运行必须是 `READY`，然后才允许：
+输出必须显示：
+
+```text
+run_count: 18
+ready_run_count: 18
+completed_run_count: 0
+```
+
+如有任意数据合同、模型文件、配置或路径问题，预检会直接失败，不得绕过。
+
+## 10.2 正式执行与断点续跑
+
+GPU smoke test 通过后执行：
 
 ```bash
-python -m onestroke_model.scripts.run_character_disjoint_benchmark --execute
+python -m onestroke_model.scripts.run_task1_benchmark --execute
 ```
+
+启动器会按 run 记录状态，已经完整拥有：
+
+```text
+checkpoints/best.pt
+thresholds_val.json
+test_metrics.json
+```
+
+且阈值来自 `val`、指标来自 `test` 的 run 会被跳过。中途失败后再次执行同一命令
+即可续跑，禁止删除表现不好的结果。
 
 ## 11. Smoke test 要求
 
@@ -560,11 +553,11 @@ Git commit ID
 ## 13. 验收清单
 
 - [ ] 使用 769 个 QC-clean 样本，而不是原始 840；
-- [ ] exclusion SHA-256 完全一致；
+- [ ] exclusion contract SHA-256 为 `bd2b0641...`；
 - [ ] 标准 split 为 530/119/120；
 - [ ] character-disjoint 为 539/114/116；
 - [ ] 原字符分配 SHA 保留；
-- [ ] DeepLabV3+ 是真实实现，不是名称占位；
+- [x] DeepLabV3+ 是真实实现，不是名称占位；
 - [ ] 输出六通道 logits，不用 Softmax；
 - [ ] 三个 seed 都保留；
 - [ ] threshold 只用 validation；

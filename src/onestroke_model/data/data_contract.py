@@ -136,6 +136,8 @@ def validate_data_contract(
             for row in read_csv_rows(exclusions_path)
             if str(row.get("decision", "")).strip().upper() == "EXCLUDE"
         }
+        if not exclusion_ids:
+            raise ValueError("QC exclusion contract contains no EXCLUDE decisions")
         leaked_exclusions = sorted(set(split_ids) & exclusion_ids)
         if leaked_exclusions:
             raise ValueError(

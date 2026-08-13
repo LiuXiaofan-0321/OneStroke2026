@@ -62,7 +62,7 @@ def main() -> None:
         shuffle=False,
         normalization=str(data_cfg.get("normalization", "none")),
     )
-    model = build_model(cfg["model"]).to(device)
+    model = build_model(cfg["model"], load_pretrained=False).to(device)
     checkpoint = torch.load(args.checkpoint, map_location=device)
     model.load_state_dict(checkpoint["model_state"])
     model.eval()

@@ -5,8 +5,8 @@
   "source_character_assignment_sha256": "eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e",
   "split_csv": "artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
   "split_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
-  "qc_exclusions": "artifacts/data_qc/dataset_qc_exclusions_v1.csv",
-  "qc_exclusions_sha256": "6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467",
+  "qc_exclusions": "artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+  "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
   "actual_sample_counts": {
     "train": 539,
     "val": 114,

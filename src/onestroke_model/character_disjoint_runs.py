@@ -14,16 +14,18 @@ from onestroke_model.utils.io import read_csv_rows
 
 DEFAULT_CONFIGS = (
     "configs/paper_ijdar/character_disjoint_unet_seed_20260811.yaml",
+    "configs/paper_ijdar/character_disjoint_unet_seed_314159.yaml",
+    "configs/paper_ijdar/character_disjoint_unet_seed_271828.yaml",
+    "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_20260811.yaml",
+    "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml",
+    "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_271828.yaml",
     "configs/paper_ijdar/character_disjoint_segformer_b2_seed_20260811.yaml",
     "configs/paper_ijdar/character_disjoint_segformer_b2_seed_314159.yaml",
     "configs/paper_ijdar/character_disjoint_segformer_b2_seed_271828.yaml",
-    "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_20260811_BLOCKED_BY_TASK1.yaml",
-    "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159_BLOCKED_BY_TASK1.yaml",
-    "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_271828_BLOCKED_BY_TASK1.yaml",
 )
 FROZEN_SPLIT_SHA256 = "eec9bf5c0910a2e9f6046991f1458519cd903d31deea3e0a4d33c555ff53a09e"
 QC_CLEAN_SPLIT_SHA256 = "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b"
-QC_EXCLUSIONS_SHA256 = "6397ed346618173edaef1e8146ec162836046fafb35869227a13a2c4ee6cc467"
+QC_EXCLUSIONS_SHA256 = "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a"
 EXPECTED_SPLIT_SAMPLE_COUNTS = {"train": 539, "val": 114, "test": 116}
 EXPECTED_SPLIT_CHARACTER_COUNTS = {"train": 28, "val": 6, "test": 6}
 EXPECTED_COMPLETE_SAMPLES = 769
@@ -273,7 +275,7 @@ def build_character_disjoint_run_plan(
         "runs": plans,
         "execution_policy": (
             "Dry-run only unless --execute is explicitly supplied. Full execution is "
-            "refused while Task 1 DeepLabV3+ is pending. Thresholds are calibrated on "
-            "validation only; each test run is final evaluation-only."
+            "refused unless every model, config, and data path is ready. Thresholds are "
+            "calibrated on validation only; each test run is final evaluation-only."
         ),
     }

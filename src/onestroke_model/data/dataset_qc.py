@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import io
 import json
 import math
 from collections import Counter, defaultdict
@@ -21,6 +22,16 @@ from onestroke_model.reproducibility import sha256_file, utc_now_iso
 QC_SCHEMA_VERSION = 1
 QC_VERSION = "dataset_qc_v1"
 DEFAULT_MISMATCH_IOU_THRESHOLD = 0.80
+EXCLUSION_CONTRACT_FIELDS = (
+    "schema_version",
+    "qc_version",
+    "sample_id",
+    "char_id",
+    "sample_index",
+    "hard_exclusion_reasons",
+    "canonical_sample_id",
+    "decision",
+)
 
 
 def _read_csv(path: Path) -> list[dict[str, str]]:
@@ -38,6 +49,42 @@ def _write_csv(
         writer = csv.DictWriter(handle, fieldnames=list(fieldnames), extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _write_exclusion_contract(
+    path: Path,
+    rows: Sequence[Mapping[str, Any]],
+) -> None:
+    """Write only decision-critical, cross-platform-stable QC fields.
+
+    Decoded JPEG pixels can differ by a few intensity values across libjpeg
+    versions. Those diagnostics remain in the full audit CSV, but must not be
+    part of the immutable training contract when the exclusion decision,
+    reason, and canonical duplicate representative are unchanged.
+    """
+
+    ordered = sorted(rows, key=lambda row: _sample_sort_key(str(row["sample_id"])))
+    _write_csv(path, ordered, EXCLUSION_CONTRACT_FIELDS)
+
+
+def _canonical_csv_sha256(path: Path) -> str:
+    """Hash CSV records independently of checkout line endings."""
+
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None:
+            raise ValueError(f"CSV has no header: {path}")
+        rows = list(reader)
+        fields = list(reader.fieldnames)
+    buffer = io.StringIO(newline="")
+    writer = csv.DictWriter(
+        buffer,
+        fieldnames=fields,
+        lineterminator="\r\n",
+    )
+    writer.writeheader()
+    writer.writerows(rows)
+    return hashlib.sha256(buffer.getvalue().encode("utf-8")).hexdigest()
 
 
 def _truthy(value: object) -> bool:
@@ -476,6 +523,7 @@ def build_dataset_qc(
     output.mkdir(parents=True, exist_ok=True)
     audit_path = output / "dataset_qc_audit_v1.csv"
     exclusions_path = output / "dataset_qc_exclusions_v1.csv"
+    exclusion_contract_path = output / "dataset_qc_exclusion_contract_v1.csv"
     clean_manifest_path = output / "manifest_qc_v1.csv"
     standard_clean_path = output / "standard_splits_qc_v1.csv"
     character_clean_path = output / "character_disjoint_splits_qc_v1.csv"
@@ -514,6 +562,10 @@ def build_dataset_qc(
         [row for row in audited if str(row["sample_id"]) in exclusion_ids],
         audit_fields,
     )
+    _write_exclusion_contract(
+        exclusion_contract_path,
+        [row for row in audited if str(row["sample_id"]) in exclusion_ids],
+    )
     clean_manifest, manifest_fields = _portable_clean_manifest(
         manifest_rows,
         clean_sample_ids=set(audited_by_id) - exclusion_ids,
@@ -528,8 +580,8 @@ def build_dataset_qc(
     character_clean_report = _split_report(
         character_clean,
         split_csv=character_clean_path,
-        source_split_sha256=sha256_file(character_splits),
-        exclusion_csv=exclusions_path,
+        source_split_sha256=_canonical_csv_sha256(character_splits),
+        exclusion_csv=exclusion_contract_path,
     )
     character_clean_report_path.write_text(
         json.dumps(character_clean_report, ensure_ascii=False, indent=2),
@@ -574,17 +626,28 @@ def build_dataset_qc(
         "inputs": {
             "manifest": _portable_path(manifest, project_root),
             "manifest_sha256": sha256_file(manifest),
+            "manifest_canonical_csv_sha256": _canonical_csv_sha256(manifest),
             "dataset_root": _portable_path(root, project_root),
             "standard_splits": _portable_path(standard_splits, project_root),
             "standard_splits_sha256": sha256_file(standard_splits),
+            "standard_splits_canonical_csv_sha256": _canonical_csv_sha256(
+                standard_splits
+            ),
             "character_disjoint_splits": _portable_path(
                 character_splits, project_root
             ),
             "character_disjoint_splits_sha256": sha256_file(character_splits),
+            "character_disjoint_splits_canonical_csv_sha256": (
+                _canonical_csv_sha256(character_splits)
+            ),
         },
         "outputs": {
             "audit_csv": _portable_path(audit_path, project_root),
             "exclusions_csv": _portable_path(exclusions_path, project_root),
+            "exclusion_contract_csv": _portable_path(
+                exclusion_contract_path,
+                project_root,
+            ),
             "clean_manifest": _portable_path(clean_manifest_path, project_root),
             "standard_splits_qc": _portable_path(standard_clean_path, project_root),
             "character_disjoint_splits_qc": _portable_path(
@@ -607,6 +670,9 @@ def build_dataset_qc(
         {
             "audit_csv_sha256": sha256_file(audit_path),
             "exclusions_csv_sha256": sha256_file(exclusions_path),
+            "exclusion_contract_csv_sha256": sha256_file(
+                exclusion_contract_path
+            ),
             "clean_manifest_sha256": sha256_file(clean_manifest_path),
             "standard_splits_qc_sha256": sha256_file(standard_clean_path),
             "character_disjoint_splits_qc_sha256": sha256_file(character_clean_path),

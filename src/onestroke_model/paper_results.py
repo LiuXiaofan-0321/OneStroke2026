@@ -141,7 +141,8 @@ def build_artifact_registry(project_root: str | Path) -> list[dict[str, Any]]:
             ).is_file(),
             "formal_artifact_eligible": False,
             "blocking_error": (
-                "Verified GT paths are ready, but DeepLabV3+ remains pending Task 1."
+                "The complete 18-run Task 1 matrix is ready but formal GPU results "
+                "have not yet been completed."
                 if character_status != "READY_TO_RUN"
                 else None
             ),

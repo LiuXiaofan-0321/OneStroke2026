@@ -23,7 +23,9 @@ TASK1_EXPECTED = {
     ),
     "segformer_b2_release": ("releases/segformer_b2_v1/test_metrics.json",),
     "dataset_qc_report": ("artifacts/data_qc/dataset_qc_report_v1.json",),
-    "dataset_qc_exclusions": ("artifacts/data_qc/dataset_qc_exclusions_v1.csv",),
+    "dataset_qc_exclusions": (
+        "artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+    ),
     "dataset_qc_manifest": ("artifacts/data_qc/manifest_qc_v1.csv",),
     "dataset_qc_standard_split": ("artifacts/data_qc/standard_splits_qc_v1.csv",),
     "dataset_qc_character_split": (

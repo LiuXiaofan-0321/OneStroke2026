@@ -102,6 +102,29 @@ def _build_optimizer(model, cfg: dict[str, Any], torch_module):
             {"params": encoder_params, "lr": encoder_lr, "name": "encoder"},
             {"params": decoder_params, "lr": decoder_lr, "name": "decoder"},
         ]
+    elif (
+        model_cfg.get("name") == "deeplabv3plus"
+        and hasattr(model, "encoder_parameters")
+        and hasattr(model, "decoder_parameters")
+    ):
+        encoder_lr = float(optim_cfg.get("encoder_lr", 1e-4))
+        decoder_lr = float(
+            optim_cfg.get(
+                "decoder_lr",
+                encoder_lr * float(optim_cfg.get("decoder_lr_scale", 10.0)),
+            )
+        )
+        encoder_params = list(model.encoder_parameters())
+        decoder_params = list(model.decoder_parameters())
+        if not encoder_params or not decoder_params:
+            raise ValueError("could not identify DeepLabV3+ encoder/decoder parameters")
+        encoder_ids = {id(param) for param in encoder_params}
+        if encoder_ids & {id(param) for param in decoder_params}:
+            raise ValueError("DeepLabV3+ encoder and decoder parameter groups overlap")
+        param_groups = [
+            {"params": encoder_params, "lr": encoder_lr, "name": "encoder"},
+            {"params": decoder_params, "lr": decoder_lr, "name": "decoder"},
+        ]
     else:
         lr = float(optim_cfg.get("lr", optim_cfg.get("decoder_lr", 3e-4)))
         param_groups = [{"params": model.parameters(), "lr": lr, "name": "model"}]

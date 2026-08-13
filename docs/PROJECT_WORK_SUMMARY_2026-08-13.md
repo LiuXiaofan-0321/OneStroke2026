@@ -1391,12 +1391,21 @@ artifacts/paper_ijdar/expert_validation/human_ratings_v1/paper_statistics/
 
 ### Task 1 Main Benchmark
 
-当前应由其他成员交付：
+当前代码与配置已经准备完成：
 
-- 正式 DeepLabV3+；
-- U-Net/CNN/SegFormer 公平比较；
-- 多随机种子；
-- 完整训练日志、阈值和测试指标。
+- 正式 ResNet-50 DeepLabV3+ 六通道实现；
+- U-Net/DeepLabV3+/SegFormer-B2 公平比较配置；
+- 两套 split、三模型、三随机种子，共 18 个 run；
+- validation-only threshold calibration；
+- 可续跑的一键执行与汇总器。
+
+尚待 GPU 实际交付：
+
+- 18 个正式训练 checkpoint；
+- 完整训练日志；
+- validation thresholds；
+- test metrics；
+- 三随机种子均值和样本标准差。
 
 统一数据口径：
 
@@ -1413,10 +1422,10 @@ mismatch 和重复加权，因此仅保留为 preliminary engineering result。
 ### Character-disjoint
 
 - 原字符分配、QC-clean 派生 split、配置、launcher 和结果汇总管线均已完成；
-- 等 Task 1 的正式 CNN baseline 就绪后执行；
-- B2 已预注册 3 个 seed；
-- U-Net 已准备；
-- DeepLabV3+ 配置当前标记 `BLOCKED_BY_TASK1`。
+- B2、U-Net、DeepLabV3+ 均已预注册 3 个 seed；
+- 不再存在 `BLOCKED_BY_TASK1` 占位配置；
+- 等 GPU smoke test 通过后运行18组正式矩阵；
+- 当前不得把“代码就绪”写成“正式结果完成”。
 
 ### Smartphone / unseen-writer
 

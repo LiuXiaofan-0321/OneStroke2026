@@ -1,5 +1,5 @@
-experiment_name: character_disjoint_segformer_b2_seed_271828
-seed: 271828
+experiment_name: character_disjoint_deeplabv3plus_seed_20260811
+seed: 20260811
 device: auto
 data:
   manifest: artifacts/data_qc/manifest_qc_v1.csv
@@ -29,11 +29,9 @@ data:
     val: 114
     test: 116
 model:
-  name: segformer
-  backbone: nvidia/segformer-b2-finetuned-ade-512-512
+  name: deeplabv3plus
+  backbone: resnet50
   out_channels: 6
-  freeze_encoder: false
-  decoder_lr_scale: 10.0
 loss:
   direction:
     bce_weight: 1.0
@@ -50,8 +48,8 @@ loss:
   boundary_weight: 0.2
 optim:
   name: adamw
-  encoder_lr: 3.0e-05
-  decoder_lr: 0.0003
+  encoder_lr: 0.0001
+  decoder_lr: 0.001
   weight_decay: 0.01
   epochs: 120
   early_stop_patience: 15
@@ -68,4 +66,4 @@ thresholds:
   vec4: 0.5
   vec5: 0.5
   keypoint: 0.45
-output_dir: artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_271828
+output_dir: artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_20260811
