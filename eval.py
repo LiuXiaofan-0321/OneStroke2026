@@ -44,6 +44,12 @@ def main() -> None:
         default="0,1,3,5",
         help="Comma-separated pixel radii for supplementary keypoint localization metrics.",
     )
+    parser.add_argument(
+        "--max-batches",
+        type=int,
+        default=0,
+        help="Optional smoke-test limit. Zero evaluates the full selected split.",
+    )
     args = parser.parse_args()
     cfg = load_yaml(args.config)
     torch = _require_torch()
@@ -91,18 +97,22 @@ def main() -> None:
         num_channels=len(CHANNELS), keypoint_tolerances=keypoint_tolerances
     )
     with torch.no_grad():
-        for batch in loader:
+        for batch_index, batch in enumerate(loader, start=1):
             images = batch["image"].to(device=device, dtype=torch.float32)
             masks = batch["mask"].to(device=device, dtype=torch.float32)
             logits = model(images)
             probs = torch.sigmoid(logits).cpu().numpy()
             targets = masks.cpu().numpy()
             meter.update(probs >= threshold_array, targets > 0.5)
+            if args.max_batches > 0 and batch_index >= args.max_batches:
+                break
     metrics = meter.compute()
     metrics["split"] = args.split
     metrics["thresholds"] = {channel: float(threshold_array[0, i, 0, 0]) for i, channel in enumerate(CHANNELS)}
     metrics["checkpoint"] = str(Path(args.checkpoint).resolve())
     metrics["data_contract"] = data_contract
+    metrics["max_batches"] = args.max_batches
+    metrics["formal_evaluation"] = args.max_batches == 0
     print(metrics)
     if args.output:
         write_json(args.output, metrics)

@@ -39,6 +39,12 @@ def main() -> None:
     parser.add_argument("--min-threshold", type=float, default=0.10)
     parser.add_argument("--max-threshold", type=float, default=0.90)
     parser.add_argument("--steps", type=int, default=17)
+    parser.add_argument(
+        "--max-batches",
+        type=int,
+        default=0,
+        help="Optional smoke-test limit. Zero evaluates the full validation split.",
+    )
     args = parser.parse_args()
     if not 0 < args.min_threshold < args.max_threshold < 1 or args.steps < 2:
         raise ValueError("threshold range must satisfy 0 < min < max < 1 and steps >= 2")
@@ -72,7 +78,7 @@ def main() -> None:
     fp = np.zeros_like(tp)
     fn = np.zeros_like(tp)
     with torch.no_grad():
-        for batch in loader:
+        for batch_index, batch in enumerate(loader, start=1):
             images = batch["image"].to(device=device, dtype=torch.float32)
             targets = batch["mask"].numpy() > 0.5
             probabilities = torch.sigmoid(model(images)).cpu().numpy()
@@ -83,6 +89,8 @@ def main() -> None:
                     tp[channel_index, threshold_index] += np.logical_and(prediction, target).sum()
                     fp[channel_index, threshold_index] += np.logical_and(prediction, ~target).sum()
                     fn[channel_index, threshold_index] += np.logical_and(~prediction, target).sum()
+            if args.max_batches > 0 and batch_index >= args.max_batches:
+                break
 
     dice = (2 * tp) / np.maximum(2 * tp + fp + fn, 1.0)
     best_indexes = dice.argmax(axis=1)
@@ -95,6 +103,8 @@ def main() -> None:
         "best_dice": {channel: float(dice[i, best_indexes[i]]) for i, channel in enumerate(CHANNELS)},
         "dice_by_channel": {channel: dice[i].tolist() for i, channel in enumerate(CHANNELS)},
         "data_contract": data_contract,
+        "max_batches": args.max_batches,
+        "formal_calibration": args.max_batches == 0,
     }
     write_json(args.output, result)
     print("best_thresholds=", best_thresholds)
