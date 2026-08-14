@@ -187,8 +187,8 @@ def main():
     validation = [
         ((0.05, 0.08), 0.20, 0.20, "Parsing", ["QC-clean standard", "character-disjoint", "3 models x 3 seeds"], "#1565C0"),
         ((0.29, 0.08), 0.20, 0.20, "Alignment", ["controlled perturbations", "paired ablations", "reference bootstrap"], "#2E7D32"),
-        ((0.53, 0.08), 0.20, 0.20, "Score validity", ["150 blinded pairs", "ICC + Spearman", "post-rating development"], "#6A1B9A"),
-        ((0.77, 0.08), 0.18, 0.20, "Confirmation", ["new pairs and glyphs", "score-blind selection", "freeze before rating"], "#C62828"),
+        ((0.53, 0.08), 0.20, 0.20, "Human association", ["150 blinded pairs", "ICC + Spearman", "cluster bootstrap"], "#6A1B9A"),
+        ((0.77, 0.08), 0.18, 0.20, "Internal validation", ["character-grouped OOF", "component ablation", "retrospective status"], "#C62828"),
     ]
     for item in validation:
         rounded_box(ax, *item)

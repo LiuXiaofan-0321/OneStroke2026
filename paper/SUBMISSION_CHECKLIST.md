@@ -6,18 +6,15 @@ Status date: 2026-08-14
 
 - [ ] Submit by **September 20, 2026**, selecting the Special Issue
   *Computer Vision Systems for Document Analysis and Recognition*.
-- [ ] Internally review all 100 confirmatory candidate pairs without viewing
-  any model or human score.
-- [ ] Replace any rejected pair only by the frozen reserve order.
-- [ ] Freeze and hash `frozen_confirmatory_pairs_v1.csv`.
-- [ ] Freeze ASDS code, bins, weights, alignment, rating instructions, primary
-  endpoint, exclusion policy, and analysis script before the first new rating.
-- [ ] Collect confirmatory ratings on the frozen set.
-- [ ] Run the frozen confirmatory analysis once.
-- [ ] Replace `[CONFIRMATORY ASDS RHO, 95% CI, AND PAIRED DIFFERENCES]` only
-  with the generated result.
-- [ ] If confirmation fails, report the failure and retain the production
-  score; do not tune ASDS on the confirmatory set.
+- [x] Preserve the original 150-pair rating files, blinded assets, hashes, and
+  hidden-repeat records.
+- [x] Report the full ASDS candidate search, component ablations,
+  character-cluster uncertainty, and character-grouped out-of-fold estimate.
+- [x] Label `rho=0.556` as retrospective development and `rho=0.540` as
+  internal validation; do not call either prospective or external
+  confirmation.
+- [ ] Verify the raters' background metadata and disclose any author-rater
+  relationship accurately.
 - [ ] Fill author names, affiliation, corresponding email, acknowledgements,
   funding, CRediT roles, ethics approval/exemption, consent, code availability,
   and data availability.
@@ -34,8 +31,8 @@ Status date: 2026-08-14
 - [x] Paired alignment comparison.
 - [x] Character-cluster bootstrap for human correlation.
 - [x] ICC(2,1), ICC(2,k), and hidden-repeat reliability.
-- [x] Post-rating ASDS development clearly separated from confirmation.
-- [ ] Confirmatory analysis executed from frozen artifacts.
+- [x] Post-rating ASDS development clearly separated from grouped internal
+  validation and future external replication.
 
 ## Manuscript checks
 
@@ -44,7 +41,8 @@ Status date: 2026-08-14
 - [x] Six keywords (journal requirement: 4--6).
 - [x] RQ-based introduction and contribution list.
 - [x] Real, verifiable bibliography; no provisional UniCalli citation.
-- [x] Limitations include unavailable writer ID, within-corpus confirmation,
+- [x] Limitations include unavailable writer ID, within-corpus internal
+  validation,
   small rater pool, and no universal aesthetic claim.
 - [x] Draft compiles without overfull boxes or unresolved citations.
 - [ ] Remove every red placeholder.
@@ -62,6 +60,8 @@ Status date: 2026-08-14
 - “reference-conditioned structural agreement”
 - “human-validated structural similarity”
 - “development-stage ASDS result”
+- “retrospective ASDS development”
+- “character-grouped internal validation”
 - “character-disjoint generalization”
 
 ## Language that is not supported
@@ -72,3 +72,4 @@ Status date: 2026-08-14
 - “stroke-order recognition”
 - “ASDS independently achieves rho=0.556”
 - “three calligraphy experts”
+- “prospectively confirmed ASDS”

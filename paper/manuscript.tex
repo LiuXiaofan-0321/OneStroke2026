@@ -30,10 +30,9 @@ Scoring}
   \orgaddress{\city{Shanghai}, \country{China}}}
 
 \abstract{%
-\textbf{Purpose}\quad Calligraphy practice systems must expose local stroke
-structure, suppress harmless placement variation, and avoid presenting an
-opaque score as expert aesthetic judgment. We study this problem in a
-low-resource direct-digital-writing setting.
+\textbf{Purpose}\quad Calligraphy practice systems should expose local stroke
+structure while tolerating harmless placement variation. We study this
+problem in a low-resource direct-digital-writing setting.
 
 \textbf{Methods}\quad We represent each character by five overlapping
 direction masks and one keypoint mask. U-Net, DeepLabV3+, and SegFormer-B2 are
@@ -43,8 +42,8 @@ on 200 real references by controlled perturbations and paired ablations. We
 introduce aligned spatial-distribution similarity (ASDS), which compares
 polar occupancy, coarse spatial occupancy, and projection profiles after
 registration. Score validity is studied with three blinded raters on 150
-natural same-character pairs. ASDS is developed post hoc and reserved for a
-disjoint confirmatory study.
+natural same-character pairs. ASDS is developed retrospectively and evaluated
+by character-grouped out-of-fold internal validation.
 
 \textbf{Results}\quad DeepLabV3+ obtains \(0.9630\pm0.0006\) standard-split
 Macro Dice, whereas SegFormer-B2 leads character-disjoint evaluation at
@@ -53,14 +52,14 @@ Macro Dice, whereas SegFormer-B2 leads character-disjoint evaluation at
 preserving an additional 11.189 points of structural penalty
 (10.094--12.322). The frozen production and coverage-aware scores correlate
 with blinded ratings at \(\rho=0.297\) and \(0.429\), respectively. In
-development-only analysis, ASDS reaches \(\rho=0.556\), with
+retrospective analysis, ASDS reaches \(\rho=0.556\), with
 character-grouped out-of-fold \(\rho=0.540\).
 
 \textbf{Conclusion}\quad Overlapping parsing and constrained registration
 provide auditable structural evidence, while spatial-distribution comparison
-improves development-stage human association. Independent
-confirmation is required before ASDS can replace the deployed score, and none
-of the reported scores should be interpreted as universal calligraphic beauty.}
+improves internal human association. ASDS remains retrospective and requires
+external replication; the scores do not represent universal calligraphic
+beauty.}
 
 \keywords{Chinese calligraphy, document analysis, multi-label segmentation,
 reference-based assessment, human validation, explainable feedback}

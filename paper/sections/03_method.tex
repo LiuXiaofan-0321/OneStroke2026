@@ -16,9 +16,9 @@ scoring is prohibited by the application contract.
   \caption{System and validation overview. The reference and learner are
   parsed into overlapping direction/keypoint masks, globally aligned under a
   restricted transform, and compared by the frozen production score and ASDS.
-  Segmentation, alignment, score validity, and confirmation are evaluated by
-  separate protocols so that one successful experiment is not used to support
-  a different claim.}
+  Segmentation, alignment, and human association are evaluated by separate
+  protocols so that one successful experiment is not used to support a
+  different claim.}
   \label{fig:method-overview}
 \end{figure*}
 
@@ -176,14 +176,15 @@ S_{\asds}=100\bigl(
 The development search placed 0.70 weight on the polar term. Rather than
 retain the more sample-specific unequal secondary weights, we split the
 remaining 0.30 equally between grid and projection evidence before freezing
-the confirmatory specification.
+the reported specification.
 
 The score does not use character ID, writer ID, style ID, or a human rating at
 inference. Nevertheless, its feature choice and weights were finalized after
 observing the original 150-pair study. It is therefore a development-stage
-algorithm until evaluated on a new pair set with no pair or glyph-instance
-overlap. Features, bins, weights, alignment, and selection policy are frozen
-before confirmatory ratings begin.
+algorithm with resampling-based internal validation rather than an
+independently confirmed score. Features, bins, weights, alignment, candidate
+search, and selection policy are reported so the remaining risk of
+retrospective optimism is explicit.
 
 \subsection{Evidence extraction and feedback}
 

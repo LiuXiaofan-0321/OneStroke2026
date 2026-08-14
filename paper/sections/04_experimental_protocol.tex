@@ -154,27 +154,3 @@ Component ablations report the polar, grid, and projection terms separately.
 The combined formula is compared with each component so that any apparent
 benefit cannot be attributed to an unreported learned regressor. Development
 component comparisons are exploratory and are not multiplicity-adjusted.
-
-\subsection{Independent confirmatory protocol}
-\label{sec:confirmation}
-
-Before the first confirmatory rating, the algorithm implementation, formula,
-pair set, asset hashes, rater instructions, analysis script, exclusion rule,
-and primary endpoint will be frozen. The candidate package contains 100
-same-character pairs and 40 ordered reserves. It has zero pair overlap and zero
-glyph-instance overlap with the original 150-pair study, covers all 40
-characters with two or three pairs each, and was selected without reading any
-production, coverage-aware, ASDS, or human score.
-
-An internal QC reviewer first checks only same-instance suspicion, image
-quality, accidental duplication, and character correctness. Replacement, if
-needed, follows the precomputed reserve order without consulting scores. The
-final CSV will be hashed and renamed
-\texttt{frozen\_confirmatory\_pairs\_v1.csv} before it is sent to raters.
-
-The primary confirmatory endpoint is the Spearman correlation between
-\(S_{\asds}\) and the mean blinded rating. Secondary endpoints are the
-production and coverage-aware correlations, paired cluster-bootstrap
-differences, and rater reliability. No feature, bin, weight, alignment bound,
-or pair may be changed after rating begins. The submission-ready manuscript
-must replace \placeholder{CONFIRMATORY RESULTS} only from this frozen analysis.

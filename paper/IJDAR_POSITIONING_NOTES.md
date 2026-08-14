@@ -17,7 +17,8 @@ The strongest fit is not “a novel SegFormer”. It is:
 2. character-disjoint generalization;
 3. constrained registration with paired robustness experiments;
 4. auditable reference-based structural assessment;
-5. explicit separation of score development and prospective confirmation.
+5. explicit separation of retrospective score development, grouped internal
+   validation, and future external replication.
 
 The official call lists **September 20, 2026** as the submission deadline.
 The journal instructions require a 150--250-word abstract, 4--6 keywords, and
@@ -83,7 +84,9 @@ The manuscript should be read as four linked claims:
 - **Registration:** limited transform capacity improves nuisance robustness
   without freely repairing local errors.
 - **Validity:** human association improves when spatial distribution is
-  modelled, but post-rating development requires a separate confirmatory set.
+  modelled; post-rating development is reported as retrospective, with
+  character-grouped out-of-fold internal validation.
 
-The final confirmation result is the remaining scientific gate. No wording,
-table, or abstract should hide that gate.
+The submission does not claim prospective or external confirmation. The
+full-sample ASDS result and the grouped out-of-fold estimate must remain
+clearly labelled so the retrospective design is not hidden.

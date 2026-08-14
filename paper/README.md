@@ -33,23 +33,24 @@ Completed:
 - inactive-channel score audit.
 - diagnostic failure taxonomy.
 - blinded three-rater structural validation on 150 natural pairs.
-- development-stage aligned spatial-distribution similarity (ASDS).
-- 100-pair score-blind, pair- and glyph-disjoint confirmatory candidate
-  package.
+- retrospective aligned spatial-distribution similarity (ASDS) development
+  with character-grouped out-of-fold internal validation.
 
 Not yet submission-complete:
 
-- the five confirmatory review sheets have been visually inspected as a
-  preliminary QC aid, but the team must still record its decisions in
-  `confirmatory_review_form.csv` and freeze the final pair list;
-- new confirmatory ratings have not started;
-- the manuscript contains an explicit confirmatory-result placeholder;
-- author affiliation, corresponding email, funding, ethics/exemption wording,
+- funding, ethics/exemption wording,
   CRediT contributions, acknowledgements, and final code/data statements must
   be supplied by the team.
 
-The development result `rho=0.556` must never be described as an independent
-test result. It was designed after the original 150 ratings were observed.
+The full-sample result `rho=0.556` must be described as retrospective
+development evidence, while the character-grouped out-of-fold
+`rho=0.540` is an internal-validation estimate. Neither is an external or
+prospective confirmation result because ASDS feature design followed
+inspection of the original 150 ratings.
+
+The generated 100-pair confirmatory candidate package is retained as an
+optional future-study artifact and is not required for the present
+submission.
 
 ## Rebuild development statistics
 

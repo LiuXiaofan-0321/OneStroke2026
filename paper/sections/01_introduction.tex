@@ -68,8 +68,8 @@ polar occupancy, coarse grid occupancy, and horizontal/vertical projection
 profiles. ASDS is intentionally low-capacity and uses neither character
 identity nor human ratings at inference. Because its design followed the
 original rating study, we report development and character-grouped
-out-of-fold results separately and freeze an entirely disjoint confirmatory
-pair set before new ratings are collected.
+out-of-fold internal-validation results separately and preserve the complete
+candidate search rather than presenting the apparent optimum alone.
 
 The contributions are:
 
@@ -85,8 +85,8 @@ The contributions are:
   \item an audit of inactive-channel credit and a blinded three-rater study on
   150 natural same-character, different-instance pairs;
   \item ASDS, an interpretable spatial comparison whose post-rating
-  development status, grouped cross-validation, frozen specification, and
-  independent confirmation protocol are reported explicitly;
+  development status, grouped cross-validation, component ablations, and
+  remaining need for external replication are reported explicitly;
   \item a diagnostic failure taxonomy that distinguishes scoring limitations,
   localization-metric limitations, and optional language-model realization.
 \end{enumerate}

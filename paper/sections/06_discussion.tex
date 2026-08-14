@@ -29,7 +29,7 @@ track the human structural rating better than the production score in the
 development study. This is plausible because raters can perceive global
 proportion and mass distribution even when exact channel overlap is modest.
 
-\subsection{Why ASDS remains a development result}
+\subsection{Retrospective development and internal validation}
 
 It would be statistically inappropriate to present \(\rho=0.556\) as a final
 generalization result. The spatial representation and weights were finalized
@@ -37,21 +37,20 @@ after the original ratings were available. Character-grouped out-of-fold
 predictions reduce weight-selection optimism, but they cannot erase the fact
 that feature families were proposed after observing the same study.
 
-We therefore preserve three layers of evidence: (i) the originally frozen
-production result; (ii) a transparent post-rating development analysis,
-including all considered feature families and grouped cross-validation; and
-(iii) a fully disjoint confirmatory study whose pair identities and glyph
-instances do not overlap the development set. Only the third layer can support
-a claim that ASDS improves human association on new material. This separation
-is less visually attractive than reporting only the best \(\rho\), but it is
-necessary for reproducible score development.
+We therefore preserve two distinct layers of evidence: (i) the originally
+frozen production and coverage-aware results, which were not selected to
+maximize the observed ASDS association; and (ii) a transparent post-rating
+development analysis including all considered feature families, component
+ablations, character-cluster uncertainty, and character-grouped out-of-fold
+weight selection. The latter is an internal-validation estimate, not evidence
+from newly collected material.
 
 ASDS is also intentionally small. Its three bounded components are directly
 inspectable and can be computed on CPU. Component ablations test whether the
-combined score adds value beyond its dominant polar term. If the independent
-study does not confirm the improvement, the production score remains deployed
-and ASDS should be reported as a negative development result rather than
-retuned on the confirmatory data.
+combined score adds value beyond its dominant polar term. The complete
+development record is retained to make researcher degrees of freedom visible.
+External replication should keep this specification fixed rather than retune
+it on the next rating set.
 
 \subsection{Interpretation of human agreement}
 
@@ -106,10 +105,10 @@ style categories, seven same-character cross-style pairs, and no same-style
 different-instance pairs. Broader course coverage cannot be inferred from
 these comparisons.
 
-The original human study contains 150 pairs and three raters. The confirmatory
-candidate set is drawn from the same recovered corpus, although it is disjoint
-at both pair and glyph-instance levels. Consequently, successful confirmation
-would establish within-corpus generalization, not external-dataset validity.
-Finally, ASDS uses the union of five direction masks and can ignore a
+The human study contains 150 pairs and three raters from the same recovered
+corpus. Its character-grouped analysis limits leakage across character
+identities but does not establish generalization to new writers, collections,
+or independently recruited evaluator populations. Finally, ASDS uses the
+union of five direction masks and can ignore a
 direction-label swap that leaves overall ink distribution unchanged. It should
 therefore complement, not erase, the channel-level evidence returned to users.

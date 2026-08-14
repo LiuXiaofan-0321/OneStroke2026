@@ -41,8 +41,8 @@ Excluded:
 - empty human-rating templates;
 - cross-character legacy-to-course score pairings;
 - Task 1 smoke outputs and any incomplete formal run.
-- ASDS candidate-confirmation images or pair lists as scientific results before
-  the candidate package has passed internal QC and been frozen.
+- the unused ASDS follow-up candidate images or pair lists as results of the
+  present human study.
 
 Human-validation safeguards:
 
@@ -58,14 +58,11 @@ ASDS development safeguards:
 - the original 150 ratings are explicitly treated as development data for
   ASDS;
 - component choice and weight selection are not described as prospective;
-- character-grouped out-of-fold predictions do not replace independent
-  confirmation;
-- the new confirmatory candidates have zero pair overlap and zero glyph
-  instance overlap with the original study;
-- candidate selection did not read production, coverage-aware, ASDS, or human
-  scores;
-- the candidate package is not a rated/frozen study until internal QC is
-  complete.
+- character-grouped out-of-fold predictions are labelled internal validation,
+  not external confirmation;
+- the generated 100-pair follow-up package is retained only as an optional
+  future-study artifact and contributes no rating or result to the present
+  manuscript.
 
 Frozen facts:
 
@@ -99,9 +96,9 @@ Frozen facts:
   `da79ace3dca2793f586ef721689cbb96e1a0e614155a8c94ff48f6cb7872fa4e`;
 - ASDS development report SHA-256:
   `01fe8d62f368fbc45d5a4451a3d833ed1d75c7a4896c943e8c8590e790ec3083`;
-- confirmatory candidate manifest SHA-256:
+- optional follow-up candidate manifest SHA-256:
   `6221f9ed9d28a1a93aeadd3b67c3fcb9761dfce45fd981b68ca7b1db0dcc026b`;
-- confirmatory candidate 100-pair CSV SHA-256:
+- optional follow-up candidate 100-pair CSV SHA-256:
   `51a9ee4c1b75a960e8fc2c35414158e9575c5056dd0e15141b1f662f13ceca30`.
 
 The 200 model-derived reference caches are not segmentation ground truth.
