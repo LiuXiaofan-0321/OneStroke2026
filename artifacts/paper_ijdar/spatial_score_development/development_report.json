@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "analysis_name": "spatial_structure_score_development_v1",
+  "status": "DEVELOPMENT_ONLY_AWAITING_INDEPENDENT_CONFIRMATION",
+  "claim_scope": "Post-rating method development. The frozen formula requires evaluation on a new, previously unrated same-character confirmatory set.",
+  "pair_count": 150,
+  "character_count": 40,
+  "feature_order": [
+    "grid_js_similarity",
+    "polar_js_similarity",
+    "projection_js_similarity"
+  ],
+  "frozen_rounded_weights": {
+    "polar_js_similarity": 0.7,
+    "grid_js_similarity": 0.15,
+    "projection_js_similarity": 0.15
+  },
+  "full_development_grid_search": {
+    "grid_denominator": 40,
+    "best_weights": {
+      "grid_js_similarity": 0.225,
+      "polar_js_similarity": 0.7,
+      "projection_js_similarity": 0.075
+    },
+    "apparent_training_spearman": 0.5568152715939272
+  },
+  "group_cross_validation": {
+    "fold_count": 5,
+    "group_unit": "char_id",
+    "fold_salt": "spatial-score-development-group-cv-v1",
+    "weight_selection_uses_training_fold_only": true
+  },
+  "correlation_with_human_mean": {
+    "production_score": {
+      "rho": 0.2966309711634475,
+      "p_two_sided": 0.00022790194498429055
+    },
+    "coverage_aware_score": {
+      "rho": 0.4289982369849708,
+      "p_two_sided": 4.31641114720515e-08
+    },
+    "spatial_structure_score": {
+      "rho": 0.5562290124897076,
+      "p_two_sided": 1.4715637670915293e-13
+    },
+    "spatial_group_cv_oof_score": {
+      "rho": 0.5399213280493969,
+      "p_two_sided": 1.003312872811731e-12
+    }
+  },
+  "cluster_bootstrap": {
+    "iterations_requested": 10000,
+    "valid_iterations": 10000,
+    "cluster_unit": "char_id",
+    "rho_ci95": {
+      "production_score": [
+        0.14871248711543356,
+        0.4374127345348201
+      ],
+      "coverage_aware_score": [
+        0.31202553940160055,
+        0.5357056158197749
+      ],
+      "spatial_structure_score": [
+        0.4544248477298732,
+        0.6506500117087581
+      ],
+      "spatial_group_cv_oof_score": [
+        0.4323131534577217,
+        0.6387039502347314
+      ]
+    },
+    "paired_difference_ci95": {
+      "coverage_aware_score_minus_production_score": [
+        0.0635695484310205,
+        0.19967777078048088
+      ],
+      "spatial_structure_score_minus_production_score": [
+        0.11015539575899795,
+        0.4104805793225048
+      ],
+      "spatial_structure_score_minus_coverage_aware_score": [
+        0.016945531390312192,
+        0.23918379220494748
+      ],
+      "spatial_group_cv_oof_score_minus_production_score": [
+        0.0936192452139346,
+        0.3958083351685717
+      ],
+      "spatial_group_cv_oof_score_minus_coverage_aware_score": [
+        -0.0028428114691345856,
+        0.22437000329764056
+      ],
+      "spatial_group_cv_oof_score_minus_spatial_structure_score": [
+        -0.036933474555741086,
+        0.0021615430416737076
+      ]
+    }
+  },
+  "component_ablation": {
+    "correlation_with_human_mean": {
+      "grid_js_similarity": {
+        "rho": 0.446940992688426,
+        "p_two_sided": 9.848164837547428e-09
+      },
+      "polar_js_similarity": {
+        "rho": 0.5470460793648976,
+        "p_two_sided": 4.3929176435099857e-13
+      },
+      "projection_js_similarity": {
+        "rho": 0.4454099062205253,
+        "p_two_sided": 1.1209323577249273e-08
+      }
+    },
+    "cluster_bootstrap": {
+      "iterations_requested": 10000,
+      "valid_iterations": 10000,
+      "cluster_unit": "char_id",
+      "rho_ci95": {
+        "grid_js_similarity": [
+          0.30349552530634494,
+          0.5716086092304312
+        ],
+        "polar_js_similarity": [
+          0.4426765981041509,
+          0.6453252535046687
+        ],
+        "projection_js_similarity": [
+          0.316399773805159,
+          0.5635734618948929
+        ]
+      },
+      "paired_difference_ci95": {
+        "polar_js_similarity_minus_grid_js_similarity": [
+          -0.009471062257550482,
+          0.21851641731395405
+        ],
+        "projection_js_similarity_minus_grid_js_similarity": [
+          -0.12244233450733186,
+          0.13270558378445646
+        ],
+        "projection_js_similarity_minus_polar_js_similarity": [
+          -0.2414726419832996,
+          0.03772935141624944
+        ]
+      }
+    }
+  },
+  "generated_at_utc": "2026-08-14T11:51:34.425752+00:00",
+  "inputs": {
+    "frozen_pairs": {
+      "path": "artifacts/paper_ijdar/expert_validation/frozen_study_v1/frozen_expert_pairs_v1.csv",
+      "sha256": "810d35e4e4bd0208de9608054daabaecc3613859f3a34c5a16e5141e266d8e66"
+    },
+    "canonical_ratings": {
+      "path": "artifacts/paper_ijdar/expert_validation/human_ratings_v1/paper_statistics/canonical_pair_ratings.csv",
+      "sha256": "4dba5e6f6f5cb69417344d81a001ebdce6a28a304f27e4244b2a6db16274e5e2"
+    },
+    "data_root": "data"
+  },
+  "frozen_score_specification": {
+    "version": "spatial-structure-v1-development",
+    "formula": "100 * (0.70 * polar_js_similarity + 0.15 * grid_js_similarity + 0.15 * projection_js_similarity)",
+    "uses_character_identity": false,
+    "uses_human_rating_at_inference": false,
+    "alignment": "existing frozen constrained alignment",
+    "change_policy": "Do not change features, bins, weights, alignment, or thresholds after confirmatory human rating begins."
+  }
+}

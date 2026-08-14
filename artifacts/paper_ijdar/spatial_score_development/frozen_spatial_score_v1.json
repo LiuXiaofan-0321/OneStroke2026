@@ -1,0 +1,8 @@
+{
+  "version": "spatial-structure-v1-development",
+  "formula": "100 * (0.70 * polar_js_similarity + 0.15 * grid_js_similarity + 0.15 * projection_js_similarity)",
+  "uses_character_identity": false,
+  "uses_human_rating_at_inference": false,
+  "alignment": "existing frozen constrained alignment",
+  "change_policy": "Do not change features, bins, weights, alignment, or thresholds after confirmatory human rating begins."
+}

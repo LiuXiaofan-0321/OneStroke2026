@@ -9,51 +9,57 @@
 \usepackage{url}
 
 \newcommand{\placeholder}[1]{\textcolor{red}{\textbf{[#1]}}}
+\newcommand{\asds}{\mathrm{ASDS}}
 
 \begin{document}
 
-\title[Reference-conditioned calligraphy structure analysis]
-{Reference-Conditioned Multi-Label Stroke Structure Analysis for
-Low-Resource Chinese Calligraphy Practice}
+\title[Reference-conditioned Chinese calligraphy assessment]
+{Reference-Conditioned Structural Assessment of Low-Resource Chinese
+Calligraphy with Overlapping Stroke Parsing and Human-Validated Spatial
+Scoring}
 
-\author*[1]{\fnm{Xiaofan} \sur{Liu}}\email{[AUTHOR EMAIL]}
+\author*[1]{\fnm{Xiaofan} \sur{Liu}}\email{\placeholder{CORRESPONDING EMAIL}}
 \author[1]{\fnm{Ronghao} \sur{Zhang}}
 \author[1]{\fnm{Yiran} \sur{Gao}}
-\affil*[1]{\orgdiv{[DEPARTMENT]}, \orgname{[UNIVERSITY]},
-\orgaddress{\city{[CITY]}, \country{China}}}
+\affil*[1]{\orgdiv{\placeholder{DEPARTMENT}},
+  \orgname{\placeholder{UNIVERSITY}},
+  \orgaddress{\city{\placeholder{CITY}}, \country{China}}}
 
 \abstract{%
-\textbf{Purpose}\quad Digital calligraphy systems should expose local
-structure, compare practice against an intended reference, and provide
-diagnostic evidence without presenting an opaque score as expert judgment. We
-study this problem in a low-resource Chinese calligraphy setting.
+\textbf{Purpose}\quad Calligraphy practice systems must expose local stroke
+structure, suppress harmless placement variation, and avoid presenting an
+opaque score as expert aesthetic judgment. We study this problem in a
+low-resource direct-digital-writing setting.
 
-\textbf{Methods}\quad Each character is represented by five overlapping
-direction channels and one keypoint channel. U-Net, DeepLabV3+, and
-SegFormer-B2 are evaluated with three seeds on QC-clean standard and
-character-disjoint splits. Constrained alignment and fixed structure agreement
-are further assessed on 200 cached references using perturbation, ablation,
-score-audit, diagnostic, and blinded human-validation experiments.
+\textbf{Methods}\quad We represent each character by five overlapping
+direction masks and one keypoint mask. U-Net, DeepLabV3+, and SegFormer-B2 are
+evaluated with three seeds on quality-controlled standard and
+character-disjoint splits. A constrained similarity registration is assessed
+on 200 real references by controlled perturbations and paired ablations. We
+introduce aligned spatial-distribution similarity (ASDS), which compares
+polar occupancy, coarse spatial occupancy, and projection profiles after
+registration. Score validity is studied with three blinded raters on 150
+natural same-character pairs. ASDS is developed post hoc and reserved for a
+disjoint confirmatory study.
 
-\textbf{Results}\quad DeepLabV3+ achieves standard-split Macro Dice
-\(0.9630\pm0.0006\); SegFormer-B2 leads character-disjoint evaluation at
-\(0.8866\pm0.0008\). Relative to no alignment, the constrained method reduces
-nuisance penalties by 30.118 points (95\% confidence interval
-29.506--30.727) while preserving 11.189 additional points of structural
-penalty (10.094--12.322). Forty-one references contain inactive direction
-channels, with coverage corrections up to 15.402 points. On 150 natural
-same-character pairs, the production score correlates with mean blinded human
-ratings at \(\rho=0.297\) (0.148--0.441), versus \(\rho=0.429\)
-(0.313--0.535) for the coverage-aware audit; average-rating reliability is
-ICC(2,\(k\)) \(=0.709\).
+\textbf{Results}\quad DeepLabV3+ obtains \(0.9630\pm0.0006\) standard-split
+Macro Dice, whereas SegFormer-B2 leads character-disjoint evaluation at
+\(0.8866\pm0.0008\). Constrained registration reduces nuisance penalties by
+30.118 points (95\% CI 29.506--30.727) relative to no alignment while
+preserving an additional 11.189 points of structural penalty
+(10.094--12.322). The frozen production and coverage-aware scores correlate
+with blinded ratings at \(\rho=0.297\) and \(0.429\), respectively. In
+development-only analysis, ASDS reaches \(\rho=0.556\), with
+character-grouped out-of-fold \(\rho=0.540\).
 
-\textbf{Conclusion}\quad The pipeline provides auditable, human-validated
-structural evidence but is not an expert-calibrated measure of calligraphic
-beauty. Writer-disjoint robustness remains unresolved because reliable writer
-identities are unavailable.}
+\textbf{Conclusion}\quad Overlapping parsing and constrained registration
+provide auditable structural evidence, while spatial-distribution comparison
+improves development-stage human association. Independent
+confirmation is required before ASDS can replace the deployed score, and none
+of the reported scores should be interpreted as universal calligraphic beauty.}
 
-\keywords{Chinese calligraphy, stroke segmentation, multi-label parsing,
-reference-based assessment, image registration, diagnostic feedback}
+\keywords{Chinese calligraphy, document analysis, multi-label segmentation,
+reference-based assessment, human validation, explainable feedback}
 
 \maketitle
 
@@ -66,27 +72,45 @@ reference-based assessment, image registration, diagnostic feedback}
 \input{sections/07_conclusion}
 
 \section*{Supplementary statistical tables}
+\input{tables/controlled_perturbation_full}
 \input{tables/alignment_ablation_breakdown}
 
 \backmatter
 
-\bmhead{Acknowledgements}
-[ACKNOWLEDGEMENTS]
+\section*{Acknowledgements}
+\placeholder{ACKNOWLEDGEMENTS}
 
 \section*{Declarations}
-\begin{itemize}
-  \item Funding: [FUNDING]
-  \item Conflict of interest: The authors declare no competing interests.
-  \item Ethics and consent: The blinded human structural-similarity study used
-  consenting participants identified only by evaluator codes. The author team
-  must insert the institution-specific ethics approval, exemption, or review
-  statement before submission.
-  \item Data availability: The legacy training data and Calli-Tongji-derived
-  reference data are subject to their respective ownership and license
-  constraints. Reproducibility artifacts release IDs, hashes, and scripts
-  without redistributing restricted reference images.
-  \item Code availability: [ANONYMIZED OR PUBLIC REPOSITORY]
-\end{itemize}
+
+\subsection*{Funding}
+\placeholder{FUNDING SOURCE AND GRANT NUMBER, OR ``NO FUNDING''}
+
+\subsection*{Conflict of interest}
+The authors declare no competing interests.
+
+\subsection*{Ethics approval and consent to participate}
+The structural-similarity study involved adult volunteers, stored ratings
+under evaluator codes, and did not collect sensitive personal information.
+Before submission, the authors will insert the institution-specific ethics
+approval, exemption, or review statement and the applicable consent wording.
+No approval or exemption is claimed in this draft.
+
+\subsection*{Consent for publication}
+Not applicable, subject to confirmation by the authors before submission.
+
+\subsection*{Data availability}
+The recovered segmentation corpus and the Calli-Tongji-derived reference
+images are subject to their original ownership and licence constraints.
+Reproducibility artifacts provide frozen identifiers, hashes, split contracts,
+statistics, and generation scripts without redistributing restricted source
+images. The exact public/private release statement will be supplied before
+submission.
+
+\subsection*{Code availability}
+\placeholder{ANONYMIZED REPOSITORY DURING REVIEW OR PUBLIC ARCHIVAL URL}
+
+\subsection*{Author contributions}
+\placeholder{CRediT CONTRIBUTION STATEMENT}
 
 \bibliography{references}
 

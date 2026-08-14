@@ -29,6 +29,10 @@ Paper-eligible result sources:
 - `artifacts/paper_ijdar/task1/formal_audit_manifest.json`
 - `artifacts/paper_ijdar/task1/formal_run_file_manifest.csv`
 - `artifacts/paper_ijdar/task1/formal_runs/`
+- `artifacts/paper_ijdar/spatial_score_development/development_report.json`
+- `artifacts/paper_ijdar/spatial_score_development/development_features_and_predictions.csv`
+- `artifacts/paper_ijdar/spatial_score_development/group_cv_folds.csv`
+- `artifacts/paper_ijdar/spatial_score_development/frozen_spatial_score_v1.json`
 
 Excluded:
 
@@ -37,6 +41,8 @@ Excluded:
 - empty human-rating templates;
 - cross-character legacy-to-course score pairings;
 - Task 1 smoke outputs and any incomplete formal run.
+- ASDS candidate-confirmation images or pair lists as scientific results before
+  the candidate package has passed internal QC and been frozen.
 
 Human-validation safeguards:
 
@@ -46,6 +52,20 @@ Human-validation safeguards:
 - the study supports structural-similarity claims, not aesthetic grading;
 - the rater pool is described as blinded human raters rather than three
   calligraphy experts.
+
+ASDS development safeguards:
+
+- the original 150 ratings are explicitly treated as development data for
+  ASDS;
+- component choice and weight selection are not described as prospective;
+- character-grouped out-of-fold predictions do not replace independent
+  confirmation;
+- the new confirmatory candidates have zero pair overlap and zero glyph
+  instance overlap with the original study;
+- candidate selection did not read production, coverage-aware, ASDS, or human
+  scores;
+- the candidate package is not a rated/frozen study until internal QC is
+  complete.
 
 Frozen facts:
 
@@ -75,5 +95,13 @@ Frozen facts:
   `dcd2fa5248d8a1a0fa5143fbe72dd75ae3269551b8e58d071e1d0f638b6d1d6c`;
 - Task 1 checkpoint manifest SHA-256:
   `f49c4fc8b364abe62eade730dc6f9b14e35d6baf809d5d7e5e6fb3d7462b391e`.
+- frozen ASDS development specification SHA-256:
+  `da79ace3dca2793f586ef721689cbb96e1a0e614155a8c94ff48f6cb7872fa4e`;
+- ASDS development report SHA-256:
+  `01fe8d62f368fbc45d5a4451a3d833ed1d75c7a4896c943e8c8590e790ec3083`;
+- confirmatory candidate manifest SHA-256:
+  `6221f9ed9d28a1a93aeadd3b67c3fcb9761dfce45fd981b68ca7b1db0dcc026b`;
+- confirmatory candidate 100-pair CSV SHA-256:
+  `51a9ee4c1b75a960e8fc2c35414158e9575c5056dd0e15141b1f662f13ceca30`.
 
 The 200 model-derived reference caches are not segmentation ground truth.

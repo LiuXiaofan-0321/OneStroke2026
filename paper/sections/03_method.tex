@@ -1,83 +1,200 @@
 \section{Method}
 \label{sec:method}
 
-\subsection{Overlapping six-channel representation}
+\subsection{Problem formulation}
 
-For an RGB character image \(I\), the parser predicts
+Let \(I_u\) be a learner image and \(I_r\) an approved reference image of the
+same target character. The system first predicts overlapping structural masks,
+then aligns the reference to the learner with a restricted global transform.
+It returns (i) six masks, (ii) a scalar structural-agreement score, and
+(iii) localized evidence (Fig.~\ref{fig:method-overview}). Cross-character
+scoring is prohibited by the application contract.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/method_overview.pdf}
+  \caption{System and validation overview. The reference and learner are
+  parsed into overlapping direction/keypoint masks, globally aligned under a
+  restricted transform, and compared by the frozen production score and ASDS.
+  Segmentation, alignment, score validity, and confirmation are evaluated by
+  separate protocols so that one successful experiment is not used to support
+  a different claim.}
+  \label{fig:method-overview}
+\end{figure*}
+
+\subsection{Overlapping six-channel parsing}
+
+For an RGB character image \(I\), a parser \(f_\theta\) predicts
 \[
-P=f_{\theta}(I)\in[0,1]^{H\times W\times 6}.
+P=f_\theta(I)\in[0,1]^{H\times W\times 6}.
 \]
-The channel order is fixed as
+The fixed channel order is
 \[
 (\mathrm{vec1},\mathrm{vec2},\mathrm{vec3},\mathrm{vec4},
 \mathrm{vec5},\mathrm{keypoint}).
 \]
-The first five masks represent direction-oriented stroke regions; the sixth
-represents keypoint evidence. Because crossing or adhering strokes may support
-multiple direction labels at the same pixel, each channel uses an independent
-sigmoid. A softmax would incorrectly force mutual exclusion.
+The first five channels represent direction-oriented stroke regions; the last
+represents junction/endpoint evidence. At a crossing, multiple direction
+labels may be correct at the same pixel. Each channel therefore uses an
+independent sigmoid rather than a mutually exclusive softmax.
 
-Images are converted to RGB and letterboxed to \(512\times512\), preserving
-aspect ratio. Masks use nearest-neighbour resizing. Training losses combine
-class-weighted binary cross entropy and Dice loss on the direction channels,
-focal and Dice losses on the keypoint channel, and a boundary term. The current
-frozen production parser is SegFormer-B2; architecture comparisons belong to
-Task~1.
+Images are converted to RGB, letterboxed to \(512\times512\), and normalized.
+Masks are resized by nearest-neighbour interpolation. For direction channel
+\(c\), the loss combines class-weighted binary cross entropy and soft Dice:
+\[
+\mathcal{L}_{\mathrm{dir}}
+=\sum_{c=1}^{5}
+\left(
+\mathcal{L}_{\mathrm{BCE}}^{(c)}
++\mathcal{L}_{\mathrm{Dice}}^{(c)}
+\right).
+\]
+The sparse keypoint target uses focal loss with \(\gamma=2\) and
+\(\alpha=0.75\), plus Dice loss. A boundary term derived from the masks is
+weighted by \(0.2\):
+\[
+\mathcal{L}
+=\mathcal{L}_{\mathrm{dir}}
++\mathcal{L}_{\mathrm{focal,kp}}
++\mathcal{L}_{\mathrm{Dice,kp}}
++0.2\mathcal{L}_{\mathrm{boundary}}.
+\]
 
-\subsection{Reference cache}
+\subsection{Versioned reference cache}
 
-Each course item identifies a target character, style, and approved reference.
-The frozen parser converts each reference image once into a binary
-\(512\times512\times6\) cache. The cache is versioned by model, checkpoint
-SHA-256, threshold set, channel schema, and reference identifier. It reduces
-runtime cost but remains model-derived evidence; it is never used as
-segmentation ground truth.
+Approved reference images are parsed once and stored as binary
+\(512\times512\times6\) arrays. Each cache entry records its reference ID,
+character, course/style category, parser version, checkpoint SHA-256,
+thresholds, and channel schema. Caching removes repeated GPU inference for the
+reference branch. These masks are model-derived references and are never
+treated as segmentation ground truth.
 
-\subsection{Constrained reference alignment}
+\subsection{Constrained similarity registration}
+\label{sec:alignment-method}
 
-Let \(U\) and \(R\) be the user and reference binary masks. The production
-alignment searches
+Let \(U\) and \(R\) denote the learner and reference binary stacks, and let
+\[
+M(X)=\bigvee_{c=1}^{5}X_c
+\]
+be the union of direction ink. For each candidate isotropic scale \(s\) and
+rotation \(\phi\), the transformed reference is translated so that its
+foreground centroid approaches the learner centroid. The production search is
+bounded by
 \[
 s\in[0.8,1.2],\qquad \phi\in[-3^\circ,3^\circ],
 \]
-with isotropic scale, small rotation, and centroid-derived translation. The
-search maximizes direction-ink intersection-over-union. Nonuniform scale,
-affine shear, and deformable warping are disabled. This deliberately restricts
-the model's ability to ``repair'' a local mistake through registration.
-
-\subsection{Structure agreement}
-
-For the five direction channels, let \(D_c\) be the Dice agreement after
-alignment and let
+and selects the candidate maximizing
 \[
-\overline{D}=\frac{1}{5}\sum_{c=1}^{5}D_c.
+J\bigl(M(U),M(T_{s,\phi,t}(R))\bigr),
 \]
-Let \(J_{\mathrm{ink}}\) be the IoU between the unions of the five direction
-channels, and let \(F_{\mathrm{kp}}^{(3)}\) be keypoint F1 with a three-pixel
-tolerance. The frozen production score is
+where \(J\) is foreground IoU. Nonuniform scale, shear, thin-plate splines, and
+deformable warping are disallowed. The restriction encodes the intended
+invariance: page placement and small global size/rotation changes may be
+absorbed, whereas local proportion and stroke-region errors should remain.
+
+\subsection{Frozen production score}
+\label{sec:production-score}
+
+After alignment, let \(D_c\) be Dice agreement in direction channel \(c\),
 \[
-S=100\left(
+\overline{D}=\frac{1}{5}\sum_{c=1}^{5}D_c,
+\]
+let \(J_{\mathrm{ink}}\) be union-ink IoU, and let
+\(F_{\mathrm{kp}}^{(3)}\) be keypoint-mask F1 with a three-pixel tolerance.
+The deployed score is
+\[
+S_{\mathrm{prod}}
+=100\left(
 0.55\overline{D}
 +0.25J_{\mathrm{ink}}
 +0.20F_{\mathrm{kp}}^{(3)}
 \right).
 \]
-The weights are not retuned on the controlled benchmark. \(S\) is interpreted
-as prototype structure agreement, not a calibrated calligraphy grade.
+This formula was frozen before the controlled experiments. An audit variant
+excludes direction channels that are empty in both images and avoids granting
+perfect keypoint credit when both keypoint masks are empty. The audit score is
+not retroactively substituted for \(S_{\mathrm{prod}}\).
 
-\subsection{Evidence extraction and diagnostics}
+\subsection{Aligned spatial-distribution similarity}
+\label{sec:asds}
 
-The system retains the score components, alignment transform, pre-alignment
-center offset, foreground-area ratio, channel-level agreements, and keypoint
-agreement. Direction-mask differences are summarized into a \(3\times3\)
-spatial grid, producing a normalized finding with:
-\begin{itemize}
-  \item a finding category such as center offset, scale, keypoint relation, or
-  local direction structure;
-  \item an optional direction channel;
-  \item missing-reference or extra-user structure;
-  \item an optional grid region.
-\end{itemize}
-The deterministic evidence can be returned directly or rendered into text by a
-separate language model. The latter is not required for segmentation, scoring,
-or the diagnostic benchmark.
+The human study showed that pixel- and channel-overlap terms incompletely
+capture perceived global organization. We therefore develop aligned
+spatial-distribution similarity (ASDS) on the union direction ink after the
+same frozen registration. The score uses three complementary distributions.
+
+\subsubsection{Polar occupancy}
+For a binary ink mask \(M\), foreground coordinates are centred at their ink
+centroid. Radius is divided by the 95th percentile of foreground radius and
+clipped to \([0,1)\). Each pixel is assigned to one of four radial and eight
+angular bins, producing a normalized 32-bin histogram \(h_p(M)\). Independent
+centroid and radius normalization make this term resistant to small residual
+translation and isotropic scale, while retaining angular and radial mass
+organization.
+
+\subsubsection{Coarse grid occupancy}
+The canonical canvas is partitioned into a \(3\times3\) grid. Normalized
+foreground counts form \(h_g(M)\). Unlike the centroid-normalized polar term,
+this component retains coarse location and balance on the writing canvas.
+
+\subsubsection{Projection profiles}
+Normalized row sums \(h_y(M)\) and column sums \(h_x(M)\) describe vertical and
+horizontal mass allocation. Their similarities are averaged.
+
+For distributions \(p\) and \(q\), with \(m=(p+q)/2\), we use
+\[
+D_{\mathrm{JS}}(p,q)
+=\frac{1}{2}D_{\mathrm{KL}}(p\Vert m)
++\frac{1}{2}D_{\mathrm{KL}}(q\Vert m),
+\]
+with base-2 logarithms, and define
+\[
+\operatorname{JSS}(p,q)=1-\sqrt{D_{\mathrm{JS}}(p,q)}.
+\]
+Because \(D_{\mathrm{JS}}\in[0,1]\), \(\operatorname{JSS}\in[0,1]\).
+The component similarities are
+\[
+\begin{aligned}
+s_p&=\operatorname{JSS}(h_p(U),h_p(R)),\\
+s_g&=\operatorname{JSS}(h_g(U),h_g(R)),
+\end{aligned}
+\]
+\[
+\begin{aligned}
+s_{\mathrm{proj}}=\frac{1}{2}\bigl[
+&\operatorname{JSS}(h_x(U),h_x(R))\\
+&+\operatorname{JSS}(h_y(U),h_y(R))
+\bigr].
+\end{aligned}
+\]
+The frozen development specification is
+\[
+S_{\asds}=100\bigl(
+0.70s_p+0.15s_g+0.15s_{\mathrm{proj}}
+\bigr).
+\]
+The development search placed 0.70 weight on the polar term. Rather than
+retain the more sample-specific unequal secondary weights, we split the
+remaining 0.30 equally between grid and projection evidence before freezing
+the confirmatory specification.
+
+The score does not use character ID, writer ID, style ID, or a human rating at
+inference. Nevertheless, its feature choice and weights were finalized after
+observing the original 150-pair study. It is therefore a development-stage
+algorithm until evaluated on a new pair set with no pair or glyph-instance
+overlap. Features, bins, weights, alignment, and selection policy are frozen
+before confirmatory ratings begin.
+
+\subsection{Evidence extraction and feedback}
+
+The system preserves component scores, selected transform, pre-alignment
+centre distance, ink-area ratio, per-direction agreement, and keypoint
+agreement. Difference masks are summarized by direction channel, missing
+reference ink versus extra learner ink, and a \(3\times3\) region set.
+Connected components of the five direction masks are exposed as
+direction-classified regions, not as recovered stroke order.
+
+Deterministic feedback ranks centre, scale, keypoint, and local-direction
+findings. An optional text model receives only this structured contract and
+may improve fluency; it cannot change the score or invent unsupported
+brushwork or stroke-order claims.

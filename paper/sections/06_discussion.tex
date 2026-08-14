@@ -1,64 +1,115 @@
 \section{Discussion}
 \label{sec:discussion}
 
-The experiments support two conclusions. First, constrained alignment is
-essential: without it, nuisance transformations dominate the score and local
-structural perturbations are comparatively weak. Second, alignment is not a
-complete solution. The present discretized search handles translation well but
-remains sensitive to scale and, to a lesser degree, rotation. Widening the
-search range did not improve the nuisance result, so further alignment tuning
-on the same benchmark would risk evaluation overfitting.
+\subsection{What the experiments establish}
 
-The segmentation comparison adds a distinct generalization result. DeepLabV3+
-is strongest on the QC-clean standard split, but SegFormer-B2 has the highest
-character-disjoint direction overlap and the smallest Macro-Dice decrease
-between the two protocols. U-Net instead retains the highest strict keypoint
-F1. This architecture-by-target interaction argues against selecting a model
-from one aggregate metric alone. It also shows why the preliminary
-non-character-disjoint SegFormer release was insufficient evidence for
-unseen-character generalization.
+The first result is that model selection depends on the generalization target.
+DeepLabV3+ is strongest on the QC-clean standard split, but SegFormer-B2 has
+the best character-disjoint direction overlap and the smallest decline between
+protocols. U-Net remains strongest on strict keypoint localization. This
+architecture-by-output interaction argues against selecting a parser from one
+aggregate metric. It also explains why the preliminary standard-split
+SegFormer result was insufficient evidence for unseen-character performance.
 
-The inactive-channel audit exposes a semantic decision hidden by a simple
-macro-average. When a direction is absent from both masks, a Dice score of one
-is mathematically conventional but may grant credit unrelated to the active
-structure. The mean effect is small, yet a limited number of cases receive a
-large correction. The blinded human study strengthens this concern:
-coverage-aware scoring correlates more strongly with the human mean than the
-production score, with a positive character-cluster bootstrap interval for the
-correlation difference. Nevertheless, because this comparison was motivated by
-the audit and evaluated on the same human study, it is evidence for a future
-preregistered score revision rather than permission to replace the frozen
-production formula post hoc.
+The second result is that restricted registration is not merely an
+implementation detail. Without alignment, allowable global geometry dominates
+the score. The production range sharply improves nuisance behaviour and
+retains structural penalties. The wider range fails to improve nuisance
+suppression, providing a useful negative result: more transform capacity is not
+automatically better for diagnostic comparison. Scale remains the main
+weakness, but further adjustment on the same perturbation suite would risk
+benchmark-specific overfitting.
 
-The diagnostic analysis also separates model limitations from metric
-limitations. Exact single-cell localization is ill matched to perturbations
-that cross grid boundaries or occupy multiple cells. A future benchmark should
-represent affected regions as a set or pixel support and score set overlap.
-This observation does not justify retroactively altering the current ground
-truth or tuning the rules to the present cases.
+The third result is semantic. Both-empty direction channels can contribute
+perfect Dice even though no active structure is compared. The average effect
+is small, but a limited set of cases receives a large correction. The stronger
+human association of the coverage-aware audit supports this concern. ASDS
+extends the finding: coarse radial, angular, and projection distributions
+track the human structural rating better than the production score in the
+development study. This is plausible because raters can perceive global
+proportion and mass distribution even when exact channel overlap is modest.
 
-The study has important limitations. The legacy segmentation corpus contains
-only 40 fully labelled character identities and incomplete writer/source
-metadata. Character-disjoint evaluation therefore measures unseen character
-identity, not unseen writer identity. The reference library contains two style
-categories, only seven cross-style same-character pairs, and no same-style
-different-instance pairs. The 40 legacy characters and the two current
-100-character course packs have no character overlap, so combining them into
-an end-to-end course benchmark would require invalid cross-character
-comparisons. All completed perturbation experiments operate on cached masks
-and therefore isolate scoring from segmentation errors. The target platform
-uses direct digital writing rather than camera input, but writer-disjoint
-robustness remains unresolved. The human validation includes only three raters
-with heterogeneous self-reported backgrounds. Its moderate single-rater
-reliability and higher average-rating reliability support a
-structural-similarity claim, but neither the raters nor the task establish
-expert aesthetic calibration.
+\subsection{Why ASDS remains a development result}
 
-\subsection{Deployment implications}
+It would be statistically inappropriate to present \(\rho=0.556\) as a final
+generalization result. The spatial representation and weights were finalized
+after the original ratings were available. Character-grouped out-of-fold
+predictions reduce weight-selection optimism, but they cannot erase the fact
+that feature families were proposed after observing the same study.
 
-The frozen SegFormer-B2 parser benefits from a GPU for responsive inference,
-whereas alignment, scoring, and deterministic feedback can run on CPU after
-masks are available. Reference masks are precomputed. A low-cost deployment can
-therefore use one on-demand model service and an external text API, while future
-work may distil the parser for ONNX/INT8 edge inference. Deployment
-optimization is outside the current scientific claims.
+We therefore preserve three layers of evidence: (i) the originally frozen
+production result; (ii) a transparent post-rating development analysis,
+including all considered feature families and grouped cross-validation; and
+(iii) a fully disjoint confirmatory study whose pair identities and glyph
+instances do not overlap the development set. Only the third layer can support
+a claim that ASDS improves human association on new material. This separation
+is less visually attractive than reporting only the best \(\rho\), but it is
+necessary for reproducible score development.
+
+ASDS is also intentionally small. Its three bounded components are directly
+inspectable and can be computed on CPU. Component ablations test whether the
+combined score adds value beyond its dominant polar term. If the independent
+study does not confirm the improvement, the production score remains deployed
+and ASDS should be reported as a negative development result rather than
+retuned on the confirmatory data.
+
+\subsection{Interpretation of human agreement}
+
+The average-rating ICC is substantially higher than the single-rating ICC.
+This supports averaging multiple judgments for the validation endpoint, while
+also showing that the task is not objective in the sense of a segmentation
+mask. The rater pool is small and heterogeneous. One rater had limited
+calligraphy teaching/learning experience, but the group is not a panel of
+senior calligraphy experts. The results justify the phrase ``human-validated
+structural agreement''; they do not justify ``expert aesthetic score''.
+
+A stronger follow-up should recruit at least two experienced calligraphy
+educators, record background through a fixed questionnaire, and analyse
+whether professional and non-professional rankings differ. Such a study would
+extend the construct from general structural similarity toward pedagogical
+quality, but it should not be retroactively substituted for the current task.
+
+\subsection{Diagnostic and application implications}
+
+The low exact-region result initially appears to indicate poor feedback.
+Failure analysis shows that more than half of these errors arise from a
+single-cell metric applied to multi-cell perturbations. The next diagnostic
+benchmark should store affected support as a region set or pixel mask and use
+overlap-based scoring. Wrong direction attribution remains a genuine model or
+evidence-extraction failure and warrants separate study. Optional language
+generation should be evaluated only after the structured evidence contract is
+validated; fluent text cannot repair an incorrect direction or region.
+
+The target platform receives direct digital writing. This modality is aligned
+with the held-out legacy images, but it does not imply robustness to phone
+photographs, paper texture, illumination, or perspective. The SegFormer-B2
+parser benefits from a GPU for interactive latency; reference masks are
+precomputed, and registration, ASDS, deterministic feedback, and language-API
+calls do not require a dedicated training-class GPU. Distillation and
+quantized edge deployment are engineering extensions rather than claims of
+this study.
+
+\subsection{Limitations and threats to validity}
+
+The corpus contains only 40 fully labelled character identities. Writer
+identity and verified style provenance are unavailable, so character-disjoint
+evaluation is not writer-disjoint evaluation. The standard and
+character-disjoint results come from one recovered data source, not an
+external corpus. Exact duplicate leakage has been audited, but unobserved
+collection-specific regularities may remain.
+
+The structural perturbation experiments operate on cached reference masks and
+isolate score behaviour from parser errors. This is a deliberate internal
+validity choice, but an end-to-end error can combine segmentation,
+registration, and scoring failures. The reference library contains only two
+style categories, seven same-character cross-style pairs, and no same-style
+different-instance pairs. Broader course coverage cannot be inferred from
+these comparisons.
+
+The original human study contains 150 pairs and three raters. The confirmatory
+candidate set is drawn from the same recovered corpus, although it is disjoint
+at both pair and glyph-instance levels. Consequently, successful confirmation
+would establish within-corpus generalization, not external-dataset validity.
+Finally, ASDS uses the union of five direction masks and can ignore a
+direction-label swap that leaves overall ink distribution unchanged. It should
+therefore complement, not erase, the channel-level evidence returned to users.

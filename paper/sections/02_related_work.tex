@@ -1,69 +1,105 @@
 \section{Related Work}
 \label{sec:related}
 
-\subsection{Chinese-character recognition and stroke structure}
+\subsection{Chinese handwriting recognition and document segmentation}
 
-Large handwriting databases such as CASIA-HWDB established recognition
-benchmarks for online and offline Chinese characters
-\cite{liu2013casia}. Recognition labels, however, do not directly supervise the
-overlapping direction regions and keypoint evidence needed for localized
-practice feedback. Our task is closer to structured foreground parsing than to
-closed-set character classification.
+Large databases such as CASIA-HWDB established modern benchmarks for online
+and offline handwritten Chinese character recognition
+\cite{liu2013casia}. Recognition assigns a character identity, whereas our
+task requires spatially resolved evidence about directional stroke regions and
+keypoints. It is therefore closer to document segmentation than to closed-set
+classification.
 
-Encoder--decoder segmentation networks provide the technical basis for this
-parsing. U-Net introduced a widely used multiscale convolutional design
+U-Net introduced an encoder--decoder architecture with skip connections
 \cite{ronneberger2015unet}; DeepLabV3+ combines atrous spatial pyramids with a
 decoder \cite{chen2018deeplabv3plus}; and SegFormer uses hierarchical
-transformer features with a lightweight decoder
-\cite{xie2021segformer}. We use these as model families rather than claiming a
-new architecture. The distinguishing element is the overlapping label schema:
-five direction masks and one keypoint mask are predicted with independent
-sigmoid activations, not a mutually exclusive softmax.
+transformer features with a lightweight multilayer-perceptron decoder
+\cite{xie2021segformer}. Generic document models such as dhSegment illustrate
+the value of reusable segmentation formulations
+\cite{oliveira2018dhsegment}. Recent IJDAR work further shows that label
+scarcity, source-target mismatch, and the choice of pretraining protocol can
+materially affect handwritten document segmentation
+\cite{baloun2025selfsupervision}. We use established architectures to study a
+different output contract: the five direction labels are independently
+activated because intersections can support more than one label.
 
-\subsection{Calligraphy modelling and assessment}
+\subsection{Computational analysis of Chinese calligraphy}
 
-Prior computational calligraphy work has often emphasized recognition, style
-classification, or glyph generation. Conditional image-translation systems
-such as zi2zi demonstrated cross-style Chinese glyph synthesis
-\cite{tian2017zi2zi}. More recent resources, including UniCalli, broaden the
-available author, script, glyph, and page-level metadata
-\cite{unicalli2026}. These directions are complementary to the present problem:
-we do not generate a calligraphic glyph and do not infer universal artistic
-quality. Instead, we compare a learner's structure against a specified
-reference within a finite course package.
+Computational calligraphy research spans handcrafted style descriptors,
+recognition, generation, and feature extraction. Earlier work represented
+calligraphic style using local and global shape features
+\cite{zhang2015calligraphic,gao2017calligraphic}. CalliNet advances style
+classification with metric learning and triplet supervision
+\cite{zhang2026callinet}. Other systems extract artistic regions from a
+calligraphy work relative to a reference \cite{wang2018artistic}, beautify
+handwritten glyphs toward a Kai-style template \cite{xia2009beautification},
+or evaluate robotic writing through designed aesthetic features
+\cite{ma2017aesthetics}.
 
-Automated assessment also requires careful claim boundaries. A reference
-agreement score may support feedback about position, scale, directional
-regions, and keypoints, but it is not equivalent to an expert judgment of
-brushwork, historical authenticity, rhythm, or beauty. We therefore validate
-only structural similarity with a blinded human rating study and retain
-explicit limits on aesthetic interpretation.
+Large contemporary resources broaden the available calligrapher, script, and
+page-level annotations. UniCalli, for example, supports column-level
+calligraphy generation and related representation learning
+\cite{xu2026unicalli}. These resources are valuable for style generation and
+recognition, but they do not remove the need to validate a practice score
+against human judgments. Our present study is deliberately narrower: it
+compares two instances of the same character against a selected reference and
+reports structural evidence rather than claiming author authentication or
+style generation.
 
-\subsection{Reference-based handwriting evaluation}
+\subsection{Handwritten-character quality assessment}
 
-Template and reference-based systems make differences observable but are
-sensitive to nuisance geometry. Direct overlap can penalize an otherwise
-similar glyph for harmless placement variation, whereas an overly flexible
-warp can remove precisely the local error that feedback should identify. This
-trade-off motivates our use of a deliberately constrained similarity transform
-and a paired ablation over no alignment, the production range, and a wider
-benchmark-only range.
+A recent survey divides handwritten Chinese character quality evaluation into
+rule-based geometric measures, template comparison, and learned methods,
+while emphasizing the difficulty of defining quality labels and explaining
+model decisions \cite{chen2024qualitysurvey}. Pairwise and Siamese approaches
+can learn similarity from labelled examples
+\cite{chen2025siamhcc}. Multidimensional calligraphy evaluation has also been
+studied using visual, quality, and aesthetic attributes
+\cite{liu2025calligraphyeval}. These approaches demonstrate that ``quality''
+is not a single observable quantity: legibility, geometric correctness,
+reference similarity, brushwork, and artistic appeal can disagree.
 
-\subsection{Image registration and robust alignment}
+Our score is consequently scoped as \emph{reference-conditioned structural
+agreement}. The human study asks raters to judge same-character structural
+similarity, not beauty or historical fidelity. This distinction is central to
+the validity claim: a moderate association with structural ratings cannot be
+relabelled as expert aesthetic calibration.
 
-Image registration methods range from classical parametric alignment to learned
-spatial transformers \cite{zitova2003registration,jaderberg2015stn}. Our
-objective is not unrestricted registration. We search only global translation,
-isotropic scale, and small rotation on a fixed grid. Nonuniform scaling,
-affine shear, and deformable warping are prohibited. The controlled
-perturbation benchmark separately measures nuisance suppression and
-structural-error preservation.
+\subsection{Registration and shape comparison}
 
-\subsection{Explainable diagnostic feedback}
+Registration methods range from parametric geometric alignment to learned
+spatial transformers \cite{zitova2003registration,jaderberg2015stn}. Flexible
+registration is useful when deformation is a nuisance, but it is hazardous
+for diagnostic assessment: anisotropic or deformable warping can conceal a
+proportion or placement error. We therefore restrict alignment to translation,
+isotropic scale, and small rotation and evaluate that policy with both
+nuisance and structural perturbations.
 
-Pixel metrics alone do not state what should be changed. Our system therefore
-extracts structured evidence---dominant direction channel, missing or extra
-foreground, grid region, center offset, scale ratio, and keypoint
-agreement---before producing feedback. The benchmark evaluates these normalized
-evidence labels without calling a language model. Optional text generation is a
-surface-realization layer and is outside the primary claims of this manuscript.
+Shape contexts describe the spatial distribution of contour points in
+log-polar bins \cite{belongie2002shapecontext}; spatial pyramids retain coarse
+layout that an orderless representation would discard
+\cite{lazebnik2006spatialpyramid}. ASDS follows the same general principle but
+uses binary-ink occupancy rather than point correspondences. Its distributions
+are compared with the bounded, symmetric Jensen--Shannon divergence
+\cite{lin1991jensen}. Polar occupancy captures relative radial/angular
+organization, a \(3\times3\) grid retains coarse canvas layout, and projection
+profiles retain row/column mass. The design is simpler than a learned quality
+regressor and remains directly inspectable.
+
+\subsection{Human validation and diagnostic explanation}
+
+Automated assessment requires both association with human judgment and a
+clear account of rater reliability. We report two-way random-effects,
+absolute-agreement intraclass correlations following established ICC
+definitions and reporting guidance
+\cite{mcgraw1996icc,koo2016icc}. Uncertainty for score correlations is
+estimated by bootstrap resampling at the character level
+\cite{efron1993bootstrap}; paired alignment comparisons additionally use the
+Wilcoxon signed-rank test \cite{wilcoxon1945}.
+
+Explanation is evaluated separately from score validity. The system first
+emits normalized evidence---direction channel, missing or extra structure,
+spatial region, centre offset, scale ratio, and keypoint agreement. A
+language model may verbalize this evidence, but it does not determine the
+score. This separation prevents fluent text from being treated as evidence of
+diagnostic correctness.

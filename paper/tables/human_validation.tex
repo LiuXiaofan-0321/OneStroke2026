@@ -4,19 +4,14 @@ three blinded human raters across 150 canonical pairs. Confidence intervals
 use 10,000 bootstrap resamples clustered by character.}
 \label{tab:human-validation}
 \centering
-\small
-\begin{tabular}{lrrr}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccc}
 \toprule
-Score & Spearman $\rho$ & 95\% CI & $p$ \\
+Score & \(\rho\) & 95\% CI & \(p\) \\
 \midrule
-Production & 0.297 &
-[0.148,
- 0.441] &
-0.0002 \\
-Coverage-aware audit & 0.429 &
-[0.313,
- 0.535] &
-\(<0.0001\) \\
+Production & 0.297 & [0.148, 0.441] & \(2.28\times10^{-4}\) \\
+Coverage-aware & 0.429 & [0.313, 0.535] & \(4.32\times10^{-8}\) \\
 \bottomrule
 \end{tabular}
 \end{table}

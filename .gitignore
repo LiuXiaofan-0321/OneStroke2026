@@ -27,8 +27,16 @@ artifacts/paper_ijdar/character_disjoint/*
 !artifacts/paper_ijdar/task1/**
 !artifacts/paper_ijdar/course_scoring_scope/
 !artifacts/paper_ijdar/course_scoring_scope/**
+!artifacts/paper_ijdar/spatial_score_development/
+!artifacts/paper_ijdar/spatial_score_development/**
 data/legacy_gt_v1/
 paper/*.log
+paper/*.aux
+paper/*.blg
+paper/*.bbl
+paper/*.out
+paper/tmp/
+paper/figures/method_overview.png
 *.pt
 *.pth
 *.onnx

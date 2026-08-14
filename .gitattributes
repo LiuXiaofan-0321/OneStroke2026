@@ -1,3 +1,6 @@
 # Keep large learned weights out of ordinary Git object history.
 checkpoints/**/*.pt filter=lfs diff=lfs merge=lfs -text
 checkpoints/**/*.pth filter=lfs diff=lfs merge=lfs -text
+
+# Treat rendered papers and vector figures as binary review artifacts.
+*.pdf binary

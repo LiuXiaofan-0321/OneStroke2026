@@ -1,0 +1,6 @@
+fold,train_pair_count,test_pair_count,training_spearman,weight_grid_js_similarity,weight_polar_js_similarity,weight_projection_js_similarity
+0,115,35,0.5498786870159152,0.225,0.775,0.0
+1,125,25,0.5992738034322524,0.075,0.775,0.15
+2,125,25,0.5467516394827842,0.225,0.7,0.075
+3,112,38,0.5767930403067069,0.075,0.65,0.275
+4,123,27,0.5334408833303755,0.075,0.775,0.15

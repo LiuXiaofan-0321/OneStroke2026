@@ -1,66 +1,98 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Chinese calligraphy practice is a document-analysis problem with an unusually
-strong interaction between recognition, geometry, and pedagogy. A learner does
-not only need to know whether an image contains the intended character. They
-also need evidence about the spatial organization of stroke-like regions,
-intersections and endpoints, and how these properties differ from a selected
-reference style. A useful system must therefore operate between pixel
-segmentation and natural-language tutoring.
+Digital tools for Chinese calligraphy usually solve one of three tasks:
+recognizing the written character, identifying a calligraphic style, or
+generating a visually plausible glyph. A practice system has a different
+requirement. Given a learner's writing and a designated reference, it should
+show which structural regions agree, which regions are missing or excessive,
+and how the global organization differs. The output must be local enough to
+support revision, yet conservative enough not to masquerade as an expert
+judgment of brushwork, rhythm, historical authenticity, or beauty.
 
-This setting is challenging for three reasons. First, independently written
-strokes overlap and adhere in the final raster image, so mutually exclusive
-semantic segmentation is an unsuitable representation. Second, naive
-pixel-to-pixel comparison confounds structural disagreement with translation,
-scale, rotation, and acquisition variation. Third, a numerical match score is
-not automatically a valid aesthetic grade: without expert calibration, it
-should be interpreted only as reference-conditioned structural agreement.
+This requirement creates a document-analysis problem at the interface of
+segmentation, registration, shape comparison, and human-centred evaluation.
+First, strokes in a finished raster character intersect and adhere. A pixel at
+an intersection can legitimately belong to more than one directional
+structure, making mutually exclusive semantic segmentation inappropriate.
+Second, direct overlap confounds structural disagreement with global
+translation, scale, and small rotation. Conversely, an unconstrained warp may
+erase the very local discrepancy that a teaching system should report. Third,
+a mathematically convenient overlap score need not follow human perception.
+The score therefore requires explicit semantic auditing and human validation,
+not only a high self-consistency result.
 
-We address these issues through the pipeline
+The low-resource regime makes the problem harder. Our recovered corpus
+contains complete six-channel ground truth for only 40 character identities.
+Writer identity and style provenance cannot be recovered reliably. In this
+setting, a strong standard-split result can overstate generalization because
+the same character identities appear during training and testing. We therefore
+separate ordinary quality-controlled evaluation from a frozen
+character-disjoint protocol. This distinction follows the broader document
+analysis concern that performance under limited labels and unseen writing
+conditions must be measured rather than inferred from an in-domain split
+\cite{baloun2025selfsupervision,oliveira2018dhsegment}.
+
+We study the following research questions.
+
+\begin{description}
+  \item[RQ1:] How accurately do convolutional and transformer parsers recover
+  the overlapping direction and keypoint representation, and how much
+  performance is lost on unseen character identities?
+  \item[RQ2:] Does a deliberately constrained global registration suppress
+  allowable nuisance transformations while retaining sensitivity to local
+  structural changes?
+  \item[RQ3:] How well do fixed reference-conditioned scores agree with
+  blinded human structural-similarity ratings, and can an interpretable
+  spatial-distribution score improve that association without an
+  unacknowledged post-hoc claim?
+  \item[RQ4:] Which diagnostic evidence can be localized reliably, and where
+  do the current rules or evaluation protocol fail?
+\end{description}
+
+Our pipeline separates perception, comparison, and presentation:
 \[
-\text{multi-label stroke parsing}
-\rightarrow \text{constrained alignment}
-\rightarrow \text{structure agreement}
-\rightarrow \text{localized evidence}
-\rightarrow \text{diagnostic feedback}.
+\begin{aligned}
+\text{overlapping parsing}
+&\rightarrow \text{constrained registration}\\
+&\rightarrow \text{structural comparison}\\
+&\rightarrow \text{localized evidence}\\
+&\rightarrow \text{text realization}.
+\end{aligned}
 \]
-The representation contains five independently activated direction channels
-and one keypoint channel. It deliberately permits channel overlap. The
-reference comparison uses a fixed, low-capacity similarity search rather than
-deformable registration, so that global nuisance variation may be reduced
-without freely warping away local structural errors.
+The parser produces five independently activated direction channels and one
+keypoint channel. The deployed comparison retains a frozen Dice/IoU/keypoint
+formula. The paper additionally develops aligned spatial-distribution
+similarity (ASDS), a compact score based on Jensen--Shannon similarity between
+polar occupancy, coarse grid occupancy, and horizontal/vertical projection
+profiles. ASDS is intentionally low-capacity and uses neither character
+identity nor human ratings at inference. Because its design followed the
+original rating study, we report development and character-grouped
+out-of-fold results separately and freeze an entirely disjoint confirmatory
+pair set before new ratings are collected.
 
-The work is explicitly positioned as low-resource structural analysis rather
-than a new segmentation architecture. The frozen production parser uses a
-SegFormer-B2 backbone \cite{xie2021segformer}, but the scientific questions are
-whether the representation, alignment, agreement score, and diagnostic
-evidence behave in a controlled and auditable manner. The segmentation
-comparison itself includes standard convolutional baselines such as U-Net
-\cite{ronneberger2015unet} and, when available from the frozen Task~1 pipeline,
-DeepLabV3+ \cite{chen2018deeplabv3plus}.
+The contributions are:
 
-The present manuscript makes the following contributions:
 \begin{enumerate}
-  \item an overlapping six-channel representation for direction-oriented
-  stroke regions and keypoints in complete Chinese-character images;
-  \item a reference-conditioned analysis pipeline with constrained global
-  alignment and a fixed, interpretable structure-agreement decomposition;
-  \item a real-reference controlled-perturbation benchmark that separates
-  nuisance invariance from structural sensitivity;
-  \item paired alignment ablations and an inactive-channel score audit that
-  expose both strengths and failure modes instead of tuning the production
-  formula to the evaluation suite;
-  \item a diagnostic benchmark and failure taxonomy that evaluates localized
-  evidence independently of optional language-model surface realization;
-  \item blinded human validation on 150 natural same-character pairs, separating
-  structural agreement from unsupported claims of aesthetic grading;
-  \item a three-architecture, three-seed segmentation comparison under both
-  QC-clean standard and character-disjoint evaluation.
+  \item an overlapping six-channel representation and reproducible
+  quality-control protocol for complete-character stroke-structure parsing;
+  \item a three-architecture, three-seed comparison on both standard and
+  character-disjoint splits, exposing an architecture-dependent trade-off
+  between dense direction masks and sparse keypoints;
+  \item a constrained registration method evaluated by real-reference
+  controlled perturbations, paired bootstrap intervals, signed-rank tests,
+  and a wider-range negative ablation;
+  \item an audit of inactive-channel credit and a blinded three-rater study on
+  150 natural same-character, different-instance pairs;
+  \item ASDS, an interpretable spatial comparison whose post-rating
+  development status, grouped cross-validation, frozen specification, and
+  independent confirmation protocol are reported explicitly;
+  \item a diagnostic failure taxonomy that distinguishes scoring limitations,
+  localization-metric limitations, and optional language-model realization.
 \end{enumerate}
 
-The target application accepts characters drawn directly on a digital canvas,
-not camera-captured pages. The held-out legacy corpus uses the same broad
-digital-handwriting modality, so a smartphone benchmark is outside the
-declared application scope. Reliable writer identities remain unavailable;
-writer-disjoint generalization is therefore not claimed.
+The intended input is a raster exported from a direct digital writing canvas,
+not a photograph of paper. Accordingly, the claims concern structural
+analysis in this modality. They do not cover camera robustness, writer-
+disjoint generalization, stroke order recovery, or universal aesthetic
+grading.

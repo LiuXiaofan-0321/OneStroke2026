@@ -1,22 +1,29 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We presented an auditable pipeline for low-resource Chinese calligraphy
-structural analysis based on overlapping direction and keypoint masks,
-constrained reference alignment, fixed structure agreement, and localized
-diagnostic evidence. Real-reference perturbation experiments show that the
-alignment fully absorbs translation, substantially improves over no alignment,
-and preserves structural penalties, while scale remains a clear weakness.
-Across three fixed seeds, DeepLabV3+ gives the best QC-clean standard-split
-direction and boundary results, while SegFormer-B2 gives the best
-character-disjoint direction result and the smallest Macro-Dice decrease.
-U-Net retains the strongest strict keypoint F1.
-Score and diagnostic audits expose inactive-channel bias and limitations of
-single-cell feedback localization. Blinded human ratings on 150 natural
-same-character pairs show a positive association with the production score and
-a stronger association with the coverage-aware audit, while also documenting
-non-negligible rater subjectivity. These findings support the pipeline as a
-reference-conditioned structural-analysis tool, not as a calibrated
-calligraphy grader. The evaluation matches the direct digital-writing
-application modality, while writer-disjoint robustness and broader
-course-reference coverage remain future work.
+We presented a reference-conditioned pipeline for low-resource Chinese
+calligraphy analysis that combines overlapping direction/keypoint parsing,
+restricted global registration, interpretable structural comparison, and
+localized evidence. Across three fixed seeds, DeepLabV3+ is strongest on the
+QC-clean standard split, while SegFormer-B2 gives the best
+character-disjoint direction result and U-Net gives the best strict keypoint
+result. Controlled perturbations and paired ablations show that the constrained
+registration suppresses nuisance geometry without freely warping away local
+structural changes.
+
+The human study also changes the interpretation of the score. The deployed
+formula has a modest positive association with blinded structural-similarity
+ratings, and a coverage-aware audit is stronger. The proposed ASDS score,
+which compares polar occupancy, coarse grid occupancy, and projection
+profiles, raises development-stage Spearman correlation from 0.297 to 0.556
+and retains 0.540 under character-grouped out-of-fold prediction. Because ASDS
+was developed after observing the original ratings, these values are
+exploratory. A pair- and instance-disjoint confirmatory study is required
+before replacement of the production score.
+
+The resulting system should be viewed as an auditable structural-analysis
+tool, not a universal aesthetic grader. Its strongest scientific contribution
+is the joint evaluation discipline: quality-controlled and
+character-disjoint parsing, controlled registration tests, semantic score
+audits, blinded human association, explicit post-hoc development, and a
+prospectively frozen confirmation protocol.

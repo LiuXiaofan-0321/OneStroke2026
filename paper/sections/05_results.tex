@@ -1,177 +1,188 @@
 \section{Results}
 \label{sec:results}
 
-\subsection{Main segmentation accuracy}
+\subsection{RQ1: segmentation and unseen-character generalization}
 
 \input{tables/task1_main_benchmark}
 
-DeepLabV3+ obtains the highest standard-split direction Macro Dice
-\(0.9630\pm0.0006\), Macro IoU \(0.9287\pm0.0012\), and Boundary F1
-\(0.8443\pm0.0028\). SegFormer-B2 is close on direction overlap but has greater
-between-seed variation. U-Net has lower direction and boundary performance,
-while achieving the highest strict keypoint F1
-\(0.7562\pm0.0038\). Thus no single architecture dominates both dense
-direction segmentation and sparse keypoint localization.
+Table~\ref{tab:task1-main} shows that, on the QC-clean standard split,
+DeepLabV3+ obtains the highest direction Macro
+Dice (\(0.9630\pm0.0006\)), Macro IoU
+(\(0.9287\pm0.0012\)), and Boundary F1
+(\(0.8443\pm0.0028\)). SegFormer-B2 is close in direction overlap but shows
+greater between-seed variation. U-Net is weaker on direction and boundary
+metrics yet gives the best strict keypoint F1
+(\(0.7562\pm0.0038\)). Thus, dense direction segmentation and sparse keypoint
+localization favour different architectures.
 
-The frozen single-release SegFormer-B2 result is retained only as preliminary
-engineering evidence: direction Macro Dice \(0.9610\), Macro IoU \(0.9251\),
-Boundary F1 \(0.8348\), and strict keypoint F1 \(0.7159\). It must not substitute
-for the planned multi-seed Task~1 comparison. No exact duplicate group crosses
-the original standard train/validation/test split, so this preliminary score is
-not attributable to exact train-to-test duplicate leakage. However, its
-training data contained 12 source-image/GT mismatches and duplicate-weighted
-observations; the formal comparison therefore uses the frozen 769-sample
-QC-clean population.
+\input{tables/character_disjoint}
 
-\subsection{Controlled perturbation behaviour}
+All models degrade when character identities are held out
+(Table~\ref{tab:character-disjoint}). SegFormer-B2 gives
+the strongest character-disjoint direction result: Macro Dice
+\(0.8866\pm0.0008\), Macro IoU \(0.7977\pm0.0013\), and Boundary F1
+\(0.6851\pm0.0046\). Its Macro-Dice decrease from the standard split is 7.150
+percentage points, versus 9.664 for DeepLabV3+ and 9.360 for U-Net.
+DeepLabV3+ remains second for direction overlap, while U-Net retains the
+highest strict keypoint F1. SegFormer-B2 is therefore the strongest evaluated
+model for unseen-character direction parsing, not a universal winner across
+all six outputs.
+
+The earlier single SegFormer release achieved direction Macro Dice 0.9610 but
+was trained before semantic QC. No exact duplicate group crosses its standard
+split, so its result is not explained by exact train--test duplication.
+Nevertheless, its training population included 12 mismatched and
+duplicate-weighted observations; all formal comparisons above use the frozen
+769-sample QC-clean population.
+
+\subsection{RQ2: controlled score behaviour and registration}
 
 \input{tables/controlled_perturbation}
 
-Table~\ref{tab:controlled} shows that nuisance performance is not uniform.
-Translation is exactly recovered in all 800 valid observations. Rotation has a
-mean absolute penalty of \(5.395\), while scale-up and scale-down produce larger
-penalties of \(13.653\) and \(16.356\), respectively. Scale-up also has a
-49.0\% invalid fraction because larger transformed foregrounds risk clipping.
-The compound transform has a 54.0\% invalid fraction. These cases are not
-silently counted as robustness failures.
+The family-level results in Table~\ref{tab:controlled} show heterogeneous
+nuisance robustness. Translation is recovered exactly in all
+800 valid observations. Mean absolute penalties are 5.395 for rotation,
+13.653 for scale-up, and 16.356 for scale-down. Scale-up and compound
+transformations have invalid fractions of 49.0\% and 54.0\%, respectively,
+because transformed support risks leaving the canvas; those cases are
+reported rather than silently counted as score failures.
 
-Structural perturbations generally decrease the score monotonically. Direction
+Structural perturbations generally lower the score with severity. Direction
 dilation and erosion have the largest average penalties, followed by terminal
-deletion and added fragments. Local fragment displacement and keypoint shifts
-are more weakly penalized. The result supports sensitivity to local structure
-but also identifies scale invariance as the main nuisance weakness.
-
-\subsection{Paired alignment ablation}
+deletion and added fragments. Local fragment shifts and keypoint shifts are
+penalized more weakly. The benchmark therefore identifies both a desired
+signal---sensitivity to local structure---and a principal weakness---residual
+scale sensitivity.
 
 \input{tables/alignment_ablation}
 
-Relative to no alignment, the constrained method reduces the nuisance penalty
-by \(30.118\) points (reference-bootstrap 95\% CI \(29.506\)--\(30.727\)) and
-increases the preserved structural penalty by \(11.189\) points
-(95\% CI \(10.094\)--\(12.322\)). Both per-reference signed-rank comparisons
-are strongly nonzero with rank-biserial effect size \(1.0\).
+The paired comparison in Table~\ref{tab:alignment} shows that, relative to no
+alignment, the constrained method reduces nuisance penalties by
+30.118 points (reference-bootstrap 95\% CI 29.506--30.727) and preserves an
+additional 11.189 points of structural penalty
+(10.094--12.322). Both per-reference signed-rank comparisons are nonzero with
+rank-biserial effect size 1.0.
 
-The wider alignment is not superior. The current range has a \(2.896\)-point
-lower nuisance penalty (95\% CI \(2.757\)--\(3.034\)), while the wider range
-preserves \(0.284\) points more structural penalty on average. Thus the
-preregistered expectation that a wider transform would better suppress
-nuisance while clearly masking structural errors is not supported. The current
-range provides the better nuisance result, whereas the small structural
-difference favours the wider range.
+The wider alignment does not dominate the production range. The current range
+has a 2.896-point lower nuisance penalty (2.757--3.034), whereas the wider
+range preserves 0.284 additional points of structural penalty. A wider search
+therefore fails to improve nuisance suppression and provides only a small
+structural-sensitivity advantage. The paired family-level breakdown is
+reported in Supplementary Table~\ref{tab:alignment-breakdown}.
 
-The perturbation-level paired breakdown is reported in
-Supplementary Table~\ref{tab:alignment-breakdown}; it is derived from the same
-reference/perturbation/severity tuples and is not an unpaired post-hoc
-comparison.
-
-\subsection{Structure-score audit}
+\subsection{Score semantics: inactive channels and cross-reference tests}
 
 \input{tables/structure_score_audit}
 
-Forty-one of 200 references contain at least one inactive direction channel:
-36 contain one inactive channel and five contain two. No reference contains
-three or more inactive channels. The distribution is similar across the two
-styles, although two-channel inactivity occurs more often in the Wang Xizhi
-subset (4/100) than the Ouyang Xun subset (1/100).
+Table~\ref{tab:inactive} shows that 41 of 200 references contain an inactive
+direction channel: 36 contain
+one and five contain two; none contains three or more. Empty-channel agreement
+affects 1,252 valid perturbation rows. Replacing the all-five mean by an
+active-channel mean changes the score by \(-0.289\) points on average and by as
+much as \(-15.402\) points. The largest corrections occur when inactive
+channels receive perfect Dice credit while a perturbed active channel
+degrades.
 
-Empty-channel agreement affects 1,252 valid perturbation observations. Replacing
-the all-five mean with an active-channel mean produces an average downward
-correction of \(0.289\) points and a maximum of \(15.402\) points. The largest
-cases combine two inactive direction channels with severe perturbation of an
-active channel: the fixed all-five macro receives perfect Dice credit from the
-empty channels while the active-channel evidence degrades. The audit motivates
-expert review of score semantics but does not authorize a production formula
-change.
-
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth]
+  \includegraphics[width=\columnwidth]
   {../artifacts/paper_ijdar/journal_statistics/coverage_correction_qualitative.png}
   \caption{Coverage-correction cases selected by correction quantiles rather
-  than appearance. Purple denotes aligned overlap, blue missing-reference ink,
-  and red extra-user ink.}
+  than visual preference. Purple denotes aligned overlap, blue
+  missing-reference ink, and red extra-user ink.}
   \label{fig:coverage-cases}
-\end{figure*}
+\end{figure}
 
-\subsection{Cross-reference semantics}
+Figure~\ref{fig:coverage-cases} illustrates the prespecified correction
+quantiles without selecting examples for visual appeal.
 
 \input{tables/cross_reference}
 
-The seven same-character cross-style pairs have a mean score of \(20.239\)
-(95\% bootstrap CI \(15.639\)--\(25.069\)), compared with \(9.741\)
-(\(8.584\)--\(10.970\)) for 50 different-character negatives. Cliff's delta is
-\(0.84\). This supports a reference-conditioned same-character signal, but the
-small cross-style sample and absence of same-style different-instance pairs
-preclude a strong generalization claim.
+The seven same-character cross-style pairs in Table~\ref{tab:cross-reference}
+have mean score 20.239
+(bootstrap 95\% CI 15.639--25.069), compared with 9.741
+(8.584--10.970) for 50 different-character negatives. Cliff's delta is 0.84
+\cite{cliff1993dominance}.
+This is evidence of a same-character reference signal, but the small positive
+set and missing same-style/different-instance condition prevent a broad
+style-generalization claim.
 
-\subsection{Diagnostic feedback and failure analysis}
-
-\input{tables/feedback_failure_taxonomy}
-
-Required Recall@3 remains \(0.701\) before and after the audited wording change,
-while exact region localization is only \(0.109\). Failure taxonomy shows that
-53.9\% of exact-region failures arise when the perturbation truth covers
-multiple grid cells although the metric requires an exact single-cell result.
-Wrong direction channels account for 24.6\%, and absence of a local finding
-from the top three accounts for 20.1\%. Wrong missing/extra type and
-alignment-residual region shifts are comparatively rare. These results support
-keeping the feedback benchmark secondary and revising future evaluation design
-rather than tuning rules on the current benchmark.
-
-\subsection{Blinded human structural validation}
+\subsection{RQ3: blinded human validity and ASDS development}
 
 \input{tables/human_validation}
 \input{tables/rater_reliability}
 
-Across 150 canonical pairs, the production score has a positive but modest
-association with the mean blinded human rating
+Across 150 canonical pairs, \(S_{\mathrm{prod}}\) has a positive but modest
+association with the three-rater mean
 (\(\rho=0.297\), character-cluster bootstrap 95\% CI
-\(0.148\)--\(0.441\), \(p=0.00023\)). The coverage-aware audit score is more
-strongly associated with the same ratings
-(\(\rho=0.429\), 95\% CI \(0.313\)--\(0.535\),
-\(p<10^{-7}\)). The paired bootstrap difference in correlation is \(0.132\)
-(95\% CI \(0.062\)--\(0.197\), Monte Carlo \(p<0.001\)). This result supports
-the semantic concern raised by inactive direction channels, but the
-coverage-aware score remains an audit quantity rather than a retroactive
-replacement for the frozen production formula.
+0.148--0.441, \(p=0.00023\)). The coverage-aware audit is stronger
+(\(\rho=0.429\), 0.313--0.535, \(p<10^{-7}\)). The paired bootstrap
+difference is 0.132 (0.062--0.197). This result is consistent with the
+inactive-channel audit but does not, by itself, authorize post-hoc replacement
+of the production score.
 
-Canonical inter-rater reliability is \(0.448\) for ICC(2,1) and \(0.709\) for
-ICC(2,\(k\)). Across the 45 rater-level hidden-repeat comparisons, exact
-agreement is 48.9\%, agreement within one scale point is 93.3\%, mean absolute
-difference is 0.578, and pooled quadratic weighted kappa is 0.634. Individual
-rater correlations with the production score range from \(0.174\) to \(0.350\)
-and are positive for all three raters. These results provide convergent
-evidence for reference-conditioned structural similarity while also showing
-that the ordinal task and rater pool contain meaningful subjectivity.
+These associations are summarized in Table~\ref{tab:human-validation}.
+Canonical ICC(2,1) is 0.448 and ICC(2,\(k\)) is 0.709
+(Table~\ref{tab:rater-reliability}). Across 45
+rater-level hidden repeats, exact agreement is 48.9\%, agreement within one
+scale point is 93.3\%, mean absolute difference is 0.578, and pooled quadratic
+weighted kappa is 0.634. Individual production-score correlations are
+positive for all raters and range from 0.174 to 0.350. Average ratings are
+therefore more reliable than a single rating, but meaningful subjectivity
+remains.
 
-\subsection{Character-disjoint generalization}
+\input{tables/spatial_score_development}
 
-\input{tables/character_disjoint}
+ASDS raises the development-set association to \(\rho=0.556\)
+(character-cluster bootstrap 95\% CI 0.454--0.651). Predictions produced by
+character-grouped five-fold weight selection retain
+\(\rho=0.540\) (0.432--0.639). The paired bootstrap interval for
+ASDS minus production is 0.110--0.410, and that for ASDS minus the
+coverage-aware audit is 0.017--0.239. For grouped out-of-fold predictions, the
+difference from coverage-aware scoring is less certain
+(\(-0.003\)--0.224).
 
-All architectures degrade when test character identities are excluded from
-training. SegFormer-B2 gives the strongest character-disjoint direction result,
-with Macro Dice \(0.8866\pm0.0008\), Macro IoU
-\(0.7977\pm0.0013\), and Boundary F1 \(0.6851\pm0.0046\).
-Its Macro Dice decreases by 7.150 percentage points from the standard split,
-compared with 9.664 points for DeepLabV3+ and 9.360 points for U-Net.
-DeepLabV3+ remains second in direction overlap, whereas U-Net retains the
-highest strict keypoint F1. These results identify SegFormer-B2 as the strongest
-of the evaluated architectures for unseen-character direction-structure
-generalization, not as a universal winner across every output channel.
+The component analysis in Table~\ref{tab:spatial-score-development} identifies
+the polar term as the strongest individual spatial descriptor
+(\(\rho=0.547\)); grid and projection similarities reach 0.447 and 0.445.
+Thus, most ASDS association comes from radial/angular ink organization, while
+the two coarse canvas terms provide a small complementary contribution. The
+combined score is not claimed to be significantly better than the polar term
+alone.
 
-\subsection{Application and course-scoring interpretation}
+These results show that human ratings are more closely related to spatial ink
+organization than to the deployed channel/pixel overlap alone. They are not
+an independent validation of ASDS, because the same 150 ratings informed its
+development. The independent result remains
+\placeholder{CONFIRMATORY ASDS RHO, 95\% CI, AND PAIRED DIFFERENCES}.
 
-The deployed application uses direct digital writing, matching the broad input
-modality of the held-out legacy images; a smartphone benchmark is therefore
-not an application-relevant missing experiment. The course-overlap audit finds
-that none of the 40 recovered legacy characters occurs in either approved
-100-character course pack, leaving zero valid same-character legacy-to-course
-test cases. We consequently do not manufacture cross-character scores.
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/human_score_association.pdf}
+  \caption{Development-stage association between blinded mean structural
+  rating and the production, coverage-aware, and ASDS scores for 150 natural
+  same-character pairs. Points are individual pairs; lines connect score-bin
+  medians only as a descriptive guide. ASDS was designed after these ratings,
+  so this figure is not an independent validation.}
+  \label{fig:human-score-association}
+\end{figure*}
 
-Course-scoring validity is instead supported by two complementary completed
-experiments. The 150-pair blinded human study evaluates natural
-same-character, different-instance structural agreement, while the
-course-reference test evaluates all seven same-character cross-style pairs
-available in the two approved reference libraries. The former establishes a
-human structural signal and the latter establishes reference sensitivity, but
-neither supports an expert-calibrated aesthetic-grade claim.
+Figure~\ref{fig:human-score-association} visualizes the stronger monotonic
+organization of ASDS while preserving the substantial dispersion that
+motivates independent confirmation.
+
+\subsection{RQ4: diagnostic feedback}
+
+\input{tables/feedback_failure_taxonomy}
+
+Table~\ref{tab:feedback-failures} separates the dominant localization failure
+types. Required Recall@3 is 0.701, whereas exact grid-region localization is
+0.109.
+Among exact-region failures, 53.9\% occur because the perturbation truth spans
+multiple cells while the metric requires one exact cell, 24.6\% involve an
+incorrect direction channel, and 20.1\% contain no local finding in the top
+three. Wrong missing/extra type and residual registration shifts are uncommon.
+The main limitation is therefore a mixture of localization representation and
+direction attribution rather than wording. This motivates a future set- or
+pixel-overlap localization metric, not further tuning of feedback rules on the
+same cases.
