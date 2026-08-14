@@ -10,15 +10,10 @@ Obtain the current official Springer Nature LaTeX template and place
 them in the TeX environment) before compiling. Do not copy an old class file
 from a third-party repository.
 
-The manuscript intentionally contains one unresolved result token:
-
-```text
-[SMARTPHONE]
-```
-
-These tokens must only be replaced with results from completed, auditable
-experiments. They are not authoring suggestions and must never be silently
-filled.
+All numerical result placeholders have been replaced with completed,
+auditable experiments. The target application uses direct digital writing, so
+the former smartphone placeholder was removed as outside the declared input
+scope. Writer-disjoint robustness remains an explicit limitation.
 
 Before submission, the author team must also replace the author/affiliation,
 funding, acknowledgements, code-availability, and provisional UniCalli

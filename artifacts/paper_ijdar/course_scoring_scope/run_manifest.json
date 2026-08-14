@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "experiment_name": "legacy_to_course_character_overlap_audit_v1",
+  "status": "COMPLETE_NO_ELIGIBLE_PAIRS",
+  "generated_at_utc": "2026-08-14T10:24:09.462854+00:00",
+  "inputs": {
+    "character_map_source": {
+      "path": "artifacts/paper_ijdar/expert_validation/candidate_review_v1/candidate_review_form.csv",
+      "sha256": "f625f58ea00c2ecac31bf92686c6731c6a23e1ac2acef869ebbfa44550dc5ce3"
+    },
+    "course_manifest": {
+      "path": "references/calli_tongji_beta_manifest.csv",
+      "sha256": "de07e699af0cc78859cc8c331adee8b5054a55ef3450d749292d3844459271d0"
+    },
+    "qc_manifest": {
+      "path": "artifacts/data_qc/manifest_qc_v1.csv",
+      "sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4"
+    },
+    "splits": {
+      "path": "artifacts/data_qc/standard_splits_qc_v1.csv",
+      "sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18"
+    }
+  },
+  "legacy_character_count": 40,
+  "course_count": 2,
+  "total_style_specific_overlap_count": 0,
+  "eligible_qc_test_sample_count": 0,
+  "same_character_required": true,
+  "cross_character_scoring_prohibited": true,
+  "interpretation": "The QC-clean legacy corpus cannot be used for the current two course packs because it shares no target character with either approved reference set. No cross-character score was computed."
+}

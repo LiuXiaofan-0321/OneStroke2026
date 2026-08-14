@@ -20,6 +20,8 @@ Paper-eligible result sources:
 - `artifacts/paper_ijdar/expert_validation/human_ratings_v1/raw_returns/`
 - `artifacts/paper_ijdar/expert_validation/human_ratings_v1/merged_ratings.csv`
 - `artifacts/paper_ijdar/expert_validation/human_ratings_v1/paper_statistics/human_validation_report.json`
+- `artifacts/paper_ijdar/course_scoring_scope/run_manifest.json`
+- `artifacts/paper_ijdar/course_scoring_scope/course_overlap_summary.csv`
 - `artifacts/paper_ijdar/task1/results_per_seed.csv`
 - `artifacts/paper_ijdar/task1/results_summary.csv`
 - `artifacts/paper_ijdar/task1/summary_manifest.json`
@@ -33,7 +35,7 @@ Excluded:
 - every directory containing `synthetic_smoke`;
 - same-image/self-reference score examples near 100;
 - empty human-rating templates;
-- missing smartphone manifests;
+- cross-character legacy-to-course score pairings;
 - Task 1 smoke outputs and any incomplete formal run.
 
 Human-validation safeguards:

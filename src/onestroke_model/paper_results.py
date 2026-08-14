@@ -100,86 +100,86 @@ def build_artifact_registry(project_root: str | Path) -> list[dict[str, Any]]:
             }
         )
 
-    preflight = _read_json(paper / "preflight" / "preflight_report.json") or {}
-    task1_status = preflight.get("task1", {}).get("status", "MISSING")
+    task1_manifest_path = paper / "task1" / "summary_manifest.json"
+    task1_manifest = _read_json(task1_manifest_path) or {}
+    task1_complete = (
+        int(task1_manifest.get("completed_run_count", 0)) == 18
+        and not task1_manifest.get("missing_experiments")
+    )
+    task1_result = paper / "task1" / "results_summary.csv"
     registry.append(
         {
             "experiment": "task1_main_segmentation",
-            "status": "DONE" if task1_status == "READY" else "PENDING_TASK1",
-            "run_manifest": "",
-            "primary_result": "",
-            "primary_result_exists": False,
-            "formal_artifact_eligible": False,
-            "blocking_error": "DeepLabV3+ and multi-seed Task 1 artifacts are not merged."
-            if task1_status != "READY"
-            else None,
+            "status": "DONE" if task1_complete else "PENDING_TASK1",
+            "run_manifest": str(task1_manifest_path),
+            "primary_result": str(task1_result),
+            "primary_result_exists": task1_result.is_file(),
+            "formal_artifact_eligible": task1_complete and task1_result.is_file(),
+            "blocking_error": (
+                None
+                if task1_complete
+                else "The formal 18-run, three-architecture, three-seed matrix is incomplete."
+            ),
         }
     )
-    character_plan = _read_json(
-        paper / "character_disjoint" / "character_disjoint_execution_plan.json"
-    )
-    if character_plan:
-        run_statuses = [str(run["status"]) for run in character_plan.get("runs", [])]
-        if run_statuses and all(status == "READY" for status in run_statuses):
-            character_status = "READY_TO_RUN"
-        elif "BLOCKED_BY_TASK1" in run_statuses:
-            character_status = "PENDING_TASK1"
-        else:
-            character_status = "BLOCKED"
-    else:
-        character_status = "MISSING"
     registry.append(
         {
             "experiment": "character_disjoint_generalization",
-            "status": character_status,
-            "run_manifest": str(paper / "character_disjoint" / "run_manifest.json"),
-            "primary_result": str(
-                paper / "character_disjoint" / "results_summary.csv"
-            ),
-            "primary_result_exists": (
-                paper / "character_disjoint" / "results_summary.csv"
-            ).is_file(),
+            "status": "DONE" if task1_complete else "PENDING_TASK1",
+            "run_manifest": str(task1_manifest_path),
+            "primary_result": str(task1_result),
+            "primary_result_exists": task1_result.is_file(),
             "formal_artifact_eligible": False,
             "blocking_error": (
-                "The complete 18-run Task 1 matrix is ready but formal GPU results "
-                "have not yet been completed."
-                if character_status != "READY_TO_RUN"
-                else None
+                None
+                if task1_complete
+                else "Character-disjoint rows are incomplete in the formal Task 1 matrix."
             ),
         }
     )
-    expert_metadata = _read_json(
-        paper / "expert_validation" / "study_package" / "expert_study_metadata.json"
-    ) or {}
+    human_report = (
+        paper
+        / "expert_validation"
+        / "human_ratings_v1"
+        / "paper_statistics"
+        / "human_validation_report.json"
+    )
+    human_data = _read_json(human_report) or {}
+    human_complete = bool(human_data.get("data_integrity", {}).get("complete_matrix"))
     registry.append(
         {
             "experiment": "expert_structural_similarity_validation",
-            "status": "PENDING_HUMAN_DATA",
-            "run_manifest": "",
-            "primary_result": str(
-                paper / "expert_validation" / "analysis" / "expert_rating_analysis.json"
-            ),
-            "primary_result_exists": (
-                paper / "expert_validation" / "analysis" / "expert_rating_analysis.json"
-            ).is_file(),
-            "formal_artifact_eligible": False,
-            "blocking_error": expert_metadata.get("status", "Human ratings are unavailable."),
+            "status": "DONE" if human_complete else "PENDING_HUMAN_DATA",
+            "run_manifest": str(human_report),
+            "primary_result": str(human_report),
+            "primary_result_exists": human_report.is_file(),
+            "formal_artifact_eligible": human_complete and human_report.is_file(),
+            "blocking_error": None if human_complete else "Human ratings are unavailable.",
         }
     )
-    real_world_metadata = _read_json(
-        paper / "real_world" / "templates" / "smartphone_protocol_metadata.json"
-    ) or {}
+    course_scope_manifest_path = paper / "course_scoring_scope" / "run_manifest.json"
+    course_scope_manifest = _read_json(course_scope_manifest_path) or {}
+    course_scope_status = str(course_scope_manifest.get("status", "MISSING"))
+    course_scope_complete = course_scope_status in {
+        "COMPLETE",
+        "COMPLETE_NO_ELIGIBLE_PAIRS",
+    }
+    course_scope_result = paper / "course_scoring_scope" / "course_overlap_summary.csv"
     registry.append(
         {
-            "experiment": "smartphone_unseen_writer",
-            "status": "PENDING_HUMAN_DATA",
-            "run_manifest": "",
-            "primary_result": str(paper / "real_world" / "evaluation_summary.json"),
-            "primary_result_exists": (
-                paper / "real_world" / "evaluation_summary.json"
-            ).is_file(),
-            "formal_artifact_eligible": False,
-            "blocking_error": real_world_metadata.get("status", "Real-world data are unavailable."),
+            "experiment": "course_scoring_scope_audit",
+            "status": "DONE" if course_scope_complete else course_scope_status,
+            "run_manifest": str(course_scope_manifest_path),
+            "primary_result": str(course_scope_result),
+            "primary_result_exists": course_scope_result.is_file(),
+            "formal_artifact_eligible": (
+                course_scope_complete and course_scope_result.is_file()
+            ),
+            "blocking_error": (
+                None
+                if course_scope_complete
+                else "The same-character course-overlap audit is unavailable."
+            ),
         }
     )
     return registry
@@ -210,6 +210,19 @@ def _copy_formal_tables(
         "feedback_diagnostic_before_after": (
             "artifacts/paper_ijdar/feedback_diagnostic/feedback_diagnostic_summary.csv",
             "feedback_diagnostic.csv",
+        ),
+        "task1_main_segmentation": (
+            "artifacts/paper_ijdar/task1/results_summary.csv",
+            "task1_results_summary.csv",
+        ),
+        "expert_structural_similarity_validation": (
+            "artifacts/paper_ijdar/expert_validation/human_ratings_v1/"
+            "paper_statistics/per_evaluator_summary.csv",
+            "human_validation_per_evaluator.csv",
+        ),
+        "course_scoring_scope_audit": (
+            "artifacts/paper_ijdar/course_scoring_scope/course_overlap_summary.csv",
+            "course_scoring_scope.csv",
         ),
     }
     copied: list[dict[str, Any]] = []
@@ -354,9 +367,32 @@ def _formal_findings(root: Path) -> list[str]:
             "Other reported diagnostic metrics, including specificity, did not improve; "
             "the ground truth is deterministic perturbation cause, not expert aesthetics."
         )
-    findings.append(
-        "Expert correlation and smartphone generalization remain pending real human data."
+    human = _read_json(
+        paper
+        / "expert_validation"
+        / "human_ratings_v1"
+        / "paper_statistics"
+        / "human_validation_report.json"
     )
+    if human and human.get("data_integrity", {}).get("complete_matrix"):
+        correlation = human.get("system_vs_human_mean", {})
+        reliability = human.get("canonical_inter_rater_reliability", {})
+        current = correlation.get("current_score", {})
+        coverage = correlation.get("coverage_aware_score", {})
+        findings.append(
+            "Blinded human validation: production-score Spearman rho "
+            f"{float(current.get('spearman_rho', 0.0)):.3f}, coverage-aware rho "
+            f"{float(coverage.get('spearman_rho', 0.0)):.3f}, and ICC(2,k) "
+            f"{float(reliability.get('icc_2_k', 0.0)):.3f} across 150 canonical pairs."
+        )
+    course_scope = _read_json(paper / "course_scoring_scope" / "run_manifest.json")
+    if course_scope:
+        findings.append(
+            "Course-scope audit: the "
+            f"{int(course_scope.get('legacy_character_count', 0))} recovered legacy "
+            "characters have zero overlap with both current 100-character course "
+            "libraries, so no invalid cross-character course score was computed."
+        )
     return findings
 
 
@@ -441,14 +477,14 @@ def _readiness_markdown(
             "### Nice-to-Have Items",
             "",
             "- Increase same-style different-instance reference coverage under compatible licenses.",
-            "- Add a reviewed six-channel subset to the smartphone test.",
-            "- Add expert calibration plots after the ethics and consent gates are satisfied.",
+            "- Export same-character direct-digital course submissions for an end-to-end course benchmark.",
+            "- Add qualified-expert aesthetic calibration only if the claim scope is expanded beyond structural similarity.",
             "",
             "### Largest Current Risks",
             "",
-            "- Scientific risk: reference-conditioned score semantics are not yet externally validated.",
+            "- Scientific risk: structural correlation is externally validated, but the score is not an expert-calibrated aesthetic grade.",
             "- Reproducibility risk: the local segmentation manifest contains stale absolute paths.",
-            "- Venue-fit risk: without character-disjoint, real perturbation, and human/real-world evidence, the work may read as a product pipeline rather than a document-analysis study.",
+            "- Coverage risk: the two current course libraries contain no same-style different-instance references.",
             "",
             f"Formal tables copied in this run: **{len(formal_tables)}**.",
             "",

@@ -25,6 +25,8 @@ artifacts/paper_ijdar/character_disjoint/*
 !artifacts/paper_ijdar/character_disjoint/splits_character_disjoint.csv
 !artifacts/paper_ijdar/task1/
 !artifacts/paper_ijdar/task1/**
+!artifacts/paper_ijdar/course_scoring_scope/
+!artifacts/paper_ijdar/course_scoring_scope/**
 data/legacy_gt_v1/
 paper/*.log
 *.pt

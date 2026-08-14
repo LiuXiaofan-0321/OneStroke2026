@@ -134,6 +134,18 @@ from correlation and ICC and are used solely for within-rater exact agreement,
 agreement within one scale point, mean absolute difference, and quadratic
 weighted kappa.
 
-\subsection{Pending real-world validation}
+\subsection{Application acquisition scope and course overlap}
 
-\placeholder{SMARTPHONE}
+The target application receives raster images exported from a direct digital
+writing canvas rather than photographs of paper. Camera-specific variation
+such as perspective distortion, uneven illumination, and paper texture is
+therefore outside the intended input domain. The QC-clean held-out samples are
+human digital-writing images and provide the application-matched acquisition
+modality for segmentation evaluation.
+
+Course scoring requires a same-character reference. We audit the intersection
+between the 40 recovered legacy character identities and each approved
+100-character course library before attempting an end-to-end course score.
+Cross-character comparisons are prohibited. The overlap audit is deterministic
+and records both the character intersection and the number of eligible
+QC-clean test samples.
