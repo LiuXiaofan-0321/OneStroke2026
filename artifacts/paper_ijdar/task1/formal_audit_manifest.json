@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-08-14T06:14:52.639904+00:00",
+  "git_commit": "56ade12b4dab49f26a35db09b7d59808da8fac3c",
+  "formal_exit_code": 0,
+  "expected_run_count": 18,
+  "verified_run_count": 18,
+  "all_checkpoints_present": true,
+  "all_hashes_verified": true,
+  "all_runs_completed": true,
+  "results_per_seed_sha256": "c6d27f365fab15b71914c6ae1ccaf723b02e236c28dc2b4a656ad7c50ea7934e",
+  "results_summary_sha256": "dcd2fa5248d8a1a0fa5143fbe72dd75ae3269551b8e58d071e1d0f638b6d1d6c",
+  "summary_manifest_sha256": "5bdd12f2b07d770ff846a88a3e8a02faf7ee9491555b0dea65c5fb329721601f",
+  "checkpoint_manifest_sha256": "f49c4fc8b364abe62eade730dc6f9b14e35d6baf809d5d7e5e6fb3d7462b391e"
+}

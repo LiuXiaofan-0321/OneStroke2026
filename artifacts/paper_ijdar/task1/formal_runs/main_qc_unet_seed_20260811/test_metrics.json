@@ -1,0 +1,96 @@
+{
+  "dice": [
+    0.9263327496498943,
+    0.9257639043575796,
+    0.9313168556194598,
+    0.9150186449751072,
+    0.890267722304938,
+    0.7597558279913622
+  ],
+  "iou": [
+    0.8627745228773924,
+    0.8617881191228725,
+    0.8714620984869144,
+    0.8433496490399264,
+    0.8022364855008484,
+    0.6125856868659172
+  ],
+  "precision": [
+    0.9085705863568253,
+    0.9267154139871913,
+    0.9403836207665281,
+    0.8974821213960185,
+    0.8958145795289901,
+    0.7605446808510639
+  ],
+  "recall": [
+    0.9448032458160732,
+    0.9248143466582398,
+    0.9224232564038644,
+    0.9332541428089746,
+    0.8847891343096536,
+    0.7589686098654709
+  ],
+  "macro_dice": 0.9177399753813958,
+  "macro_iou": 0.8483221750055907,
+  "keypoint_f1": 0.7597558279913622,
+  "boundary_f1_per_channel": [
+    0.8027462257368799,
+    0.812984762638209,
+    0.8206753018777595,
+    0.8017075474999126,
+    0.7563067089865347,
+    0.778240066569586
+  ],
+  "boundary_f1": 0.7988841093478591,
+  "keypoint_tolerance": {
+    "0": {
+      "precision": 0.7605446808510639,
+      "recall": 0.7589686098654709,
+      "f1": 0.7597558279913622
+    },
+    "1": {
+      "precision": 0.9403234042553191,
+      "recall": 0.8845970919961952,
+      "f1": 0.9116094105456051
+    },
+    "3": {
+      "precision": 0.9667744680851064,
+      "recall": 0.9180595189563799,
+      "f1": 0.9417874563082008
+    },
+    "5": {
+      "precision": 0.9718127659574468,
+      "recall": 0.930119581464873,
+      "f1": 0.9505091854183093
+    }
+  },
+  "split": "test",
+  "thresholds": {
+    "vec1": 0.8999999761581421,
+    "vec2": 0.8999999761581421,
+    "vec3": 0.8999999761581421,
+    "vec4": 0.8999999761581421,
+    "vec5": 0.8999999761581421,
+    "keypoint": 0.5
+  },
+  "checkpoint": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/paper_ijdar/main_qc/runs/unet_seed_20260811/checkpoints/best.pt",
+  "data_contract": {
+    "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+    "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+    "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+    "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+    "split_counts": {
+      "train": 530,
+      "val": 119,
+      "test": 120
+    },
+    "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+    "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+    "qc_exclusion_count": 71,
+    "active_sample_count": 769,
+    "reference_cache_used_as_ground_truth": false
+  },
+  "max_batches": 0,
+  "formal_evaluation": true
+}

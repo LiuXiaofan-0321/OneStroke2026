@@ -23,6 +23,8 @@ artifacts/paper_ijdar/*
 !artifacts/paper_ijdar/character_disjoint/
 artifacts/paper_ijdar/character_disjoint/*
 !artifacts/paper_ijdar/character_disjoint/splits_character_disjoint.csv
+!artifacts/paper_ijdar/task1/
+!artifacts/paper_ijdar/task1/**
 data/legacy_gt_v1/
 paper/*.log
 *.pt

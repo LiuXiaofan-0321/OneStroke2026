@@ -9,6 +9,15 @@ remains sensitive to scale and, to a lesser degree, rotation. Widening the
 search range did not improve the nuisance result, so further alignment tuning
 on the same benchmark would risk evaluation overfitting.
 
+The segmentation comparison adds a distinct generalization result. DeepLabV3+
+is strongest on the QC-clean standard split, but SegFormer-B2 has the highest
+character-disjoint direction overlap and the smallest Macro-Dice decrease
+between the two protocols. U-Net instead retains the highest strict keypoint
+F1. This architecture-by-target interaction argues against selecting a model
+from one aggregate metric alone. It also shows why the preliminary
+non-character-disjoint SegFormer release was insufficient evidence for
+unseen-character generalization.
+
 The inactive-channel audit exposes a semantic decision hidden by a simple
 macro-average. When a direction is absent from both masks, a Dice score of one
 is mathematically conventional but may grant credit unrelated to the active
@@ -30,15 +39,16 @@ truth or tuning the rules to the present cases.
 
 The study has important limitations. The legacy segmentation corpus contains
 only 40 fully labelled character identities and incomplete writer/source
-metadata. The reference library contains two style categories, only seven
-cross-style same-character pairs, and no same-style different-instance pairs.
-All completed robustness experiments operate on cached masks and therefore
-isolate scoring from segmentation errors. End-to-end robustness still requires
-the pending smartphone and unseen-writer study. The human validation includes
-only three raters with heterogeneous self-reported backgrounds. Its moderate
-single-rater reliability and higher average-rating reliability support a
-structural-similarity claim, but neither the raters nor the task establish
-expert aesthetic calibration.
+metadata. Character-disjoint evaluation therefore measures unseen character
+identity, not unseen writer identity. The reference library contains two style
+categories, only seven cross-style same-character pairs, and no same-style
+different-instance pairs. All completed robustness experiments operate on
+cached masks and therefore isolate scoring from segmentation errors.
+End-to-end robustness still requires the pending smartphone and unseen-writer
+study. The human validation includes only three raters with heterogeneous
+self-reported backgrounds. Its moderate single-rater reliability and higher
+average-rating reliability support a structural-similarity claim, but neither
+the raters nor the task establish expert aesthetic calibration.
 
 \subsection{Deployment implications}
 

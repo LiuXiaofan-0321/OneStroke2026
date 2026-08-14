@@ -1,0 +1,78 @@
+
+[2026-08-13T18:45:51.039688+00:00] $ python train.py --config "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml"
+experiment=character_disjoint_deeplabv3plus_seed_314159 device=cuda train_batches=135 val_batches=29
+direction_pos_weight=[51.81202931278875, 72.23496412951457, 59.55460753953307, 88.81707853784981, 54.457149923968245]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/conv.py:456: UserWarning: Plan failed with a cudnnException: CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR: cudnnFinalize Descriptor Failed cudnn_status: CUDNN_STATUS_NOT_SUPPORTED (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:919.)
+  return F.conv2d(input, weight, bias, self.stride,
+epoch=001 train_loss=2.6988 val_macro_dice=0.3754 val_keypoint_f1=0.1513 val_boundary_f1=0.0586
+epoch=002 train_loss=2.1130 val_macro_dice=0.6295 val_keypoint_f1=0.4432 val_boundary_f1=0.3994
+epoch=003 train_loss=1.2818 val_macro_dice=0.7052 val_keypoint_f1=0.6351 val_boundary_f1=0.3893
+/root/miniconda3/lib/python3.12/site-packages/torch/optim/lr_scheduler.py:156: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+epoch=004 train_loss=1.1031 val_macro_dice=0.6919 val_keypoint_f1=0.6611 val_boundary_f1=0.4729
+epoch=005 train_loss=0.9776 val_macro_dice=0.7558 val_keypoint_f1=0.6757 val_boundary_f1=0.5538
+epoch=006 train_loss=0.9007 val_macro_dice=0.7316 val_keypoint_f1=0.6827 val_boundary_f1=0.4865
+epoch=007 train_loss=0.8546 val_macro_dice=0.7484 val_keypoint_f1=0.6771 val_boundary_f1=0.5548
+epoch=008 train_loss=0.8298 val_macro_dice=0.7497 val_keypoint_f1=0.6927 val_boundary_f1=0.5625
+epoch=009 train_loss=0.8086 val_macro_dice=0.7747 val_keypoint_f1=0.6921 val_boundary_f1=0.5813
+epoch=010 train_loss=0.7891 val_macro_dice=0.7812 val_keypoint_f1=0.6921 val_boundary_f1=0.5756
+epoch=011 train_loss=0.7750 val_macro_dice=0.7720 val_keypoint_f1=0.7013 val_boundary_f1=0.5814
+epoch=012 train_loss=0.7661 val_macro_dice=0.7967 val_keypoint_f1=0.6994 val_boundary_f1=0.6116
+epoch=013 train_loss=0.7586 val_macro_dice=0.8104 val_keypoint_f1=0.6978 val_boundary_f1=0.6382
+epoch=014 train_loss=0.7528 val_macro_dice=0.7848 val_keypoint_f1=0.7030 val_boundary_f1=0.5987
+epoch=015 train_loss=0.7520 val_macro_dice=0.8004 val_keypoint_f1=0.6992 val_boundary_f1=0.6101
+epoch=016 train_loss=0.7392 val_macro_dice=0.8056 val_keypoint_f1=0.7033 val_boundary_f1=0.6190
+epoch=017 train_loss=0.7352 val_macro_dice=0.8197 val_keypoint_f1=0.7011 val_boundary_f1=0.6243
+epoch=018 train_loss=0.7337 val_macro_dice=0.7727 val_keypoint_f1=0.7031 val_boundary_f1=0.5820
+epoch=019 train_loss=0.7249 val_macro_dice=0.8024 val_keypoint_f1=0.6976 val_boundary_f1=0.6211
+epoch=020 train_loss=0.7211 val_macro_dice=0.8061 val_keypoint_f1=0.7023 val_boundary_f1=0.6208
+epoch=021 train_loss=0.7168 val_macro_dice=0.8015 val_keypoint_f1=0.7065 val_boundary_f1=0.6205
+epoch=022 train_loss=0.7107 val_macro_dice=0.8035 val_keypoint_f1=0.7065 val_boundary_f1=0.6053
+epoch=023 train_loss=0.7052 val_macro_dice=0.8190 val_keypoint_f1=0.7025 val_boundary_f1=0.6337
+epoch=024 train_loss=0.7065 val_macro_dice=0.8024 val_keypoint_f1=0.7014 val_boundary_f1=0.6151
+epoch=025 train_loss=0.6994 val_macro_dice=0.8077 val_keypoint_f1=0.6976 val_boundary_f1=0.6180
+epoch=026 train_loss=0.6954 val_macro_dice=0.8214 val_keypoint_f1=0.6994 val_boundary_f1=0.6404
+epoch=027 train_loss=0.6961 val_macro_dice=0.8099 val_keypoint_f1=0.6961 val_boundary_f1=0.6237
+epoch=028 train_loss=0.6896 val_macro_dice=0.8174 val_keypoint_f1=0.7038 val_boundary_f1=0.6340
+epoch=029 train_loss=0.6822 val_macro_dice=0.8053 val_keypoint_f1=0.7019 val_boundary_f1=0.6217
+epoch=030 train_loss=0.6810 val_macro_dice=0.8220 val_keypoint_f1=0.6981 val_boundary_f1=0.6444
+epoch=031 train_loss=0.6746 val_macro_dice=0.8140 val_keypoint_f1=0.6963 val_boundary_f1=0.6205
+epoch=032 train_loss=0.6745 val_macro_dice=0.8254 val_keypoint_f1=0.6942 val_boundary_f1=0.6322
+epoch=033 train_loss=0.6704 val_macro_dice=0.8198 val_keypoint_f1=0.7019 val_boundary_f1=0.6304
+epoch=034 train_loss=0.6671 val_macro_dice=0.8278 val_keypoint_f1=0.7024 val_boundary_f1=0.6365
+epoch=035 train_loss=0.6635 val_macro_dice=0.8223 val_keypoint_f1=0.6975 val_boundary_f1=0.6243
+epoch=036 train_loss=0.6604 val_macro_dice=0.8214 val_keypoint_f1=0.7016 val_boundary_f1=0.6222
+epoch=037 train_loss=0.6558 val_macro_dice=0.8320 val_keypoint_f1=0.7005 val_boundary_f1=0.6457
+epoch=038 train_loss=0.6546 val_macro_dice=0.8223 val_keypoint_f1=0.6979 val_boundary_f1=0.6329
+epoch=039 train_loss=0.6513 val_macro_dice=0.8309 val_keypoint_f1=0.7031 val_boundary_f1=0.6449
+epoch=040 train_loss=0.6514 val_macro_dice=0.8314 val_keypoint_f1=0.7020 val_boundary_f1=0.6404
+epoch=041 train_loss=0.6472 val_macro_dice=0.8232 val_keypoint_f1=0.7013 val_boundary_f1=0.6318
+epoch=042 train_loss=0.6447 val_macro_dice=0.8226 val_keypoint_f1=0.6954 val_boundary_f1=0.6337
+epoch=043 train_loss=0.6404 val_macro_dice=0.8288 val_keypoint_f1=0.6998 val_boundary_f1=0.6358
+epoch=044 train_loss=0.6406 val_macro_dice=0.8248 val_keypoint_f1=0.7036 val_boundary_f1=0.6386
+epoch=045 train_loss=0.6374 val_macro_dice=0.8274 val_keypoint_f1=0.7024 val_boundary_f1=0.6480
+epoch=046 train_loss=0.6355 val_macro_dice=0.8337 val_keypoint_f1=0.7018 val_boundary_f1=0.6493
+epoch=047 train_loss=0.6337 val_macro_dice=0.8314 val_keypoint_f1=0.7015 val_boundary_f1=0.6440
+epoch=048 train_loss=0.6356 val_macro_dice=0.8263 val_keypoint_f1=0.7016 val_boundary_f1=0.6393
+epoch=049 train_loss=0.6285 val_macro_dice=0.8170 val_keypoint_f1=0.7019 val_boundary_f1=0.6339
+epoch=050 train_loss=0.6290 val_macro_dice=0.8192 val_keypoint_f1=0.6984 val_boundary_f1=0.6390
+epoch=051 train_loss=0.6257 val_macro_dice=0.8226 val_keypoint_f1=0.7021 val_boundary_f1=0.6367
+epoch=052 train_loss=0.6240 val_macro_dice=0.8251 val_keypoint_f1=0.6996 val_boundary_f1=0.6461
+epoch=053 train_loss=0.6211 val_macro_dice=0.8212 val_keypoint_f1=0.7020 val_boundary_f1=0.6440
+epoch=054 train_loss=0.6206 val_macro_dice=0.8238 val_keypoint_f1=0.7017 val_boundary_f1=0.6396
+epoch=055 train_loss=0.6192 val_macro_dice=0.8233 val_keypoint_f1=0.6998 val_boundary_f1=0.6416
+epoch=056 train_loss=0.6186 val_macro_dice=0.8238 val_keypoint_f1=0.6983 val_boundary_f1=0.6351
+epoch=057 train_loss=0.6139 val_macro_dice=0.8174 val_keypoint_f1=0.7007 val_boundary_f1=0.6401
+epoch=058 train_loss=0.6129 val_macro_dice=0.8169 val_keypoint_f1=0.7013 val_boundary_f1=0.6327
+epoch=059 train_loss=0.6130 val_macro_dice=0.8172 val_keypoint_f1=0.7009 val_boundary_f1=0.6383
+epoch=060 train_loss=0.6112 val_macro_dice=0.8266 val_keypoint_f1=0.7044 val_boundary_f1=0.6414
+epoch=061 train_loss=0.6083 val_macro_dice=0.8231 val_keypoint_f1=0.6977 val_boundary_f1=0.6408
+early_stop epoch=61 best_macro_dice=0.8337
+
+[2026-08-13T19:00:57.475480+00:00] $ python -m onestroke_model.scripts.calibrate_thresholds --config "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml" --checkpoint "artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/checkpoints/best.pt" --output "artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/thresholds_val.json"
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/conv.py:456: UserWarning: Plan failed with a cudnnException: CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR: cudnnFinalize Descriptor Failed cudnn_status: CUDNN_STATUS_NOT_SUPPORTED (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:919.)
+  return F.conv2d(input, weight, bias, self.stride,
+best_thresholds= {'vec1': 0.8999999761581421, 'vec2': 0.800000011920929, 'vec3': 0.8999999761581421, 'vec4': 0.800000011920929, 'vec5': 0.8999999761581421, 'keypoint': 0.5}
+
+[2026-08-13T19:01:10.983430+00:00] $ python eval.py --config "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml" --checkpoint "artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/checkpoints/best.pt" --thresholds-json "artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/thresholds_val.json" --split test --output "artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/test_metrics.json"
+{'dice': [0.8968963368187799, 0.8425708653705218, 0.9331693479822878, 0.8537135642385482, 0.857372827833201, 0.6782883198877587], 'iou': [0.8130662300877844, 0.7279675620402019, 0.8747117888086278, 0.7447646047311428, 0.7503522134935218, 0.5131893211612971], 'precision': [0.8849128483742081, 0.8091341764691954, 0.9618578279788041, 0.8563344305745554, 0.818447117999756, 0.7075223181618615], 'recall': [0.9092088415661432, 0.8788901526625934, 0.906142635593977, 0.8511086916111215, 0.900186079099541, 0.6513742926434923], 'macro_dice': 0.8767445884486678, 'macro_iou': 0.7821724798322558, 'keypoint_f1': 0.6782883198877587, 'boundary_f1_per_channel': [0.6665396691934785, 0.659877766697425, 0.7735913914513558, 0.6674746297049146, 0.6756435263173449, 0.7008008206757338], 'boundary_f1': 0.6886253966729037, 'keypoint_tolerance': {'0': {'precision': 0.7075223181618615, 'recall': 0.6513742926434923, 'f1': 0.6782883198877586}, '1': {'precision': 0.9056051514708034, 'recall': 0.8055106440312584, 'f1': 0.852630302071679}, '3': {'precision': 0.9443143567978926, 'recall': 0.8527351118296955, 'f1': 0.8961912542801725}, '5': {'precision': 0.9536440801990341, 'recall': 0.8694085152250067, 'f1': 0.9095802127706687}}, 'split': 'test', 'thresholds': {'vec1': 0.8999999761581421, 'vec2': 0.800000011920929, 'vec3': 0.8999999761581421, 'vec4': 0.800000011920929, 'vec5': 0.8999999761581421, 'keypoint': 0.5}, 'checkpoint': '/root/autodl-tmp/lxf/OneStroke2026/artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/checkpoints/best.pt', 'data_contract': {'manifest': '/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv', 'manifest_sha256': 'c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4', 'splits': '/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv', 'splits_sha256': 'e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b', 'split_counts': {'train': 539, 'val': 114, 'test': 116}, 'qc_exclusions': '/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv', 'qc_exclusions_sha256': 'bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a', 'qc_exclusion_count': 71, 'active_sample_count': 769, 'reference_cache_used_as_ground_truth': False}, 'max_batches': 0, 'formal_evaluation': True}

@@ -7,11 +7,15 @@ constrained reference alignment, fixed structure agreement, and localized
 diagnostic evidence. Real-reference perturbation experiments show that the
 alignment fully absorbs translation, substantially improves over no alignment,
 and preserves structural penalties, while scale remains a clear weakness.
+Across three fixed seeds, DeepLabV3+ gives the best QC-clean standard-split
+direction and boundary results, while SegFormer-B2 gives the best
+character-disjoint direction result and the smallest Macro-Dice decrease.
+U-Net retains the strongest strict keypoint F1.
 Score and diagnostic audits expose inactive-channel bias and limitations of
 single-cell feedback localization. Blinded human ratings on 150 natural
 same-character pairs show a positive association with the production score and
 a stronger association with the coverage-aware audit, while also documenting
 non-negligible rater subjectivity. These findings support the pipeline as a
 reference-conditioned structural-analysis tool, not as a calibrated
-calligraphy grader. Submission-level claims still await the frozen Task~1,
-character-disjoint, and smartphone experiments.
+calligraphy grader. Submission-level real-world claims still await the
+smartphone and unseen-writer experiment.

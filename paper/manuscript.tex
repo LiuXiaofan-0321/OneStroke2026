@@ -23,40 +23,33 @@ Low-Resource Chinese Calligraphy Practice}
 \orgaddress{\city{[CITY]}, \country{China}}}
 
 \abstract{%
-\textbf{Purpose}\quad Digital calligraphy-learning systems require more than
-whole-character recognition: they must expose local structural evidence,
-compare a practice sample against an intended reference, and express
-diagnostic suggestions without presenting an opaque aesthetic score as expert
-judgment. We study reference-conditioned structural analysis in a
-low-resource Chinese calligraphy setting.
+\textbf{Purpose}\quad Digital calligraphy systems should expose local
+structure, compare practice against an intended reference, and provide
+diagnostic evidence without presenting an opaque score as expert judgment. We
+study this problem in a low-resource Chinese calligraphy setting.
 
-\textbf{Methods}\quad We represent each character with five overlapping
-direction-oriented stroke-region channels and one keypoint channel. A
-segmentation model predicts this representation, constrained similarity
-alignment suppresses limited placement variation, and a fixed agreement
-function combines direction overlap, foreground overlap, and tolerant
-keypoint agreement. Post-segmentation behaviour is evaluated on 200 real
-cached references using controlled mask perturbations, paired alignment
-ablation, a structure-score audit, cross-reference comparisons, and a
-diagnostic benchmark.
+\textbf{Methods}\quad Each character is represented by five overlapping
+direction channels and one keypoint channel. U-Net, DeepLabV3+, and
+SegFormer-B2 are evaluated with three seeds on QC-clean standard and
+character-disjoint splits. Constrained alignment and fixed structure agreement
+are further assessed on 200 cached references using perturbation, ablation,
+score-audit, diagnostic, and blinded human-validation experiments.
 
-\textbf{Results}\quad Translation is fully recovered in 800 valid trials,
-whereas rotation and especially scale remain challenging. Relative to no
-alignment, the constrained method reduces nuisance penalties by 30.118 points
-(95\% confidence interval 29.506--30.727) while preserving an additional
-11.189 points of structural penalty (10.094--12.322). Forty-one of 200
-references contain inactive direction channels, producing coverage
-corrections up to 15.402 points. On 150 natural same-character pairs, the
-production score correlates with the mean blinded human structural-similarity
-rating at \(\rho=0.297\) (95\% CI 0.148--0.441), versus
-\(\rho=0.429\) (0.313--0.535) for the coverage-aware audit. Average-rating
-reliability is ICC(2,\(k\)) \(=0.709\).
+\textbf{Results}\quad DeepLabV3+ achieves standard-split Macro Dice
+\(0.9630\pm0.0006\); SegFormer-B2 leads character-disjoint evaluation at
+\(0.8866\pm0.0008\). Relative to no alignment, the constrained method reduces
+nuisance penalties by 30.118 points (95\% confidence interval
+29.506--30.727) while preserving 11.189 additional points of structural
+penalty (10.094--12.322). Forty-one references contain inactive direction
+channels, with coverage corrections up to 15.402 points. On 150 natural
+same-character pairs, the production score correlates with mean blinded human
+ratings at \(\rho=0.297\) (0.148--0.441), versus \(\rho=0.429\)
+(0.313--0.535) for the coverage-aware audit; average-rating reliability is
+ICC(2,\(k\)) \(=0.709\).
 
-\textbf{Conclusion}\quad The pipeline provides auditable structural evidence
-and a human-validated structural signal, while exposing clear failure modes.
-It is not an expert-calibrated measure of calligraphic beauty. Main
-segmentation, character-disjoint, and smartphone results remain explicit
-pending experiments until real evidence is available.}
+\textbf{Conclusion}\quad The pipeline provides auditable, human-validated
+structural evidence but is not an expert-calibrated measure of calligraphic
+beauty. Smartphone and unseen-writer validation remains pending.}
 
 \keywords{Chinese calligraphy, stroke segmentation, multi-label parsing,
 reference-based assessment, image registration, diagnostic feedback}

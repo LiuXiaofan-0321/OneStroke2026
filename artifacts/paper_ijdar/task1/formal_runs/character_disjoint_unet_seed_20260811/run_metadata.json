@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "channels": [
+    "vec1",
+    "vec2",
+    "vec3",
+    "vec4",
+    "vec5",
+    "keypoint"
+  ],
+  "config": {
+    "experiment_name": "character_disjoint_unet_seed_20260811",
+    "seed": 20260811,
+    "device": "auto",
+    "data": {
+      "manifest": "artifacts/data_qc/manifest_qc_v1.csv",
+      "splits": "artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+      "image_size": 512,
+      "batch_size": 8,
+      "num_workers": 4,
+      "normalization": "imagenet",
+      "augmentation": {
+        "enabled": true,
+        "translate_px": 12,
+        "scale_min": 0.9,
+        "scale_max": 1.1,
+        "brightness_min": 0.85,
+        "brightness_max": 1.15,
+        "contrast_min": 0.9,
+        "contrast_max": 1.1,
+        "blur_probability": 0.15,
+        "blur_radius_min": 0.1,
+        "blur_radius_max": 0.8
+      },
+      "qc_exclusions": "artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+      "expected_manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+      "expected_splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+      "expected_qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+      "expected_split_counts": {
+        "train": 539,
+        "val": 114,
+        "test": 116
+      }
+    },
+    "model": {
+      "name": "unet",
+      "in_channels": 3,
+      "out_channels": 6,
+      "base_channels": 32
+    },
+    "loss": {
+      "direction": {
+        "bce_weight": 1.0,
+        "dice_weight": 1.0,
+        "pos_weight": "auto",
+        "pos_weight_max_samples": 200,
+        "pos_weight_max": 100.0
+      },
+      "keypoint": {
+        "loss_type": "focal",
+        "focal_weight": 1.0,
+        "dice_weight": 1.0,
+        "focal_gamma": 2.0,
+        "focal_alpha": 0.75
+      },
+      "boundary_weight": 0.2
+    },
+    "optim": {
+      "name": "adamw",
+      "lr": 0.0003,
+      "weight_decay": 0.01,
+      "epochs": 120,
+      "early_stop_patience": 15,
+      "amp": true,
+      "scheduler": "cosine",
+      "min_lr": 1e-06,
+      "warmup_epochs": 3,
+      "warmup_start_factor": 0.1,
+      "grad_clip_norm": 1.0
+    },
+    "thresholds": {
+      "vec1": 0.5,
+      "vec2": 0.5,
+      "vec3": 0.5,
+      "vec4": 0.5,
+      "vec5": 0.5,
+      "keypoint": 0.45
+    },
+    "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_20260811"
+  },
+  "device": "cuda",
+  "parameter_groups": [
+    {
+      "name": "model",
+      "lr": 0.0003
+    }
+  ],
+  "thresholds": {
+    "vec1": 0.5,
+    "vec2": 0.5,
+    "vec3": 0.5,
+    "vec4": 0.5,
+    "vec5": 0.5,
+    "keypoint": 0.44999998807907104
+  },
+  "class_weight_statistics": {
+    "method": "negatives_over_positives",
+    "num_samples": 200,
+    "max_weight": 100.0,
+    "positive_pixels": [
+      946754.0,
+      682734.0,
+      825701.0,
+      556687.0,
+      901597.0
+    ],
+    "positive_ratio": [
+      0.01893508,
+      0.01365468,
+      0.01651402,
+      0.01113374,
+      0.01803194
+    ],
+    "direction_pos_weight": [
+      51.81202931278875,
+      72.23496412951457,
+      59.55460753953307,
+      88.81707853784981,
+      54.457149923968245
+    ]
+  },
+  "data_contract": {
+    "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+    "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+    "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+    "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+    "split_counts": {
+      "train": 539,
+      "val": 114,
+      "test": 116
+    },
+    "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+    "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+    "qc_exclusion_count": 71,
+    "active_sample_count": 769,
+    "reference_cache_used_as_ground_truth": false
+  }
+}

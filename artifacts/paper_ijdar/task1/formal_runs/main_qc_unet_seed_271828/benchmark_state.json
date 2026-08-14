@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "experiment_name": "main_qc_unet_seed_271828",
+  "status": "COMPLETED",
+  "started_at_utc": "2026-08-13T15:02:46.921329+00:00",
+  "commands": [
+    "python train.py --config \"configs/paper_ijdar/main_qc_unet_seed_271828.yaml\"",
+    "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_unet_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/thresholds_val.json\"",
+    "python eval.py --config \"configs/paper_ijdar/main_qc_unet_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/test_metrics.json\""
+  ],
+  "ended_at_utc": "2026-08-13T15:38:40.944453+00:00"
+}

@@ -1,0 +1,575 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-08-13T13:59:01.804951+00:00",
+  "project_root": "/root/autodl-tmp/lxf/OneStroke2026",
+  "training_executed": false,
+  "run_count": 18,
+  "completed_run_count": 0,
+  "ready_run_count": 18,
+  "runs": [
+    {
+      "experiment_name": "main_qc_unet_seed_20260811",
+      "split_name": "main_qc",
+      "model_name": "unet",
+      "seed": 20260811,
+      "config": "configs/paper_ijdar/main_qc_unet_seed_20260811.yaml",
+      "config_sha256": "e84a477c10ad399a9dfe2674872e44b01218dbc448caf4d4a2f1aa7b013cd4e6",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/unet_seed_20260811",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_unet_seed_20260811.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_unet_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/unet_seed_20260811/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/unet_seed_20260811/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_unet_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/unet_seed_20260811/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/unet_seed_20260811/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/unet_seed_20260811/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "main_qc_unet_seed_314159",
+      "split_name": "main_qc",
+      "model_name": "unet",
+      "seed": 314159,
+      "config": "configs/paper_ijdar/main_qc_unet_seed_314159.yaml",
+      "config_sha256": "a884c53e2e06d3fd735ca8eb135e4c612a01cc55790fb0ce93b69b85ebaa927c",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/unet_seed_314159",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_unet_seed_314159.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_unet_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/unet_seed_314159/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/unet_seed_314159/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_unet_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/unet_seed_314159/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/unet_seed_314159/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/unet_seed_314159/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "main_qc_unet_seed_271828",
+      "split_name": "main_qc",
+      "model_name": "unet",
+      "seed": 271828,
+      "config": "configs/paper_ijdar/main_qc_unet_seed_271828.yaml",
+      "config_sha256": "811706461d12b39ea0e81ca8113cd7a13d45c4961e782742f71d381f37982c08",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/unet_seed_271828",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_unet_seed_271828.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_unet_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_unet_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/unet_seed_271828/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "main_qc_deeplabv3plus_seed_20260811",
+      "split_name": "main_qc",
+      "model_name": "deeplabv3plus",
+      "seed": 20260811,
+      "config": "configs/paper_ijdar/main_qc_deeplabv3plus_seed_20260811.yaml",
+      "config_sha256": "28cf57e1b46142e02712d781a63d8706ae97580d3d152130689c77767f7ce6fc",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_20260811",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_20260811.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_20260811/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_20260811/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_20260811/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_20260811/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_20260811/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "main_qc_deeplabv3plus_seed_314159",
+      "split_name": "main_qc",
+      "model_name": "deeplabv3plus",
+      "seed": 314159,
+      "config": "configs/paper_ijdar/main_qc_deeplabv3plus_seed_314159.yaml",
+      "config_sha256": "b28a582edee9348be040b3fab2f19b6dab844cc0155bddf02c52ff0bc7dbf198",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_314159",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_314159.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_314159/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_314159/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_314159/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_314159/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_314159/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "main_qc_deeplabv3plus_seed_271828",
+      "split_name": "main_qc",
+      "model_name": "deeplabv3plus",
+      "seed": 271828,
+      "config": "configs/paper_ijdar/main_qc_deeplabv3plus_seed_271828.yaml",
+      "config_sha256": "e5a1c32d11406beac3836394f0ebdde0be2ec9d3e534f067e99e7a18228655dc",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_271828",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_271828.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_271828/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_271828/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_deeplabv3plus_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_271828/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_271828/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/deeplabv3plus_seed_271828/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "main_qc_segformer_b2_seed_20260811",
+      "split_name": "main_qc",
+      "model_name": "segformer",
+      "seed": 20260811,
+      "config": "configs/paper_ijdar/main_qc_segformer_b2_seed_20260811.yaml",
+      "config_sha256": "91bed681d7df9a7a719412b842908450ca479d0be8ccda127d98f9d9010d1247",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_20260811.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "main_qc_segformer_b2_seed_314159",
+      "split_name": "main_qc",
+      "model_name": "segformer",
+      "seed": 314159,
+      "config": "configs/paper_ijdar/main_qc_segformer_b2_seed_314159.yaml",
+      "config_sha256": "bc0198008164fa6148a7281f640fe07ff0cc501507a75c2343a1b348631d91c0",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_314159",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_314159.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_314159/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_314159/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_314159/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_314159/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_314159/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "main_qc_segformer_b2_seed_271828",
+      "split_name": "main_qc",
+      "model_name": "segformer",
+      "seed": 271828,
+      "config": "configs/paper_ijdar/main_qc_segformer_b2_seed_271828.yaml",
+      "config_sha256": "f6165ee4069214c0e8d412a05b875c8e71c9a71106488d76424774ae5defd744",
+      "output_dir": "artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_271828",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+        "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+        "split_counts": {
+          "train": 530,
+          "val": 119,
+          "test": 120
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_271828.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_271828/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_271828/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_271828/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_271828/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_271828/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_unet_seed_20260811",
+      "split_name": "character_disjoint",
+      "model_name": "unet",
+      "seed": 20260811,
+      "config": "configs/paper_ijdar/character_disjoint_unet_seed_20260811.yaml",
+      "config_sha256": "1f8b22140e591dc198e8642865cb1f1a36f3831f828b7aa7418ea628feb31eb2",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_20260811",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_unet_seed_20260811.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_unet_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_20260811/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_20260811/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_unet_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_20260811/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_20260811/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_20260811/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_unet_seed_314159",
+      "split_name": "character_disjoint",
+      "model_name": "unet",
+      "seed": 314159,
+      "config": "configs/paper_ijdar/character_disjoint_unet_seed_314159.yaml",
+      "config_sha256": "2fcb391045da507702952c825aea6f07565abb1ae3717cbeb32af60b4e97142d",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_unet_seed_314159.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_unet_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_unet_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_unet_seed_271828",
+      "split_name": "character_disjoint",
+      "model_name": "unet",
+      "seed": 271828,
+      "config": "configs/paper_ijdar/character_disjoint_unet_seed_271828.yaml",
+      "config_sha256": "a2641608152dee9485b01d67480a0cfef9dca6580a8524d83c76ccdb9a4b338c",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_271828",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_unet_seed_271828.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_unet_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_271828/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_271828/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_unet_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_271828/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_271828/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/unet_seed_271828/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_deeplabv3plus_seed_20260811",
+      "split_name": "character_disjoint",
+      "model_name": "deeplabv3plus",
+      "seed": 20260811,
+      "config": "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_20260811.yaml",
+      "config_sha256": "b6e77302c9e857567fa92b9aaabedcf1f6cf15e3c5489b5c4db63da9ca0e025c",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_20260811",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_20260811.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_20260811/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_20260811/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_20260811/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_20260811/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_20260811/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_deeplabv3plus_seed_314159",
+      "split_name": "character_disjoint",
+      "model_name": "deeplabv3plus",
+      "seed": 314159,
+      "config": "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml",
+      "config_sha256": "8b181657deff5e6792ac7f66a497b428a89a4f5762032e6b13e9380a4a0da920",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_deeplabv3plus_seed_271828",
+      "split_name": "character_disjoint",
+      "model_name": "deeplabv3plus",
+      "seed": 271828,
+      "config": "configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_271828.yaml",
+      "config_sha256": "163cadc376ee78771a12ff6d0d35085c807bec8153f828d92bfeffe8f2bcd0b5",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_271828",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_271828.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_271828/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_271828/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_271828/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_271828/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_271828/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_segformer_b2_seed_20260811",
+      "split_name": "character_disjoint",
+      "model_name": "segformer",
+      "seed": 20260811,
+      "config": "configs/paper_ijdar/character_disjoint_segformer_b2_seed_20260811.yaml",
+      "config_sha256": "c763aa13452aba6c8b2167eea69b64225e24a1ca65431f1cf6a4c0d58192328d",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_20260811",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_20260811.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_20260811/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_20260811/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_20260811/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_20260811/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_20260811/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_segformer_b2_seed_314159",
+      "split_name": "character_disjoint",
+      "model_name": "segformer",
+      "seed": 314159,
+      "config": "configs/paper_ijdar/character_disjoint_segformer_b2_seed_314159.yaml",
+      "config_sha256": "0a68dc8cee188f26e3cbdb176108dd2d8920fffd7609521635f4213a99e7d7a0",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_314159",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_314159.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_314159/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_314159/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_314159/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_314159/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_314159/test_metrics.json\""
+      ]
+    },
+    {
+      "experiment_name": "character_disjoint_segformer_b2_seed_271828",
+      "split_name": "character_disjoint",
+      "model_name": "segformer",
+      "seed": 271828,
+      "config": "configs/paper_ijdar/character_disjoint_segformer_b2_seed_271828.yaml",
+      "config_sha256": "0fc6043f7c8b3474f4d874d85aaf9c157c7acccddb711576af336a34b43bbf65",
+      "output_dir": "artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_271828",
+      "status": "READY",
+      "data_contract": {
+        "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+        "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+        "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv",
+        "splits_sha256": "e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b",
+        "split_counts": {
+          "train": 539,
+          "val": 114,
+          "test": 116
+        },
+        "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+        "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+        "qc_exclusion_count": 71,
+        "active_sample_count": 769,
+        "reference_cache_used_as_ground_truth": false
+      },
+      "commands": [
+        "python train.py --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_271828.yaml\"",
+        "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_271828/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_271828/thresholds_val.json\"",
+        "python eval.py --config \"configs/paper_ijdar/character_disjoint_segformer_b2_seed_271828.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_271828/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_271828/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/segformer_b2_seed_271828/test_metrics.json\""
+      ]
+    }
+  ],
+  "policies": {
+    "resume": "complete train+val-calibration+test runs are skipped",
+    "threshold_calibration": "validation only",
+    "test_model_selection": false,
+    "failed_seed_removal": false
+  }
+}

@@ -1,0 +1,93 @@
+
+[2026-08-13T17:59:34.094064+00:00] $ python train.py --config "configs/paper_ijdar/character_disjoint_unet_seed_314159.yaml"
+experiment=character_disjoint_unet_seed_314159 device=cuda train_batches=68 val_batches=15
+direction_pos_weight=[51.81202931278875, 72.23496412951457, 59.55460753953307, 88.81707853784981, 54.457149923968245]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/conv.py:456: UserWarning: Plan failed with a cudnnException: CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR: cudnnFinalize Descriptor Failed cudnn_status: CUDNN_STATUS_NOT_SUPPORTED (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:919.)
+  return F.conv2d(input, weight, bias, self.stride,
+epoch=001 train_loss=3.2026 val_macro_dice=0.1764 val_keypoint_f1=0.0000 val_boundary_f1=0.0321
+epoch=002 train_loss=2.9297 val_macro_dice=0.2487 val_keypoint_f1=0.0192 val_boundary_f1=0.1023
+epoch=003 train_loss=2.8310 val_macro_dice=0.3000 val_keypoint_f1=0.0785 val_boundary_f1=0.1573
+/root/miniconda3/lib/python3.12/site-packages/torch/optim/lr_scheduler.py:156: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+epoch=004 train_loss=2.7322 val_macro_dice=0.4396 val_keypoint_f1=0.0432 val_boundary_f1=0.1885
+epoch=005 train_loss=2.6222 val_macro_dice=0.3828 val_keypoint_f1=0.1399 val_boundary_f1=0.2298
+epoch=006 train_loss=2.5328 val_macro_dice=0.4279 val_keypoint_f1=0.1983 val_boundary_f1=0.2459
+epoch=007 train_loss=2.4492 val_macro_dice=0.5257 val_keypoint_f1=0.1988 val_boundary_f1=0.3282
+epoch=008 train_loss=2.3802 val_macro_dice=0.4858 val_keypoint_f1=0.3154 val_boundary_f1=0.2985
+epoch=009 train_loss=2.3131 val_macro_dice=0.5439 val_keypoint_f1=0.4782 val_boundary_f1=0.3452
+epoch=010 train_loss=2.2503 val_macro_dice=0.5344 val_keypoint_f1=0.5744 val_boundary_f1=0.3523
+epoch=011 train_loss=2.2002 val_macro_dice=0.5420 val_keypoint_f1=0.5181 val_boundary_f1=0.3476
+epoch=012 train_loss=2.1383 val_macro_dice=0.6582 val_keypoint_f1=0.5742 val_boundary_f1=0.4605
+epoch=013 train_loss=2.0834 val_macro_dice=0.6273 val_keypoint_f1=0.5856 val_boundary_f1=0.4321
+epoch=014 train_loss=2.0257 val_macro_dice=0.6509 val_keypoint_f1=0.6092 val_boundary_f1=0.4537
+epoch=015 train_loss=1.8694 val_macro_dice=0.6305 val_keypoint_f1=0.6541 val_boundary_f1=0.4366
+epoch=016 train_loss=1.7050 val_macro_dice=0.6695 val_keypoint_f1=0.6712 val_boundary_f1=0.4713
+epoch=017 train_loss=1.5882 val_macro_dice=0.6438 val_keypoint_f1=0.6700 val_boundary_f1=0.4468
+epoch=018 train_loss=1.4969 val_macro_dice=0.6816 val_keypoint_f1=0.6878 val_boundary_f1=0.4793
+epoch=019 train_loss=1.3643 val_macro_dice=0.6712 val_keypoint_f1=0.6827 val_boundary_f1=0.4858
+epoch=020 train_loss=1.2695 val_macro_dice=0.6664 val_keypoint_f1=0.6907 val_boundary_f1=0.4690
+epoch=021 train_loss=1.2196 val_macro_dice=0.6537 val_keypoint_f1=0.6900 val_boundary_f1=0.4745
+epoch=022 train_loss=1.1922 val_macro_dice=0.6941 val_keypoint_f1=0.6969 val_boundary_f1=0.5018
+epoch=023 train_loss=1.1468 val_macro_dice=0.6868 val_keypoint_f1=0.6971 val_boundary_f1=0.4760
+epoch=024 train_loss=1.1305 val_macro_dice=0.6773 val_keypoint_f1=0.6990 val_boundary_f1=0.4866
+epoch=025 train_loss=1.1050 val_macro_dice=0.6670 val_keypoint_f1=0.7006 val_boundary_f1=0.4732
+epoch=026 train_loss=1.0887 val_macro_dice=0.6826 val_keypoint_f1=0.6941 val_boundary_f1=0.4767
+epoch=027 train_loss=1.0655 val_macro_dice=0.6847 val_keypoint_f1=0.6944 val_boundary_f1=0.4848
+epoch=028 train_loss=1.0312 val_macro_dice=0.7230 val_keypoint_f1=0.6971 val_boundary_f1=0.5442
+epoch=029 train_loss=1.0332 val_macro_dice=0.7604 val_keypoint_f1=0.7014 val_boundary_f1=0.5708
+epoch=030 train_loss=1.0120 val_macro_dice=0.7396 val_keypoint_f1=0.7084 val_boundary_f1=0.5338
+epoch=031 train_loss=0.9996 val_macro_dice=0.7337 val_keypoint_f1=0.7061 val_boundary_f1=0.5428
+epoch=032 train_loss=0.9720 val_macro_dice=0.7599 val_keypoint_f1=0.7091 val_boundary_f1=0.5754
+epoch=033 train_loss=0.9660 val_macro_dice=0.7513 val_keypoint_f1=0.7116 val_boundary_f1=0.5563
+epoch=034 train_loss=0.9443 val_macro_dice=0.7414 val_keypoint_f1=0.7167 val_boundary_f1=0.5561
+epoch=035 train_loss=0.9338 val_macro_dice=0.7631 val_keypoint_f1=0.7138 val_boundary_f1=0.5705
+epoch=036 train_loss=0.9186 val_macro_dice=0.7398 val_keypoint_f1=0.7148 val_boundary_f1=0.5418
+epoch=037 train_loss=0.9070 val_macro_dice=0.7630 val_keypoint_f1=0.7156 val_boundary_f1=0.5775
+epoch=038 train_loss=0.9052 val_macro_dice=0.7595 val_keypoint_f1=0.7185 val_boundary_f1=0.5776
+epoch=039 train_loss=0.9059 val_macro_dice=0.7657 val_keypoint_f1=0.7190 val_boundary_f1=0.5847
+epoch=040 train_loss=0.8789 val_macro_dice=0.7484 val_keypoint_f1=0.7159 val_boundary_f1=0.5607
+epoch=041 train_loss=0.8735 val_macro_dice=0.7521 val_keypoint_f1=0.7188 val_boundary_f1=0.5871
+epoch=042 train_loss=0.8572 val_macro_dice=0.7693 val_keypoint_f1=0.7182 val_boundary_f1=0.5700
+epoch=043 train_loss=0.8605 val_macro_dice=0.7659 val_keypoint_f1=0.7190 val_boundary_f1=0.5766
+epoch=044 train_loss=0.8444 val_macro_dice=0.7575 val_keypoint_f1=0.7214 val_boundary_f1=0.5683
+epoch=045 train_loss=0.8400 val_macro_dice=0.7769 val_keypoint_f1=0.7224 val_boundary_f1=0.6020
+epoch=046 train_loss=0.8377 val_macro_dice=0.7644 val_keypoint_f1=0.7178 val_boundary_f1=0.5924
+epoch=047 train_loss=0.8200 val_macro_dice=0.7829 val_keypoint_f1=0.7216 val_boundary_f1=0.6055
+epoch=048 train_loss=0.8178 val_macro_dice=0.7772 val_keypoint_f1=0.7193 val_boundary_f1=0.5947
+epoch=049 train_loss=0.8078 val_macro_dice=0.7674 val_keypoint_f1=0.7235 val_boundary_f1=0.5873
+epoch=050 train_loss=0.8085 val_macro_dice=0.7815 val_keypoint_f1=0.7238 val_boundary_f1=0.6122
+epoch=051 train_loss=0.7994 val_macro_dice=0.7758 val_keypoint_f1=0.7257 val_boundary_f1=0.5978
+epoch=052 train_loss=0.7835 val_macro_dice=0.7752 val_keypoint_f1=0.7225 val_boundary_f1=0.5998
+epoch=053 train_loss=0.7793 val_macro_dice=0.7861 val_keypoint_f1=0.7258 val_boundary_f1=0.6108
+epoch=054 train_loss=0.7823 val_macro_dice=0.7741 val_keypoint_f1=0.7256 val_boundary_f1=0.6001
+epoch=055 train_loss=0.7758 val_macro_dice=0.7627 val_keypoint_f1=0.7238 val_boundary_f1=0.5882
+epoch=056 train_loss=0.7740 val_macro_dice=0.7861 val_keypoint_f1=0.7254 val_boundary_f1=0.6142
+epoch=057 train_loss=0.7738 val_macro_dice=0.7741 val_keypoint_f1=0.7254 val_boundary_f1=0.5838
+epoch=058 train_loss=0.7572 val_macro_dice=0.7669 val_keypoint_f1=0.7285 val_boundary_f1=0.6007
+epoch=059 train_loss=0.7506 val_macro_dice=0.7736 val_keypoint_f1=0.7254 val_boundary_f1=0.5999
+epoch=060 train_loss=0.7527 val_macro_dice=0.7732 val_keypoint_f1=0.7264 val_boundary_f1=0.5991
+epoch=061 train_loss=0.7473 val_macro_dice=0.7920 val_keypoint_f1=0.7238 val_boundary_f1=0.6255
+epoch=062 train_loss=0.7429 val_macro_dice=0.7839 val_keypoint_f1=0.7288 val_boundary_f1=0.6114
+epoch=063 train_loss=0.7424 val_macro_dice=0.7806 val_keypoint_f1=0.7276 val_boundary_f1=0.6130
+epoch=064 train_loss=0.7348 val_macro_dice=0.7863 val_keypoint_f1=0.7279 val_boundary_f1=0.6088
+epoch=065 train_loss=0.7276 val_macro_dice=0.7739 val_keypoint_f1=0.7258 val_boundary_f1=0.6091
+epoch=066 train_loss=0.7285 val_macro_dice=0.7818 val_keypoint_f1=0.7285 val_boundary_f1=0.6209
+epoch=067 train_loss=0.7209 val_macro_dice=0.7791 val_keypoint_f1=0.7290 val_boundary_f1=0.6037
+epoch=068 train_loss=0.7216 val_macro_dice=0.7773 val_keypoint_f1=0.7300 val_boundary_f1=0.6037
+epoch=069 train_loss=0.7168 val_macro_dice=0.7808 val_keypoint_f1=0.7281 val_boundary_f1=0.6116
+epoch=070 train_loss=0.7147 val_macro_dice=0.7791 val_keypoint_f1=0.7281 val_boundary_f1=0.6156
+epoch=071 train_loss=0.7047 val_macro_dice=0.7740 val_keypoint_f1=0.7289 val_boundary_f1=0.6068
+epoch=072 train_loss=0.7065 val_macro_dice=0.7749 val_keypoint_f1=0.7241 val_boundary_f1=0.6014
+epoch=073 train_loss=0.7062 val_macro_dice=0.7829 val_keypoint_f1=0.7264 val_boundary_f1=0.6159
+epoch=074 train_loss=0.7002 val_macro_dice=0.7813 val_keypoint_f1=0.7262 val_boundary_f1=0.6105
+epoch=075 train_loss=0.6984 val_macro_dice=0.7837 val_keypoint_f1=0.7331 val_boundary_f1=0.6172
+epoch=076 train_loss=0.6957 val_macro_dice=0.7881 val_keypoint_f1=0.7249 val_boundary_f1=0.6238
+early_stop epoch=76 best_macro_dice=0.7920
+
+[2026-08-13T18:21:03.006023+00:00] $ python -m onestroke_model.scripts.calibrate_thresholds --config "configs/paper_ijdar/character_disjoint_unet_seed_314159.yaml" --checkpoint "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/checkpoints/best.pt" --output "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/thresholds_val.json"
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/conv.py:456: UserWarning: Plan failed with a cudnnException: CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR: cudnnFinalize Descriptor Failed cudnn_status: CUDNN_STATUS_NOT_SUPPORTED (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:919.)
+  return F.conv2d(input, weight, bias, self.stride,
+best_thresholds= {'vec1': 0.8999999761581421, 'vec2': 0.6499999761581421, 'vec3': 0.8500000238418579, 'vec4': 0.3499999940395355, 'vec5': 0.8999999761581421, 'keypoint': 0.5}
+
+[2026-08-13T18:21:16.220535+00:00] $ python eval.py --config "configs/paper_ijdar/character_disjoint_unet_seed_314159.yaml" --checkpoint "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/checkpoints/best.pt" --thresholds-json "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/thresholds_val.json" --split test --output "artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/test_metrics.json"
+{'dice': [0.9023257625713323, 0.8723431622060263, 0.8936543893630043, 0.8619086279430216, 0.690890383660486, 0.7006957262530171], 'iou': [0.8220341990398313, 0.7735892099165419, 0.8077533645643236, 0.7573281452658884, 0.5277559457490881, 0.5392853240083051], 'precision': [0.8941827827132309, 0.8824217368040956, 0.9187719159359414, 0.8274741492210559, 0.5896939351584528, 0.740546218487395], 'recall': [0.9106184154367994, 0.8624922125502255, 0.8698736510042998, 0.8993334572589425, 0.8340142584816127, 0.6649151172190784], 'macro_dice': 0.844224465148774, 'macro_iou': 0.7376921729071346, 'keypoint_f1': 0.7006957262530171, 'boundary_f1_per_channel': [0.7076034158964385, 0.6975295570848774, 0.7329319981597314, 0.6349092679852766, 0.5107505178576164, 0.7207307490832897], 'boundary_f1': 0.6567449513967881, 'keypoint_tolerance': {'0': {'precision': 0.740546218487395, 'recall': 0.6649151172190784, 'f1': 0.7006957262530172}, '1': {'precision': 0.90625, 'recall': 0.791127728375101, 'f1': 0.8447848606170654}, '3': {'precision': 0.9414390756302521, 'recall': 0.8308070600916195, 'f1': 0.8826699801053925}, '5': {'precision': 0.9549444777911165, 'recall': 0.849467798437079, 'f1': 0.8991233254902526}}, 'split': 'test', 'thresholds': {'vec1': 0.8999999761581421, 'vec2': 0.6499999761581421, 'vec3': 0.8500000238418579, 'vec4': 0.3499999940395355, 'vec5': 0.8999999761581421, 'keypoint': 0.5}, 'checkpoint': '/root/autodl-tmp/lxf/OneStroke2026/artifacts/paper_ijdar/character_disjoint/runs/unet_seed_314159/checkpoints/best.pt', 'data_contract': {'manifest': '/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv', 'manifest_sha256': 'c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4', 'splits': '/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/character_disjoint_splits_qc_v1.csv', 'splits_sha256': 'e9303314d1b70d3f92efcdc5c0807f833148cbe64c2702379f0ac951ed2a1e2b', 'split_counts': {'train': 539, 'val': 114, 'test': 116}, 'qc_exclusions': '/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv', 'qc_exclusions_sha256': 'bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a', 'qc_exclusion_count': 71, 'active_sample_count': 769, 'reference_cache_used_as_ground_truth': False}, 'max_batches': 0, 'formal_evaluation': True}

@@ -37,22 +37,22 @@ different-instance comparison.
 
 \subsection{Main segmentation experiments}
 
-\placeholder{TASK1\_MAIN\_BENCHMARK}
-
-The frozen protocol requires U-Net, the available Task~1 CNN baseline
-(preferably DeepLabV3+), and SegFormer-B2, with validation-only threshold
-calibration and test-only final evaluation. Metrics are five-direction Macro
-Dice and Macro IoU, per-channel precision/recall/Dice, Boundary F1, strict
-keypoint F1, and tolerant keypoint F1. Multi-seed means and standard deviations
-will be reported without reducing the declared seed count after observing
-results.
+We compare U-Net, a ResNet-50 DeepLabV3+ with output stride 16 and ASPP rates
+\(6,12,18\), and ImageNet-pretrained SegFormer-B2. Each architecture is trained
+with the fixed seeds 20260811, 314159, and 271828. All models share the
+six-channel target schema, label-safe augmentation, AdamW optimization,
+mixed-precision training, cosine scheduling, and early stopping. Thresholds
+are calibrated on the validation split only; the test split is used once for
+final evaluation. Metrics are five-direction Macro Dice and Macro IoU,
+per-channel precision/recall/Dice, Boundary F1, strict keypoint F1, and
+tolerant keypoint F1. All declared seeds are retained.
 
 \subsection{Character-disjoint generalization}
 
-\placeholder{CHARACTER\_DISJOINT}
-
-The character split is immutable. Test characters may not inform thresholds,
-learning rate, augmentation, stopping, or architecture selection.
+The same three architectures and seeds are rerun on the frozen
+character-disjoint split. Test characters do not inform thresholds, learning
+rate, augmentation, stopping, or architecture selection. Results are reported
+separately from the standard split rather than pooled.
 
 \subsection{Controlled perturbation}
 

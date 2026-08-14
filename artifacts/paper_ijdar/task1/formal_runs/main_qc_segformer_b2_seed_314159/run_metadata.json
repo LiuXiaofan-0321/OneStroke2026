@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "channels": [
+    "vec1",
+    "vec2",
+    "vec3",
+    "vec4",
+    "vec5",
+    "keypoint"
+  ],
+  "config": {
+    "experiment_name": "main_qc_segformer_b2_seed_314159",
+    "seed": 314159,
+    "device": "auto",
+    "data": {
+      "manifest": "artifacts/data_qc/manifest_qc_v1.csv",
+      "splits": "artifacts/data_qc/standard_splits_qc_v1.csv",
+      "image_size": 512,
+      "batch_size": 4,
+      "num_workers": 4,
+      "normalization": "imagenet",
+      "augmentation": {
+        "enabled": true,
+        "translate_px": 12,
+        "scale_min": 0.9,
+        "scale_max": 1.1,
+        "brightness_min": 0.85,
+        "brightness_max": 1.15,
+        "contrast_min": 0.9,
+        "contrast_max": 1.1,
+        "blur_probability": 0.15,
+        "blur_radius_min": 0.1,
+        "blur_radius_max": 0.8
+      },
+      "qc_exclusions": "artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+      "expected_manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+      "expected_splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+      "expected_qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+      "expected_split_counts": {
+        "train": 530,
+        "val": 119,
+        "test": 120
+      }
+    },
+    "model": {
+      "name": "segformer",
+      "backbone": "nvidia/segformer-b2-finetuned-ade-512-512",
+      "out_channels": 6,
+      "freeze_encoder": false,
+      "decoder_lr_scale": 10.0
+    },
+    "loss": {
+      "direction": {
+        "bce_weight": 1.0,
+        "dice_weight": 1.0,
+        "pos_weight": "auto",
+        "pos_weight_max_samples": 200,
+        "pos_weight_max": 100.0
+      },
+      "keypoint": {
+        "loss_type": "focal",
+        "focal_weight": 1.0,
+        "dice_weight": 1.0,
+        "focal_gamma": 2.0,
+        "focal_alpha": 0.75
+      },
+      "boundary_weight": 0.2
+    },
+    "optim": {
+      "name": "adamw",
+      "encoder_lr": 3e-05,
+      "decoder_lr": 0.0003,
+      "weight_decay": 0.01,
+      "epochs": 120,
+      "early_stop_patience": 15,
+      "amp": true,
+      "scheduler": "cosine",
+      "min_lr": 1e-06,
+      "warmup_epochs": 3,
+      "warmup_start_factor": 0.1,
+      "grad_clip_norm": 1.0
+    },
+    "thresholds": {
+      "vec1": 0.5,
+      "vec2": 0.5,
+      "vec3": 0.5,
+      "vec4": 0.5,
+      "vec5": 0.5,
+      "keypoint": 0.45
+    },
+    "output_dir": "artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_314159"
+  },
+  "device": "cuda",
+  "parameter_groups": [
+    {
+      "name": "encoder",
+      "lr": 3e-05
+    },
+    {
+      "name": "decoder",
+      "lr": 0.0003
+    }
+  ],
+  "thresholds": {
+    "vec1": 0.5,
+    "vec2": 0.5,
+    "vec3": 0.5,
+    "vec4": 0.5,
+    "vec5": 0.5,
+    "keypoint": 0.44999998807907104
+  },
+  "class_weight_statistics": {
+    "method": "negatives_over_positives",
+    "num_samples": 200,
+    "max_weight": 100.0,
+    "positive_pixels": [
+      941723.0,
+      709139.0,
+      911795.0,
+      634660.0,
+      846871.0
+    ],
+    "positive_ratio": [
+      0.01883446,
+      0.01418278,
+      0.0182359,
+      0.0126932,
+      0.01693742
+    ],
+    "direction_pos_weight": [
+      52.094168879808606,
+      69.50803862148324,
+      53.83688767760297,
+      77.78234015063184,
+      58.04086927052644
+    ]
+  },
+  "data_contract": {
+    "manifest": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/manifest_qc_v1.csv",
+    "manifest_sha256": "c55803a2381aa37e2a88c72b770be32036353e7b659986bf58f6591beba5edb4",
+    "splits": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/standard_splits_qc_v1.csv",
+    "splits_sha256": "d79e48c264ac2b5431eb5543ddae798efc1542482e6ca76369eb78c155cc7b18",
+    "split_counts": {
+      "train": 530,
+      "val": 119,
+      "test": 120
+    },
+    "qc_exclusions": "/root/autodl-tmp/lxf/OneStroke2026/artifacts/data_qc/dataset_qc_exclusion_contract_v1.csv",
+    "qc_exclusions_sha256": "bd2b0641d0e6f53f6f18f6604232c02ff99e9d989eb39125f6a9af41e8573a1a",
+    "qc_exclusion_count": 71,
+    "active_sample_count": 769,
+    "reference_cache_used_as_ground_truth": false
+  }
+}

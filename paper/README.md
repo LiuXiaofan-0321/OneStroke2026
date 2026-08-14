@@ -10,11 +10,9 @@ Obtain the current official Springer Nature LaTeX template and place
 them in the TeX environment) before compiling. Do not copy an old class file
 from a third-party repository.
 
-The manuscript intentionally contains three unresolved result tokens:
+The manuscript intentionally contains one unresolved result token:
 
 ```text
-[TASK1_MAIN_BENCHMARK]
-[CHARACTER_DISJOINT]
 [SMARTPHONE]
 ```
 

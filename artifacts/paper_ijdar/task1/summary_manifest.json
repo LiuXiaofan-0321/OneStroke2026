@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-08-13T20:00:28.584378+00:00",
+  "completed_run_count": 18,
+  "missing_experiments": [],
+  "test_used_for_model_selection": false,
+  "threshold_calibration_split": "val"
+}

@@ -3,7 +3,15 @@
 
 \subsection{Main segmentation accuracy}
 
-\placeholder{TASK1\_MAIN\_BENCHMARK}
+\input{tables/task1_main_benchmark}
+
+DeepLabV3+ obtains the highest standard-split direction Macro Dice
+\(0.9630\pm0.0006\), Macro IoU \(0.9287\pm0.0012\), and Boundary F1
+\(0.8443\pm0.0028\). SegFormer-B2 is close on direction overlap but has greater
+between-seed variation. U-Net has lower direction and boundary performance,
+while achieving the highest strict keypoint F1
+\(0.7562\pm0.0038\). Thus no single architecture dominates both dense
+direction segmentation and sparse keypoint localization.
 
 The frozen single-release SegFormer-B2 result is retained only as preliminary
 engineering evidence: direction Macro Dice \(0.9610\), Macro IoU \(0.9251\),
@@ -136,8 +144,21 @@ and are positive for all three raters. These results provide convergent
 evidence for reference-conditioned structural similarity while also showing
 that the ordinal task and rater pool contain meaningful subjectivity.
 
-\subsection{Pending generalization and real-world validity}
+\subsection{Character-disjoint generalization}
 
-\placeholder{CHARACTER\_DISJOINT}
+\input{tables/character_disjoint}
+
+All architectures degrade when test character identities are excluded from
+training. SegFormer-B2 gives the strongest character-disjoint direction result,
+with Macro Dice \(0.8866\pm0.0008\), Macro IoU
+\(0.7977\pm0.0013\), and Boundary F1 \(0.6851\pm0.0046\).
+Its Macro Dice decreases by 7.150 percentage points from the standard split,
+compared with 9.664 points for DeepLabV3+ and 9.360 points for U-Net.
+DeepLabV3+ remains second in direction overlap, whereas U-Net retains the
+highest strict keypoint F1. These results identify SegFormer-B2 as the strongest
+of the evaluated architectures for unseen-character direction-structure
+generalization, not as a universal winner across every output channel.
+
+\subsection{Pending real-world validity}
 
 \placeholder{SMARTPHONE}

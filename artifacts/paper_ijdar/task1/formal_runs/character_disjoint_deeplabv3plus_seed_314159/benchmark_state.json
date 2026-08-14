@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "experiment_name": "character_disjoint_deeplabv3plus_seed_314159",
+  "status": "COMPLETED",
+  "started_at_utc": "2026-08-13T18:45:51.039527+00:00",
+  "commands": [
+    "python train.py --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml\"",
+    "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/thresholds_val.json\"",
+    "python eval.py --config \"configs/paper_ijdar/character_disjoint_deeplabv3plus_seed_314159.yaml\" --checkpoint \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/character_disjoint/runs/deeplabv3plus_seed_314159/test_metrics.json\""
+  ],
+  "ended_at_utc": "2026-08-13T19:01:24.793995+00:00"
+}

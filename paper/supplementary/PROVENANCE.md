@@ -20,6 +20,13 @@ Paper-eligible result sources:
 - `artifacts/paper_ijdar/expert_validation/human_ratings_v1/raw_returns/`
 - `artifacts/paper_ijdar/expert_validation/human_ratings_v1/merged_ratings.csv`
 - `artifacts/paper_ijdar/expert_validation/human_ratings_v1/paper_statistics/human_validation_report.json`
+- `artifacts/paper_ijdar/task1/results_per_seed.csv`
+- `artifacts/paper_ijdar/task1/results_summary.csv`
+- `artifacts/paper_ijdar/task1/summary_manifest.json`
+- `artifacts/paper_ijdar/task1/checkpoint_manifest.csv`
+- `artifacts/paper_ijdar/task1/formal_audit_manifest.json`
+- `artifacts/paper_ijdar/task1/formal_run_file_manifest.csv`
+- `artifacts/paper_ijdar/task1/formal_runs/`
 
 Excluded:
 
@@ -27,7 +34,7 @@ Excluded:
 - same-image/self-reference score examples near 100;
 - empty human-rating templates;
 - missing smartphone manifests;
-- Task 1 or character-disjoint placeholders without completed run manifests.
+- Task 1 smoke outputs and any incomplete formal run.
 
 Human-validation safeguards:
 
@@ -60,5 +67,11 @@ Frozen facts:
   `a4376e5a4c2af0e71b97953d579b77e6ff51acf0cf011ebca9427385d4ee74c7`;
 - E03 return SHA-256:
   `a2e1960c8257728d19790d6af80bf872406623a72203c056b63a81a9b8d189a0`.
+- Task 1 per-seed result table SHA-256:
+  `c6d27f365fab15b71914c6ae1ccaf723b02e236c28dc2b4a656ad7c50ea7934e`;
+- Task 1 summary table SHA-256:
+  `dcd2fa5248d8a1a0fa5143fbe72dd75ae3269551b8e58d071e1d0f638b6d1d6c`;
+- Task 1 checkpoint manifest SHA-256:
+  `f49c4fc8b364abe62eade730dc6f9b14e35d6baf809d5d7e5e6fb3d7462b391e`.
 
 The 200 model-derived reference caches are not segmentation ground truth.

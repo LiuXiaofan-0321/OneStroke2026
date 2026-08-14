@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "experiment_name": "main_qc_segformer_b2_seed_20260811",
+  "status": "COMPLETED",
+  "started_at_utc": "2026-08-13T16:28:54.249590+00:00",
+  "commands": [
+    "python train.py --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_20260811.yaml\"",
+    "python -m onestroke_model.scripts.calibrate_thresholds --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/checkpoints/best.pt\" --output \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/thresholds_val.json\"",
+    "python eval.py --config \"configs/paper_ijdar/main_qc_segformer_b2_seed_20260811.yaml\" --checkpoint \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/checkpoints/best.pt\" --thresholds-json \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/thresholds_val.json\" --split test --output \"artifacts/paper_ijdar/main_qc/runs/segformer_b2_seed_20260811/test_metrics.json\""
+  ],
+  "ended_at_utc": "2026-08-13T16:55:58.879617+00:00"
+}
