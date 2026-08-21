@@ -1,0 +1,30 @@
+\begin{center}
+\refstepcounter{table}
+\noindent\textbf{Table \thetable:} Full per-perturbation score-drop statistics.
+Nuisance rows use
+absolute drop; structural rows use signed drop from the identity score.
+Confidence intervals use reference-level bootstrap resampling.\par
+\label{tab:controlled-full}
+\centering
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+Perturbation & \(N\) & Mean & Median & SD & 95\% CI & P05--P95 &
+Invalid & \(\rho_s\) & Monotonic \\
+\midrule
+Translation & 800 & 0.000 & 0.000 & 0.000 & [0.000, 0.000] & [0.000, 0.000] & 0.000 & -- & 1.000 \\
+Rotation & 520 & 5.395 & 4.890 & 2.335 & [5.079, 5.747] & [3.045, 9.024] & 0.133 & -0.521 & 0.647 \\
+Scale up & 408 & 13.653 & 12.775 & 4.556 & [12.964, 14.420] & [8.030, 22.745] & 0.490 & 0.812 & 0.271 \\
+Scale down & 800 & 16.356 & 15.412 & 5.225 & [15.670, 17.074] & [10.051, 26.419] & 0.000 & -0.662 & 0.500 \\
+Compound transform & 276 & 8.143 & 7.298 & 3.468 & [7.621, 8.717] & [4.295, 15.464] & 0.540 & 0.397 & 0.466 \\
+Terminal deletion & 800 & 19.757 & 11.113 & 20.424 & [17.387, 22.087] & [0.403, 62.702] & 0.000 & -0.993 & 0.992 \\
+Added direction fragment & 800 & 11.398 & 6.935 & 12.736 & [9.934, 12.929] & [0.277, 41.357] & 0.000 & -0.988 & 0.987 \\
+Local fragment shift & 800 & 4.310 & 2.537 & 4.220 & [3.886, 4.772] & [0.547, 12.677] & 0.000 & -0.985 & 0.985 \\
+Direction dilation & 800 & 24.034 & 17.866 & 18.673 & [22.180, 25.955] & [3.336, 62.536] & 0.000 & -1.000 & 1.000 \\
+Direction erosion & 800 & 22.225 & 15.425 & 18.048 & [20.269, 24.344] & [3.550, 60.381] & 0.000 & -0.992 & 0.997 \\
+Keypoint shift & 800 & 7.468 & 4.570 & 6.971 & [7.294, 7.641] & [0.000, 18.232] & 0.000 & -1.000 & 1.000 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}

@@ -12,13 +12,17 @@ aggregate metric. It also explains why the preliminary standard-split
 SegFormer result was insufficient evidence for unseen-character performance.
 
 The second result is that restricted registration is not merely an
-implementation detail. Without alignment, allowable global geometry dominates
-the score. The production range sharply improves nuisance behaviour and
-retains structural penalties. The wider range fails to improve nuisance
-suppression, providing a useful negative result: more transform capacity is not
-automatically better for diagnostic comparison. Scale remains the main
-weakness, but further adjustment on the same perturbation suite would risk
-benchmark-specific overfitting.
+implementation detail. Without alignment, the tested global geometric
+changes dominate the score. Relative to no alignment, the production range
+substantially reduces nuisance sensitivity while retaining structural
+penalties. The wider range does not improve this trade-off, providing a useful
+negative result: more transform capacity is not automatically better for
+diagnostic comparison. Scale remains the main weakness. Moreover, scale-up
+and compound summaries are conditional on the clipping-safe subset, with
+invalid fractions of 49.0\% and 54.0\%. Because clipping safety depends on
+glyph extent, these results should not be interpreted as invariance over the
+full reference library. Further adjustment on the same perturbation suite
+would also risk benchmark-specific overfitting.
 
 The third result is semantic. Both-empty direction channels can contribute
 perfect Dice even though no active structure is compared. The average effect
@@ -52,6 +56,34 @@ development record is retained to make researcher degrees of freedom visible.
 External replication should keep this specification fixed rather than retune
 it on the next rating set.
 
+\subsection{Why retain the six-channel parser when ASDS uses union ink?}
+
+ASDS is a spatial silhouette descriptor: polar occupancy, \(3\times3\)
+occupancy, and projection profiles are all computed from the union of the five
+direction masks. In a direct-digital-writing application with an already clean
+binary raster, the parser is therefore not mathematically required merely to
+obtain the silhouette used by ASDS. Claiming otherwise would overstate the
+role of parsing.
+
+The parser serves a broader evidential contract. The deployed production
+score uses channel-wise Dice and endpoint agreement; the application reports
+which direction family is missing or excessive, where the discrepancy lies,
+and whether stroke-endpoint relations disagree. These outputs cannot be
+recovered from a union silhouette when a direction-label swap leaves the ink
+support unchanged. ASDS should therefore be interpreted as one scalar
+consumer that complements, rather than replaces, the channel-level evidence.
+The paired ablation answers the scalar question directly: parsed-union and
+direct-ink ASDS differ by only \(0.0004\) in Spearman correlation, and the
+paired 95\% interval includes small advantages in either direction. We
+therefore find no evidence that parsing improves ASDS through denoising or
+standardization on the present clean direct-digital inputs. This negative
+result is informative rather than adverse: it prevents the scalar score from
+being used as circular justification for the parser. The six-channel
+representation remains necessary for the direction-specific and
+endpoint-specific diagnostic claims evaluated in RQ1 and delivered by the
+system, but it should not be required when an application requests only ASDS
+from an already clean binary raster.
+
 \subsection{Interpretation of human agreement}
 
 The average-rating ICC is substantially higher than the single-rating ICC.
@@ -59,7 +91,7 @@ This supports averaging multiple judgments for the validation endpoint, while
 also showing that the task is not objective in the sense of a segmentation
 mask. The rater pool is small and heterogeneous. One rater had limited
 calligraphy teaching/learning experience, but the group is not a panel of
-senior calligraphy experts. The results justify the phrase ``human-validated
+senior calligraphy experts. The results justify the phrase ``human-audited
 structural agreement''; they do not justify ``expert aesthetic score''.
 
 A stronger follow-up should recruit at least two experienced calligraphy

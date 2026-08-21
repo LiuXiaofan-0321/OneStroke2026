@@ -35,24 +35,47 @@ Nevertheless, its training population included 12 mismatched and
 duplicate-weighted observations; all formal comparisons above use the frozen
 769-sample QC-clean population.
 
+\IfFileExists{figures/segmentation_qualitative.pdf}{%
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/segmentation_qualitative.pdf}
+  \caption{Frozen qualitative segmentation cases for seed 20260811. Rows were
+  selected by prespecified evidence rather than visual preference: sample
+  33/18 contains substantial multi-channel crossing, sample 35/20 emphasizes
+  sparse endpoint localization, and sample 6/18 is a held-out character in
+  the character-disjoint test set. The first two rows use the formal
+  QC-standard models and the third uses the formal character-disjoint models.
+  Colours follow Fig.~\ref{fig:channel-definition}; black denotes
+  multi-channel overlap and bright green denotes stroke endpoints.}
+  \label{fig:segmentation-qualitative}
+\end{figure*}
+
+Figure~\ref{fig:segmentation-qualitative} makes the overlapping output contract
+and the architecture-specific errors visible beyond aggregate metrics.
+}{}
+
 \subsection{RQ2: controlled score behaviour and registration}
 
 \input{tables/controlled_perturbation}
 
 The family-level results in Table~\ref{tab:controlled} show heterogeneous
-nuisance robustness. Translation is recovered exactly in all
+residual nuisance sensitivity. Translation is recovered exactly in all
 800 valid observations. Mean absolute penalties are 5.395 for rotation,
 13.653 for scale-up, and 16.356 for scale-down. Scale-up and compound
 transformations have invalid fractions of 49.0\% and 54.0\%, respectively,
 because transformed support risks leaving the canvas; those cases are
-reported rather than silently counted as score failures.
+reported rather than silently counted as score failures. Scale-related
+summaries are therefore conditional on clipping-safe references. Because
+clipping safety is related to glyph extent, these conditional means should
+not be interpreted as full-library invariance.
 
 Structural perturbations generally lower the score with severity. Direction
 dilation and erosion have the largest average penalties, followed by terminal
 deletion and added fragments. Local fragment shifts and keypoint shifts are
 penalized more weakly. The benchmark therefore identifies both a desired
 signal---sensitivity to local structure---and a principal weakness---residual
-scale sensitivity.
+scale sensitivity. Full per-family distributional statistics are provided in
+Supplementary Table S1.
 
 \input{tables/alignment_ablation}
 
@@ -66,9 +89,9 @@ rank-biserial effect size 1.0.
 The wider alignment does not dominate the production range. The current range
 has a 2.896-point lower nuisance penalty (2.757--3.034), whereas the wider
 range preserves 0.284 additional points of structural penalty. A wider search
-therefore fails to improve nuisance suppression and provides only a small
-structural-sensitivity advantage. The paired family-level breakdown is
-reported in Supplementary Table~\ref{tab:alignment-breakdown}.
+therefore fails to reduce residual nuisance sensitivity and provides only a
+small structural-sensitivity advantage. The paired family-level breakdown is
+reported in Supplementary Table S2.
 
 \subsection{Score semantics: inactive channels and cross-reference tests}
 
@@ -86,7 +109,7 @@ degrades.
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]
-  {../artifacts/paper_ijdar/journal_statistics/coverage_correction_qualitative.png}
+  {figures/coverage_correction_qualitative.png}
   \caption{Coverage-correction cases selected by correction quantiles rather
   than visual preference. Purple denotes aligned overlap, blue
   missing-reference ink, and red extra-user ink.}
@@ -156,6 +179,18 @@ an external validation of ASDS, because the same 150 ratings informed its
 feature design. The grouped out-of-fold estimate reduces weight-selection
 optimism and is reported as internal validation; the full-sample value remains
 descriptive and retrospective.
+
+\input{tables/direct_ink_asds}
+
+The paired direct-ink ablation (Table~\ref{tab:direct-ink-asds}) gives
+\(\rho=0.55623\) for parsed-union ASDS and \(\rho=0.55583\) for direct-ink
+ASDS. Their difference is \(0.00040\), with character-cluster bootstrap
+95\% CI \(-0.01011\)--\(0.01030\). The two score vectors are themselves
+strongly rank-associated (\(\rho=0.9973\)). Thus, on these clean
+direct-digital inputs, the parser neither measurably improves nor degrades the
+scalar ASDS association. This result narrows the claim: ASDS is a silhouette
+score, whereas the parser is justified by the separate direction, overlap,
+and endpoint evidence evaluated in RQ1 and returned by the application.
 
 \begin{figure*}[t]
   \centering

@@ -154,3 +154,22 @@ Component ablations report the polar, grid, and projection terms separately.
 The combined formula is compared with each component so that any apparent
 benefit cannot be attributed to an unreported learned regressor. Development
 component comparisons are exploratory and are not multiplicity-adjusted.
+
+\subsection{Paired direct-ink ASDS ablation}
+\label{sec:direct-ink-ablation}
+
+To test whether ASDS itself benefits from the six-channel parser, we recompute
+the frozen score on the same 150 rated pairs using foreground extracted
+directly from each original direct-digital RGB raster. Images are converted to
+grayscale and foreground is defined by intensity \(<240\), the threshold
+already frozen for dataset QC. No learned preprocessing is used. The
+direct-ink masks are passed through the same constrained alignment and the
+same \(0.70/0.15/0.15\) ASDS formula; neither the threshold, alignment policy,
+features, nor weights are selected against the ratings for this comparison.
+
+We report Spearman association with the three-rater mean for parsed-union and
+direct-ink ASDS, their paired difference, and their mutual rank association.
+Uncertainty is estimated with 10,000 paired bootstrap resamples clustered by
+character ID. Because the ablation uses the original ASDS development pairs,
+it assesses implementation dependence within the same retrospective
+development set rather than external validity.

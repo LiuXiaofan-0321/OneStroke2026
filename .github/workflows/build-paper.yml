@@ -1,0 +1,83 @@
+name: Build IJDAR paper
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "paper/**"
+      - ".github/workflows/build-paper.yml"
+  pull_request:
+    paths:
+      - "paper/**"
+      - ".github/workflows/build-paper.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: paper-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Compile manuscript and supplementary material
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Compile main manuscript
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: manuscript.tex
+          working_directory: paper
+          compiler: latexmk
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Compile supplementary material
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: supplementary.tex
+          working_directory: paper
+          compiler: latexmk
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Reject unresolved citations, references, or overfull boxes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s paper/manuscript.pdf
+          test -s paper/supplementary.pdf
+          if grep -E \
+            "Citation .* undefined|Reference .* undefined|There were undefined references|Overfull \\\\[hv]box" \
+            paper/manuscript.log paper/supplementary.log; then
+            echo "LaTeX quality gate failed."
+            exit 1
+          fi
+
+      - name: Build online-editor source package
+        run: |
+          python paper/tools/build_online_package.py \
+            --output build/OneStroke2026_online_latex.zip
+
+      - name: Collect build products
+        shell: bash
+        run: |
+          mkdir -p build/paper-pdf
+          cp paper/manuscript.pdf build/paper-pdf/
+          cp paper/supplementary.pdf build/paper-pdf/
+
+      - name: Upload compiled paper and online source package
+        uses: actions/upload-artifact@v7
+        with:
+          name: OneStroke2026-IJDAR-paper
+          path: |
+            build/paper-pdf/manuscript.pdf
+            build/paper-pdf/supplementary.pdf
+            build/OneStroke2026_online_latex.zip
+          if-no-files-found: error
+          retention-days: 30

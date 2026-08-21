@@ -8,8 +8,10 @@ localized evidence. Across three fixed seeds, DeepLabV3+ is strongest on the
 QC-clean standard split, while SegFormer-B2 gives the best
 character-disjoint direction result and U-Net gives the best strict keypoint
 result. Controlled perturbations and paired ablations show that the constrained
-registration suppresses nuisance geometry without freely warping away local
-structural changes.
+registration substantially reduces nuisance sensitivity relative to no
+alignment without freely warping away local structural changes. Scale-related
+results remain conditional on clipping-safe references and do not establish
+full-library transform invariance.
 
 The human study also changes the interpretation of the score. The deployed
 formula has a modest positive association with blinded structural-similarity
@@ -21,6 +23,14 @@ was developed after observing the original ratings, these values are
 retrospective internal-validation evidence rather than external confirmation.
 They support ASDS as a compact candidate score while leaving replication on
 independently collected material as future work.
+
+A paired direct-ink ablation further shows that parsed-union and raw-ink ASDS
+are nearly equivalent on the clean direct-digital study inputs
+(\(\Delta\rho=0.0004\), 95\% CI \(-0.0101\)--\(0.0103\)). The scalar spatial
+descriptor therefore does not itself require the parser in this modality.
+The parser's independent value lies in overlapping direction segmentation,
+endpoint evidence, the deployed channel-aware score, and localized
+missing/extra diagnostics.
 
 The resulting system should be viewed as an auditable structural-analysis
 tool, not a universal aesthetic grader. Its strongest scientific contribution

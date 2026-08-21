@@ -23,6 +23,18 @@ materially affect handwritten document segmentation
 different output contract: the five direction labels are independently
 activated because intersections can support more than one label.
 
+Stroke-Seg is the most directly related recent framework for Chinese
+character stroke segmentation \cite{gong2024strokeseg}. It combines a
+synthetic-image generation strategy with interchangeable semantic
+segmentation backbones to separate character strokes. Our representation
+addresses a different annotation and application contract. Each manually
+isolated stroke is assigned by a fixed, character-specific mapping to one of
+five direction families; crossings may therefore activate multiple channels
+at the same pixel, and a sixth mask records the union of annotated stroke
+endpoints. The objective is not to recover an ordered list of individual
+strokes. Instead, the representation supports overlapping structural parsing,
+reference-conditioned comparison, and direction-level diagnostic evidence.
+
 \subsection{Computational analysis of Chinese calligraphy}
 
 Computational calligraphy research spans handcrafted style descriptors,

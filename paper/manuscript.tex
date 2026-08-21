@@ -1,21 +1,19 @@
-\documentclass[iicol,pdflatex,sn-basic]{sn-jnl}
+\documentclass[iicol,pdflatex,sn-basic,Numbered]{sn-jnl}
 
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{xcolor}
 \usepackage{url}
 
-\newcommand{\placeholder}[1]{\textcolor{red}{\textbf{[#1]}}}
 \newcommand{\asds}{\mathrm{ASDS}}
 
 \begin{document}
 
 \title[Reference-conditioned Chinese calligraphy assessment]
 {Reference-Conditioned Structural Assessment of Low-Resource Chinese
-Calligraphy with Overlapping Stroke Parsing and Human-Validated Spatial
+Calligraphy with Overlapping Stroke Parsing and Human-Audited Spatial
 Scoring}
 
 \author*[1]{\fnm{Xiaofan} \sur{Liu}}
@@ -25,7 +23,7 @@ Scoring}
 \equalcont{These authors contributed equally to this work.}
 \author[1]{\fnm{Yuan} \sur{Feng}}
 \equalcont{These authors contributed equally to this work.}
-\affil*[1]{\orgdiv{Software Engineering Institute},
+\affil*[1]{\orgdiv{School of Software Engineering},
   \orgname{East China Normal University},
   \orgaddress{\city{Shanghai}, \country{China}}}
 
@@ -43,7 +41,8 @@ introduce aligned spatial-distribution similarity (ASDS), which compares
 polar occupancy, coarse spatial occupancy, and projection profiles after
 registration. Score validity is studied with three blinded raters on 150
 natural same-character pairs. ASDS is developed retrospectively and evaluated
-by character-grouped out-of-fold internal validation.
+by character-grouped out-of-fold internal validation. A paired direct-ink
+ablation tests whether its scalar result depends on parsing.
 
 \textbf{Results}\quad DeepLabV3+ obtains \(0.9630\pm0.0006\) standard-split
 Macro Dice, whereas SegFormer-B2 leads character-disjoint evaluation at
@@ -53,7 +52,9 @@ preserving an additional 11.189 points of structural penalty
 (10.094--12.322). The frozen production and coverage-aware scores correlate
 with blinded ratings at \(\rho=0.297\) and \(0.429\), respectively. In
 retrospective analysis, ASDS reaches \(\rho=0.556\), with
-character-grouped out-of-fold \(\rho=0.540\).
+character-grouped out-of-fold \(\rho=0.540\). Parsed-mask and direct-ink ASDS
+are nearly equivalent (\(\Delta\rho=0.0004\), 95\% CI
+\(-0.0101\)--\(0.0103\)).
 
 \textbf{Conclusion}\quad Overlapping parsing and constrained registration
 provide auditable structural evidence, while spatial-distribution comparison
@@ -74,19 +75,20 @@ reference-based assessment, human validation, explainable feedback}
 \input{sections/06_discussion}
 \input{sections/07_conclusion}
 
-\section*{Supplementary statistical tables}
-\input{tables/controlled_perturbation_full}
-\input{tables/alignment_ablation_breakdown}
-
 \backmatter
 
 \section*{Acknowledgements}
-\placeholder{ACKNOWLEDGEMENTS}
+The authors thank Chengcheng Wan for project supervision and the adult
+volunteers who contributed blinded structural-similarity ratings.
 
 \section*{Declarations}
 
 \subsection*{Funding}
-\placeholder{FUNDING SOURCE AND GRANT NUMBER, OR ``NO FUNDING''}
+This work was conducted within the East China Normal University Undergraduate
+Innovation Training Incubation Project (Entrepreneurship Training category),
+``OneStroke: A Vision-Model-Based Intelligent Feedback System for Chinese
+Calligraphy''. The project application records no external funding channel;
+no grant number was available at the time of writing.
 
 \subsection*{Conflict of interest}
 The authors declare no competing interests.
@@ -110,10 +112,19 @@ images. The exact public/private release statement will be supplied before
 submission.
 
 \subsection*{Code availability}
-\placeholder{ANONYMIZED REPOSITORY DURING REVIEW OR PUBLIC ARCHIVAL URL}
+Source code, frozen experiment contracts, and non-restricted reproducibility
+artifacts are available at
+\url{https://github.com/LiuXiaofan-0321/OneStroke2026}. If anonymous review is
+required, an identity-free archival copy will be supplied through the
+submission system.
 
 \subsection*{Author contributions}
-\placeholder{CRediT CONTRIBUTION STATEMENT}
+X.L.: Conceptualization, methodology, software, formal analysis,
+visualization, writing---original draft, project administration. R.Z.: Data
+curation, methodology, software, validation, writing---review and editing.
+Y.F.: Software, system integration, validation, writing---review and editing.
+All authors contributed to the investigation, approved the submitted
+manuscript, and accept responsibility for the work.
 
 \bibliography{references}
 

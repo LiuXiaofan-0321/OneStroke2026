@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "analysis_name": "direct_ink_asds_ablation_v1",
+  "status": "RETROSPECTIVE_PAIRED_ABLATION_ON_ASDS_DEVELOPMENT_SET",
+  "pair_count": 150,
+  "character_count": 40,
+  "foreground_extraction": {
+    "source": "original direct-digital RGB raster",
+    "conversion": "PIL grayscale",
+    "threshold": "pixel < 240",
+    "threshold_origin": "frozen dataset-QC foreground rule",
+    "learned_preprocessing": false
+  },
+  "alignment": "same constrained translation/isotropic-scale/small-rotation search used by parsed ASDS",
+  "asds_specification": {
+    "version": "spatial-structure-v1-development",
+    "weights": {
+      "polar_js_similarity": 0.7,
+      "grid_js_similarity": 0.15,
+      "projection_js_similarity": 0.15
+    },
+    "retuned_for_direct_ink": false
+  },
+  "correlation_with_human_mean": {
+    "parsed_asds": {
+      "rho": 0.5562290124897076,
+      "p_two_sided": 1.4715637670915293e-13
+    },
+    "direct_ink_asds": {
+      "rho": 0.5558310017217053,
+      "p_two_sided": 1.5440735056696085e-13
+    },
+    "parsed_minus_direct_rho": 0.0003980107680022771
+  },
+  "parsed_direct_score_association": {
+    "rho": 0.9973225476687853,
+    "p_two_sided": 5.032697965959103e-170
+  },
+  "character_cluster_bootstrap": {
+    "cluster_unit": "char_id",
+    "iterations_requested": 10000,
+    "valid_iterations": 10000,
+    "parsed_asds_rho_ci95": [
+      0.4544248477298732,
+      0.6506500117087581
+    ],
+    "direct_ink_asds_rho_ci95": [
+      0.45443148747485096,
+      0.6492128139602141
+    ],
+    "parsed_minus_direct_rho_ci95": [
+      -0.010110434586378761,
+      0.010300613916220183
+    ]
+  },
+  "generated_at_utc": "2026-08-14T14:36:43.146703+00:00",
+  "inputs": {
+    "frozen_pairs": {
+      "path": "artifacts/paper_ijdar/expert_validation/frozen_study_v1/frozen_expert_pairs_v1.csv",
+      "sha256": "810d35e4e4bd0208de9608054daabaecc3613859f3a34c5a16e5141e266d8e66"
+    },
+    "parsed_asds_rows": {
+      "path": "artifacts/paper_ijdar/spatial_score_development/development_features_and_predictions.csv",
+      "sha256": "70d8e058f77747bc7cb8bbf162070780e29af0ca7a79155023c762581657347f"
+    },
+    "data_root": "data"
+  }
+}

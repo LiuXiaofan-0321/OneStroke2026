@@ -15,9 +15,10 @@ Status date: 2026-08-14
   confirmation.
 - [ ] Verify the raters' background metadata and disclose any author-rater
   relationship accurately.
-- [ ] Fill author names, affiliation, corresponding email, acknowledgements,
-  funding, CRediT roles, ethics approval/exemption, consent, code availability,
-  and data availability.
+- [x] Fill author names, affiliation, corresponding email, acknowledgements,
+  funding, CRediT roles, code availability, and data availability.
+- [ ] Obtain institution-confirmed ethics approval/exemption wording and
+  confirm the consent-for-publication statement.
 - [ ] Confirm whether project-owned qualitative glyphs may be included in the
   submitted source package and public repository.
 
@@ -33,32 +34,39 @@ Status date: 2026-08-14
 - [x] ICC(2,1), ICC(2,k), and hidden-repeat reliability.
 - [x] Post-rating ASDS development clearly separated from grouped internal
   validation and future external replication.
+- [x] Direct-ink ASDS compared with parsed-union ASDS under identical frozen
+  alignment and score settings.
 
 ## Manuscript checks
 
-- [x] Springer Nature `sn-jnl`, `iicol`, `sn-basic`.
+- [x] Springer Nature `sn-jnl`, `iicol`, `sn-basic`, `Numbered`.
 - [x] Structured abstract within 150--250 words.
 - [x] Six keywords (journal requirement: 4--6).
 - [x] RQ-based introduction and contribution list.
+- [x] Numeric bracketed citations and numbered reference list.
+- [x] Six-channel definition figure with endpoint-only keypoint semantics.
+- [ ] Generate and insert the frozen Input/GT/U-Net/DeepLabV3+/SegFormer-B2
+  qualitative figure after recovering the seed-20260811 formal checkpoints.
 - [x] Real, verifiable bibliography; no provisional UniCalli citation.
 - [x] Limitations include unavailable writer ID, within-corpus internal
   validation,
   small rater pool, and no universal aesthetic claim.
 - [x] Draft compiles without overfull boxes or unresolved citations.
-- [ ] Remove every red placeholder.
+- [x] Remove every red placeholder.
 - [ ] Re-run final PDF visual inspection.
 - [ ] Verify final page count against the Special Issue instruction.
 - [ ] Keep the final manuscript at or below 20 pages, including references,
   figures, and tables.
-- [ ] Add the 50--100-word author biographies and separate author photographs
-  requested by the journal instructions.
+- [x] Draft 50--100-word author biographies in `AUTHOR_BIOGRAPHIES.md`.
+- [ ] Have each author approve the biography wording and provide a separate
+  author photograph.
 - [ ] Select the correct Special Issue during submission.
 - [ ] Archive code, configuration, hashes, tables, and analysis outputs.
 
 ## Language that is allowed
 
 - “reference-conditioned structural agreement”
-- “human-validated structural similarity”
+- “human-audited structural similarity”
 - “development-stage ASDS result”
 - “retrospective ASDS development”
 - “character-grouped internal validation”

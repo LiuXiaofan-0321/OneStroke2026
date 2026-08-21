@@ -33,6 +33,9 @@ Paper-eligible result sources:
 - `artifacts/paper_ijdar/spatial_score_development/development_features_and_predictions.csv`
 - `artifacts/paper_ijdar/spatial_score_development/group_cv_folds.csv`
 - `artifacts/paper_ijdar/spatial_score_development/frozen_spatial_score_v1.json`
+- `artifacts/paper_ijdar/direct_ink_asds/direct_ink_asds_pairs.csv`
+- `artifacts/paper_ijdar/direct_ink_asds/direct_ink_asds_report.json`
+- `artifacts/paper_ijdar/direct_ink_asds/table_direct_ink_asds.tex`
 
 Excluded:
 
@@ -100,5 +103,11 @@ Frozen facts:
   `6221f9ed9d28a1a93aeadd3b67c3fcb9761dfce45fd981b68ca7b1db0dcc026b`;
 - optional follow-up candidate 100-pair CSV SHA-256:
   `51a9ee4c1b75a960e8fc2c35414158e9575c5056dd0e15141b1f662f13ceca30`.
+- direct-ink ASDS paired-row table SHA-256:
+  `ff39039f869fa5ff217792ff2b6a7fa2985e1770cbc7b247a36f7e90ae426bb3`;
+- direct-ink ASDS report SHA-256:
+  `44403497fd4980c834946b761b8352a1b05f49249f14c4a8f668affac36ac895`.
+- direct-ink ASDS generated LaTeX table SHA-256:
+  `c92277d9a494e62f9552e2b808c2baf777f7f94131cad100062ff89df63109cc`.
 
 The 200 model-derived reference caches are not segmentation ground truth.

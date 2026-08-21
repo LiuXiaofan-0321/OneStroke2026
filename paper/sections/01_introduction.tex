@@ -39,13 +39,14 @@ We study the following research questions.
   \item[RQ1:] How accurately do convolutional and transformer parsers recover
   the overlapping direction and keypoint representation, and how much
   performance is lost on unseen character identities?
-  \item[RQ2:] Does a deliberately constrained global registration suppress
-  allowable nuisance transformations while retaining sensitivity to local
-  structural changes?
+  \item[RQ2:] Does a deliberately constrained global registration reduce
+  nuisance sensitivity relative to no alignment while retaining sensitivity
+  to local structural changes?
   \item[RQ3:] How well do fixed reference-conditioned scores agree with
   blinded human structural-similarity ratings, and can an interpretable
   spatial-distribution score improve that association without an
-  unacknowledged post-hoc claim?
+  unacknowledged post-hoc claim? Does its scalar association depend on
+  parser-derived union ink rather than direct source ink?
   \item[RQ4:] Which diagnostic evidence can be localized reliably, and where
   do the current rules or evaluation protocol fail?
 \end{description}
@@ -86,7 +87,9 @@ The contributions are:
   150 natural same-character, different-instance pairs;
   \item ASDS, an interpretable spatial comparison whose post-rating
   development status, grouped cross-validation, component ablations, and
-  remaining need for external replication are reported explicitly;
+  remaining need for external replication are reported explicitly, together
+  with a paired direct-ink ablation that separates scalar silhouette scoring
+  from the parser's direction- and endpoint-level diagnostic role;
   \item a diagnostic failure taxonomy that distinguishes scoring limitations,
   localization-metric limitations, and optional language-model realization.
 \end{enumerate}
