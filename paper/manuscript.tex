@@ -28,39 +28,34 @@ Scoring}
   \orgaddress{\city{Shanghai}, \country{China}}}
 
 \abstract{%
-\textbf{Purpose}\quad Calligraphy practice systems should expose local stroke
-structure while tolerating harmless placement variation. We study this
-problem in a low-resource direct-digital-writing setting.
-
-\textbf{Methods}\quad We represent each character by five overlapping
-direction masks and one keypoint mask. U-Net, DeepLabV3+, and SegFormer-B2 are
-evaluated with three seeds on quality-controlled standard and
-character-disjoint splits. A constrained similarity registration is assessed
-on 200 real references by controlled perturbations and paired ablations. We
-introduce aligned spatial-distribution similarity (ASDS), which compares
-polar occupancy, coarse spatial occupancy, and projection profiles after
-registration. Score validity is studied with three blinded raters on 150
-natural same-character pairs. ASDS is developed retrospectively and evaluated
-by character-grouped out-of-fold internal validation. A paired direct-ink
-ablation tests whether its scalar result depends on parsing.
-
-\textbf{Results}\quad DeepLabV3+ obtains \(0.9630\pm0.0006\) standard-split
-Macro Dice, whereas SegFormer-B2 leads character-disjoint evaluation at
-\(0.8866\pm0.0008\). Constrained registration reduces nuisance penalties by
-30.118 points (95\% CI 29.506--30.727) relative to no alignment while
-preserving an additional 11.189 points of structural penalty
-(10.094--12.322). The frozen production and coverage-aware scores correlate
-with blinded ratings at \(\rho=0.297\) and \(0.429\), respectively. In
-retrospective analysis, ASDS reaches \(\rho=0.556\), with
-character-grouped out-of-fold \(\rho=0.540\). Parsed-mask and direct-ink ASDS
-are nearly equivalent (\(\Delta\rho=0.0004\), 95\% CI
-\(-0.0101\)--\(0.0103\)).
-
-\textbf{Conclusion}\quad Overlapping parsing and constrained registration
-provide auditable structural evidence, while spatial-distribution comparison
-improves internal human association. ASDS remains retrospective and requires
-external replication; the scores do not represent universal calligraphic
-beauty.}
+Computer-vision systems for handwriting commonly assume mutually exclusive
+semantic regions, optimize recognition or style classification, or compare
+images without separating global placement from local structural error.
+These assumptions are unsuitable for Chinese calligraphy, where adhered and
+crossing strokes may share pixels and where flexible registration can erase
+the discrepancy that an assessment system should preserve. We formulate
+low-resource reference-conditioned structural assessment as an auditable
+document-analysis problem. A six-channel parser predicts five independently
+activated direction masks and an endpoint mask; U-Net, DeepLabV3+, and
+SegFormer-B2 are compared with three seeds on quality-controlled standard and
+character-disjoint splits. A constrained global registration is evaluated on
+200 real references using controlled nuisance and structural perturbations.
+Human association is studied on 150 natural same-character pairs rated
+blindly by three adults, and aligned spatial-distribution similarity (ASDS)
+is reported as a retrospective, character-grouped internal-validation
+analysis. DeepLabV3+ reaches \(0.9630\pm0.0006\) standard-split Macro Dice,
+whereas SegFormer-B2 leads character-disjoint evaluation at
+\(0.8866\pm0.0008\). Relative to no alignment, constrained registration
+reduces nuisance penalties by 30.118 points while preserving 11.189
+additional points of structural penalty. The frozen production score,
+coverage-aware audit, and ASDS obtain Spearman correlations of 0.297, 0.429,
+and 0.556 with mean ratings; grouped out-of-fold ASDS retains 0.540.
+Parsed-union and direct-ink ASDS are nearly equivalent
+(\(\Delta\rho=0.0004\), 95\% CI \(-0.0101\)--\(0.0103\)). The computer-vision
+contribution is a reproducible framework for overlapping dense parsing,
+unseen-class evaluation, discrepancy-preserving registration, and
+human-audited comparison under limited labelled data, rather than a claim of
+universal calligraphic beauty.}
 
 \keywords{Chinese calligraphy, document analysis, multi-label segmentation,
 reference-based assessment, human validation, explainable feedback}
@@ -104,16 +99,22 @@ No approval or exemption is claimed in this draft.
 Not applicable, subject to confirmation by the authors before submission.
 
 \subsection*{Data availability}
-The recovered segmentation corpus and the Calli-Tongji-derived reference
-images are subject to their original ownership and licence constraints.
-Reproducibility artifacts provide frozen identifiers, hashes, split contracts,
-statistics, and generation scripts without redistributing restricted source
-images. The exact public/private release statement will be supplied before
-submission.
+Code and data are maintained as separate releases. A versioned data archive
+is being prepared for the project-owned QC-clean manifests and split
+contracts, the blinded 150-pair rating table, perturbation specifications,
+derived statistics, and integrity hashes. Its permanent repository identifier
+will be inserted before submission. The archive will not redistribute
+Calli-Tongji source images, which remain subject to the original
+CC-BY-NC-4.0 licence, and project-collected RGB/stroke-mask assets will be
+released only to the extent permitted by participant consent and institutional
+data-governance review. Where an image cannot be redistributed, the archive
+will provide stable identifiers, hashes, provenance, and regeneration or
+access instructions.
 
 \subsection*{Code availability}
-Source code, frozen experiment contracts, and non-restricted reproducibility
-artifacts are available at
+Source code, frozen experiment contracts, analysis scripts, and
+non-restricted reproducibility artifacts are maintained independently from
+the data archive at
 \url{https://github.com/LiuXiaofan-0321/OneStroke2026}. If anonymous review is
 required, an identity-free archival copy will be supplied through the
 submission system.

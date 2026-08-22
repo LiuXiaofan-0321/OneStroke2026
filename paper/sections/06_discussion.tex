@@ -1,146 +1,147 @@
 \section{Discussion}
 \label{sec:discussion}
 
-\subsection{What the experiments establish}
+\subsection{Computer-vision findings and generalization}
 
-The first result is that model selection depends on the generalization target.
-DeepLabV3+ is strongest on the QC-clean standard split, but SegFormer-B2 has
-the best character-disjoint direction overlap and the smallest decline between
-protocols. U-Net remains strongest on strict keypoint localization. This
-architecture-by-output interaction argues against selecting a parser from one
-aggregate metric. It also explains why the preliminary standard-split
-SegFormer result was insufficient evidence for unseen-character performance.
+The parsing results show why model selection should follow the intended
+generalization axis rather than a single in-domain metric. DeepLabV3+ is
+strongest on the QC-clean standard split, SegFormer-B2 has the best
+character-disjoint direction overlap and the smallest decline between
+protocols, and U-Net remains strongest for strict endpoint localization.
+Dense directional regions and sparse endpoint targets therefore favour
+different architectures. More broadly, the gap between standard and
+character-disjoint performance demonstrates that limited-class dense
+segmentation can appear nearly saturated while transfer to unseen structural
+compositions remains materially weaker. Reporting only an identity-overlapping
+split would conceal this distinction.
 
-The second result is that restricted registration is not merely an
-implementation detail. Without alignment, the tested global geometric
-changes dominate the score. Relative to no alignment, the production range
-substantially reduces nuisance sensitivity while retaining structural
-penalties. The wider range does not improve this trade-off, providing a useful
-negative result: more transform capacity is not automatically better for
-diagnostic comparison. Scale remains the main weakness. Moreover, scale-up
-and compound summaries are conditional on the clipping-safe subset, with
-invalid fractions of 49.0\% and 54.0\%. Because clipping safety depends on
-glyph extent, these results should not be interpreted as invariance over the
-full reference library. Further adjustment on the same perturbation suite
-would also risk benchmark-specific overfitting.
+The overlapping output contract addresses a limitation of ordinary
+mutually-exclusive segmentation rather than proposing another character
+classifier. At adhered and crossing regions, independent sigmoid channels
+preserve multiple valid directional memberships. This representation is
+useful wherever layered document primitives share foreground support and the
+downstream task requires semantic evidence rather than a foreground-only
+partition. The qualitative cases and channel-level metrics are consequently
+part of the scientific result: a union mask alone cannot reveal a
+direction-label swap or an endpoint failure.
 
-The third result is semantic. Both-empty direction channels can contribute
-perfect Dice even though no active structure is compared. The average effect
-is small, but a limited set of cases receives a large correction. The stronger
-human association of the coverage-aware audit supports this concern. ASDS
-extends the finding: coarse radial, angular, and projection distributions
-track the human structural rating better than the production score in the
-development study. This is plausible because raters can perceive global
-proportion and mass distribution even when exact channel overlap is modest.
+Registration is likewise part of the measurement design rather than a neutral
+preprocessing step. Without alignment, the tested global geometric changes
+dominate the score. Relative to no alignment, the production range
+substantially reduces nuisance sensitivity while retaining penalties for
+structural intervention. The wider search does not improve the trade-off,
+showing that additional transform capacity is not automatically beneficial
+when discrepancies are diagnostically meaningful.
 
-\subsection{Retrospective development and internal validation}
+These results support a deliberately limited claim. Translation is recovered
+well, but rotation and especially scale retain non-negligible penalties.
+Scale-up and compound summaries are conditional on clipping-safe references,
+with invalid fractions of 49.0\% and 54.0\%. Because clipping safety depends
+on glyph extent, the reported means are conditional estimates and do not
+establish invariance across the full library or even across every transform in
+the nominal search range. The appropriate conclusion is that constrained
+registration reduces the measured nuisance sensitivity relative to no
+alignment while preserving more structural discrepancy than a freely
+deformable comparison would be expected to preserve.
 
-It would be statistically inappropriate to present \(\rho=0.556\) as a final
-generalization result. The spatial representation and weights were finalized
-after the original ratings were available. Character-grouped out-of-fold
-predictions reduce weight-selection optimism, but they cannot erase the fact
-that feature families were proposed after observing the same study.
+The inactive-channel audit exposes a second general measurement issue.
+Both-empty semantic channels can receive perfect overlap credit despite
+carrying no observed structure. The mean effect is small, but individual
+corrections are large and the coverage-aware audit has stronger association
+with human ratings. Multi-label document systems should therefore report
+label coverage and audit empty-channel semantics rather than relying on a
+macro average whose meaning changes with the active label set.
 
-We therefore preserve two distinct layers of evidence: (i) the originally
-frozen production and coverage-aware results, which were not selected to
-maximize the observed ASDS association; and (ii) a transparent post-rating
-development analysis including all considered feature families, component
-ablations, character-cluster uncertainty, and character-grouped out-of-fold
-weight selection. The latter is an internal-validation estimate, not evidence
-from newly collected material.
+\subsection{Assessment validity and diagnostic implications}
 
-ASDS is also intentionally small. Its three bounded components are directly
-inspectable and can be computed on CPU. Component ablations test whether the
-combined score adds value beyond its dominant polar term. The complete
-development record is retained to make researcher degrees of freedom visible.
-External replication should keep this specification fixed rather than retune
-it on the next rating set.
+The human study separates three levels of evidence. The production score was
+frozen before the rating analysis and has a modest positive association with
+mean structural ratings. The coverage-aware audit was also defined from an
+explicit semantic concern and has a stronger association. ASDS gives the
+largest observed association, but its feature families and weights were
+finalized after the original ratings were available. It would therefore be
+incorrect to present \(\rho=0.556\) as an external or prospectively confirmed
+result.
 
-\subsection{Why retain the six-channel parser when ASDS uses union ink?}
+We instead retain the original score results, disclose the complete
+low-capacity candidate search, report component ablations, and distinguish
+the full-sample development estimate from character-grouped out-of-fold
+internal validation. The latter reduces weight-selection optimism but cannot
+remove the fact that the representation itself was proposed after inspecting
+the same study. ASDS should remain frozen in any subsequent collection, where
+its performance can be tested on independently recruited writers, characters,
+and raters without another feature search.
 
-ASDS is a spatial silhouette descriptor: polar occupancy, \(3\times3\)
-occupancy, and projection profiles are all computed from the union of the five
-direction masks. In a direct-digital-writing application with an already clean
-binary raster, the parser is therefore not mathematically required merely to
-obtain the silhouette used by ASDS. Claiming otherwise would overstate the
-role of parsing.
-
-The parser serves a broader evidential contract. The deployed production
-score uses channel-wise Dice and endpoint agreement; the application reports
-which direction family is missing or excessive, where the discrepancy lies,
-and whether stroke-endpoint relations disagree. These outputs cannot be
-recovered from a union silhouette when a direction-label swap leaves the ink
-support unchanged. ASDS should therefore be interpreted as one scalar
-consumer that complements, rather than replaces, the channel-level evidence.
-The paired ablation answers the scalar question directly: parsed-union and
+ASDS also clarifies, rather than replaces, the role of the six-channel parser.
+Its polar occupancy, \(3\times3\) occupancy, and projection profiles use only
+the union silhouette. On clean direct-digital input, a parser is not
+mathematically necessary merely to obtain that silhouette. The paired
+direct-ink ablation confirms the point empirically: parsed-union and
 direct-ink ASDS differ by only \(0.0004\) in Spearman correlation, and the
-paired 95\% interval includes small advantages in either direction. We
-therefore find no evidence that parsing improves ASDS through denoising or
-standardization on the present clean direct-digital inputs. This negative
-result is informative rather than adverse: it prevents the scalar score from
-being used as circular justification for the parser. The six-channel
-representation remains necessary for the direction-specific and
-endpoint-specific diagnostic claims evaluated in RQ1 and delivered by the
-system, but it should not be required when an application requests only ASDS
-from an already clean binary raster.
+paired interval includes small advantages in either direction. We find no
+evidence that parsing improves the scalar ASDS association through denoising
+or normalization in this modality.
 
-\subsection{Interpretation of human agreement}
+This negative result prevents circular justification. The parser remains
+necessary for the separate claims that the system parses overlapping
+direction families, measures channel-wise agreement, detects missing or extra
+directional support, and represents endpoint relations. A direction-label
+swap can preserve the same union silhouette and hence the same ASDS while
+changing all of those outputs. Applications that request only a scalar
+silhouette score from an already clean raster may compute direct-ink ASDS;
+applications that require localized structural explanation still require the
+parser and its independently evaluated output contract.
 
-The average-rating ICC is substantially higher than the single-rating ICC.
-This supports averaging multiple judgments for the validation endpoint, while
-also showing that the task is not objective in the sense of a segmentation
-mask. The rater pool is small and heterogeneous. One rater had limited
-calligraphy teaching/learning experience, but the group is not a panel of
-senior calligraphy experts. The results justify the phrase ``human-audited
-structural agreement''; they do not justify ``expert aesthetic score''.
+Human agreement further bounds the interpretation. Average-rating ICC is
+higher than single-rating ICC, supporting aggregation of multiple judgments,
+but the three-rater pool is small and heterogeneous. One rater reported
+limited calligraphy learning/teaching experience, and the group is not a panel
+of senior calligraphy experts. The evidence supports the terms
+``human-audited structural similarity'' and ``reference-conditioned
+agreement'', not expert aesthetic grading. A follow-up study should recruit
+experienced calligraphy educators under a fixed background questionnaire and
+test the frozen score without replacing or relabelling the present cohort.
 
-A stronger follow-up should recruit at least two experienced calligraphy
-educators, record background through a fixed questionnaire, and analyse
-whether professional and non-professional rankings differ. Such a study would
-extend the construct from general structural similarity toward pedagogical
-quality, but it should not be retroactively substituted for the current task.
-
-\subsection{Diagnostic and application implications}
-
-The low exact-region result initially appears to indicate poor feedback.
-Failure analysis shows that more than half of these errors arise from a
-single-cell metric applied to multi-cell perturbations. The next diagnostic
-benchmark should store affected support as a region set or pixel mask and use
-overlap-based scoring. Wrong direction attribution remains a genuine model or
-evidence-extraction failure and warrants separate study. Optional language
-generation should be evaluated only after the structured evidence contract is
-validated; fluent text cannot repair an incorrect direction or region.
-
-The target platform receives direct digital writing. This modality is aligned
-with the held-out legacy images, but it does not imply robustness to phone
-photographs, paper texture, illumination, or perspective. The SegFormer-B2
-parser benefits from a GPU for interactive latency; reference masks are
-precomputed, and registration, ASDS, deterministic feedback, and language-API
-calls do not require a dedicated training-class GPU. Distillation and
-quantized edge deployment are engineering extensions rather than claims of
-this study.
+The diagnostic analysis also argues for separating evidence from language.
+Low exact-region accuracy is driven mainly by a single-cell metric applied to
+multi-cell perturbations, followed by genuine direction-attribution failures.
+A region-set or pixel-overlap target is therefore a more appropriate next
+evaluation than tuning prose rules on the same cases. Optional language
+generation should remain downstream of the structured evidence contract:
+fluent wording cannot correct an erroneous direction, endpoint relation, or
+spatial localization.
 
 \subsection{Limitations and threats to validity}
 
-The corpus contains only 40 fully labelled character identities. Writer
-identity and verified style provenance are unavailable, so character-disjoint
-evaluation is not writer-disjoint evaluation. The standard and
-character-disjoint results come from one recovered data source, not an
-external corpus. Exact duplicate leakage has been audited, but unobserved
-collection-specific regularities may remain.
+The segmentation corpus contains only 40 fully labelled character identities.
+It was collected through a commissioned, calligraphy-trained writing
+procedure, but the recovered records do not preserve reliable writer identity
+or standardized contributor credentials. Character-disjoint evaluation is
+therefore not writer-disjoint evaluation, and both parsing protocols originate
+from one recovered source. Semantic QC removes known mismatches and exact
+duplicate leakage, but unobserved collection-specific regularities may remain.
 
-The structural perturbation experiments operate on cached reference masks and
-isolate score behaviour from parser errors. This is a deliberate internal
-validity choice, but an end-to-end error can combine segmentation,
-registration, and scoring failures. The reference library contains only two
-style categories, seven same-character cross-style pairs, and no same-style
-different-instance pairs. Broader course coverage cannot be inferred from
-these comparisons.
+Controlled perturbations operate on cached reference masks and intentionally
+isolate registration and score behaviour from parser error. An end-to-end
+failure can combine segmentation, registration, and comparison errors.
+Furthermore, the scale-up and compound analyses condition on clipping-safe
+references. They should not be generalized to a full-library transform
+invariance claim, and further tuning on the same perturbation suite would risk
+benchmark-specific overfitting.
 
-The human study contains 150 pairs and three raters from the same recovered
-corpus. Its character-grouped analysis limits leakage across character
-identities but does not establish generalization to new writers, collections,
-or independently recruited evaluator populations. Finally, ASDS uses the
-union of five direction masks and can ignore a
-direction-label swap that leaves overall ink distribution unchanged. It should
-therefore complement, not erase, the channel-level evidence returned to users.
+The reference library includes two style categories, only seven
+same-character cross-style pairs, and no same-style different-instance
+reference pair. The human development cohort contains 150 pairs and three
+raters drawn from the recovered project corpus. Character-grouped resampling
+limits dependence across character identities but does not establish
+generalization to new writers, collections, or evaluator populations. ASDS
+can also ignore a direction-label swap that preserves union ink, so it must
+remain complementary to channel-level evidence.
+
+Finally, the target input is clean direct digital writing. The study does not
+test paper texture, illumination, perspective, or phone photography.
+SegFormer-B2 benefits from a GPU for interactive latency, while cached
+references, registration, ASDS, deterministic evidence, and language-API
+realization can be served without a training-class accelerator. Deployment
+cost, distillation, and quantized edge inference are engineering questions
+outside the present scientific claims.

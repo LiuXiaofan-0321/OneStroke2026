@@ -65,8 +65,8 @@ Completed:
 Not yet submission-complete:
 
 - funding, ethics/exemption wording,
-  CRediT contributions, acknowledgements, and final code/data statements must
-  be supplied by the team.
+  CRediT contributions, acknowledgements, and the permanent identifier for
+  the separate data archive must be confirmed by the team.
 
 The full-sample result `rho=0.556` must be described as retrospective
 development evidence, while the character-grouped out-of-fold
@@ -155,13 +155,14 @@ python paper/tools/build_online_package.py `
 Draft 50--100-word biographies are in `AUTHOR_BIOGRAPHIES.md`; each author
 must approve the text and supply a separate portrait photograph.
 
-The current main draft is 19 A4 pages before insertion of the three-model
-qualitative figure; the two full statistical tables have been moved to a
-two-page supplementary PDF. The abstract has 243 words and six keywords. The
-current main-manuscript LaTeX log contains no overfull boxes, undefined
-citations, undefined references, or LaTeX/package warnings. The PDF remains a
-review draft until the qualitative figure is inserted and institutional
-ethics/exemption wording is confirmed.
+The 2026-08-22 second-version main draft is 19 A4 pages and includes the
+frozen three-model segmentation qualitative figure. The two full statistical
+tables are supplied in a separate one-page supplementary PDF. The abstract is
+a single integrated paragraph of 241 words with six keywords. The current
+main-manuscript LaTeX log contains no overfull boxes, undefined citations,
+undefined references, or LaTeX/package warnings. The PDF remains a review
+draft until the institutional ethics/exemption wording and the permanent
+identifier for the separate data archive are confirmed.
 
 ## Provenance
 

@@ -1,54 +1,84 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Digital tools for Chinese calligraphy usually solve one of three tasks:
-recognizing the written character, identifying a calligraphic style, or
-generating a visually plausible glyph. A practice system has a different
-requirement. Given a learner's writing and a designated reference, it should
-show which structural regions agree, which regions are missing or excessive,
-and how the global organization differs. The output must be local enough to
-support revision, yet conservative enough not to masquerade as an expert
-judgment of brushwork, rhythm, historical authenticity, or beauty.
+Chinese calligraphy (\emph{shufa}) is both a writing practice and an
+important form of Chinese traditional culture. Its visual identity is carried
+not only by the character that is written, but also by the organization of
+strokes, occupied and unoccupied space, balance, proportion, and relations
+between stroke endpoints. For readers without a Chinese-language background,
+a finished character can be understood as a structured composition of
+horizontal, vertical, rising-diagonal, falling-diagonal, and
+compound/curved stroke families. These components frequently adhere or cross
+in the final raster even though they arise from distinct writing actions.
+Consequently, two images can be recognized as the same character while
+differing substantially in the local structure that a learner needs to
+revise.
 
-This requirement creates a document-analysis problem at the interface of
-segmentation, registration, shape comparison, and human-centred evaluation.
-First, strokes in a finished raster character intersect and adhere. A pixel at
-an intersection can legitimately belong to more than one directional
-structure, making mutually exclusive semantic segmentation inappropriate.
-Second, direct overlap confounds structural disagreement with global
-translation, scale, and small rotation. Conversely, an unconstrained warp may
-erase the very local discrepancy that a teaching system should report. Third,
-a mathematically convenient overlap score need not follow human perception.
-The score therefore requires explicit semantic auditing and human validation,
-not only a high self-consistency result.
+Most computer-vision systems for Chinese handwriting address recognition,
+style classification, or glyph generation. These outputs are useful but do
+not answer the assessment question: given a learner image and a designated
+same-character reference, which structural regions agree, which are missing
+or excessive, and which global differences should be tolerated? Recognition
+reduces the image to an identity; style classification reduces it to a class;
+and generation optimizes visual plausibility rather than verifying the
+learner's local discrepancies. A practice-oriented system instead needs
+spatial evidence that can be inspected before it is verbalized.
 
-The low-resource regime makes the problem harder. Our recovered corpus
-contains complete six-channel ground truth for only 40 character identities.
-Writer identity and style provenance cannot be recovered reliably. In this
-setting, a strong standard-split result can overstate generalization because
-the same character identities appear during training and testing. We therefore
-separate ordinary quality-controlled evaluation from a frozen
-character-disjoint protocol. This distinction follows the broader document
-analysis concern that performance under limited labels and unseen writing
-conditions must be measured rather than inferred from an in-domain split
+This requirement exposes four broader computer-vision difficulties. First,
+standard softmax segmentation assumes one semantic label per pixel. At a
+calligraphic crossing, however, one pixel can legitimately support multiple
+directional structures. Treating the channels as mutually exclusive destroys
+the annotation geometry, while unconstrained instance segmentation is poorly
+matched to a low-resource corpus without reliable ordered-stroke identities.
+Second, direct pixel overlap confounds structure with nuisance translation,
+global scale, and small rotation. Third, highly flexible registration solves
+the opposite problem too aggressively: anisotropic or deformable warps can
+align away a misplaced or disproportionate region that the assessment should
+retain. Fourth, a score that is stable under synthetic transformations is not
+automatically valid as a human-facing measure. It can reward empty channels,
+depend on the available character distribution, or disagree with perceived
+structural organization.
+
+These are not calligraphy-specific inconveniences. They recur in document and
+shape analysis whenever layered or intersecting structures must be parsed
+from limited dense annotations, a query must be compared with a reference
+under nuisance geometry, and the final discrepancy must remain interpretable.
+Examples include touching handwriting, overlapping diagram primitives,
+line-art components, and other sparse foreground structures for which
+registration and diagnosis cannot be optimized independently. The central
+computer-vision problem is therefore to combine overlapping representation,
+low-resource generalization measurement, discrepancy-preserving
+registration, and human-audited comparison without using success in one stage
+as evidence for another.
+
+The available data make this separation especially important. The recovered
+segmentation corpus contains complete six-channel ground truth for only 40
+character identities, and reliable writer and style provenance cannot be
+reconstructed. A random or identity-overlapping split can therefore produce
+a strong in-domain score while leaving generalization to unseen character
+structures unresolved. We retain a quality-controlled standard protocol but
+also freeze a character-disjoint protocol, following the broader document
+analysis principle that performance under limited labels and source
+constraints should be measured directly rather than inferred
 \cite{baloun2025selfsupervision,oliveira2018dhsegment}.
 
-We study the following research questions.
+We study four research questions:
 
 \begin{description}
   \item[RQ1:] How accurately do convolutional and transformer parsers recover
-  the overlapping direction and keypoint representation, and how much
-  performance is lost on unseen character identities?
-  \item[RQ2:] Does a deliberately constrained global registration reduce
-  nuisance sensitivity relative to no alignment while retaining sensitivity
-  to local structural changes?
-  \item[RQ3:] How well do fixed reference-conditioned scores agree with
-  blinded human structural-similarity ratings, and can an interpretable
-  spatial-distribution score improve that association without an
-  unacknowledged post-hoc claim? Does its scalar association depend on
-  parser-derived union ink rather than direct source ink?
-  \item[RQ4:] Which diagnostic evidence can be localized reliably, and where
-  do the current rules or evaluation protocol fail?
+  overlapping direction and endpoint masks, and how much performance is lost
+  when character identities are unseen during training?
+  \item[RQ2:] Does constrained global registration reduce nuisance
+  sensitivity relative to no alignment while preserving penalties for local
+  structural changes, and what semantic weaknesses remain in the deployed
+  score?
+  \item[RQ3:] How strongly do fixed reference-conditioned scores associate
+  with blinded human structural-similarity ratings, and what can be concluded
+  from a retrospectively developed spatial-distribution score and its
+  direct-ink ablation?
+  \item[RQ4:] Which direction and location evidence can be diagnosed
+  reliably, and which observed failures arise from the model, the evidence
+  representation, or the evaluation metric?
 \end{description}
 
 Our pipeline separates perception, comparison, and presentation:
@@ -62,40 +92,40 @@ Our pipeline separates perception, comparison, and presentation:
 \end{aligned}
 \]
 The parser produces five independently activated direction channels and one
-keypoint channel. The deployed comparison retains a frozen Dice/IoU/keypoint
-formula. The paper additionally develops aligned spatial-distribution
-similarity (ASDS), a compact score based on Jensen--Shannon similarity between
-polar occupancy, coarse grid occupancy, and horizontal/vertical projection
-profiles. ASDS is intentionally low-capacity and uses neither character
-identity nor human ratings at inference. Because its design followed the
-original rating study, we report development and character-grouped
-out-of-fold internal-validation results separately and preserve the complete
-candidate search rather than presenting the apparent optimum alone.
+endpoint channel. The deployed comparison retains a frozen
+Dice/IoU/keypoint formula. We additionally examine aligned
+spatial-distribution similarity (ASDS), a compact silhouette score based on
+Jensen--Shannon similarity between polar occupancy, coarse grid occupancy,
+and horizontal/vertical projection profiles. Because ASDS was designed after
+the original human-rating study, its full-sample and character-grouped
+out-of-fold results are reported as retrospective development and internal
+validation, not as external confirmation.
 
-The contributions are:
+The computer-vision contributions are:
 
 \begin{enumerate}
-  \item an overlapping six-channel representation and reproducible
-  quality-control protocol for complete-character stroke-structure parsing;
-  \item a three-architecture, three-seed comparison on both standard and
-  character-disjoint splits, exposing an architecture-dependent trade-off
-  between dense direction masks and sparse keypoints;
-  \item a constrained registration method evaluated by real-reference
-  controlled perturbations, paired bootstrap intervals, signed-rank tests,
-  and a wider-range negative ablation;
-  \item an audit of inactive-channel credit and a blinded three-rater study on
-  150 natural same-character, different-instance pairs;
-  \item ASDS, an interpretable spatial comparison whose post-rating
-  development status, grouped cross-validation, component ablations, and
-  remaining need for external replication are reported explicitly, together
-  with a paired direct-ink ablation that separates scalar silhouette scoring
-  from the parser's direction- and endpoint-level diagnostic role;
-  \item a diagnostic failure taxonomy that distinguishes scoring limitations,
-  localization-metric limitations, and optional language-model realization.
+  \item an overlapping six-channel output contract, with independent
+  activations at intersecting pixels, and a reproducible semantic QC protocol
+  for low-resource complete-character parsing;
+  \item a three-architecture, three-seed comparison on matched standard and
+  character-disjoint splits, exposing architecture-dependent differences
+  between dense direction parsing and sparse endpoint localization;
+  \item a restricted reference-registration policy evaluated with
+  controlled nuisance and structural perturbations, paired uncertainty, and
+  a wider-search negative ablation, thereby measuring reduction rather than
+  claiming transform invariance;
+  \item an auditable assessment analysis comprising inactive-channel
+  semantics, cross-reference tests, a blinded 150-pair human-rating cohort,
+  and transparent retrospective ASDS development with grouped internal
+  validation;
+  \item a paired direct-ink ablation that separates silhouette-only scoring
+  from the parser's independent role in direction-, overlap-, and
+  endpoint-level evidence, plus a diagnostic failure taxonomy that keeps
+  evidence correctness separate from language realization.
 \end{enumerate}
 
 The intended input is a raster exported from a direct digital writing canvas,
-not a photograph of paper. Accordingly, the claims concern structural
-analysis in this modality. They do not cover camera robustness, writer-
-disjoint generalization, stroke order recovery, or universal aesthetic
-grading.
+not a photograph of paper. The claims therefore concern structural analysis
+in this modality. They do not cover camera robustness, writer-disjoint
+generalization, stroke-order recovery, historical authenticity, or universal
+aesthetic grading.

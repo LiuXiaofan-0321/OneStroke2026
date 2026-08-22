@@ -1,6 +1,6 @@
 # IJDAR Special Issue submission checklist
 
-Status date: 2026-08-14
+Status date: 2026-08-22
 
 ## P0: required before submission
 
@@ -21,6 +21,8 @@ Status date: 2026-08-14
   confirm the consent-for-publication statement.
 - [ ] Confirm whether project-owned qualitative glyphs may be included in the
   submitted source package and public repository.
+- [ ] Create the separate versioned data archive and insert its permanent
+  repository identifier in the Data availability statement.
 
 ## Statistical checks
 
@@ -40,22 +42,24 @@ Status date: 2026-08-14
 ## Manuscript checks
 
 - [x] Springer Nature `sn-jnl`, `iicol`, `sn-basic`, `Numbered`.
-- [x] Structured abstract within 150--250 words.
+- [x] Single-paragraph abstract within 150--250 words (241 words).
 - [x] Six keywords (journal requirement: 4--6).
 - [x] RQ-based introduction and contribution list.
 - [x] Numeric bracketed citations and numbered reference list.
 - [x] Six-channel definition figure with endpoint-only keypoint semantics.
-- [ ] Generate and insert the frozen Input/GT/U-Net/DeepLabV3+/SegFormer-B2
-  qualitative figure after recovering the seed-20260811 formal checkpoints.
+- [x] Generate and insert the frozen Input/GT/U-Net/DeepLabV3+/SegFormer-B2
+  qualitative figure from the seed-20260811 formal checkpoints.
 - [x] Real, verifiable bibliography; no provisional UniCalli citation.
 - [x] Limitations include unavailable writer ID, within-corpus internal
   validation,
   small rater pool, and no universal aesthetic claim.
 - [x] Draft compiles without overfull boxes or unresolved citations.
 - [x] Remove every red placeholder.
-- [ ] Re-run final PDF visual inspection.
-- [ ] Verify final page count against the Special Issue instruction.
-- [ ] Keep the final manuscript at or below 20 pages, including references,
+- [x] Re-run complete 19-page main-PDF and one-page Supplementary visual
+  inspection for the 2026-08-22 second version.
+- [x] Verify the second-version page count against the Special Issue
+  instruction.
+- [x] Keep the final manuscript at or below 20 pages, including references,
   figures, and tables.
 - [x] Draft 50--100-word author biographies in `AUTHOR_BIOGRAPHIES.md`.
 - [ ] Have each author approve the biography wording and provide a separate

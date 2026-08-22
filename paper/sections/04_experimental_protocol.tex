@@ -1,31 +1,86 @@
 \section{Experimental Protocol}
 \label{sec:protocol}
 
-\subsection{Legacy segmentation corpus and quality control}
+\subsection{Data resources and evaluation cohorts}
 
-The recovered legacy corpus contains 894 sample directories across 43
-character IDs. Complete RGB images, five direction masks, a keypoint mask, and
-a stacked six-channel mask are available for 840 samples from character IDs
-0--39. Fifty-four samples from IDs 40--42 lack the character-specific
-direction mapping and are excluded rather than pseudo-labelled.
+\noindent\textbf{Project-collected segmentation corpus.}
+The original collection protocol commissioned contributors with calligraphy
+training to write complete characters and their isolated component strokes on
+a direct digital canvas. The isolated-stroke images were assigned through the
+fixed character-specific mapping described in Sect.~\ref{sec:method}, and
+their manually marked endpoints were merged to produce six-channel ground
+truth. The labels are therefore derived from captured stroke components, not
+from predictions by the models evaluated in this paper. The historical
+records do not preserve a trustworthy mapping from samples to individual
+writers or a standardized measure of contributor expertise; we consequently
+report the commissioned, calligraphy-trained collection procedure but do not
+claim professional-calligrapher, different-writer, or writer-disjoint
+strata.
 
-File completeness alone was insufficient. A frozen semantic QC procedure
+Recovery yielded 894 sample directories across 43 character IDs. Complete
+RGB images, five direction masks, an endpoint mask, and a stacked six-channel
+mask are available for 840 samples from character IDs 0--39. Fifty-four
+samples from IDs 40--42 lack the character-specific direction mapping and are
+excluded rather than pseudo-labelled. A frozen semantic QC procedure further
 identified 12 source-image/GT mismatches and 59 non-canonical members of exact
-image-and-mask duplicate groups. The exclusion sets do not overlap, leaving
-769 unique QC-clean observations. Duplicate-group membership and mismatch
-decisions were fixed before the formal model comparison. No exact duplicate
-group crosses the original train/validation/test assignment.
+image-and-mask duplicate groups. These exclusion sets do not overlap, leaving
+769 unique QC-clean observations. Duplicate membership and mismatch decisions
+were fixed before the formal model comparison, and no exact duplicate group
+crosses the original train/validation/test assignment.
 
-The original standard assignment contains 600/120/120 samples and becomes
-530/119/120 after QC. A second assignment was frozen before evaluation with
-28/6/6 disjoint character identities and originally 588/126/126 samples; after
-the same exclusions it contains 539/114/116 train/validation/test
-observations. The source assignment, derived QC-clean split, and exclusion
-contract are content-hashed; their complete SHA-256 values are given in the
-reproducibility supplement. Writer identity cannot be recovered and
-writer-disjoint performance is not claimed.
+The standard assignment contains 600/120/120 samples before QC and
+530/119/120 after QC. A character-disjoint assignment was frozen before
+formal evaluation with 28/6/6 disjoint character identities and
+588/126/126 samples; the same QC exclusions leave 539/114/116
+train/validation/test observations. Source assignments, derived splits, and
+exclusion contracts are content-hashed, with full SHA-256 values in the
+reproducibility supplement. Because writer identity is unavailable, neither
+split supports a writer-disjoint claim.
 
-\subsection{Training and segmentation evaluation}
+\medskip
+\noindent\textbf{Reference and perturbation resources.}
+The reference-conditioned experiments use 200 approved images from the
+Calli-Tongji Beta release: 100 in the Ouyang Xun regular-script category and
+100 in the Wang Xizhi running-script category. The frozen SegFormer-B2 v1
+parser produces a versioned six-mask cache for these references. Each entry
+records its source ID, character, category, thresholds, parser version, and
+checkpoint hash. These cached predictions are reference representations, not
+segmentation ground truth. The controlled-perturbation and registration
+cohorts are generated deterministically from the same 200 cached
+real-reference masks, allowing score behaviour to be studied without
+confounding it with a second parser inference.
+
+\medskip
+\noindent\textbf{Cross-reference and diagnostic cohorts.}
+The reference library supports seven natural same-character cross-style
+pairs. All seven are retained as the positive cross-reference set; the
+library contains no same-style, different-instance reference pair. Fifty
+different-character negatives are selected independently of model score.
+The diagnostic cohort is generated from prespecified deletion, addition,
+shift, dilation, erosion, and endpoint perturbations. Its ground truth is the
+known intervention rather than a human pedagogical label.
+
+\medskip
+\noindent\textbf{Human-rating development cohort.}
+\label{sec:original-human}
+Before ratings were collected, 150 natural same-character,
+different-instance pairs were selected from the 769 QC-clean project samples.
+All 40 character identities are represented by three or four pairs. Source/GT
+mismatches, exact duplicates, suspected near duplicates, and repeated
+reference/candidate instances were excluded. Pair roles, asset hashes,
+blinded identifiers, and display order were frozen, and all automated scores
+and source identifiers were hidden from raters.
+
+Three consenting adult raters independently judged structural similarity on a
+five-point ordinal scale. Their self-reported backgrounds were heterogeneous:
+one reported one year of calligraphy learning/teaching experience, one
+reported two years of other relevant experience, and one reported no relevant
+experience. We therefore use ``human raters'', not ``calligraphy experts''.
+Each rater evaluated 150 canonical pairs plus 15 randomly interspersed hidden
+repeats. This cohort is the development and internal-validation resource for
+ASDS; it is not an independent external test.
+
+\subsection{Parsing training and evaluation}
 
 We compare a 32-base-channel U-Net, ResNet-50 DeepLabV3+, and
 ImageNet-pretrained SegFormer-B2. Each architecture is run with seeds
@@ -36,140 +91,106 @@ isotropic scale 0.9--1.1, brightness 0.85--1.15, contrast 0.9--1.1, and
 Gaussian blur with probability 0.15.
 
 All models use AdamW, weight decay 0.01, automatic mixed precision, gradient
-clipping at 1.0, three warm-up epochs, cosine decay to \(10^{-6}\), at most 120
-epochs, and early stopping with patience 15. U-Net uses learning rate
+clipping at 1.0, three warm-up epochs, cosine decay to \(10^{-6}\), at most
+120 epochs, and early stopping with patience 15. U-Net uses learning rate
 \(3\times10^{-4}\). DeepLabV3+ uses encoder/decoder rates
 \(10^{-4}/10^{-3}\); SegFormer-B2 uses
 \(3\times10^{-5}/3\times10^{-4}\). Positive BCE weights are estimated from at
-most 200 training samples and capped at 100. Thresholds are calibrated using
-the validation set only.
+most 200 training samples and capped at 100. Thresholds are calibrated on the
+validation split only.
 
 We report five-direction Macro Dice and Macro IoU, per-channel
-precision/recall/Dice, Boundary F1, strict keypoint F1, and tolerant keypoint F1
-at one, three, and five pixels. Test results are summarized as the mean and
-sample standard deviation across all declared seeds.
+precision/recall/Dice, Boundary F1, strict endpoint F1, and tolerant endpoint
+F1 at one, three, and five pixels. Test results are summarized by the mean and
+sample standard deviation across all declared seeds. The standard protocol
+measures in-corpus instance generalization, whereas the character-disjoint
+protocol measures transfer to held-out character identities.
 
-\subsection{Reference library}
+\subsection{Reference-conditioned robustness and diagnostic evaluation}
 
-The structural experiments use 200 approved references: 100 in the
-Calli-Tongji Beta Ouyang Xun regular-script category and 100 in the Wang Xizhi
-running-script category. The reference cache contains six binary masks
-generated by the frozen SegFormer-B2 v1 checkpoint. It supports seven
-same-character cross-style pairs but no same-style, different-instance pair.
-The restricted source images are not redistributed.
+Controlled perturbations are applied directly to cached reference masks.
+Nuisance families comprise translation, rotation, scale up, scale down, and a
+compound allowed transform. Structural families comprise terminal deletion,
+added fragment, local fragment shift, direction dilation, direction erosion,
+and endpoint shift. Target channels and movement axes are selected by stable
+hashes rather than model error or manual case choice. A transformed case that
+would risk canvas clipping is marked invalid with a recorded reason and is
+excluded from valid-score summaries. For every family we report valid \(N\),
+mean, median, sample standard deviation, 5th and 95th percentiles, 95\%
+reference-bootstrap confidence intervals, invalid fraction, within-reference
+severity Spearman correlation, and adjacent monotonicity.
 
-\subsection{Controlled perturbation benchmark}
-
-To isolate scoring and registration from parser error, deterministic
-perturbations are applied directly to the cached real-reference masks.
-Nuisance families are translation, rotation, scale up, scale down, and a
-compound allowed transform. Structural families are terminal deletion, added
-fragment, local fragment shift, direction dilation, direction erosion, and
-keypoint shift. Target direction channels and movement axes are selected with
-stable hashes rather than model errors or manual case choice. A transformed
-case that risks canvas clipping is marked invalid with a reason and excluded
-from valid-score summaries.
-
-For each family we report valid \(N\), mean, median, sample standard deviation,
-5th and 95th percentiles, 95\% reference-bootstrap confidence intervals,
-invalid fraction, within-reference severity Spearman correlation, and adjacent
-monotonicity.
-
-\subsection{Paired registration ablation}
-
-The identical reference/perturbation/severity tuples are evaluated with:
-(i) no alignment; (ii) the production constrained alignment; and
-(iii) a preregistered wider search with \(s\in[0.6,1.4]\) and
+The identical reference/perturbation/severity tuples are evaluated with no
+alignment, the production constrained alignment, and a preregistered wider
+search with \(s\in[0.6,1.4]\) and
 \(\phi\in[-12^\circ,12^\circ]\). Comparisons are paired. Confidence intervals
-resample references, while Wilcoxon signed-rank tests and rank-biserial effect
-sizes use per-reference mean paired differences. Family-level comparisons are
-the primary ablation; perturbation-level \(p\) values are unadjusted,
-descriptive breakdowns.
-
-\subsection{Score audit and cross-reference semantics}
+resample references; Wilcoxon signed-rank tests and rank-biserial effect sizes
+use per-reference mean paired differences. Family-level comparisons are the
+primary ablation, while perturbation-level \(p\) values are unadjusted
+descriptive results.
 
 The score audit counts inactive direction channels and recomputes the
-coverage-aware candidate described in Sect.~\ref{sec:production-score}. Qualitative
-examples are selected by correction quantiles---maximum, upper quartile,
-median, lower quartile, and near-zero positive---rather than appearance.
+coverage-aware candidate in Sect.~\ref{sec:production-score}. Qualitative
+audit cases are selected by correction quantiles rather than appearance.
+Cross-reference semantics are measured on all seven available
+same-character cross-style pairs and the 50 score-independent
+different-character negatives; self-pairs are prohibited and the unavailable
+same-style/different-instance condition is not synthesized.
 
-For cross-reference semantics, all seven available same-character cross-style
-pairs and 50 score-independent different-character negative pairs are
-evaluated. Self-pairs are prohibited. The absent same-character,
-same-style/different-instance condition is reported as unsupported rather than
-synthesized.
+For diagnostic evaluation, the perturbation cause supplies deterministic
+ground truth. We report Recall@3, Top-1 cause, direction channel,
+missing/extra type, exact and overlapping grid localization, specificity, and
+centre-direction wording. Language-model realization is disabled. Because
+the benchmark assesses engineered interventions rather than expert pedagogy,
+it is treated as a secondary diagnostic analysis.
 
-\subsection{Diagnostic benchmark}
+\subsection{Human-audited score validation and retrospective ASDS development}
 
-Perturbation cause supplies deterministic diagnostic ground truth. We report
-Recall@3, Top-1 cause, direction channel, missing/extra type, exact and overlap
-grid localization, specificity, and centre-direction wording. Language-model
-text is disabled. Because the benchmark describes engineered perturbations
-rather than expert pedagogy, it is a secondary analysis.
+The frozen production and coverage-aware scores are compared with the
+three-rater mean on the 150 canonical pairs using Spearman correlation.
+Confidence intervals use 10,000 bootstrap resamples clustered by target
+character. Inter-rater reliability uses two-way random-effects,
+absolute-agreement ICC(2,1) and ICC(2,\(k\)). Hidden repeats are excluded from
+correlation and ICC and used only for exact agreement, agreement within one
+point, mean absolute difference, and quadratic weighted kappa.
 
-\subsection{Original blinded human study}
-\label{sec:original-human}
-
-Before collecting ratings, 150 natural same-character, different-instance
-pairs were selected from the 769 QC-clean observations. All 40 character IDs
-are represented by three or four pairs. Bad images, exact duplicates, and
-suspected near duplicates were excluded. Pair roles, asset hashes, blinded
-identifiers, and display order were frozen. Scores and source identifiers were
-hidden from raters.
-
-Three consenting adult raters independently judged structural similarity on a
-five-point ordinal scale. Their self-reported backgrounds were heterogeneous:
-one had one year of calligraphy learning/teaching experience, one reported two
-years of other relevant experience, and one reported none. We therefore use
-``human raters'', not ``three experts''. Each rater saw 150 canonical pairs and
-15 randomly interspersed hidden repeats.
-
-Validity is measured by Spearman correlation between each score and the
-three-rater mean on canonical pairs. Confidence intervals use 10,000 bootstrap
-resamples clustered by target character. Inter-rater reliability uses
-two-way random-effects, absolute-agreement ICC(2,1) and ICC(2,\(k\)).
-Hidden repeats are excluded from correlation and ICC and are used only for
-exact agreement, agreement within one point, mean absolute difference, and
-quadratic weighted kappa.
-
-\subsection{Post-rating ASDS development}
+\medskip
+\noindent\textbf{Post-rating ASDS development.}
 \label{sec:asds-development}
-
-The original 150 ratings constitute a development set for ASDS, not an
-independent test. Three fixed distribution families were considered:
-polar occupancy, \(3\times3\) grid occupancy, and projection profiles. A
-coarse non-negative simplex search evaluated component weights. The published
-formula is deliberately regularized: the search-selected polar weight is
-retained, while the remaining weight is divided equally between grid and
-projection terms. The full-grid apparent optimum was
+The original ratings form the ASDS development set. Three fixed distribution
+families are considered: polar occupancy, \(3\times3\) grid occupancy, and
+projection profiles. A coarse non-negative simplex search evaluates component
+weights. The search-selected polar weight is retained, while the remaining
+weight is split equally between grid and projection terms to reduce
+sample-specific tuning. The full-grid apparent optimum is
 \((w_g,w_p,w_{\mathrm{proj}})=(0.225,0.700,0.075)\) with
-\(\rho=0.557\); the frozen \(0.15/0.70/0.15\) formula gives
-\(\rho=0.556\). Five-fold
-cross-validation groups by character ID; each fold's weights are selected on
-the other characters only. Character-cluster bootstrap intervals are reported
-for the full frozen formula, grouped out-of-fold predictions, and paired
-differences from the production and coverage-aware scores.
+\(\rho=0.557\); the frozen \(0.15/0.70/0.15\) specification gives
+\(\rho=0.556\). Five-fold internal validation groups by character identity,
+and weights for each fold are selected using the other characters only.
+Character-cluster bootstrap intervals are reported for the frozen full-sample
+formula, grouped out-of-fold predictions, and paired differences from the
+production and coverage-aware scores.
 
-Component ablations report the polar, grid, and projection terms separately.
-The combined formula is compared with each component so that any apparent
-benefit cannot be attributed to an unreported learned regressor. Development
-component comparisons are exploratory and are not multiplicity-adjusted.
+Polar, grid, and projection components are also reported separately, and the
+combined score is compared with each component. These development comparisons
+are exploratory and are not multiplicity-adjusted. The complete candidate
+search is retained so that post-rating researcher degrees of freedom remain
+visible.
 
-\subsection{Paired direct-ink ASDS ablation}
+\medskip
+\noindent\textbf{Paired direct-ink ASDS ablation.}
 \label{sec:direct-ink-ablation}
+To test whether the scalar ASDS result itself requires six-channel parsing, we
+recompute it on the same 150 pairs using foreground extracted directly from
+the original direct-digital RGB rasters. Grayscale pixels with intensity below
+240---the threshold already frozen for dataset QC---define foreground; no
+learned preprocessing is used. Direct-ink masks pass through the same
+constrained alignment and the same \(0.70/0.15/0.15\) formula. Threshold,
+alignment, features, and weights are not selected against the ratings for this
+comparison.
 
-To test whether ASDS itself benefits from the six-channel parser, we recompute
-the frozen score on the same 150 rated pairs using foreground extracted
-directly from each original direct-digital RGB raster. Images are converted to
-grayscale and foreground is defined by intensity \(<240\), the threshold
-already frozen for dataset QC. No learned preprocessing is used. The
-direct-ink masks are passed through the same constrained alignment and the
-same \(0.70/0.15/0.15\) ASDS formula; neither the threshold, alignment policy,
-features, nor weights are selected against the ratings for this comparison.
-
-We report Spearman association with the three-rater mean for parsed-union and
-direct-ink ASDS, their paired difference, and their mutual rank association.
-Uncertainty is estimated with 10,000 paired bootstrap resamples clustered by
-character ID. Because the ablation uses the original ASDS development pairs,
-it assesses implementation dependence within the same retrospective
-development set rather than external validity.
+We report Spearman association for parsed-union and direct-ink ASDS, their
+paired difference, and their mutual rank association, with 10,000 paired
+bootstrap resamples clustered by character identity. Because this ablation
+uses the original development pairs, it measures implementation dependence
+within the same retrospective cohort rather than external validity.

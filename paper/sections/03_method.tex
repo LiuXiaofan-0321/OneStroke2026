@@ -89,7 +89,7 @@ weighted by \(0.2\):
 +0.2\mathcal{L}_{\mathrm{boundary}}.
 \]
 
-\subsection{Versioned reference cache}
+\subsection{Reference cache and constrained registration}
 
 Approved reference images are parsed once and stored as binary
 \(512\times512\times6\) arrays. Each cache entry records its reference ID,
@@ -98,7 +98,8 @@ thresholds, and channel schema. Caching removes repeated GPU inference for the
 reference branch. These masks are model-derived references and are never
 treated as segmentation ground truth.
 
-\subsection{Constrained similarity registration}
+\medskip
+\noindent\textbf{Constrained similarity registration.}
 \label{sec:alignment-method}
 
 Let \(U\) and \(R\) denote the learner and reference binary stacks, and let
@@ -123,7 +124,10 @@ global size or rotation differences, while leaving local proportion and
 stroke-region errors available for diagnosis. It does not imply invariance to
 all transforms within the nominal range.
 
-\subsection{Frozen production score}
+\subsection{Structural agreement scores}
+
+\medskip
+\noindent\textbf{Frozen production score.}
 \label{sec:production-score}
 
 After alignment, let \(D_c\) be Dice agreement in direction channel \(c\),
@@ -146,7 +150,8 @@ excludes direction channels that are empty in both images and avoids granting
 perfect keypoint credit when both keypoint masks are empty. The audit score is
 not retroactively substituted for \(S_{\mathrm{prod}}\).
 
-\subsection{Aligned spatial-distribution similarity}
+\medskip
+\noindent\textbf{Aligned spatial-distribution similarity.}
 \label{sec:asds}
 
 The human study showed that pixel- and channel-overlap terms incompletely
@@ -154,7 +159,7 @@ capture perceived global organization. We therefore develop aligned
 spatial-distribution similarity (ASDS) on the union direction ink after the
 same frozen registration. The score uses three complementary distributions.
 
-\subsubsection{Polar occupancy}
+\noindent\textbf{Polar occupancy.}
 For a binary ink mask \(M\), foreground coordinates are centred at their ink
 centroid. Radius is divided by the 95th percentile of foreground radius and
 clipped to \([0,1)\). Each pixel is assigned to one of four radial and eight
@@ -163,12 +168,12 @@ centroid and radius normalization make this term resistant to small residual
 translation and isotropic scale, while retaining angular and radial mass
 organization.
 
-\subsubsection{Coarse grid occupancy}
+\noindent\textbf{Coarse grid occupancy.}
 The canonical canvas is partitioned into a \(3\times3\) grid. Normalized
 foreground counts form \(h_g(M)\). Unlike the centroid-normalized polar term,
 this component retains coarse location and balance on the writing canvas.
 
-\subsubsection{Projection profiles}
+\noindent\textbf{Projection profiles.}
 Normalized row sums \(h_y(M)\) and column sums \(h_x(M)\) describe vertical and
 horizontal mass allocation. Their similarities are averaged.
 

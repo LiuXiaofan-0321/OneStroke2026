@@ -1,40 +1,49 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We presented a reference-conditioned pipeline for low-resource Chinese
-calligraphy analysis that combines overlapping direction/keypoint parsing,
-restricted global registration, interpretable structural comparison, and
-localized evidence. Across three fixed seeds, DeepLabV3+ is strongest on the
-QC-clean standard split, while SegFormer-B2 gives the best
-character-disjoint direction result and U-Net gives the best strict keypoint
-result. Controlled perturbations and paired ablations show that the constrained
+We formulated low-resource Chinese calligraphy assessment as a
+computer-vision problem in which overlapping document structures must be
+parsed, globally aligned without erasing diagnostically meaningful
+differences, and compared under an explicit human-validity claim. The
+six-channel representation preserves independent directional memberships at
+crossings and endpoint evidence that a foreground-only partition cannot
+provide. Across three fixed seeds, DeepLabV3+ is strongest on the QC-clean
+standard split, SegFormer-B2 gives the best character-disjoint direction
+result, and U-Net gives the best strict endpoint result. The resulting
+architecture-by-target interaction and the standard-to-character-disjoint gap
+show why low-resource dense parsing should be evaluated beyond an
+identity-overlapping split.
+
+Controlled perturbations and paired ablations show that constrained
 registration substantially reduces nuisance sensitivity relative to no
-alignment without freely warping away local structural changes. Scale-related
-results remain conditional on clipping-safe references and do not establish
-full-library transform invariance.
+alignment while retaining penalties for local structural changes. This is a
+relative robustness result, not transform invariance: rotation and scale
+remain imperfectly compensated, and scale-related summaries are conditional
+on clipping-safe references. The inactive-channel audit further demonstrates
+that the semantics of a macro overlap score require inspection when the active
+label set varies by sample.
 
-The human study also changes the interpretation of the score. The deployed
-formula has a modest positive association with blinded structural-similarity
-ratings, and a coverage-aware audit is stronger. The proposed ASDS score,
-which compares polar occupancy, coarse grid occupancy, and projection
-profiles, raises development-stage Spearman correlation from 0.297 to 0.556
-and retains 0.540 under character-grouped out-of-fold prediction. Because ASDS
-was developed after observing the original ratings, these values are
-retrospective internal-validation evidence rather than external confirmation.
-They support ASDS as a compact candidate score while leaving replication on
-independently collected material as future work.
+The human-rating analysis provides a similarly bounded conclusion. The
+deployed formula has a modest positive association with blinded structural
+ratings, and the coverage-aware audit is stronger. ASDS increases
+development-stage Spearman correlation from 0.297 to 0.556 and retains 0.540
+under character-grouped out-of-fold prediction, but these are retrospective
+development and internal-validation results rather than external
+confirmation. Parsed-union and direct-ink ASDS are nearly equivalent on clean
+direct-digital inputs
+(\(\Delta\rho=0.0004\), 95\% CI \(-0.0101\)--\(0.0103\)); the scalar
+silhouette descriptor therefore cannot be used as the justification for the
+parser. The parser's independent value lies in overlapping direction
+segmentation, channel-aware comparison, endpoint relations, and localized
+missing/extra evidence.
 
-A paired direct-ink ablation further shows that parsed-union and raw-ink ASDS
-are nearly equivalent on the clean direct-digital study inputs
-(\(\Delta\rho=0.0004\), 95\% CI \(-0.0101\)--\(0.0103\)). The scalar spatial
-descriptor therefore does not itself require the parser in this modality.
-The parser's independent value lies in overlapping direction segmentation,
-endpoint evidence, the deployed channel-aware score, and localized
-missing/extra diagnostics.
-
-The resulting system should be viewed as an auditable structural-analysis
-tool, not a universal aesthetic grader. Its strongest scientific contribution
-is the joint evaluation discipline: quality-controlled and
-character-disjoint parsing, controlled registration tests, semantic score
-audits, blinded human association, explicit post-hoc development, and a
-character-grouped internal-validation analysis.
+The principal contribution to document analysis is thus an auditable
+evaluation framework for limited-label visual assessment: semantic data QC,
+standard and unseen-class parsing protocols, discrepancy-preserving
+registration tests, score-semantics audits, blinded human association, and
+explicit separation of retrospective development from confirmation. Within
+its direct-digital scope, the system supports reference-conditioned
+structural analysis rather than universal aesthetic grading. The same design
+principles are applicable to other low-resource documents and line-art
+domains in which intersecting components, nuisance geometry, and localized
+explanation must be handled jointly.
