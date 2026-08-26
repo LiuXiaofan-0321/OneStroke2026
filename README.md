@@ -23,6 +23,7 @@ coding：fy、zrh、lxf
 - [刘小凡任务二：困难样本集整理](docs/liuxiaofan_task_2_hardset.md)
 - [SegFormer-B2 v1 上云训练前检查单](docs/segformer_v1_preflight.md)
 - [U-Net 重测基线报告（v1）](docs/unet_rebaseline_report_2026-07-12.md)
+- [两个书法练习包接入 onestroke.cn 的前后端实施说明](docs/onestroke_course_pack_platform_integration.md)
 
 ## 推荐目录
 
