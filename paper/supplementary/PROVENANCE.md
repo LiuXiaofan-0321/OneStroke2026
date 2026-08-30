@@ -55,8 +55,8 @@ Human-validation safeguards:
 - the study supports structural-similarity claims, not aesthetic grading;
 - the rater pool is described as blinded human raters rather than three
   independent calligraphy experts. The manuscript instead reports the
-  author-confirmed domain qualifications and the non-independent author-rater
-  relationship.
+  author-confirmed domain qualifications and the partly non-independent
+  composition of two author-raters and one non-author rater.
 
 ASDS development safeguards:
 

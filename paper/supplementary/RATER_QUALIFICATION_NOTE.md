@@ -2,13 +2,19 @@
 
 Status date: 2026-08-30
 
-The author team confirmed that the three evaluators in the frozen 150-pair
-human-rating study were the three manuscript authors.
+The author team confirmed that the paper-eligible frozen 150-pair analysis
+contains three independent evaluator return files. The corresponding formal
+rater cohort is:
 
-- Two evaluators had more than five years of formal calligraphy study and
-  held Level-9 calligraphy certificates.
-- The third evaluator was a master's student in fine arts specializing in
-  calligraphy.
+- two manuscript authors with prior calligraphy study, including one holder
+  of a Level-9 calligraphy certificate; and
+- one non-author evaluator with master's-level training in Fine Arts
+  (Calligraphy).
+
+Other project participants are not counted as additional raters in the
+reported statistics because no fourth independent evaluator return is part of
+the frozen analysis. The manuscript's sample size therefore remains three
+raters, matching the three preserved return files.
 
 This note corrects the compact and incomplete background fields embedded in
 the returned rating CSV files. It does **not** modify any pair selection,
@@ -17,6 +23,6 @@ other raw rating value. The original returned CSV files remain preserved
 unchanged.
 
 The manuscript therefore uses the terms *calligraphy-domain raters* and
-*domain-qualified raters*. It also discloses that they were author-raters and
-does not describe the panel as an independent senior-expert cohort or claim
-universal aesthetic validation.
+*domain-qualified raters*. It discloses that two were authors and one was a
+non-author domain rater, and it does not describe the panel as an independent
+senior-expert cohort or claim universal aesthetic validation.
