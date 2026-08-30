@@ -28,27 +28,16 @@ highest strict keypoint F1. SegFormer-B2 is therefore the strongest evaluated
 model for unseen-character direction parsing, not a universal winner across
 all six outputs.
 
-The earlier single SegFormer release achieved direction Macro Dice 0.9610 but
-was trained before semantic QC. No exact duplicate group crosses its standard
-split, so its result is not explained by exact train--test duplication.
-Nevertheless, its training population included 12 mismatched and
-duplicate-weighted observations; all formal comparisons above use the frozen
-769-sample QC-clean population.
-
 \IfFileExists{figures/figure4_segmentation_qualitative.pdf}{%
 \begin{figure*}[!t]
   \centering
   \includegraphics[width=\textwidth]
   {figures/figure4_segmentation_qualitative.pdf}
-  \caption{Frozen qualitative comparison for seed 20260811. Rows are selected
-  by prespecified evidence rather than visual preference: sample
-  33/18 contains substantial multi-channel crossing, sample 35/20 emphasizes
-  sparse endpoint localization, and sample 6/18 is a held-out character in
-  the character-disjoint test set. The first two rows use the formal
-  QC-standard models and the third uses the formal character-disjoint models.
-  Colours follow Fig.~\ref{fig:channel-definition}; black denotes
-  simultaneous direction labels and cyan outlines denote stroke endpoints.
-  Each model uses its validation-calibrated thresholds.}
+  \caption{Frozen qualitative comparison for seed 20260811: a
+  multi-channel crossing, a sparse-endpoint case, and a held-out character.
+  The first two rows use QC-standard models and the third uses
+  character-disjoint models. Colours follow
+  Fig.~\ref{fig:channel-definition}; thresholds are validation-calibrated.}
   \label{fig:segmentation-qualitative}
 \end{figure*}
 
@@ -60,23 +49,16 @@ and the architecture-specific errors visible beyond aggregate metrics.
 
 \input{tables/controlled_perturbation}
 
-The family-level results in Table~\ref{tab:controlled} show heterogeneous
-residual nuisance sensitivity. Translation is recovered exactly in all
-800 valid observations. Mean absolute penalties are 5.395 for rotation,
-13.653 for scale-up, and 16.356 for scale-down. Scale-up and compound
-transformations have invalid fractions of 49.0\% and 54.0\%, respectively,
-because transformed support risks leaving the canvas; those cases are
-reported rather than silently counted as score failures. Scale-related
-summaries are therefore conditional on clipping-safe references. Because
-clipping safety is related to glyph extent, these conditional means should
-not be interpreted as full-library invariance.
+Table~\ref{tab:controlled} shows heterogeneous residual nuisance sensitivity.
+Translation is recovered exactly in 800 valid cases; mean penalties are
+5.395 for rotation, 13.653 for scale-up, and 16.356 for scale-down.
+Scale-up and compound transforms have 49.0\% and 54.0\% invalid fractions
+because of clipping risk. Their summaries are conditional on clipping-safe
+references and do not establish full-library invariance.
 
-Structural perturbations generally lower the score with severity. Direction
-dilation and erosion have the largest average penalties, followed by terminal
-deletion and added fragments. Local fragment shifts and keypoint shifts are
-penalized more weakly. The benchmark therefore identifies both a desired
-signal---sensitivity to local structure---and a principal weakness---residual
-scale sensitivity. Full per-family distributional statistics are provided in
+Direction dilation and erosion produce the largest structural penalties,
+followed by terminal deletion and added fragments; local-fragment and
+keypoint shifts are weaker. Full distributional statistics appear in
 Supplementary Table S1.
 
 \input{tables/alignment_ablation}
@@ -88,174 +70,102 @@ additional 11.189 points of structural penalty
 (10.094--12.322). Both per-reference signed-rank comparisons are nonzero with
 rank-biserial effect size 1.0.
 
-The wider alignment does not dominate the production range. The current range
-has a 2.896-point lower nuisance penalty (2.757--3.034), whereas the wider
-range preserves 0.284 additional points of structural penalty. A wider search
-therefore fails to reduce residual nuisance sensitivity and provides only a
-small structural-sensitivity advantage. The paired family-level breakdown is
-reported in Supplementary Table S2.
+The wider range has a 2.896-point higher nuisance penalty
+(2.757--3.034), while preserving only 0.284 additional points of structural
+penalty. It therefore does not improve the measured trade-off; paired
+family-level results appear in Supplementary Table S2.
 
 \begin{figure*}[!t]
   \centering
-  \includegraphics[width=0.93\textwidth]{figures/figure5_alignment_ablation.pdf}
-  \caption{Qualitative alignment ablation on three deterministically selected
-  controlled perturbations. Columns compare the unmodified reference, the
-  perturbed candidate, no alignment, the production-constrained search, and a
-  wider similarity search. Purple denotes overlap, blue missing-reference
-  ink, and red extra-candidate ink. Translation is recovered exactly;
-  scale-down retains a residual score penalty; and the terminal deletion
-  shows how a wider search can alter structural evidence. The figure
-  illustrates reduction of nuisance sensitivity, not invariance. Scale
-  summaries remain conditional on clipping-safe cases.}
+  \includegraphics[width=0.89\textwidth]{figures/figure5_alignment_ablation.pdf}
+  \caption{Alignment ablation on deterministic translation, scale-down, and
+  terminal-deletion cases. Columns compare no alignment, the production
+  range, and a wider search; purple, blue, and red denote overlap, missing
+  reference ink, and extra candidate ink. The result demonstrates relative
+  nuisance reduction, not transform invariance.}
   \label{fig:alignment-ablation}
 \end{figure*}
 
 \medskip
 \noindent\textbf{Score semantics and cross-reference tests.}
 
-\input{tables/structure_score_audit}
-
-Table~\ref{tab:inactive} shows that 41 of 200 references contain an inactive
-direction channel: 36 contain
-one and five contain two; none contains three or more. Empty-channel agreement
-affects 1,252 valid perturbation rows. Replacing the all-five mean by an
-active-channel mean changes the score by \(-0.289\) points on average and by as
-much as \(-15.402\) points. The largest corrections occur when inactive
-channels receive perfect Dice credit while a perturbed active channel
-degrades.
-
-Representative maximum, median, and near-zero correction cases are retained
-with their deterministic selection manifest in the supplementary package.
+Forty-one of 200 references contain inactive direction channels (36 with one,
+five with two). Empty-channel agreement affects 1,252 valid perturbation
+rows; active-channel averaging changes the score by \(-0.289\) points on
+average and at most \(-15.402\). Representative correction cases and the full
+audit are supplied in the supplement.
 
 \input{tables/cross_reference}
 
-The seven same-character cross-style pairs in Table~\ref{tab:cross-reference}
-have mean score 20.239
-(bootstrap 95\% CI 15.639--25.069), compared with 9.741
-(8.584--10.970) for 50 different-character negatives. Cliff's delta is 0.84
-\cite{cliff1993dominance}.
-This is evidence of a same-character reference signal, but the small positive
-set and missing same-style/different-instance condition prevent a broad
-style-generalization claim.
+The seven same-character cross-style pairs score 20.239 on average
+(95\% CI 15.639--25.069), versus 9.741 (8.584--10.970) for 50
+different-character negatives (Cliff's \(\delta=0.84\))
+\cite{cliff1993dominance}. The small positive set and missing
+same-style/different-instance condition preclude a broad generalization claim.
 
 \subsection{RQ3: blinded human validity and ASDS development}
 
 \input{tables/human_validation}
 \input{tables/rater_reliability}
 
-Across 150 canonical pairs, \(S_{\mathrm{prod}}\) has a positive but modest
-association with the three-rater mean
-(\(\rho=0.297\), character-cluster bootstrap 95\% CI
-0.148--0.441, \(p=0.00023\)). The coverage-aware audit is stronger
-(\(\rho=0.429\), 0.313--0.535, \(p<10^{-7}\)). The paired bootstrap
-difference is 0.132 (0.062--0.197). This result is consistent with the
-inactive-channel audit but does not, by itself, authorize post-hoc replacement
-of the production score.
-
-These associations are summarized in Table~\ref{tab:human-validation}.
-Canonical ICC(2,1) is 0.448 and ICC(2,\(k\)) is 0.709
-(Table~\ref{tab:rater-reliability}). Across 45
-rater-level hidden repeats, exact agreement is 48.9\%, agreement within one
-scale point is 93.3\%, mean absolute difference is 0.578, and pooled quadratic
-weighted kappa is 0.634. Individual production-score correlations are
-positive for all raters and range from 0.174 to 0.350. Average ratings are
-therefore more reliable than a single rating, but meaningful subjectivity
-remains.
+Across 150 canonical pairs, \(S_{\mathrm{prod}}\) correlates modestly with
+the three-rater mean (\(\rho=0.297\), character-cluster 95\% CI
+0.148--0.441), while the coverage-aware audit reaches 0.429
+(0.313--0.535); their paired difference is 0.132 (0.062--0.197)
+(Table~\ref{tab:human-validation}). ICC(2,1) is 0.448 and ICC(2,\(k\))
+is 0.709. Hidden repeats yield 48.9\% exact agreement, 93.3\% agreement
+within one point, MAD 0.578, and pooled quadratic weighted kappa 0.634
+(Table~\ref{tab:rater-reliability}), supporting aggregation while confirming
+meaningful subjectivity.
 
 \input{tables/spatial_score_development}
 
-ASDS raises the development-set association to \(\rho=0.556\)
-(character-cluster bootstrap 95\% CI 0.454--0.651). Predictions produced by
-character-grouped five-fold weight selection retain
-\(\rho=0.540\) (0.432--0.639). The paired bootstrap interval for
-ASDS minus production is 0.110--0.410, and that for ASDS minus the
-coverage-aware audit is 0.017--0.239. For grouped out-of-fold predictions, the
-difference from coverage-aware scoring is less certain
-(\(-0.003\)--0.224).
-
-The component analysis in Table~\ref{tab:spatial-score-development} identifies
-the polar term as the strongest individual spatial descriptor
-(\(\rho=0.547\)); grid and projection similarities reach 0.447 and 0.445.
-Thus, most ASDS association comes from radial/angular ink organization, while
-the two coarse canvas terms provide a small complementary contribution. The
-combined score is not claimed to be significantly better than the polar term
-alone.
-
-These results show that human ratings are more closely related to spatial ink
-organization than to the deployed channel/pixel overlap alone. They are not
-an external validation of ASDS, because the same 150 ratings informed its
-feature design. The grouped out-of-fold estimate reduces weight-selection
-optimism and is reported as internal validation; the full-sample value remains
-descriptive and retrospective.
+ASDS reaches \(\rho=0.556\) (0.454--0.651), and character-grouped
+out-of-fold weight selection retains 0.540 (0.432--0.639). Paired intervals
+for ASDS minus production and coverage-aware scoring are 0.110--0.410 and
+0.017--0.239; the grouped out-of-fold difference from coverage-aware scoring
+is less certain (\(-0.003\)--0.224). The polar component is strongest
+(\(\rho=0.547\)); grid and projection reach 0.447 and 0.445
+(Table~\ref{tab:spatial-score-development}). Because the same ratings informed
+feature design, these are retrospective development and internal-validation
+results, not external confirmation.
 
 \input{tables/direct_ink_asds}
 
-The paired direct-ink ablation (Table~\ref{tab:direct-ink-asds}) gives
-\(\rho=0.55623\) for parsed-union ASDS and \(\rho=0.55583\) for direct-ink
-ASDS. Their difference is \(0.00040\), with character-cluster bootstrap
-95\% CI \(-0.01011\)--\(0.01030\). The two score vectors are themselves
-strongly rank-associated (\(\rho=0.9973\)). Thus, on these clean
-direct-digital inputs, the parser neither measurably improves nor degrades the
-scalar ASDS association. This result narrows the claim: ASDS is a silhouette
-score, whereas the parser is justified by the separate direction, overlap,
-and endpoint evidence evaluated in RQ1 and returned by the application.
+Parsed-union and direct-ink ASDS reach \(\rho=0.55623\) and 0.55583
+(Table~\ref{tab:direct-ink-asds}); \(\Delta\rho=0.00040\), 95\% CI
+\(-0.01011\)--\(0.01030\), and their mutual rank association is 0.9973.
+Thus ASDS is a silhouette score on clean digital input; parsing remains
+necessary for the separately evaluated direction, overlap, endpoint, and
+localized evidence.
 
 \begin{figure*}[!t]
   \centering
-  \includegraphics[width=\textwidth]{figures/figure6_asds_direct_ink.pdf}
-  \caption{ASDS mechanism and paired direct-ink control. Panels (a)--(f)
-  decompose one natural same-character pair into constrained aligned
-  silhouettes, polar occupancy, \(3\times3\) grid occupancy, and horizontal
-  and vertical projection profiles. The displayed pair is explanatory,
-  whereas panel (g) reports the frozen 150-pair analysis. Parsed-union and
-  direct-ink ASDS have nearly identical human association and score ordering.
-  The result identifies ASDS as a silhouette descriptor; the six-channel
-  parser remains necessary for direction, overlap, endpoint, and localized
-  diagnostic evidence rather than for constructing this scalar alone.}
+  \includegraphics[width=0.95\textwidth]{figures/figure6_asds_direct_ink.pdf}
+  \caption{ASDS mechanism and direct-ink control. Panels (a)--(f) decompose
+  one pair into aligned silhouettes, polar and \(3\times3\) occupancy, and
+  projection profiles; panel (g) reports the 150-pair comparison. The two
+  inputs have nearly identical human association and score ordering.}
   \label{fig:asds-direct-ink}
 \end{figure*}
-
-\begin{figure*}[!t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/human_score_association.pdf}
-  \caption{Development-stage association between blinded mean structural
-  rating and the production, coverage-aware, and ASDS scores for 150 natural
-  same-character pairs. Points are individual pairs; lines connect score-bin
-  medians only as a descriptive guide. ASDS was designed after these ratings,
-  so this figure is not an independent validation.}
-  \label{fig:human-score-association}
-\end{figure*}
-
-Figure~\ref{fig:human-score-association} visualizes the stronger monotonic
-organization of ASDS while preserving the substantial dispersion that
-motivates replication on independently collected writers and characters.
 
 \subsection{RQ4: diagnostic feedback}
 
 \input{tables/feedback_failure_taxonomy}
 
-Table~\ref{tab:feedback-failures} separates the dominant localization failure
-types. Required Recall@3 is 0.701, whereas exact grid-region localization is
-0.109.
-Among exact-region failures, 53.9\% occur because the perturbation truth spans
-multiple cells while the metric requires one exact cell, 24.6\% involve an
-incorrect direction channel, and 20.1\% contain no local finding in the top
-three. Wrong missing/extra type and residual registration shifts are uncommon.
-The main limitation is therefore a mixture of localization representation and
-direction attribution rather than wording. This motivates a future set- or
-pixel-overlap localization metric, not further tuning of feedback rules on the
-same cases.
+Required Recall@3 is 0.701, whereas exact grid localization is 0.109.
+Among exact-region failures, 53.9\% reflect multi-cell truth under a
+single-cell metric, 24.6\% use the wrong direction, and 20.1\% omit a local
+finding from the top three (Table~\ref{tab:feedback-failures}). The main
+limitations are therefore localization representation and direction
+attribution, not wording.
 
 \begin{figure*}[!t]
   \centering
   \includegraphics[width=\textwidth]{figures/figure7_diagnostic_cases.pdf}
-  \caption{Localized evidence returned by the frozen diagnostic rules. Panel
-  (a) is a deterministically selected exact-localization success. Panel (b)
-  is a representative audited failure in which the synthetic truth spans
-  multiple grid cells but the frozen metric requires one exact cell. The
-  reference, perturbed candidate, aligned difference mask, grid evidence, and
-  structured output are shown without concealing the failed case. Purple
-  denotes overlap, blue missing-reference ink, red extra-candidate ink, green
-  boxes the truth cells, and yellow dashes the predicted cell.}
+  \caption{Frozen diagnostic evidence: one exact-localization success and one
+  audited failure caused by multi-cell truth under an exact-one-cell metric.
+  Purple, blue, and red denote overlap, missing reference ink, and extra
+  candidate ink; green marks truth cells and yellow the predicted cell.}
   \label{fig:diagnostic-cases}
 \end{figure*}

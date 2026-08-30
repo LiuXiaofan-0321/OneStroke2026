@@ -170,15 +170,18 @@ python paper/tools/build_online_package.py `
 Draft 50--100-word biographies are in `AUTHOR_BIOGRAPHIES.md`; each author
 must approve the text and supply a separate portrait photograph.
 
-The 2026-08-30 figure-rich draft uses seven new submission figures plus the
-frozen human-association plot. The two full statistical tables are supplied
-in a separate supplementary PDF. The abstract is
-a single integrated paragraph of 241 words with six keywords. The current
-main-manuscript build is checked for fatal errors, undefined citations,
-undefined references, and figure clipping after Figure 4 is regenerated. The
-PDF remains a review
-draft until the institutional ethics/exemption wording and the permanent
-identifier for the separate data archive are confirmed.
+The 2026-08-30 submission draft uses seven formal figures. The six-channel
+annotation contract is Figure 1 immediately after the abstract, followed by
+the end-to-end pipeline and data/QC overview. The human-association plot is
+retained as a reproducibility artifact but omitted from the main text to
+avoid duplicating the numerical tables. The two full statistical tables are
+supplied in a separate supplementary PDF. The abstract is a single integrated
+paragraph of 241 words with six keywords, and the main manuscript compiles to
+18 pages. The build is checked for fatal errors, undefined citations,
+undefined references, overfull boxes, and figure clipping. The PDF remains a
+review draft until institutional ethics/exemption wording, the permanent data
+archive identifier, and publication permission for third-party image examples
+are confirmed.
 
 ## Provenance
 

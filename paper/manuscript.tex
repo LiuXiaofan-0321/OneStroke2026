@@ -62,6 +62,21 @@ reference-based assessment, human validation, explainable feedback}
 
 \maketitle
 
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/figure3_channel_definition.pdf}
+  \caption{Six-channel overlapping annotation contract. The five independent
+  direction families are vertical (\(\mathrm{vec1}\)), rising diagonal
+  (\(\mathrm{vec2}\)), horizontal (\(\mathrm{vec3}\)), falling diagonal
+  (\(\mathrm{vec4}\)), and compound/curved/other (\(\mathrm{vec5}\)).
+  Isolated stroke sources are composed into overlapping masks; black pixels
+  carry simultaneous direction labels. The sixth channel is the union of
+  manually marked stroke endpoints and does not encode junctions, turning
+  points, or stroke order. Cyan outlines and endpoint dilation are used only
+  for visualization.}
+  \label{fig:channel-definition}
+\end{figure*}
+
 \input{sections/01_introduction}
 \input{sections/02_related_work}
 \input{sections/03_method}
@@ -105,7 +120,9 @@ contracts, the blinded 150-pair rating table, perturbation specifications,
 derived statistics, and integrity hashes. Its permanent repository identifier
 will be inserted before submission. The archive will not redistribute
 Calli-Tongji source images, which remain subject to the original
-CC-BY-NC-4.0 licence, and project-collected RGB/stroke-mask assets will be
+CC-BY-NC-4.0 licence. Third-party examples will remain in the submitted
+figures only after publication permission and attribution requirements are
+confirmed. Project-collected RGB/stroke-mask assets will be
 released only to the extent permitted by participant consent and institutional
 data-governance review. Where an image cannot be redistributed, the archive
 will provide stable identifiers, hashes, provenance, and regeneration or

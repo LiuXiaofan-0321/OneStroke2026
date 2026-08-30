@@ -1,175 +1,104 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Chinese calligraphy (\emph{shufa}) is both a writing practice and an
-important form of Chinese traditional culture. Its visual identity is carried
-not only by the character that is written, but also by the organization of
-strokes, occupied and unoccupied space, balance, proportion, and relations
-between stroke endpoints. For readers without a Chinese-language background,
-a finished character can be understood as a structured composition of
-horizontal, vertical, rising-diagonal, falling-diagonal, and
-compound/curved stroke families. These components frequently adhere or cross
-in the final raster even though they arise from distinct writing actions.
-Consequently, two images can be recognized as the same character while
-differing substantially in the local structure that a learner needs to
-revise.
+Chinese calligraphy (\emph{shufa}) is both a writing practice and an important
+form of Chinese traditional culture. A character is judged not only by its
+identity but also by stroke organization, balance, proportion, negative
+space, and endpoint relations. Horizontal, vertical, rising-diagonal,
+falling-diagonal, and compound or curved strokes frequently adhere or cross
+in the final raster. Two samples can therefore be equally recognizable while
+differing in precisely the local structure that a learner should revise.
 
-Most computer-vision systems for Chinese handwriting address recognition,
-style classification, or glyph generation. These outputs are useful but do
-not answer the assessment question: given a learner image and a designated
-same-character reference, which structural regions agree, which are missing
-or excessive, and which global differences should be tolerated? Recognition
-reduces the image to an identity; style classification reduces it to a class;
-and generation optimizes visual plausibility rather than verifying the
-learner's local discrepancies. A practice-oriented system instead needs
-spatial evidence that can be inspected before it is verbalized.
+Most computer-vision work on Chinese handwriting emphasizes recognition,
+style classification, or generation. These tasks respectively reduce an
+image to an identity, a category, or a plausible glyph; none directly answers
+the assessment question considered here: given a learner image and an
+approved same-character reference, which differences are benign global
+placement changes, and which are localized structural discrepancies?
+Practice-oriented assessment requires inspectable spatial evidence before
+any natural-language feedback is produced.
 
-Figure~\ref{fig:pipeline} summarizes the resulting reference-conditioned
-problem. The learner and an approved same-character reference may differ
-substantially despite sharing a Unicode identity. They are parsed into
-overlapping structural channels, compared only after a bounded global
-alignment, and converted into auditable spatial and directional evidence.
+Figure~\ref{fig:pipeline} summarizes our reference-conditioned formulation.
+The learner and reference are parsed into overlapping structural channels,
+the reference undergoes only bounded global registration, and the aligned
+pair yields scalar agreement together with directional and spatial evidence.
 
 \begin{figure*}[!t]
   \centering
   \includegraphics[width=\textwidth]{figures/figure1_pipeline.pdf}
-  \caption{Reference-conditioned structural assessment on a real
-  same-character, cross-style pair. The example explains the computational
-  problem rather than establishing cross-style generalization. The
-  six-channel parser retains simultaneous direction labels at crossings and
-  endpoint evidence; the reference is then aligned by translation, bounded
-  isotropic scale, and bounded rotation. Purple denotes aligned overlap, blue
-  missing-reference ink, and red extra-candidate ink. The output exposes the
-  selected transform and component evidence before optional text
-  realization.}
+  \caption{Reference-conditioned assessment on a same-character cross-style
+  pair. Independent channels preserve simultaneous direction labels at
+  crossings and endpoint evidence. Bounded translation, isotropic scale, and
+  rotation precede comparison; purple, blue, and red denote overlap, missing
+  reference ink, and extra learner ink. The selected transform and component
+  evidence remain available before optional text realization. Source images:
+  Calli-Tongji Beta, used under CC BY-NC 4.0.}
   \label{fig:pipeline}
 \end{figure*}
 
-This requirement exposes four broader computer-vision difficulties. First,
-standard softmax segmentation assumes one semantic label per pixel. At a
-calligraphic crossing, however, one pixel can legitimately support multiple
-directional structures. Treating the channels as mutually exclusive destroys
-the annotation geometry, while unconstrained instance segmentation is poorly
-matched to a low-resource corpus without reliable ordered-stroke identities.
-Second, direct pixel overlap confounds structure with nuisance translation,
-global scale, and small rotation. Third, highly flexible registration solves
-the opposite problem too aggressively: anisotropic or deformable warps can
-align away a misplaced or disproportionate region that the assessment should
-retain. Fourth, a score that is stable under synthetic transformations is not
-automatically valid as a human-facing measure. It can reward empty channels,
-depend on the available character distribution, or disagree with perceived
-structural organization.
+The problem exposes four general computer-vision challenges. First, softmax
+segmentation cannot represent multiple valid labels at one crossing pixel.
+Second, direct overlap confounds structure with translation, scale, and small
+rotation. Third, flexible registration can erase the proportion or placement
+error that assessment should retain. Fourth, transformation stability does
+not establish human validity: a score can reward empty channels or disagree
+with perceived spatial organization. These issues also arise in touching
+handwriting, layered diagrams, and sparse line art, where overlapping
+components, nuisance geometry, and interpretable discrepancy must be handled
+jointly under limited dense annotation.
 
-These are not calligraphy-specific inconveniences. They recur in document and
-shape analysis whenever layered or intersecting structures must be parsed
-from limited dense annotations, a query must be compared with a reference
-under nuisance geometry, and the final discrepancy must remain interpretable.
-Examples include touching handwriting, overlapping diagram primitives,
-line-art components, and other sparse foreground structures for which
-registration and diagnosis cannot be optimized independently. The central
-computer-vision problem is therefore to combine overlapping representation,
-low-resource generalization measurement, discrepancy-preserving
-registration, and human-audited comparison without using success in one stage
-as evidence for another.
-
-The available data make this separation especially important. The recovered
-segmentation corpus contains complete six-channel ground truth for only 40
-character identities, and reliable writer and style provenance cannot be
-reconstructed. A random or identity-overlapping split can therefore produce
-a strong in-domain score while leaving generalization to unseen character
-structures unresolved. We retain a quality-controlled standard protocol but
-also freeze a character-disjoint protocol, following the broader document
-analysis principle that performance under limited labels and source
-constraints should be measured directly rather than inferred
-\cite{baloun2025selfsupervision,oliveira2018dhsegment}.
-
-Figure~\ref{fig:data-resources} makes the data scope explicit. The
-project-owned corpus was commissioned from designated writers under a digital
-stroke-acquisition protocol. Of 894 sample directories, 840 contained all six
-ground-truth channels; semantic image/GT mismatch auditing and exact-duplicate
-canonicalization yielded 769 QC-clean observations. The external
-Calli-Tongji Beta images are a separate, licence-constrained reference
-resource and are never treated as segmentation ground truth.
+The recovered project corpus contains complete six-channel ground truth for
+40 character identities but no trustworthy writer or style provenance.
+Accordingly, we report both a quality-controlled standard protocol and a
+frozen character-disjoint protocol rather than inferring unseen-structure
+generalization from an identity-overlapping split
+\cite{baloun2025selfsupervision,oliveira2018dhsegment}. The commissioned
+digital acquisition produced complete characters, isolated stroke sources,
+and endpoint annotations. Of 894 directories, 840 contained all six channels;
+semantic mismatch auditing and exact-duplicate canonicalization yielded 769
+QC-clean observations. The external Calli-Tongji Beta subset is used only as
+a licence-constrained reference resource, never as parser ground truth
+(Fig.~\ref{fig:data-resources}).
 
 \begin{figure*}[!t]
   \centering
   \includegraphics[width=0.96\textwidth]{figures/figure2_dataset_overview.pdf}
-  \caption{Data resources and quality control. Panels (a)--(d) illustrate the
-  project acquisition contract using a real completed character, isolated
-  stroke source, composed direction masks, and endpoint target. Panel (e)
-  displays one deterministically selected QC-clean observation for every one
-  of the 40 character identities. Panel (f) reports the complete audit flow;
-  no exact-duplicate group crosses either frozen split. Panel (g) shows all
-  seven available natural same-character cross-style pairs in the external
-  Calli-Tongji Beta reference subset. External images are licensed
-  references, not ground truth for parser training.}
+  \caption{Data resources and quality control. Panels (a)--(d) show the
+  project acquisition contract; panel (e) shows one deterministic QC-clean
+  observation for each of 40 character identities; panel (f) summarizes the
+  audit, with no exact-duplicate group crossing either frozen split. Panel
+  (g) contains all seven available natural same-character cross-style
+  reference pairs. These external examples are not segmentation ground
+  truth. Source for panel (g): Calli-Tongji Beta, used under CC BY-NC 4.0.}
   \label{fig:data-resources}
 \end{figure*}
 
-We study four research questions:
+We ask four questions: (RQ1) how well do convolutional and transformer
+parsers recover overlapping direction and endpoint masks under standard and
+unseen-character evaluation; (RQ2) how does constrained registration trade
+nuisance reduction against preservation of structural penalties; (RQ3) how
+strongly do fixed scores associate with blinded human structural ratings,
+including a retrospective spatial score and direct-ink control; and (RQ4)
+which localized diagnostic outputs are reliable, and why do they fail?
 
-\begin{description}
-  \item[RQ1:] How accurately do convolutional and transformer parsers recover
-  overlapping direction and endpoint masks, and how much performance is lost
-  when character identities are unseen during training?
-  \item[RQ2:] Does constrained global registration reduce nuisance
-  sensitivity relative to no alignment while preserving penalties for local
-  structural changes, and what semantic weaknesses remain in the deployed
-  score?
-  \item[RQ3:] How strongly do fixed reference-conditioned scores associate
-  with blinded human structural-similarity ratings, and what can be concluded
-  from a retrospectively developed spatial-distribution score and its
-  direct-ink ablation?
-  \item[RQ4:] Which direction and location evidence can be diagnosed
-  reliably, and which observed failures arise from the model, the evidence
-  representation, or the evaluation metric?
-\end{description}
-
-Our pipeline separates perception, comparison, and presentation:
-\[
-\begin{aligned}
-\text{overlapping parsing}
-&\rightarrow \text{constrained registration}\\
-&\rightarrow \text{structural comparison}\\
-&\rightarrow \text{localized evidence}\\
-&\rightarrow \text{text realization}.
-\end{aligned}
-\]
-The parser produces five independently activated direction channels and one
-endpoint channel. The deployed comparison retains a frozen
-Dice/IoU/keypoint formula. We additionally examine aligned
-spatial-distribution similarity (ASDS), a compact silhouette score based on
-Jensen--Shannon similarity between polar occupancy, coarse grid occupancy,
-and horizontal/vertical projection profiles. Because ASDS was designed after
-the original human-rating study, its full-sample and character-grouped
-out-of-fold results are reported as retrospective development and internal
-validation, not as external confirmation.
-
-The computer-vision contributions are:
+The principal contributions are:
 
 \begin{enumerate}
-  \item an overlapping six-channel output contract, with independent
-  activations at intersecting pixels, and a reproducible semantic QC protocol
-  for low-resource complete-character parsing;
-  \item a three-architecture, three-seed comparison on matched standard and
-  character-disjoint splits, exposing architecture-dependent differences
-  between dense direction parsing and sparse endpoint localization;
-  \item a restricted reference-registration policy evaluated with
-  controlled nuisance and structural perturbations, paired uncertainty, and
-  a wider-search negative ablation, thereby measuring reduction rather than
-  claiming transform invariance;
-  \item an auditable assessment analysis comprising inactive-channel
-  semantics, cross-reference tests, a blinded 150-pair human-rating cohort,
-  and transparent retrospective ASDS development with grouped internal
-  validation;
-  \item a paired direct-ink ablation that separates silhouette-only scoring
-  from the parser's independent role in direction-, overlap-, and
-  endpoint-level evidence, plus a diagnostic failure taxonomy that keeps
-  evidence correctness separate from language realization.
+  \item an independently activated six-channel representation and semantic-QC
+  protocol for low-resource overlapping complete-character parsing;
+  \item a matched three-architecture, three-seed study on standard and
+  character-disjoint splits, with direction, boundary, and endpoint metrics;
+  \item discrepancy-preserving registration and score-semantics audits using
+  controlled perturbations, paired uncertainty, cross-reference tests, and
+  inactive-channel analysis; and
+  \item blinded human association, transparent retrospective development of
+  aligned spatial-distribution similarity (ASDS), a paired direct-ink
+  control, and a diagnostic failure taxonomy separating evidence from
+  language realization.
 \end{enumerate}
 
 The intended input is a raster exported from a direct digital writing canvas,
-not a photograph of paper. The claims therefore concern structural analysis
-in this modality. They do not cover camera robustness, writer-disjoint
+not a photograph. The claims concern reference-conditioned structural
+analysis in this modality, not camera robustness, writer-disjoint
 generalization, stroke-order recovery, historical authenticity, or universal
 aesthetic grading.

@@ -40,21 +40,6 @@ pixel after composition, a crossing can legitimately activate multiple
 direction channels. Each channel therefore uses an independent sigmoid rather
 than a mutually exclusive softmax (Fig.~\ref{fig:channel-definition}).
 
-\begin{figure*}[!t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/figure3_channel_definition.pdf}
-  \caption{The six-channel overlapping annotation contract for project sample
-  33/18. The fixed direction guide defines vertical
-  (\(\mathrm{vec1}\)), rising-diagonal (\(\mathrm{vec2}\)), horizontal
-  (\(\mathrm{vec3}\)), falling-diagonal (\(\mathrm{vec4}\)), and
-  compound/curved/other (\(\mathrm{vec5}\)) families. Isolated stroke sources
-  are assigned through the character-specific mapping and composed into
-  independent masks. Black pixels in the composed view carry simultaneous
-  direction labels. The keypoint channel contains stroke endpoints only:
-  cyan circles are display outlines, not enlarged training targets.}
-  \label{fig:channel-definition}
-\end{figure*}
-
 Images are converted to RGB, letterboxed to \(512\times512\), and normalized.
 Masks are resized by nearest-neighbour interpolation. For direction channel
 \(c\), the loss combines class-weighted binary cross entropy and soft Dice:

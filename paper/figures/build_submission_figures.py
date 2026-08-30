@@ -813,8 +813,13 @@ def direction_guide(ax: plt.Axes) -> None:
                 "color": CHANNEL_COLORS_HEX[index],
             },
         )
-    labels = ((0.17, 0.94), (0.76, 0.67), (0.96, 0.17), (0.77, -0.75))
-    for index, (x, y) in enumerate(labels):
+    labels = (
+        (0.14, 0.98, "left"),
+        (0.98, 0.92, "right"),
+        (0.98, 0.14, "right"),
+        (0.98, -0.92, "right"),
+    )
+    for index, (x, y, horizontal_alignment) in enumerate(labels):
         ax.text(
             x,
             y,
@@ -822,8 +827,14 @@ def direction_guide(ax: plt.Axes) -> None:
             color=CHANNEL_COLORS_HEX[index],
             fontsize=7.4,
             fontweight="bold",
-            ha="center",
+            ha=horizontal_alignment,
             va="center",
+            bbox={
+                "boxstyle": "round,pad=0.08",
+                "facecolor": "white",
+                "edgecolor": "none",
+                "alpha": 0.88,
+            },
         )
     ax.text(
         0,

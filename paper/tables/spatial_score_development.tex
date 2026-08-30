@@ -1,20 +1,19 @@
-\begin{table*}[t]
-\caption{Development-stage ASDS component ablation and association with mean
-human structural rating. Confidence intervals use 10,000 character-cluster
-bootstrap resamples. ASDS was developed after the original ratings and is not
-an independent result.}
+\begin{table}[t]
+\caption{Development-stage ASDS association with mean human rating
+(character-cluster bootstrap 95\% CI).}
 \label{tab:spatial-score-development}
 \centering
-\small
-\begin{tabular}{lcc}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcc@{}}
 \toprule
 Score or component & Spearman \(\rho\) & 95\% CI \\
 \midrule
-Grid JS similarity only & 0.447 & [0.303, 0.572] \\
-Projection JS similarity only & 0.445 & [0.316, 0.564] \\
-Polar JS similarity only & 0.547 & [0.443, 0.645] \\
-ASDS frozen development formula & 0.556 & [0.454, 0.651] \\
-ASDS character-grouped OOF & 0.540 & [0.432, 0.639] \\
+Grid only & 0.447 & [0.303, 0.572] \\
+Projection only & 0.445 & [0.316, 0.564] \\
+Polar only & 0.547 & [0.443, 0.645] \\
+ASDS (frozen) & 0.556 & [0.454, 0.651] \\
+ASDS (grouped OOF) & 0.540 & [0.432, 0.639] \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}
