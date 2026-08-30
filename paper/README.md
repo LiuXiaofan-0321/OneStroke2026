@@ -120,18 +120,33 @@ Rebuild the development-stage human-association figure with:
 python figures/build_human_score_association.py
 ```
 
+Build Figures 1--3 and 5--7 from frozen local artifacts with:
+
+```powershell
+python figures/build_submission_figures.py
+```
+
+This command writes vector PDF, high-resolution PNG, and
+`figures/figure_provenance_manifest.json`. Figure 4 remains separate because
+its builder requires all six formal checkpoints and validates every recorded
+SHA-256 before using either inference or a prediction cache.
+
 Build the frozen segmentation qualitative figure with:
 
 ```powershell
 $env:PYTHONPATH = "$PWD\..\src"
-python figures/build_segmentation_qualitative.py --device cuda
+python figures/build_segmentation_qualitative.py `
+  --output figures/figure4_segmentation_qualitative.pdf `
+  --device cuda
 ```
 
 This builder verifies the recorded SHA-256 values and refuses substitute
 weights. It requires the seed-20260811 formal U-Net, DeepLabV3+, and
 SegFormer-B2 checkpoints from both `main_qc` and `character_disjoint` runs.
 The figure is inserted automatically when
-`figures/segmentation_qualitative.pdf` exists. The large formal checkpoints
+`figures/figure4_segmentation_qualitative.pdf` exists. Its sidecar provenance
+file records the cases, protocols, checkpoint hashes, and threshold-file
+hashes. The large formal checkpoints
 are not currently stored in Git; recover them from the Task 1 run directory
 before the submission PDF is frozen.
 
@@ -155,12 +170,13 @@ python paper/tools/build_online_package.py `
 Draft 50--100-word biographies are in `AUTHOR_BIOGRAPHIES.md`; each author
 must approve the text and supply a separate portrait photograph.
 
-The 2026-08-22 second-version main draft is 19 A4 pages and includes the
-frozen three-model segmentation qualitative figure. The two full statistical
-tables are supplied in a separate one-page supplementary PDF. The abstract is
+The 2026-08-30 figure-rich draft uses seven new submission figures plus the
+frozen human-association plot. The two full statistical tables are supplied
+in a separate supplementary PDF. The abstract is
 a single integrated paragraph of 241 words with six keywords. The current
-main-manuscript LaTeX log contains no overfull boxes, undefined citations,
-undefined references, or LaTeX/package warnings. The PDF remains a review
+main-manuscript build is checked for fatal errors, undefined citations,
+undefined references, and figure clipping after Figure 4 is regenerated. The
+PDF remains a review
 draft until the institutional ethics/exemption wording and the permanent
 identifier for the separate data archive are confirmed.
 

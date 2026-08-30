@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "selection_principle": "All examples are selected by deterministic rules documented per figure; no panel is chosen by visual preference.",
+  "figures": {
+    "figure1_pipeline": {
+      "candidate_reference_id": "wang_xizhi_running_calli_tongji_beta:4eae:f07498f75446",
+      "reference_reference_id": "ouyang_xun_regular_calli_tongji_beta:4eae:716778b42f72",
+      "target_char": "亮",
+      "selection_rule": "fixed same-character cross-style pair for target character 亮",
+      "model_cache": "references/cache/segformer_b2_v1/index.json"
+    },
+    "figure2_dataset_overview": {
+      "acquisition_sample_id": "33/18",
+      "atlas_sample_ids": [
+        "0/0",
+        "1/0",
+        "2/0",
+        "3/0",
+        "4/0",
+        "5/0",
+        "6/0",
+        "7/0",
+        "8/0",
+        "9/0",
+        "10/0",
+        "11/0",
+        "12/0",
+        "13/0",
+        "14/0",
+        "15/0",
+        "16/0",
+        "17/0",
+        "18/0",
+        "19/0",
+        "20/0",
+        "21/0",
+        "22/0",
+        "23/0",
+        "24/0",
+        "25/0",
+        "26/0",
+        "27/0",
+        "28/0",
+        "29/0",
+        "30/0",
+        "31/0",
+        "32/0",
+        "33/0",
+        "34/0",
+        "35/0",
+        "36/0",
+        "37/0",
+        "38/0",
+        "39/0"
+      ],
+      "atlas_selection_rule": "minimum sample_index among dataset_qc_v1 rows with decision=KEEP for each char_id 0--39",
+      "external_reference_pairs": [
+        "080936f0a446112ff23f",
+        "649252c5a9f3e488d8ab",
+        "806c8dd63c9c24245b68",
+        "9907da94cfec341f1633",
+        "d0832d3ecb8fbe7bacc0",
+        "d6c12ccb18d7037415c4",
+        "eaf995355599529b7884"
+      ],
+      "external_selection_rule": "all frozen same_character_cross_style pairs"
+    },
+    "figure3_channel_definition": {
+      "sample_id": "33/18",
+      "source": "recovered project GT",
+      "endpoint_definition": "union of manually marked isolated-stroke endpoints only",
+      "display_note": "endpoint dilation/outlines are visualization-only"
+    },
+    "figure5_alignment_ablation": {
+      "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+      "target_char": "吞",
+      "selection_rule": "among references valid for the three displayed conditions and with at least one >=1-point current-versus-wide difference, minimize summed absolute deviation from each condition's median production score drop; break ties by reference_id",
+      "displayed_rows": [
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "global_translation",
+          "severity": "16.0",
+          "alignment_variant": "no_alignment",
+          "score": 41.030301686008606,
+          "score_drop": 58.969698313991394
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "global_translation",
+          "severity": "16.0",
+          "alignment_variant": "current_constrained",
+          "score": 100.0,
+          "score_drop": 0.0
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "global_translation",
+          "severity": "16.0",
+          "alignment_variant": "wide_similarity",
+          "score": 100.0,
+          "score_drop": 0.0
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "global_scale_down",
+          "severity": "0.175",
+          "alignment_variant": "no_alignment",
+          "score": 19.686985232392,
+          "score_drop": 80.313014767608
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "global_scale_down",
+          "severity": "0.175",
+          "alignment_variant": "current_constrained",
+          "score": 83.5295785490285,
+          "score_drop": 16.4704214509715
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "global_scale_down",
+          "severity": "0.175",
+          "alignment_variant": "wide_similarity",
+          "score": 83.5295785490285,
+          "score_drop": 16.4704214509715
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "direction_terminal_deletion",
+          "severity": "0.3",
+          "alignment_variant": "no_alignment",
+          "score": 96.23148242408824,
+          "score_drop": 3.7685175759117584
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "direction_terminal_deletion",
+          "severity": "0.3",
+          "alignment_variant": "current_constrained",
+          "score": 76.24311974979638,
+          "score_drop": 23.756880250203622
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:541e:21c39fb8e65a",
+          "perturbation": "direction_terminal_deletion",
+          "severity": "0.3",
+          "alignment_variant": "wide_similarity",
+          "score": 73.71324690604068,
+          "score_drop": 26.28675309395932
+        }
+      ]
+    },
+    "figure6_asds_direct_ink": {
+      "source_pair_id": "NAT-18-a8c4efc6a5ce",
+      "target_char": "事",
+      "selection_rule": "pair whose direct-minus-parsed ASDS is closest to the cohort median; break ties by source_pair_id",
+      "displayed_asds": 83.12943175318604,
+      "parsed_asds_rho": 0.5562290124897076,
+      "direct_ink_asds_rho": 0.5558310017217053
+    },
+    "figure7_diagnostic_cases": {
+      "cases": [
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:4e0a:b93db9b0f725",
+          "target_char": "上",
+          "perturbation": "local_fragment_shift",
+          "severity": 16.0,
+          "truth": {
+            "affected_regions": [
+              "r2c2"
+            ],
+            "difference_type": null,
+            "expected_center_direction": null,
+            "primary_cause": "local_direction_structure",
+            "required_finding_ids": [
+              "local_direction_structure"
+            ],
+            "specificity_only": false,
+            "target_channel": "vec4"
+          },
+          "findings": [
+            {
+              "finding_id": "local_direction_structure",
+              "channel": "vec4",
+              "difference_type": "missing_reference_structure",
+              "region": "r2c2",
+              "center_direction": null
+            }
+          ],
+          "exact_region_localization": true
+        },
+        {
+          "reference_id": "ouyang_xun_regular_calli_tongji_beta:4e1d:3586d6be84bb",
+          "target_char": "丝",
+          "perturbation": "direction_width_dilate",
+          "severity": 6.0,
+          "truth": {
+            "affected_regions": [
+              "r0c0",
+              "r0c1",
+              "r0c2",
+              "r1c0",
+              "r1c1",
+              "r1c2",
+              "r2c0",
+              "r2c1",
+              "r2c2"
+            ],
+            "difference_type": "extra_user_structure",
+            "expected_center_direction": null,
+            "primary_cause": "local_direction_structure",
+            "required_finding_ids": [
+              "local_direction_structure"
+            ],
+            "specificity_only": false,
+            "target_channel": "vec4"
+          },
+          "findings": [
+            {
+              "finding_id": "local_direction_structure",
+              "channel": "vec4",
+              "difference_type": "extra_user_structure",
+              "region": "r1c1",
+              "center_direction": null
+            },
+            {
+              "finding_id": "layout_ink_scale",
+              "channel": null,
+              "difference_type": null,
+              "region": null,
+              "center_direction": null
+            }
+          ],
+          "exact_region_localization": false
+        }
+      ],
+      "success_selection_rule": "current rule; local structural perturbation; correct top-1 cause, channel, applicable missing/extra type, and exact region; then maximum severity and lexicographic reference_id",
+      "failure_selection_rule": "current rule; multi-cell truth; correct channel/type; predicted cell overlaps truth but fails exact-one-cell metric; then maximum truth-cell count, severity, and lexicographic reference_id"
+    }
+  }
+}

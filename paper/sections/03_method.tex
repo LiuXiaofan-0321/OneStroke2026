@@ -7,20 +7,8 @@ Let \(I_u\) be a learner image and \(I_r\) an approved reference image of the
 same target character. The system first predicts overlapping structural masks,
 then aligns the reference to the learner with a restricted global transform.
 It returns (i) six masks, (ii) a scalar structural-agreement score, and
-(iii) localized evidence (Fig.~\ref{fig:method-overview}). Cross-character
+(iii) localized evidence (Fig.~\ref{fig:pipeline}). Cross-character
 scoring is prohibited by the application contract.
-
-\begin{figure*}[t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/method_overview.pdf}
-  \caption{System and validation overview. The reference and learner are
-  parsed into overlapping direction/keypoint masks, globally aligned under a
-  restricted transform, and compared by the frozen production score and ASDS.
-  Segmentation, alignment, and human association are evaluated by separate
-  protocols so that one successful experiment is not used to support a
-  different claim.}
-  \label{fig:method-overview}
-\end{figure*}
 
 \subsection{Overlapping six-channel parsing}
 
@@ -52,18 +40,18 @@ pixel after composition, a crossing can legitimately activate multiple
 direction channels. Each channel therefore uses an independent sigmoid rather
 than a mutually exclusive softmax (Fig.~\ref{fig:channel-definition}).
 
-\begin{figure*}[t]
+\begin{figure*}[!t]
   \centering
-  \includegraphics[width=\textwidth]{figures/channel_definition.pdf}
-  \caption{Ground-truth six-channel definition. The direction guide defines
-  vertical (\(\mathrm{vec1}\)), rising-diagonal (\(\mathrm{vec2}\)),
-  horizontal (\(\mathrm{vec3}\)), falling-diagonal (\(\mathrm{vec4}\)), and
-  compound/curved/other (\(\mathrm{vec5}\)) families. Isolated stroke images
-  are assigned through a fixed character-specific mapping and composed into
-  overlapping masks; black in the colour overlay denotes pixels shared by
-  more than one direction channel. The keypoint mask is the union of
-  annotated stroke endpoints only. Endpoint markers are dilated in this
-  figure for print visibility; the stored ground truth is unchanged.}
+  \includegraphics[width=\textwidth]{figures/figure3_channel_definition.pdf}
+  \caption{The six-channel overlapping annotation contract for project sample
+  33/18. The fixed direction guide defines vertical
+  (\(\mathrm{vec1}\)), rising-diagonal (\(\mathrm{vec2}\)), horizontal
+  (\(\mathrm{vec3}\)), falling-diagonal (\(\mathrm{vec4}\)), and
+  compound/curved/other (\(\mathrm{vec5}\)) families. Isolated stroke sources
+  are assigned through the character-specific mapping and composed into
+  independent masks. Black pixels in the composed view carry simultaneous
+  direction labels. The keypoint channel contains stroke endpoints only:
+  cyan circles are display outlines, not enlarged training targets.}
   \label{fig:channel-definition}
 \end{figure*}
 

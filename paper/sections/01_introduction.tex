@@ -24,6 +24,27 @@ and generation optimizes visual plausibility rather than verifying the
 learner's local discrepancies. A practice-oriented system instead needs
 spatial evidence that can be inspected before it is verbalized.
 
+Figure~\ref{fig:pipeline} summarizes the resulting reference-conditioned
+problem. The learner and an approved same-character reference may differ
+substantially despite sharing a Unicode identity. They are parsed into
+overlapping structural channels, compared only after a bounded global
+alignment, and converted into auditable spatial and directional evidence.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/figure1_pipeline.pdf}
+  \caption{Reference-conditioned structural assessment on a real
+  same-character, cross-style pair. The example explains the computational
+  problem rather than establishing cross-style generalization. The
+  six-channel parser retains simultaneous direction labels at crossings and
+  endpoint evidence; the reference is then aligned by translation, bounded
+  isotropic scale, and bounded rotation. Purple denotes aligned overlap, blue
+  missing-reference ink, and red extra-candidate ink. The output exposes the
+  selected transform and component evidence before optional text
+  realization.}
+  \label{fig:pipeline}
+\end{figure*}
+
 This requirement exposes four broader computer-vision difficulties. First,
 standard softmax segmentation assumes one semantic label per pixel. At a
 calligraphic crossing, however, one pixel can legitimately support multiple
@@ -61,6 +82,29 @@ also freeze a character-disjoint protocol, following the broader document
 analysis principle that performance under limited labels and source
 constraints should be measured directly rather than inferred
 \cite{baloun2025selfsupervision,oliveira2018dhsegment}.
+
+Figure~\ref{fig:data-resources} makes the data scope explicit. The
+project-owned corpus was commissioned from designated writers under a digital
+stroke-acquisition protocol. Of 894 sample directories, 840 contained all six
+ground-truth channels; semantic image/GT mismatch auditing and exact-duplicate
+canonicalization yielded 769 QC-clean observations. The external
+Calli-Tongji Beta images are a separate, licence-constrained reference
+resource and are never treated as segmentation ground truth.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/figure2_dataset_overview.pdf}
+  \caption{Data resources and quality control. Panels (a)--(d) illustrate the
+  project acquisition contract using a real completed character, isolated
+  stroke source, composed direction masks, and endpoint target. Panel (e)
+  displays one deterministically selected QC-clean observation for every one
+  of the 40 character identities. Panel (f) reports the complete audit flow;
+  no exact-duplicate group crosses either frozen split. Panel (g) shows all
+  seven available natural same-character cross-style pairs in the external
+  Calli-Tongji Beta reference subset. External images are licensed
+  references, not ground truth for parser training.}
+  \label{fig:data-resources}
+\end{figure*}
 
 We study four research questions:
 

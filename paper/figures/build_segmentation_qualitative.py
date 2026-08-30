@@ -18,24 +18,23 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
+from figure_style import (
+    GRID,
+    INK,
+    MUTED,
+    configure_matplotlib,
+    direction_composite,
+)
 from onestroke_model.config import load_yaml
 from onestroke_model.constants import CHANNELS
 from onestroke_model.data.dataset import _letterbox_image, _letterbox_mask
 from onestroke_model.data.transforms import normalize_rgb
 from onestroke_model.models import build_model
 
+configure_matplotlib()
+
 SEED = 20260811
 IMAGE_SIZE = 512
-COLORS = np.asarray(
-    [
-        [214, 39, 40],
-        [0, 158, 115],
-        [0, 114, 178],
-        [230, 159, 0],
-        [135, 72, 177],
-    ],
-    dtype=np.float32,
-) / 255.0
 
 
 @dataclass(frozen=True)
@@ -101,6 +100,11 @@ CASES = (
     ("Endpoint-rich", "35/20", "main_qc"),
     ("Unseen character", "6/18", "character_disjoint"),
 )
+
+SPLIT_LABELS = {
+    "main_qc": "QC-standard",
+    "character_disjoint": "character-disjoint",
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -234,31 +238,13 @@ def load_or_predict(
     return masks
 
 
-def composite(masks: np.ndarray) -> np.ndarray:
-    direction = masks[:5].astype(bool)
-    count = direction.sum(axis=0)
-    canvas = np.ones((IMAGE_SIZE, IMAGE_SIZE, 3), dtype=np.float32)
-    for channel, color in enumerate(COLORS):
-        canvas[direction[channel]] = color
-    canvas[count > 1] = 0.05
-    keypoint = masks[5].astype(bool)
-    if keypoint.any():
-        padded = np.pad(keypoint, 2)
-        dilated = np.zeros_like(keypoint)
-        for dy in range(5):
-            for dx in range(5):
-                dilated |= padded[dy : dy + IMAGE_SIZE, dx : dx + IMAGE_SIZE]
-        canvas[dilated] = np.asarray([0.0, 0.75, 0.2])
-    return canvas
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path(__file__).with_name("segmentation_qualitative.pdf"),
+        default=Path(__file__).with_name("figure4_segmentation_qualitative.pdf"),
     )
     parser.add_argument(
         "--prediction-cache",
@@ -293,15 +279,23 @@ def main() -> None:
                 predictions[(sample_id, spec.label)] = mask
 
     columns = ("Input", "Ground truth", "U-Net", "DeepLabV3+", "SegFormer-B2")
-    figure, axes = plt.subplots(len(CASES), len(columns), figsize=(12.0, 7.15))
+    figure, axes = plt.subplots(len(CASES), len(columns), figsize=(11.5, 6.75))
+    figure.suptitle(
+        "Overlapping stroke parsing under crossings, sparse endpoints, and unseen characters",
+        x=0.53,
+        y=0.992,
+        fontsize=12.2,
+        fontweight="bold",
+        color=INK,
+    )
     for row_index, (case_name, sample_id, split_name) in enumerate(CASES):
         display, _, ground_truth = prepared[sample_id]
         panels = [
             display,
-            composite(ground_truth),
-            composite(predictions[(sample_id, "U-Net")]),
-            composite(predictions[(sample_id, "DeepLabV3+")]),
-            composite(predictions[(sample_id, "SegFormer-B2")]),
+            direction_composite(ground_truth),
+            direction_composite(predictions[(sample_id, "U-Net")]),
+            direction_composite(predictions[(sample_id, "DeepLabV3+")]),
+            direction_composite(predictions[(sample_id, "SegFormer-B2")]),
         ]
         for column_index, (title, panel) in enumerate(zip(columns, panels, strict=True)):
             axis = axes[row_index, column_index]
@@ -309,30 +303,108 @@ def main() -> None:
             axis.set_xticks([])
             axis.set_yticks([])
             if row_index == 0:
-                axis.set_title(title, fontsize=10, fontweight="bold")
+                axis.set_title(title, fontsize=9.2, fontweight="bold", pad=5)
             if column_index == 0:
                 axis.set_ylabel(
-                    f"{case_name}\n{sample_id}\n{split_name.replace('_', '-')}",
-                    fontsize=9,
+                    f"{case_name}\n{SPLIT_LABELS[split_name]}\nsample {sample_id}",
+                    fontsize=8.1,
+                    color=INK,
+                    labelpad=7,
+                )
+                axis.text(
+                    -0.18,
+                    1.02,
+                    f"({chr(ord('a') + row_index)})",
+                    transform=axis.transAxes,
+                    ha="left",
+                    va="bottom",
+                    fontsize=9.2,
+                    fontweight="bold",
+                    color=INK,
+                    clip_on=False,
                 )
             for spine in axis.spines.values():
-                spine.set_linewidth(0.5)
-                spine.set_color("#777777")
+                spine.set_linewidth(0.55)
+                spine.set_color(GRID)
 
     figure.text(
         0.5,
-        0.012,
-        "Red=vec1, green=vec2, blue=vec3, orange=vec4, purple=vec5, "
-        "black=multi-channel overlap, bright green=endpoints. Seed 20260811.",
+        0.013,
+        "vec1 vertical (red) | vec2 rising diagonal (green) | "
+        "vec3 horizontal (blue) | vec4 falling diagonal (orange) | "
+        "vec5 compound/curved/other (purple)",
         ha="center",
-        fontsize=8,
+        fontsize=7.2,
+        color=MUTED,
     )
-    figure.tight_layout(rect=(0.02, 0.035, 1.0, 1.0), pad=0.7)
+    figure.text(
+        0.5,
+        0.0015,
+        "black = simultaneous direction labels | cyan outlines = stroke endpoints | "
+        "all predictions use formal seed 20260811 checkpoints and validation-calibrated thresholds",
+        ha="center",
+        fontsize=6.8,
+        color=MUTED,
+    )
+    figure.tight_layout(rect=(0.035, 0.045, 0.998, 0.963), pad=0.75)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(args.output, bbox_inches="tight")
-    figure.savefig(args.output.with_suffix(".png"), dpi=220, bbox_inches="tight")
+    figure.savefig(
+        args.output,
+        bbox_inches="tight",
+        pad_inches=0.035,
+        facecolor="white",
+    )
+    figure.savefig(
+        args.output.with_suffix(".png"),
+        dpi=360,
+        bbox_inches="tight",
+        pad_inches=0.035,
+        facecolor="white",
+    )
     plt.close(figure)
+
+    provenance = {
+        "schema_version": 1,
+        "figure": "Figure 4",
+        "selection_policy": (
+            "Cases are fixed in source code by prespecified evidence type; "
+            "they are not selected after viewing model predictions."
+        ),
+        "seed": SEED,
+        "image_size": IMAGE_SIZE,
+        "cases": [
+            {
+                "case": case_name,
+                "sample_id": sample_id,
+                "evaluation_protocol": split_name,
+            }
+            for case_name, sample_id, split_name in CASES
+        ],
+        "models": [
+            {
+                "evaluation_protocol": split_name,
+                "model": spec.label,
+                "config": spec.config,
+                "checkpoint": spec.checkpoint,
+                "checkpoint_sha256": spec.checkpoint_sha256,
+                "thresholds": spec.thresholds,
+                "thresholds_sha256": sha256_file(resolve(root, spec.thresholds)),
+            }
+            for split_name, specs in MODEL_SPECS.items()
+            for spec in specs
+        ],
+        "outputs": {
+            "pdf": str(args.output),
+            "png": str(args.output.with_suffix(".png")),
+        },
+    }
+    provenance_path = args.output.with_suffix(".provenance.json")
+    provenance_path.write_text(
+        json.dumps(provenance, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     print(args.output)
+    print(provenance_path)
 
 
 if __name__ == "__main__":

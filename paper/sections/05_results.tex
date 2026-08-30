@@ -35,18 +35,20 @@ Nevertheless, its training population included 12 mismatched and
 duplicate-weighted observations; all formal comparisons above use the frozen
 769-sample QC-clean population.
 
-\IfFileExists{figures/segmentation_qualitative.pdf}{%
-\begin{figure*}[t]
+\IfFileExists{figures/figure4_segmentation_qualitative.pdf}{%
+\begin{figure*}[!t]
   \centering
-  \includegraphics[width=\textwidth]{figures/segmentation_qualitative.pdf}
-  \caption{Frozen qualitative segmentation cases for seed 20260811. Rows were
-  selected by prespecified evidence rather than visual preference: sample
+  \includegraphics[width=\textwidth]
+  {figures/figure4_segmentation_qualitative.pdf}
+  \caption{Frozen qualitative comparison for seed 20260811. Rows are selected
+  by prespecified evidence rather than visual preference: sample
   33/18 contains substantial multi-channel crossing, sample 35/20 emphasizes
   sparse endpoint localization, and sample 6/18 is a held-out character in
   the character-disjoint test set. The first two rows use the formal
   QC-standard models and the third uses the formal character-disjoint models.
   Colours follow Fig.~\ref{fig:channel-definition}; black denotes
-  multi-channel overlap and bright green denotes stroke endpoints.}
+  simultaneous direction labels and cyan outlines denote stroke endpoints.
+  Each model uses its validation-calibrated thresholds.}
   \label{fig:segmentation-qualitative}
 \end{figure*}
 
@@ -93,6 +95,21 @@ therefore fails to reduce residual nuisance sensitivity and provides only a
 small structural-sensitivity advantage. The paired family-level breakdown is
 reported in Supplementary Table S2.
 
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/figure5_alignment_ablation.pdf}
+  \caption{Qualitative alignment ablation on three deterministically selected
+  controlled perturbations. Columns compare the unmodified reference, the
+  perturbed candidate, no alignment, the production-constrained search, and a
+  wider similarity search. Purple denotes overlap, blue missing-reference
+  ink, and red extra-candidate ink. Translation is recovered exactly;
+  scale-down retains a residual score penalty; and the terminal deletion
+  shows how a wider search can alter structural evidence. The figure
+  illustrates reduction of nuisance sensitivity, not invariance. Scale
+  summaries remain conditional on clipping-safe cases.}
+  \label{fig:alignment-ablation}
+\end{figure*}
+
 \medskip
 \noindent\textbf{Score semantics and cross-reference tests.}
 
@@ -107,18 +124,8 @@ much as \(-15.402\) points. The largest corrections occur when inactive
 channels receive perfect Dice credit while a perturbed active channel
 degrades.
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]
-  {figures/coverage_correction_qualitative.png}
-  \caption{Coverage-correction cases selected by correction quantiles rather
-  than visual preference. Purple denotes aligned overlap, blue
-  missing-reference ink, and red extra-user ink.}
-  \label{fig:coverage-cases}
-\end{figure}
-
-Figure~\ref{fig:coverage-cases} illustrates the prespecified correction
-quantiles without selecting examples for visual appeal.
+Representative maximum, median, and near-zero correction cases are retained
+with their deterministic selection manifest in the supplementary package.
 
 \input{tables/cross_reference}
 
@@ -193,7 +200,22 @@ scalar ASDS association. This result narrows the claim: ASDS is a silhouette
 score, whereas the parser is justified by the separate direction, overlap,
 and endpoint evidence evaluated in RQ1 and returned by the application.
 
-\begin{figure*}[t]
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/figure6_asds_direct_ink.pdf}
+  \caption{ASDS mechanism and paired direct-ink control. Panels (a)--(f)
+  decompose one natural same-character pair into constrained aligned
+  silhouettes, polar occupancy, \(3\times3\) grid occupancy, and horizontal
+  and vertical projection profiles. The displayed pair is explanatory,
+  whereas panel (g) reports the frozen 150-pair analysis. Parsed-union and
+  direct-ink ASDS have nearly identical human association and score ordering.
+  The result identifies ASDS as a silhouette descriptor; the six-channel
+  parser remains necessary for direction, overlap, endpoint, and localized
+  diagnostic evidence rather than for constructing this scalar alone.}
+  \label{fig:asds-direct-ink}
+\end{figure*}
+
+\begin{figure*}[!t]
   \centering
   \includegraphics[width=\textwidth]{figures/human_score_association.pdf}
   \caption{Development-stage association between blinded mean structural
@@ -223,3 +245,17 @@ The main limitation is therefore a mixture of localization representation and
 direction attribution rather than wording. This motivates a future set- or
 pixel-overlap localization metric, not further tuning of feedback rules on the
 same cases.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/figure7_diagnostic_cases.pdf}
+  \caption{Localized evidence returned by the frozen diagnostic rules. Panel
+  (a) is a deterministically selected exact-localization success. Panel (b)
+  is a representative audited failure in which the synthetic truth spans
+  multiple grid cells but the frozen metric requires one exact cell. The
+  reference, perturbed candidate, aligned difference mask, grid evidence, and
+  structured output are shown without concealing the failed case. Purple
+  denotes overlap, blue missing-reference ink, red extra-candidate ink, green
+  boxes the truth cells, and yellow dashes the predicted cell.}
+  \label{fig:diagnostic-cases}
+\end{figure*}
