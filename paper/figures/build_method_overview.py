@@ -156,7 +156,7 @@ def main():
 
     boxes = [
         ((0.02, 0.46), 0.15, 0.42, "Same-character pair", ["learner image", "approved reference"], "#37474F"),
-        ((0.21, 0.46), 0.15, 0.42, "Overlapping parser", ["vec1--vec5", "+ keypoint"], "#1565C0"),
+        ((0.21, 0.46), 0.15, 0.42, "Overlapping parser", ["vec1--vec5", "+ endpoint"], "#1565C0"),
         ((0.40, 0.46), 0.15, 0.42, "Constrained alignment", ["translation", "isotropic scale", "rotation within 3 deg"], "#2E7D32"),
         ((0.59, 0.46), 0.18, 0.42, "Structural comparison", ["production score", "ASDS spatial score", "component evidence"], "#6A1B9A"),
         ((0.81, 0.46), 0.17, 0.42, "Auditable output", ["six masks", "score + uncertainty", "localized findings", "optional text"], "#C62828"),

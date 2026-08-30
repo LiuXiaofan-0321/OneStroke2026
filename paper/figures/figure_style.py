@@ -26,7 +26,7 @@ RED = "#D62728"
 PURPLE = "#7851A9"
 CYAN = "#00A6D6"
 
-CHANNEL_NAMES = ("vec1", "vec2", "vec3", "vec4", "vec5", "keypoint")
+CHANNEL_NAMES = ("vec1", "vec2", "vec3", "vec4", "vec5", "endpoint")
 CHANNEL_LABELS = (
     "vertical",
     "rising diagonal",

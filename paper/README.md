@@ -85,6 +85,17 @@ silhouette descriptor and prevents its scalar performance from being used as
 the justification for six-channel parsing. Parsing remains necessary for
 direction- and endpoint-level evidence.
 
+Scientific prose calls the sixth output the **endpoint channel**. The literal
+identifier `keypoint` is retained only in the versioned software schema,
+configuration files, and historical result fields for backward compatibility.
+
+The formal initialization protocols are: U-Net from random initialization;
+DeepLabV3+ with an ImageNet-1K-pretrained ResNet-50 encoder and randomly
+initialized ASPP/decoder/output head; and SegFormer-B2 from
+`nvidia/segformer-b2-finetuned-ade-512-512`, with compatible encoder/decode
+parameters loaded, the incompatible classifier replaced by a random
+six-channel head, and all layers fine-tuned.
+
 ## Rebuild development statistics
 
 From the repository root:
@@ -177,7 +188,7 @@ retained as a reproducibility artifact but omitted from the main text to
 avoid duplicating the numerical tables. The two full statistical tables are
 supplied in a separate supplementary PDF. The abstract is a single integrated
 paragraph of 241 words with six keywords, and the main manuscript compiles to
-18 pages. The build is checked for fatal errors, undefined citations,
+19 pages. The build is checked for fatal errors, undefined citations,
 undefined references, overfull boxes, and figure clipping. The PDF remains a
 review draft until institutional ethics/exemption wording, the permanent data
 archive identifier, and publication permission for third-party image examples

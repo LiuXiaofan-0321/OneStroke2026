@@ -21,6 +21,9 @@ The fixed channel order is
 (\mathrm{vec1},\mathrm{vec2},\mathrm{vec3},\mathrm{vec4},
 \mathrm{vec5},\mathrm{keypoint}).
 \]
+The final identifier is retained as \texttt{keypoint} in the versioned
+software schema for backward compatibility; scientifically, it is an
+\emph{endpoint channel}, and we use that term throughout the paper.
 The first five channels have the following fixed meanings:
 \(\mathrm{vec1}\) is vertical, \(\mathrm{vec2}\) is a rising diagonal
 (\(/\)), \(\mathrm{vec3}\) is horizontal, \(\mathrm{vec4}\) is a falling
@@ -34,11 +37,14 @@ The ground-truth protocol begins with the completed character and its
 individually isolated stroke images. A fixed, character-specific
 \texttt{STROKE\_VECTOR\_MAP} assigns each isolated stroke to one of the five
 direction families; pixels from strokes assigned to the same family are
-merged. The endpoint annotations from all isolated strokes are merged into
-the keypoint mask. Because independently acquired strokes may occupy the same
-pixel after composition, a crossing can legitimately activate multiple
-direction channels. Each channel therefore uses an independent sigmoid rather
-than a mutually exclusive softmax (Fig.~\ref{fig:channel-definition}).
+merged. The two endpoint annotations associated with every isolated stroke
+are merged into one binary endpoint mask. Endpoint pixels indicate only the
+annotated termini of isolated strokes: they do not denote intersections,
+turning points, stroke order, or generic salient points. Because independently
+acquired strokes may occupy the same pixel after composition, a crossing can
+legitimately activate multiple direction channels. Each channel therefore
+uses an independent sigmoid rather than a mutually exclusive softmax
+(Fig.~\ref{fig:channel-definition}).
 
 Images are converted to RGB, letterboxed to \(512\times512\), and normalized.
 Masks are resized by nearest-neighbour interpolation. For direction channel
@@ -51,14 +57,14 @@ Masks are resized by nearest-neighbour interpolation. For direction channel
 +\mathcal{L}_{\mathrm{Dice}}^{(c)}
 \right).
 \]
-The sparse keypoint target uses focal loss with \(\gamma=2\) and
+The sparse endpoint target uses focal loss with \(\gamma=2\) and
 \(\alpha=0.75\), plus Dice loss. A boundary term derived from the masks is
 weighted by \(0.2\):
 \[
 \mathcal{L}
 =\mathcal{L}_{\mathrm{dir}}
-+\mathcal{L}_{\mathrm{focal,kp}}
-+\mathcal{L}_{\mathrm{Dice,kp}}
++\mathcal{L}_{\mathrm{focal,end}}
++\mathcal{L}_{\mathrm{Dice,end}}
 +0.2\mathcal{L}_{\mathrm{boundary}}.
 \]
 
@@ -108,19 +114,19 @@ After alignment, let \(D_c\) be Dice agreement in direction channel \(c\),
 \overline{D}=\frac{1}{5}\sum_{c=1}^{5}D_c,
 \]
 let \(J_{\mathrm{ink}}\) be union-ink IoU, and let
-\(F_{\mathrm{kp}}^{(3)}\) be keypoint-mask F1 with a three-pixel tolerance.
+\(F_{\mathrm{end}}^{(3)}\) be endpoint-mask F1 with a three-pixel tolerance.
 The deployed score is
 \[
 S_{\mathrm{prod}}
 =100\left(
 0.55\overline{D}
 +0.25J_{\mathrm{ink}}
-+0.20F_{\mathrm{kp}}^{(3)}
++0.20F_{\mathrm{end}}^{(3)}
 \right).
 \]
 This formula was frozen before the controlled experiments. An audit variant
 excludes direction channels that are empty in both images and avoids granting
-perfect keypoint credit when both keypoint masks are empty. The audit score is
+perfect endpoint credit when both endpoint masks are empty. The audit score is
 not retroactively substituted for \(S_{\mathrm{prod}}\).
 
 \medskip
@@ -210,13 +216,13 @@ score; it does not test the channel-level outputs that require parsing.
 \subsection{Evidence extraction and feedback}
 
 The system preserves component scores, selected transform, pre-alignment
-centre distance, ink-area ratio, per-direction agreement, and keypoint
+centre distance, ink-area ratio, per-direction agreement, and endpoint
 agreement. Difference masks are summarized by direction channel, missing
 reference ink versus extra learner ink, and a \(3\times3\) region set.
 Connected components of the five direction masks are exposed as
 direction-classified regions, not as recovered stroke order.
 
-Deterministic feedback ranks centre, scale, keypoint, and local-direction
+Deterministic feedback ranks centre, scale, endpoint, and local-direction
 findings. An optional text model receives only this structured contract and
 may improve fluency; it cannot change the score or invent unsupported
 brushwork or stroke-order claims.

@@ -72,19 +72,32 @@ blinded identifiers, and display order were frozen, and all automated scores
 and source identifiers were hidden from raters.
 
 Three consenting adult raters independently judged structural similarity on a
-five-point ordinal scale. Their self-reported backgrounds were heterogeneous:
-one reported one year of calligraphy learning/teaching experience, one
-reported two years of other relevant experience, and one reported no relevant
-experience. We therefore use ``human raters'', not ``calligraphy experts''.
-Each rater evaluated 150 canonical pairs plus 15 randomly interspersed hidden
-repeats. This cohort is the development and internal-validation resource for
-ASDS; it is not an independent external test.
+five-point ordinal scale. The panel comprised the three authors. Two had more
+than five years of formal calligraphy study and held Level-9 calligraphy
+certificates; the third was a master's student in fine arts specializing in
+calligraphy. We therefore describe them as calligraphy-domain or
+domain-qualified raters, while avoiding a claim that this small author panel
+represents the broader population of calligraphy teachers or professional
+assessors. Each rater evaluated 150 canonical pairs plus 15 randomly
+interspersed hidden repeats. This cohort is the development and
+internal-validation resource for ASDS; it is not an independent external
+test.
 
 \subsection{Parsing training and evaluation}
 
-We compare a 32-base-channel U-Net, ResNet-50 DeepLabV3+, and
-ImageNet-pretrained SegFormer-B2. Each architecture is run with seeds
-20260811, 314159, and 271828 on both split protocols, for 18 formal runs.
+We compare a 32-base-channel U-Net, ResNet-50 DeepLabV3+, and SegFormer-B2.
+Their initialization protocols differ. U-Net has no external pretraining and
+all of its convolutional parameters are randomly initialized. DeepLabV3+
+loads the torchvision default ImageNet-1K weights for its ResNet-50 encoder;
+its ASPP module, low-level projection, decoder, and six-channel classifier
+are randomly initialized. SegFormer-B2 is initialized from
+\texttt{nvidia/segformer-b2-finetuned-}\allowbreak
+\texttt{ade-512-512}: compatible MiT-B2 encoder
+and decode-head parameters are loaded from the ADE20K-fine-tuned checkpoint,
+whereas the incompatible 150-class classifier is replaced by a randomly
+initialized six-channel classifier. All layers are then fine-tuned. Each
+architecture is run with seeds 20260811, 314159, and 271828 on both split
+protocols, for 18 formal runs.
 Inputs are \(512\times512\). Batch size is 8 for U-Net and 4 for the two larger
 models. Label-safe augmentation includes translation up to 12 pixels,
 isotropic scale 0.9--1.1, brightness 0.85--1.15, contrast 0.9--1.1, and

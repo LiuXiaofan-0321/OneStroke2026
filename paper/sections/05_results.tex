@@ -11,8 +11,8 @@ Dice (\(0.9630\pm0.0006\)), Macro IoU
 (\(0.9287\pm0.0012\)), and Boundary F1
 (\(0.8443\pm0.0028\)). SegFormer-B2 is close in direction overlap but shows
 greater between-seed variation. U-Net is weaker on direction and boundary
-metrics yet gives the best strict keypoint F1
-(\(0.7562\pm0.0038\)). Thus, dense direction segmentation and sparse keypoint
+metrics yet gives the best strict endpoint F1
+(\(0.7562\pm0.0038\)). Thus, dense direction segmentation and sparse endpoint
 localization favour different architectures.
 
 \input{tables/character_disjoint}
@@ -24,7 +24,7 @@ the strongest character-disjoint direction result: Macro Dice
 \(0.6851\pm0.0046\). Its Macro-Dice decrease from the standard split is 7.150
 percentage points, versus 9.664 for DeepLabV3+ and 9.360 for U-Net.
 DeepLabV3+ remains second for direction overlap, while U-Net retains the
-highest strict keypoint F1. SegFormer-B2 is therefore the strongest evaluated
+highest strict endpoint F1. SegFormer-B2 is therefore the strongest evaluated
 model for unseen-character direction parsing, not a universal winner across
 all six outputs.
 
@@ -58,7 +58,7 @@ references and do not establish full-library invariance.
 
 Direction dilation and erosion produce the largest structural penalties,
 followed by terminal deletion and added fragments; local-fragment and
-keypoint shifts are weaker. Full distributional statistics appear in
+endpoint shifts are weaker. Full distributional statistics appear in
 Supplementary Table S1.
 
 \input{tables/alignment_ablation}

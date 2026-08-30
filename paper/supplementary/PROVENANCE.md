@@ -54,7 +54,9 @@ Human-validation safeguards:
 - the three original return CSV files are retained byte-for-byte;
 - the study supports structural-similarity claims, not aesthetic grading;
 - the rater pool is described as blinded human raters rather than three
-  calligraphy experts.
+  independent calligraphy experts. The manuscript instead reports the
+  author-confirmed domain qualifications and the non-independent author-rater
+  relationship.
 
 ASDS development safeguards:
 

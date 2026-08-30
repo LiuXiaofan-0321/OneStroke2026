@@ -16,7 +16,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 SAMPLE_DIR = ROOT / "data" / "legacy_gt_v1" / "output_img" / "33" / "18"
 
-CHANNEL_NAMES = ["vec1", "vec2", "vec3", "vec4", "vec5", "keypoint"]
+CHANNEL_NAMES = ["vec1", "vec2", "vec3", "vec4", "vec5", "endpoint"]
 CHANNEL_LABELS = [
     "vertical",
     "rising diagonal",

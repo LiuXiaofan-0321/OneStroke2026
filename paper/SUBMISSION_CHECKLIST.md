@@ -13,7 +13,7 @@ Status date: 2026-08-22
 - [x] Label `rho=0.556` as retrospective development and `rho=0.540` as
   internal validation; do not call either prospective or external
   confirmation.
-- [ ] Verify the raters' background metadata and disclose any author-rater
+- [x] Verify the raters' background metadata and disclose the author-rater
   relationship accurately.
 - [x] Fill author names, affiliation, corresponding email, acknowledgements,
   funding, CRediT roles, code availability, and data availability.
@@ -46,7 +46,8 @@ Status date: 2026-08-22
 - [x] Six keywords (journal requirement: 4--6).
 - [x] RQ-based introduction and contribution list.
 - [x] Numeric bracketed citations and numbered reference list.
-- [x] Six-channel definition figure with endpoint-only keypoint semantics.
+- [x] Six-channel definition figure with endpoint-only semantics; `keypoint`
+  appears only as the backward-compatible software-schema identifier.
 - [x] Generate and insert the frozen Input/GT/U-Net/DeepLabV3+/SegFormer-B2
   qualitative figure from the seed-20260811 formal checkpoints.
 - [x] Real, verifiable bibliography; no provisional UniCalli citation.
@@ -71,6 +72,8 @@ Status date: 2026-08-22
 
 - “reference-conditioned structural agreement”
 - “human-audited structural similarity”
+- “calligraphy-domain raters”
+- “domain-qualified raters”
 - “development-stage ASDS result”
 - “retrospective ASDS development”
 - “character-grouped internal validation”
@@ -83,5 +86,5 @@ Status date: 2026-08-22
 - “writer-disjoint generalization”
 - “stroke-order recognition”
 - “ASDS independently achieves rho=0.556”
-- “three calligraphy experts”
+- “independent senior-expert panel”
 - “prospectively confirmed ASDS”
