@@ -285,4 +285,3 @@ def add_difference_legend(ax: plt.Axes, *, y: float = -0.08) -> None:
             clip_on=False,
         )
         x += 0.30
-

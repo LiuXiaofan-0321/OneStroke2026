@@ -143,12 +143,12 @@ python figures/build_segmentation_qualitative.py `
 This builder verifies the recorded SHA-256 values and refuses substitute
 weights. It requires the seed-20260811 formal U-Net, DeepLabV3+, and
 SegFormer-B2 checkpoints from both `main_qc` and `character_disjoint` runs.
-The figure is inserted automatically when
-`figures/figure4_segmentation_qualitative.pdf` exists. Its sidecar provenance
-file records the cases, protocols, checkpoint hashes, and threshold-file
-hashes. The large formal checkpoints
-are not currently stored in Git; recover them from the Task 1 run directory
-before the submission PDF is frozen.
+The tracked `figures/figure4_segmentation_qualitative.pdf` and high-resolution
+PNG were generated from those frozen artifacts and are inserted directly into
+the manuscript. The sidecar provenance file records the cases, protocols,
+checkpoint hashes, and threshold-file hashes. The large formal checkpoints
+are deliberately excluded from Git; recover them from the Task 1 run
+directory only when the figure itself must be rebuilt.
 
 Build the separate supplementary statistical tables with:
 
