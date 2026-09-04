@@ -59,13 +59,14 @@ git push -u origin paper/xiaofan-related-work
 
 ```text
 paper/manuscript.tex                 作者、摘要和声明
-paper/sections/01_introduction.tex   引言
-paper/sections/02_related_work.tex   相关工作
-paper/sections/03_method.tex         方法
-paper/sections/04_experimental_protocol.tex  实验协议
-paper/sections/05_results.tex        结果
-paper/sections/06_discussion.tex     讨论
-paper/sections/07_conclusion.tex     结论
+paper/sections/01_introduction.tex   引言（现象 → 挑战 C1–C4 → RQ1–RQ4 → 贡献）
+paper/sections/02_related_work.tex   相关工作（仅综述已有研究）
+paper/sections/03_data_resources.tex 数据资源（语料、QC、划分、参考库、评分队列）
+paper/sections/04_method.tex         方法
+paper/sections/05_experimental_setup.tex     实验设置（参数与统计方法）
+paper/sections/06_results_discussion.tex     按 RQ 组织的结果与讨论
+paper/sections/07_discussion.tex     综合讨论与局限
+paper/sections/08_conclusion.tex     结论（按 RQ 回收）
 paper/tables/                        表格
 paper/figures/                       正文图
 paper/references.bib                 参考文献
@@ -88,7 +89,7 @@ paper/references.bib                 参考文献
 
 ```text
 manuscript.pdf
-supplementary.pdf
+ESM_1.pdf
 OneStroke2026_online_latex.zip
 ```
 

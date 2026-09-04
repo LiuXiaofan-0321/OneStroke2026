@@ -1,0 +1,144 @@
+\section{Data Resources}
+\label{sec:data}
+
+The experiments draw on three sources: a project corpus with manual ground
+truth (GT) after quality control (QC), an external reference library whose
+model-parsed masks feed three derived cohorts, and a human-rating cohort.
+Table~\ref{tab:cohorts} lists the resulting resources and the research
+question each serves; the subsections define them.
+
+\input{tables/data_cohorts}
+
+\subsection{Project-collected corpus and six-channel annotation contract}
+\label{sec:data-corpus}
+
+The segmentation corpus was collected in an earlier phase of the project and
+recovered from its acquisition archive for this study. It was commissioned from contributors described as calligraphy-trained,
+although no record of individual training survives, who wrote complete
+characters and, separately, each of their component strokes on a direct
+digital canvas, marking the two endpoints of every isolated stroke. The six-channel target is composed from these captured components
+(Fig.~\ref{fig:channel-definition}): a fixed, character-specific mapping
+assigns each isolated stroke to one of five direction families, and the
+pixels of strokes in the same family are merged into one mask. Because the
+strokes were acquired independently, a crossing or adhesion can occupy the
+same pixel in two families, so the composed masks overlap and a crossing
+pixel legitimately carries more than one direction label. The sixth
+channel is the union of the manually marked endpoints of all isolated
+strokes. It encodes stroke termini only, not junctions, turning points,
+stroke order, or generic salient points. No label in the corpus is produced
+by any model evaluated in this paper.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/redrawn/figure3_channel_definition.pdf}
+  \caption{Six-channel overlapping annotation contract on one project
+  sample. (a)~Direction families: \(\mathrm{vec1}\) vertical,
+  \(\mathrm{vec2}\) rising diagonal, \(\mathrm{vec3}\) horizontal,
+  \(\mathrm{vec4}\) falling diagonal, \(\mathrm{vec5}\) compound, curved,
+  or otherwise non-cardinal strokes. (b)~An isolated stroke source with its
+  two marked endpoints (circles are display only); (c)~the complete character; (d)~the composed
+  annotation, where black pixels carry simultaneous direction labels; (e)~the
+  boxed region of (d) enlarged, the arrow marking a pixel that carries two
+  direction labels at once; (f)~the endpoint channel, the union of the marked stroke
+  endpoints (cyan outlines and dilation are display only); (g)--(l)~the six
+  channels. The software schema stores the channels as
+  \((\mathrm{vec1},\ldots,\mathrm{vec5},\mathtt{keypoint})\); the last
+  identifier is retained for backward compatibility and denotes this endpoint
+  channel.}
+  \label{fig:channel-definition}
+\end{figure*}
+
+The archive records preserve neither a trustworthy mapping from samples to
+writers nor a standardized measure of contributor expertise, so the paper
+makes no professional-calligrapher, different-writer, or writer-disjoint
+claim.
+
+\subsection{Quality control and split protocols}
+\label{sec:data-qc}
+
+Recovery of the acquisition archive yielded 894 sample directories across 43
+character identities. Complete six-channel ground truth is available for 840
+samples from identities 0--39; the 54 samples of identities 40--42 lack the
+character-specific direction mapping and are excluded rather than
+pseudo-labelled. A frozen semantic quality-control pass then identified 12
+source-image/ground-truth mismatches and 59 non-canonical members of exact
+image-and-mask duplicate groups. The two exclusion sets do not overlap,
+leaving 769 unique QC-clean observations of 40 identities
+(Fig.~\ref{fig:data-resources}e,f). All exclusion decisions were fixed before
+the formal model comparison.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.92\textwidth]{figures/redrawn/figure2_dataset_overview.pdf}
+  \caption{Corpus, quality control, and external reference library.
+  (a)--(d)~The acquisition contract (as in Fig.~\ref{fig:channel-definition});
+  (e)~the quality-control audit (bar length proportional to sample count:
+  894 recovered, 840 with complete six-channel ground truth for identities
+  0--39, 769 QC-clean after removing 12 image/GT mismatches and 59
+  non-canonical exact duplicates), with no exact-duplicate group crossing
+  either frozen split; (f)~one deterministic QC-clean observation per
+  identity (IDs 0--39); (g)~all seven natural same-character cross-style pairs in the
+  external library, represented by cached masks from the frozen v1 parser,
+  not by segmentation ground truth. Source images: Calli-Tongji open
+  subset \cite{yunmo_jixin_2025}, CC~BY-NC~4.0.}
+  \label{fig:data-resources}
+\end{figure*}
+
+Two split protocols are used. The \emph{standard} assignment was frozen
+before quality control by per-character sample index, with the same index
+ranges in every identity, and contains 600/120/120 train/validation/test
+samples before quality control and 530/119/120 after it; it measures
+in-corpus generalization to new instances of seen identities. The
+\emph{character-disjoint} assignment was frozen at the identity level before
+any formal evaluation, with 28/6/6 disjoint identities and 588/126/126
+samples before quality control and 539/114/116 after it; it measures
+transfer to identities never seen in training. No exact-duplicate group
+crosses either split.
+
+\subsection{External reference library and derived cohorts}
+\label{sec:data-references}
+
+The reference-conditioned experiments use 200 approved images from the
+publicly downloadable open subset of Calli-Tongji \cite{yunmo_jixin_2025}
+(50 calligrapher--script categories with 100 samples each, released under
+CC~BY-NC~4.0): the 100 images of the Ouyang Xun regular-script category and
+the 100 images of the Wang Xizhi running-script category. Each
+reference is parsed once by a frozen SegFormer-B2 checkpoint (version v1,
+trained with the recipe of Sect.~\ref{sec:setup-parser} on the
+pre-quality-control standard assignment and frozen before the formal
+three-seed comparison), and the resulting six binary masks are cached with their provenance. These cached masks are model-derived reference
+representations; they are never treated as segmentation ground truth and
+never enter parser training.
+
+Two cohorts are derived deterministically from the cached masks. The
+\emph{perturbation cohort} applies the nuisance and structural edits of
+Sect.~\ref{sec:setup-registration} to every reference, so that registration
+and score behaviour can be studied without a second parser inference. The
+\emph{cross-reference cohort} contains all seven natural
+same-character cross-style pairs that the library supports
+(Fig.~\ref{fig:data-resources}g) and 50 different-character negatives selected independently of any model score; the
+library contains no same-style, different-instance reference pair. The perturbation cohort also serves as the diagnostic cohort of
+Sect.~\ref{sec:setup-diagnostic}, where each known intervention is the
+ground truth.
+
+\subsection{Human-rating development cohort}
+\label{sec:data-human}
+
+Before any rating was collected, 150 natural same-character,
+different-instance pairs were selected from the 769 QC-clean project samples,
+three or four per identity, excluding mismatches, exact and suspected near
+duplicates, and repeated instances. Pair roles, asset hashes, blinded
+identifiers, and display order were frozen, and all automated scores and
+source identifiers were hidden from the raters.
+
+Three adult raters independently judged structural similarity on
+a five-point ordinal scale, each rating the 150 canonical pairs plus 15
+interspersed hidden repeats. The panel comprised two author-raters
+with prior calligraphy study, one of whom holds a Level-9 calligraphy
+certificate, and one non-author rater with master's-level training in Fine
+Arts (Calligraphy). The paper describes them as domain-qualified,
+calligraphy-domain raters; the panel is small and partly author-involved, so
+it is not an independent expert cohort. All scores on this cohort are computed from the annotated six-channel masks
+of both instances, with no parser in the loop, so they measure score
+validity without parser error. The ratings are the ASDS development data of
+Sect.~\ref{sec:setup-human}, not an external test set.

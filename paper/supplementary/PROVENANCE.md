@@ -113,3 +113,29 @@ Frozen facts:
   `c92277d9a494e62f9552e2b808c2baf777f7f94131cad100062ff89df63109cc`.
 
 The 200 model-derived reference caches are not segmentation ground truth.
+
+Manuscript layout note (2026-09-02):
+
+- the main text is organized as Introduction, Related Work, Data Resources,
+  Method, Experimental Setup, Results and Discussion by Research Question,
+  General Discussion and Limitations, and Conclusion;
+- Tables S1--S4 and Notes S5--S6 of Online Resource 1 (`ESM_1.tex`) carry
+  the full perturbation statistics, the perturbation-level alignment
+  ablation, the inactive-channel audit, the cross-reference test, the ASDS
+  candidate search, and the integrity hashes listed above;
+- the diagnostic metrics reported in the main text are required Recall@3,
+  exact grid localization, and the exact-localization failure taxonomy; the
+  additional diagnostic metrics recorded in
+  `docs/PROJECT_WORK_SUMMARY_2026-08-13.md` (strict Top-1, overlap
+  localization, specificity, centre-direction wording) are not quoted in the
+  manuscript because their formal artifact directory is not tracked in this
+  repository.
+- of the paper-eligible result sources listed at the top of this file, the
+  directories `artifacts/paper_ijdar/controlled_perturbation/`,
+  `structure_score_audit/`, `cross_reference/`, `alignment_ablation/`,
+  `feedback_diagnostic/`, `journal_statistics/`, and `expert_validation/`
+  are kept outside the public Git history (licence-restricted reference
+  masks and raw rating returns); the values quoted from them in the
+  manuscript are cross-checked against `docs/PROJECT_WORK_SUMMARY_2026-08-13.md`
+  and must be re-verified against the archived run manifests before
+  submission.

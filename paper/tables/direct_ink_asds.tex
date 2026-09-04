@@ -7,14 +7,14 @@ development pairs.}
 \toprule
 ASDS input & Spearman $\rho$ & 95\% CI \\
 \midrule
-Parsed union & 0.556 & [0.454, 0.651] \\
+Annotated-mask union & 0.556 & [0.454, 0.651] \\
 Direct ink & 0.556 & [0.454, 0.649] \\
 \midrule
-$\Delta\rho$ (parsed--direct) & 0.000 & [-0.010, 0.010] \\
+$\Delta\rho$ (annotated--direct) & 0.000 & [-0.010, 0.010] \\
 \bottomrule
 \end{tabular}
 \parbox{0.86\columnwidth}{\footnotesize\raggedright
-Both variants use the same alignment policy, ASDS features, and frozen
-weights. Direct ink uses the frozen dataset-QC rule: grayscale intensity
-$<240$. No threshold or weight was selected against the ratings.}
+Direct ink: grayscale intensity $<240$ (frozen QC threshold,
+Sect.~\ref{sec:setup-human}); same registration, features, and weights for
+both variants.}
 \end{table}

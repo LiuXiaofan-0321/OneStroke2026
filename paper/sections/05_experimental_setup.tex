@@ -1,0 +1,153 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+This section states how each research question is tested; the cohorts
+themselves are defined in Sect.~\ref{sec:data}.
+
+\subsection{Parser training and evaluation (RQ1)}
+\label{sec:setup-parser}
+
+Three architectures are compared: a U-Net with 32 base channels, a ResNet-50
+DeepLabV3+, and SegFormer-B2. U-Net has no external pretraining; all of its parameters are randomly
+initialized. DeepLabV3+ loads the torchvision default ImageNet-1K weights for
+its ResNet-50 encoder, while its atrous spatial pyramid pooling (ASPP)
+module, low-level projection, decoder,
+and six-channel output head are randomly initialized. SegFormer-B2 is
+initialized from \texttt{nvidia/segformer-b2-finetuned-}\allowbreak
+\texttt{ade-512-512}: the compatible Mix Transformer (MiT-B2) encoder and decode-head
+parameters are loaded from the ADE20K-fine-tuned checkpoint, the incompatible
+150-class classifier is replaced by a randomly initialized six-channel
+classifier, and all layers are then fine-tuned. Each architecture is trained
+with seeds 20260811, 314159, and 271828 on both split protocols, giving 18
+formal runs.
+
+Inputs are letterboxed to \(512\times512\) and normalized, and masks are
+resized by nearest-neighbour interpolation. Batch size is 8 for U-Net and 4 for the two
+larger models. Label-safe augmentation comprises translation up to 12
+pixels, isotropic scale 0.9--1.1, brightness 0.85--1.15, contrast 0.9--1.1,
+and Gaussian blur with probability 0.15. All models use AdamW with weight
+decay 0.01, automatic mixed precision, gradient clipping at 1.0, three
+warm-up epochs, cosine decay to \(10^{-6}\), at most 120 epochs, and early
+stopping with patience 15. U-Net uses learning rate \(3\times10^{-4}\);
+DeepLabV3+ uses encoder/decoder rates \(10^{-4}/10^{-3}\); SegFormer-B2 uses
+\(3\times10^{-5}/3\times10^{-4}\). Positive BCE weights are estimated from at
+most 200 training samples and capped at 100. Per-channel thresholds are
+calibrated on the validation split only, and the test split is evaluated
+once per run.
+
+Direction quality is reported as five-direction Macro Dice and Macro IoU
+between thresholded predictions and ground truth, and as Boundary F1, the F1
+between the one-pixel morphological boundaries of prediction and ground
+truth averaged over the five direction channels; endpoint quality is
+reported as strict endpoint F1, the pixel-exact F1 on the endpoint channel,
+unlike the three-pixel-tolerant term inside the production score. Test results are summarized as the mean and sample standard deviation
+over the three seeds. The standard protocol measures in-corpus instance
+generalization; the character-disjoint protocol measures transfer to unseen
+characters.
+
+\subsection{Registration and score-behaviour experiments (RQ2)}
+\label{sec:setup-registration}
+
+Controlled perturbations are applied directly to the 200 cached reference
+masks. The nuisance family, for which a useful registration should show
+little sensitivity, comprises translation, rotation, scale up, scale down,
+and a compound transform. The structural family, for which the score should
+decrease with severity, comprises terminal deletion, added direction
+fragment, local fragment shift, direction dilation, direction erosion, and
+endpoint shift. Each perturbation is applied at four severity levels, except
+rotation and the compound transform, which use three, so a perturbation with
+no invalid case contributes 800 rows from the 200 references. The affected channel and axis are selected by stable hashes, never by model
+error or manual choice. A transformed case that risks canvas clipping is
+marked invalid with a recorded reason and excluded from valid-score
+summaries; its fraction is reported. For every perturbation we report valid
+\(N\), mean drop with a 95\% reference-level bootstrap confidence
+interval (CI), invalid
+fraction, and adjacent-severity monotonicity, the fraction of adjacent
+severity steps at which the score does not increase; median, standard
+deviation,
+percentiles, and severity correlations are given in Online Resource~1,
+Table~S1.
+
+The identical reference/perturbation/severity tuples are then scored under
+three alignment policies: no alignment, the production constrained search of
+Sect.~\ref{sec:alignment-method}, and a wider similarity search over the same grid with
+\(s\in[0.6,1.4]\) and \(\phi\in[-12^\circ,12^\circ]\), fixed in the
+frozen experiment contract before any result was computed.
+Comparisons are paired by reference. Confidence intervals resample
+references; Wilcoxon signed-rank tests \cite{wilcoxon1945} and rank-biserial
+correlation (RBC) effect sizes use per-reference mean paired differences. Family-level
+comparisons are the primary ablation; perturbation-level results are
+descriptive and unadjusted (Online Resource~1, Table~S2).
+
+Two semantic audits accompany the ablation. The inactive-channel audit
+counts references with empty direction channels and recomputes the
+coverage-aware score of Sect.~\ref{sec:scores} on every valid perturbation
+row (Online Resource~1, Table~S3). The cross-reference test scores the seven
+same-character cross-style pairs and the 50 different-character negatives
+with \(S_{\mathrm{prod}}\) and summarizes their separation with Cliff's
+\(\delta\) \cite{cliff1993dominance}; self-pairs are prohibited.
+
+\subsection{Human-association study and ASDS development (RQ3)}
+\label{sec:setup-human}
+
+Each score is compared with the three-rater mean on the 150 canonical pairs
+by Spearman correlation, with 95\% intervals from 10,000 bootstrap resamples
+clustered by target character \cite{efron1993bootstrap}. Two-sided \(p\) values for
+\(\rho=0\) are reported for the two frozen scores. Inter-rater
+reliability uses two-way random-effects, absolute-agreement intraclass
+correlation coefficients ICC(2,1) and ICC(2,\(k\))
+\cite{mcgraw1996icc,koo2016icc}. Hidden repeats are excluded from
+correlation and ICC and are used only for exact agreement, agreement within
+one point, mean absolute difference (MAD), and quadratic weighted kappa
+(QWK).
+
+\medskip
+\noindent\textbf{Post-rating ASDS development.}
+The original ratings are the ASDS development set. Three fixed distribution
+families (polar, grid, projection) are considered, and a coarse non-negative
+simplex search evaluates component weights against the ratings. The
+search-selected polar weight is retained, and the remaining weight is split
+equally between grid and projection to reduce sample-specific tuning; the full candidate search is reported in Online Resource~1, Note~S5. Five-fold
+internal validation groups pairs by character identity and selects the
+weights of each fold on the other characters only, giving a
+character-grouped out-of-fold estimate. Character-cluster bootstrap intervals are reported for the frozen score,
+the out-of-fold predictions, the components, and paired differences from
+the production and coverage-aware scores; these comparisons are exploratory
+and not multiplicity-adjusted.
+
+\medskip
+\noindent\textbf{Paired direct-ink control.}
+To test whether the ASDS scalar itself requires six-channel masks, ASDS is
+recomputed on the same 150 pairs with foreground taken directly from the
+original rasters instead of from the union of the annotated direction
+masks: grayscale pixels with intensity below 240, the threshold
+already frozen for dataset quality control, define ink, with no learned
+preprocessing. Direct-ink masks pass through the same constrained
+registration and frozen formula; nothing is selected against the ratings for
+this comparison. We report the Spearman association of the annotated-mask-union variant
+(the ``parsed union'' of the frozen artifact) and the direct-ink variant with the
+ratings, their
+paired difference, and their mutual rank association, with 10,000 paired
+resamples clustered by character. Because the control reuses the development
+pairs, it measures implementation dependence within the same retrospective
+cohort, not external validity.
+
+\subsection{Diagnostic evaluation (RQ4)}
+\label{sec:setup-diagnostic}
+
+The diagnostic cohort applies every severity level of the 11 perturbations
+to the 200 references; the known perturbation of each case supplies
+deterministic ground truth for the direction channel, the missing/extra
+type, and the affected \(3\times3\) cells. The required finding is the centre-offset
+finding for translation, the ink-scale finding for scale changes, a local
+direction finding for the five direction edits, and the endpoint-relation
+finding for endpoint shifts; rotation and compound cases have no required
+finding. We report required Recall@3, the fraction of cases whose required
+finding appears among the top three returned findings, and exact grid
+localization, which counts a case as
+correct only when the returned cell equals the truth cell set and is scored
+on the cases whose perturbation edits a direction channel. Each exact-localization failure is assigned one primary cause in the fixed
+order local finding absent from the top three, wrong direction channel,
+wrong missing/extra type, multi-cell or grid-boundary truth, and alignment
+residual shift; direction and type errors are characterized only through
+this classification, and language-model realization is disabled.

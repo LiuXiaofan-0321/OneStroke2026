@@ -32,7 +32,7 @@ supplementary material after every paper-related push or pull request. Its
 artifact contains:
 
 - `manuscript.pdf`;
-- `supplementary.pdf`;
+- `ESM_1.pdf` (Online Resource 1, the electronic supplementary material);
 - `OneStroke2026_online_latex.zip`, a self-contained source package that can
   be imported manually into Overleaf or another online LaTeX editor.
 
@@ -64,9 +64,11 @@ Completed:
 
 Not yet submission-complete:
 
-- funding, ethics/exemption wording,
-  CRediT contributions, acknowledgements, and the permanent identifier for
-  the separate data archive must be confirmed by the team.
+- the "Not applicable" ethics-approval and informed-consent statements,
+  the data-availability statement, and the Calli-Tongji attribution were
+  written from the project records on 2026-09-03 and must be confirmed by
+  every author before submission; author biographies and photographs are
+  collected by the submission system separately.
 
 The full-sample result `rho=0.556` must be described as retrospective
 development evidence, while the character-grouped out-of-fold
@@ -142,6 +144,38 @@ This command writes vector PDF, high-resolution PNG, and
 its builder requires all six formal checkpoints and validates every recorded
 SHA-256 before using either inference or a prediction cache.
 
+The manuscript includes the redrawn vector versions in `figures/redrawn/`
+(same file stems). Each `figures/redraw/redraw_<stem>.py` script recovers the
+glyph and mask panels pixel-exactly from the frozen high-resolution PNG in
+`figures/`, recomposes them with native vector typography at the two-column
+text width (6.3 in), and prints only numbers taken from
+`figure_provenance_manifest.json` and the frozen result files; the scatter
+panels of Fig. 6 are plotted from `artifacts/paper_ijdar/direct_ink_asds/`.
+Rebuild them with (requires matplotlib, numpy, Pillow, and fontTools; the
+Latin Modern Sans OpenType fonts shipped with TeX Live and the WenQuanYi Zen Hei
+font must be installed; the two Latin Modern faces are converted once to
+TrueType outlines in `figures/redraw/fonts/`, ignored by Git, so that the PDFs
+embed conformant CID TrueType fonts):
+
+```powershell
+cd paper/figures/redraw
+python redraw_figure1_pipeline.py   # likewise for the other six stems
+```
+
+The 2026-09-03 redesign applies one design system to all seven figures
+(`figures/redraw/toolkit.py`): Latin Modern Sans, bold lowercase panel
+letters, 0.5 pt rules, one unframed chip legend per figure, and semantic
+colours only (vec1--vec5 unchanged; simultaneous labels black; overlap dark
+neutral; missing reference ink blue with a dashed outline or hatch; extra
+candidate ink red with a solid outline or counter-hatch; endpoints cyan).
+Every colour is paired with a non-colour cue so grayscale prints survive.
+`figures/redrawn/qa/` holds the QA deliverables: `FIGURE_QA_REPORT.md`/`.pdf`,
+the before/after contact sheet, grayscale versions, printed-size previews, and
+`qa_metrics.json`; regenerate them with `python figures/redraw/qa_report.py`
+after compiling the manuscript.
+
+The frozen renders in `figures/` are kept unchanged as the provenance source.
+
 Build the frozen segmentation qualitative figure with:
 
 ```powershell
@@ -165,11 +199,13 @@ Build the separate supplementary statistical tables with:
 
 ```powershell
 cd paper
-pdflatex supplementary.tex
-pdflatex supplementary.tex
+pdflatex ESM_1.tex
+pdflatex ESM_1.tex
 ```
 
-The main manuscript refers to these as Supplementary Tables S1 and S2.
+Following the Springer ESM convention, the main manuscript refers to the
+supplement as "Online Resource 1" (Tables S1--S4, Notes S5--S6), and the
+file is named `ESM_1.tex`/`ESM_1.pdf`.
 
 Create a clean source archive for an online LaTeX editor with:
 
@@ -181,18 +217,45 @@ python paper/tools/build_online_package.py `
 Draft 50--100-word biographies are in `AUTHOR_BIOGRAPHIES.md`; each author
 must approve the text and supply a separate portrait photograph.
 
-The 2026-08-30 submission draft uses seven formal figures. The six-channel
-annotation contract is Figure 1 immediately after the abstract, followed by
-the end-to-end pipeline and data/QC overview. The human-association plot is
-retained as a reproducibility artifact but omitted from the main text to
-avoid duplicating the numerical tables. The two full statistical tables are
-supplied in a separate supplementary PDF. The abstract is a single integrated
-paragraph of 241 words with six keywords, and the main manuscript compiles to
-19 pages. The build is checked for fatal errors, undefined citations,
-undefined references, overfull boxes, and figure clipping. The PDF remains a
-review draft until institutional ethics/exemption wording, the permanent data
-archive identifier, and publication permission for third-party image examples
-are confirmed.
+The manuscript is organized around one narrative: concrete phenomenon
+(same character, different local structure) -> four computer-vision
+challenges C1--C4 -> research questions RQ1--RQ4 -> method and experiments
+-> results answered per RQ -> bounded contributions. The section files are:
+
+```text
+sections/01_introduction.tex        phenomenon, C1--C4, RQ1--RQ4, contributions, scope
+sections/02_related_work.tex        prior work only (no self-description)
+sections/03_data_resources.tex      corpus, annotation contract, QC, splits, reference library, cohorts
+sections/04_method.tex              parser, registration, scores, evidence contract
+sections/05_experimental_setup.tex  training/evaluation parameters and statistics per RQ
+sections/06_results_discussion.tex  results and interpretation per RQ, with explicit answers
+sections/07_discussion.tex          cross-RQ discussion and limitations
+sections/08_conclusion.tex          conclusion by RQ
+```
+
+Seven formal figures are used, numbered by first reference: the pipeline and
+motivating pair (Fig. 1, Introduction), the six-channel annotation contract
+(Fig. 2, Data Resources), the corpus/QC/library overview (Fig. 3, Data
+Resources), and one figure per research question (Figs. 4--7). Table 1
+summarizes the data cohorts and their label status. Figure file names keep
+their pre-2026-09-02 numbering: `figures/figure3_channel_definition.*` is
+manuscript Fig. 2 and `figures/figure2_dataset_overview.*` is manuscript
+Fig. 3; `figure_provenance_manifest.json` uses the file names. Supplementary
+tables live only in `tables/supplementary_*.tex`. The supplementary PDF
+contains the full perturbation statistics (S1), the perturbation-level
+alignment ablation (S2), the inactive-channel audit (S3), the cross-reference test (S4), the ASDS
+candidate search (Note S5), and the integrity hashes of the frozen artifacts
+(Note S6). The abstract is structured (Purpose / Methods / Results / Conclusion) and
+stays within the 250-word limit, with six keywords. The
+build is checked for fatal errors, undefined citations, undefined references,
+overfull boxes, figure clipping, figure/table first-reference order, and the
+20-page limit (see the page count recorded in `SUBMISSION_CHECKLIST.md`).
+Third-party reference images come from the Calli-Tongji open subset
+(ModelScope, CC BY-NC 4.0) and are attributed with the dataset citation in
+every caption that shows them; the declarations use the Springer headings
+(Statements and Declarations: Funding, Competing Interests, Ethics Approval,
+Informed Consent, Data Availability, Code Availability, Author
+Contributions).
 
 ## Provenance
 

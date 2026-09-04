@@ -1,0 +1,52 @@
+\section{General Discussion and Limitations}
+\label{sec:discussion}
+
+\subsection{What the four answers imply together}
+
+Read together, the answers describe a measurement design rather than a
+single model. First, low-resource dense parsing must be evaluated on the
+generalization axis the application needs, since in-corpus fit did not
+predict transfer to unseen characters, and only overlapping labels can
+express the crossing evidence of Fig.~\ref{fig:segmentation-qualitative}.
+Second, registration is part of the measurement, not neutral preprocessing:
+the transform family decides which differences remain visible, and the
+bounded search was chosen so that global placement, size, and tilt are
+compensated while local structural loss stays in view.
+
+Third, the scalar and the diagnostics have different justifications. A direction-label swap that preserves the silhouette would leave ASDS
+unchanged while altering every direction-level, endpoint, and localized
+output; a system that needs only a scalar silhouette comparison may use
+thresholded ink, whereas a diagnostic system requires the parser.
+
+The next steps follow: the frozen ASDS specification should be tested
+without modification on new writers, characters, and raters; and diagnostic localization should be reported with a region-overlap or
+pixel-overlap metric that credits multi-cell truth.
+
+\subsection{Limitations}
+
+The segmentation corpus contains 40 labelled character identities from one
+recovered acquisition source; character-disjoint evaluation is not
+writer-disjoint evaluation (Sect.~\ref{sec:data-corpus}), and
+collection-specific regularities may survive the semantic quality control.
+
+Controlled perturbations operate on cached reference masks predicted by
+the v1 checkpoint, which predates the semantic quality control and the
+formal comparison; any systematic parsing error in those masks propagates
+into every RQ2 and RQ4 statistic, and an end-to-end failure may combine
+parsing, registration, and comparison errors. Scale-up and compound summaries are
+conditional on clipping-safe references because of their high invalid
+fractions, and the external library supports only seven same-character
+cross-style pairs.
+
+The human cohort contains 150 pairs rated by three domain-qualified raters,
+two of whom are authors; single-rater reliability is poor and the
+three-rater mean moderate; all scores on the cohort are computed from
+annotated masks, so parser error in deployment is not included; ASDS was
+developed after the ratings were available, so its association is
+retrospective and its validation character-grouped rather than external;
+the contribution of registration to ASDS was not isolated (the polar term
+is centroid- and scale-normalized, so much of its association may survive
+without alignment); and the direct-ink control reuses the same cohort.
+Agreement at multi-label crossing pixels is not measured separately. The diagnostic benchmark uses engineered interventions rather than teacher
+judgments. Finally, the target modality is clean direct digital writing; camera
+capture lies outside the claims (Sect.~\ref{sec:introduction}).

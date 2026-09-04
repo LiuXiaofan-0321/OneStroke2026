@@ -5,7 +5,7 @@
 \usepackage{multirow}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{url}
+\usepackage{xurl}
 
 \newcommand{\asds}{\mathrm{ASDS}}
 
@@ -28,116 +28,121 @@ Scoring}
   \orgaddress{\city{Shanghai}, \country{China}}}
 
 \abstract{%
-Computer-vision systems for handwriting commonly assume mutually exclusive
-semantic regions, optimize recognition or style classification, or compare
-images without separating global placement from local structural error.
-These assumptions are unsuitable for Chinese calligraphy, where adhered and
-crossing strokes may share pixels and where flexible registration can erase
-the discrepancy that an assessment system should preserve. We formulate
-low-resource reference-conditioned structural assessment as an auditable
-document-analysis problem. A six-channel parser predicts five independently
-activated direction masks and an endpoint mask; U-Net, DeepLabV3+, and
-SegFormer-B2 are compared with three seeds on quality-controlled standard and
-character-disjoint splits. A constrained global registration is evaluated on
-200 real references using controlled nuisance and structural perturbations.
-Human association is studied on 150 natural same-character pairs rated
-blindly by three calligraphy-domain raters, and aligned spatial-distribution
-similarity (ASDS) is reported as a retrospective, character-grouped
-internal-validation analysis. DeepLabV3+ reaches
-\(0.9630\pm0.0006\) standard-split Macro Dice,
-whereas SegFormer-B2 leads character-disjoint evaluation at
-\(0.8866\pm0.0008\). Relative to no alignment, constrained registration
-reduces nuisance penalties by 30.118 points while preserving 11.189
-additional points of structural penalty. The frozen production score,
-coverage-aware audit, and ASDS obtain Spearman correlations of 0.297, 0.429,
-and 0.556 with mean ratings; grouped out-of-fold ASDS retains 0.540.
-Parsed-union and direct-ink ASDS are nearly equivalent
-(\(\Delta\rho=0.0004\), 95\% CI \(-0.0101\)--\(0.0103\)). The computer-vision
-contribution is a reproducible framework for overlapping dense parsing,
-unseen-class evaluation, discrepancy-preserving registration, and
-human-audited comparison under limited labelled data, rather than a claim of
-universal calligraphic beauty.}
+\textbf{Purpose:} Computer-vision systems for handwriting commonly assume
+mutually exclusive semantic regions, optimize recognition or style
+classification, or compare images without separating global placement from
+local structural error. None returns what assessing a handwritten Chinese
+character against a same-character reference requires: two instances can be
+equally recognizable yet differ in the local stroke structure a learner
+should revise. We formulate reference-conditioned structural assessment as
+an auditable document-analysis problem under limited labelled data.
+\par
+\textbf{Methods:} An overlapping six-channel parser predicts five
+independently activated direction masks and an endpoint mask; U-Net,
+DeepLabV3+, and SegFormer-B2 are compared with three seeds on standard and
+character-disjoint splits of 769 quality-controlled samples. Constrained
+similarity registration, three structural scores, and localized diagnostic
+evidence are evaluated on 200 references under controlled perturbations and
+on 150 natural pairs rated blindly by three calligraphy-domain raters, two of
+them authors.
+\par
+\textbf{Results:} DeepLabV3+ reaches \(0.9630\pm0.0006\) standard-split
+Macro Dice, SegFormer-B2 leads character-disjoint direction parsing at
+\(0.8866\pm0.0008\), and U-Net leads strict endpoint F1. Registration
+reduces nuisance penalties by 30.118 points relative to no alignment on
+clipping-safe cases while preserving 11.189 additional points of structural
+penalty. The frozen production score, a coverage-aware score, and a
+retrospectively developed aligned spatial-distribution similarity (ASDS)
+reach Spearman correlations of 0.297, 0.429, and 0.556;
+character-grouped out-of-fold ASDS retains 0.540, and direct-ink ASDS is
+nearly equivalent (\(\Delta\rho=0.0004\)), so direction-level evidence, not
+the scalar, justifies the parser. Localized evidence reaches Recall@3 of
+0.701 but exact-cell localization of 0.109.
+\par
+\textbf{Conclusion:} We deliver a reproducible framework for overlapping
+parsing, discrepancy-preserving registration, and human-audited localized
+feedback.}
 
 \keywords{Chinese calligraphy, document analysis, multi-label segmentation,
 reference-based assessment, human validation, explainable feedback}
 
 \maketitle
 
-\begin{figure*}[!t]
-  \centering
-  \includegraphics[width=0.94\textwidth]{figures/figure3_channel_definition.pdf}
-  \caption{Six-channel overlapping annotation contract. The five independent
-  direction families are vertical (\(\mathrm{vec1}\)), rising diagonal
-  (\(\mathrm{vec2}\)), horizontal (\(\mathrm{vec3}\)), falling diagonal
-  (\(\mathrm{vec4}\)), and compound/curved/other (\(\mathrm{vec5}\)).
-  Isolated stroke sources are composed into overlapping masks; black pixels
-  carry simultaneous direction labels. The sixth channel is the union of
-  manually marked stroke endpoints and does not encode junctions, turning
-  points, or stroke order. Cyan outlines and endpoint dilation are used only
-  for visualization.}
-  \label{fig:channel-definition}
-\end{figure*}
-
 \input{sections/01_introduction}
 \input{sections/02_related_work}
-\input{sections/03_method}
-\input{sections/04_experimental_protocol}
-\input{sections/05_results}
-\input{sections/06_discussion}
-\input{sections/07_conclusion}
+\input{sections/03_data_resources}
+\input{sections/04_method}
+\input{sections/05_experimental_setup}
+\input{sections/06_results_discussion}
+\input{sections/07_discussion}
+\input{sections/08_conclusion}
 
 \backmatter
 
 \section*{Acknowledgements}
 The authors thank Chengcheng Wan for project supervision.
 
-\section*{Declarations}
+\section*{Statements and Declarations}
 
-\subsection*{Funding}
+\bmhead{Funding}
 This work was conducted within the East China Normal University Undergraduate
 Innovation Training Incubation Project (Entrepreneurship Training category),
 ``OneStroke: A Vision-Model-Based Intelligent Feedback System for Chinese
-Calligraphy''. The project application records no external funding channel;
-no grant number was available at the time of writing.
+Calligraphy''. No external funding channel is recorded, and no grant number
+was available at the time of writing.
 
-\subsection*{Conflict of interest}
+\bmhead{Competing Interests}
 The authors declare no competing interests.
 
-\subsection*{Ethics approval and consent to participate}
-The structural-similarity study involved three adult raters---two authors and
-one non-author calligraphy-domain rater---stored ratings under evaluator
-codes, and did not collect sensitive personal information.
-Before submission, the authors will insert the institution-specific ethics
-approval, exemption, or review statement and the applicable consent wording.
-No approval or exemption is claimed in this draft.
+\bmhead{Ethics Approval}
+Not applicable. The study analysed images of handwritten characters and
+perceptual similarity ratings; it involved no clinical, medical, or
+behavioural intervention on human subjects. The handwriting corpus was
+commissioned by the project without recording writer identities, and the
+structural-similarity ratings were provided by two of the authors and one
+collaborating calligraphy specialist as part of the study design, stored under
+evaluator codes, with no sensitive personal information collected.
 
-\subsection*{Consent for publication}
-Not applicable, subject to confirmation by the authors before submission.
+\bmhead{Informed Consent}
+Not applicable. No identifiable personal data of writers or raters are
+reported; the three raters took part in the rating study voluntarily as
+contributors to the project and were informed that the task assessed
+character structure similarity, not their own ability.
 
-\subsection*{Data availability}
-Code and data are maintained as separate releases. A versioned data archive
-is being prepared for the project-owned QC-clean manifests and split
-contracts, the blinded 150-pair rating table, perturbation specifications,
-derived statistics, and integrity hashes. Its permanent repository identifier
-will be inserted before submission. The archive will not redistribute
-Calli-Tongji source images, which remain subject to the original
-CC-BY-NC-4.0 licence. Third-party examples will remain in the submitted
-figures only after publication permission and attribution requirements are
-confirmed. Project-collected RGB/stroke-mask assets will be
-released only to the extent permitted by participant consent and institutional
-data-governance review. Where an image cannot be redistributed, the archive
-will provide stable identifiers, hashes, provenance, and regeneration or
-access instructions.
+\bmhead{Data Availability}
+The frozen data contracts and result tables that support the reported values
+are in the code repository named under Code Availability: the quality-control
+audit and exclusion contract and both split assignments
+(\path{artifacts/data_qc}, \path{artifacts/data_audit},
+\path{artifacts/paper_ijdar/character_disjoint}); the per-seed
+segmentation results and checkpoint manifest
+(\path{artifacts/paper_ijdar/task1}); the ASDS development features,
+character-grouped folds, frozen specification, and report
+(\path{artifacts/paper_ijdar/spatial_score_development}); the 150-pair
+direct-ink ASDS table (\path{artifacts/paper_ijdar/direct_ink_asds});
+the reference-library manifest with per-image source paths and SHA-256
+digests (\path{references/calli_tongji_beta_manifest.csv}); and the
+figure provenance manifest. Online Resource~1, Note~S6, lists the digests of
+every frozen artifact. The external reference images are the Ouyang Xun
+regular-script and Wang Xizhi running-script categories (100 images each) of
+the Calli-Tongji open subset \cite{yunmo_jixin_2025}, publicly downloadable
+from ModelScope under CC~BY-NC~4.0 at
+\url{https://www.modelscope.cn/datasets/CalliTongji/Calli-Tongji_A_Dataset_of_Historical_Calligraphy_Styles};
+they are reproduced in Figs.~\ref{fig:pipeline}, \ref{fig:data-resources},
+and~\ref{fig:alignment-ablation} with attribution and are not redistributed.
+The project-collected handwriting images and six-channel masks, the
+controlled-perturbation, alignment-ablation, inactive-channel, and
+cross-reference result files, and the blinded 150-pair rating files
+(evaluator codes only) are available from the corresponding author on
+reasonable request for non-commercial research use.
 
-\subsection*{Code availability}
+\bmhead{Code Availability}
 Source code, frozen experiment contracts, analysis scripts, and
-non-restricted reproducibility artifacts are maintained independently from
-the data archive at
-\url{https://github.com/LiuXiaofan-0321/OneStroke2026}. If anonymous review is
-required, an identity-free archival copy will be supplied through the
-submission system.
+non-restricted reproducibility artifacts are maintained at
+\url{https://github.com/LiuXiaofan-0321/OneStroke2026}; an identity-free
+archival copy will be supplied if anonymous review is required.
 
-\subsection*{Author contributions}
+\bmhead{Author Contributions}
 X.L.: Conceptualization, methodology, software, formal analysis,
 visualization, writing---original draft, project administration. R.Z.: Data
 curation, methodology, software, validation, writing---review and editing.

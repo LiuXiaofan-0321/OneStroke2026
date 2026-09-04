@@ -1,0 +1,174 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{Overview and relation to prior formulations}
+
+Let \(I_u\) be a learner image and \(I_r\) an approved reference image of
+the same target character, one that passed the licence and quality review
+of the reference library (Sect.~\ref{sec:data-references}); in deployment the system never scores images of different characters. The system parses both images into overlapping
+structural masks, registers the reference to the learner with a restricted
+global transform, and returns (i)~six masks per image, (ii)~a scalar
+structural-agreement score, and (iii)~localized evidence
+(Fig.~\ref{fig:pipeline}). The learner image is called the candidate in the
+figures and \texttt{user} in the software contract; the terms denote the
+same image. Three decisions distinguish this
+formulation from the work of Sect.~\ref{sec:related}. Unlike Stroke-Seg
+\cite{gong2024strokeseg}, which recovers individual strokes with a
+character-specific composition prior supplied as input, the parser predicts
+five direction families that may overlap plus a separate endpoint channel,
+uses no per-character prior at inference, and feeds a reference-conditioned
+comparison rather than a stroke inventory. The comparison is not a learned
+pairwise similarity network \cite{chen2025siamhcc}; every score is a fixed,
+decomposable function of aligned masks whose semantics can be audited.
+Registration is a bounded similarity transform rather than a learned or
+deformable warp \cite{jaderberg2015stn,zitova2003registration}
+(Sect.~\ref{sec:alignment-method}).
+
+\subsection{Overlapping six-channel parser}
+\label{sec:parser}
+
+For an RGB character image \(I\), a parser \(f_\theta\) predicts
+\[
+P=f_\theta(I)\in[0,1]^{H\times W\times 6},
+\]
+whose channels follow the annotation contract of
+Sect.~\ref{sec:data-corpus}: five direction families and the endpoint
+channel. Because a crossing pixel may carry several direction labels, each
+channel is activated by an independent sigmoid rather than by a mutually
+exclusive softmax; the five direction outputs may therefore overlap, exactly
+as the composed ground truth does. For direction channel \(c\), the loss combines class-weighted
+binary cross entropy (BCE) and soft Dice, averaged over the five channels,
+\[
+\mathcal{L}_{\mathrm{dir}}
+=\frac{1}{5}\sum_{c=1}^{5}
+\left(
+\mathcal{L}_{\mathrm{BCE}}^{(c)}
++\mathcal{L}_{\mathrm{Dice}}^{(c)}
+\right).
+\]
+The sparse endpoint target uses focal loss with \(\gamma=2\) and
+\(\alpha=0.75\) plus Dice loss, and a boundary term derived from the masks is
+weighted by \(0.2\):
+\[
+\mathcal{L}
+=\mathcal{L}_{\mathrm{dir}}
++\mathcal{L}_{\mathrm{focal,end}}
++\mathcal{L}_{\mathrm{Dice,end}}
++0.2\,\mathcal{L}_{\mathrm{boundary}}.
+\]
+Binary masks are obtained from \(P\) with per-channel thresholds calibrated
+on validation data only (Sect.~\ref{sec:setup-parser}).
+
+\subsection{Reference cache and constrained registration}
+\label{sec:alignment-method}
+
+Let \(U\) and \(R\) denote the learner and cached reference binary stacks
+(Sect.~\ref{sec:data-references}) and let
+\[
+M(X)=\bigvee_{c=1}^{5}X_c
+\]
+be the union of direction ink. For each candidate isotropic scale \(s\) and
+rotation \(\phi\), the transformed reference is translated so that its
+foreground centroid approaches the learner centroid. The production search
+evaluates nine evenly spaced scales and seven evenly spaced rotations in
+\[
+s\in[0.8,1.2],\qquad \phi\in[-3^\circ,3^\circ],
+\]
+and selects the candidate maximizing the foreground intersection over union
+(IoU) \(J\bigl(M(U),M(T_{s,\phi,t}(R))\bigr)\). Non-uniform scale, shear,
+thin-plate splines, and deformable warping are disallowed. This bounded
+search is a conservative compensation policy: it can absorb page placement
+and modest global size or rotation differences while leaving local
+proportion and stroke-region errors available for diagnosis; it implies no
+invariance within the nominal range, and residual sensitivity is measured in
+Sect.~\ref{sec:rq2}.
+
+\subsection{Structural agreement scores}
+\label{sec:scores}
+
+Three scores are studied. Each is a fixed function of the aligned masks and
+uses no character identity, writer identity, style identity, or human rating
+at inference.
+
+\medskip
+\noindent\textbf{Frozen production score.}
+After alignment, let \(D_c\) be Dice agreement in direction channel \(c\),
+\(\overline{D}=\tfrac{1}{5}\sum_{c=1}^{5}D_c\), let \(J_{\mathrm{ink}}\) be
+union-ink IoU, and let \(F_{\mathrm{end}}^{(3)}\) be endpoint-mask F1 with a
+three-pixel tolerance. The deployed score is
+\[
+S_{\mathrm{prod}}
+=100\left(
+0.55\,\overline{D}
++0.25\,J_{\mathrm{ink}}
++0.20\,F_{\mathrm{end}}^{(3)}
+\right).
+\]
+It was frozen before the controlled experiments and is never retuned in
+this paper.
+
+\medskip
+\noindent\textbf{Coverage-aware score.}
+The production Dice convention returns 1 for a channel that is empty in both
+images, so a character that uses fewer direction families can receive credit
+for structure that is absent. The coverage-aware score keeps the same
+evidence families and weights but averages Dice only over direction channels
+active in at least one image, and treats both-empty endpoint masks as
+unavailable evidence with the remaining weights renormalized. It is reported alongside \(S_{\mathrm{prod}}\) as an audit variant and does
+not replace it.
+
+\medskip
+\noindent\textbf{Aligned spatial-distribution similarity (ASDS).}
+Pixel- and channel-overlap terms say little about how ink mass is organized
+across the canvas. ASDS therefore compares three spatial distributions of
+the union silhouette \(M(\cdot)\) after the same frozen registration. \emph{Polar occupancy} centres the foreground at
+its ink centroid, divides radius by the 95th percentile of foreground radius
+(clipped to \([0,1)\)), and assigns pixels to four radial and eight angular
+bins, giving a normalized 32-bin histogram \(h_p\); by construction,
+centroid and radius normalization make it insensitive to residual
+translation and isotropic rescaling of the aligned silhouette, a property
+not separately measured here. \emph{Grid occupancy} \(h_g\) counts normalized foreground over a
+\(3\times3\) partition of the canvas and retains coarse location and
+balance. \emph{Projection profiles} \(h_x\) and \(h_y\) are the normalized
+column and row sums. For distributions \(p\) and \(q\) with \(m=(p+q)/2\), the
+Jensen--Shannon divergence and the Jensen--Shannon similarity (JSS) are
+\[
+D_{\mathrm{JS}}(p,q)
+=\tfrac{1}{2}D_{\mathrm{KL}}(p\Vert m)
++\tfrac{1}{2}D_{\mathrm{KL}}(q\Vert m),
+\]
+\[
+\operatorname{JSS}(p,q)=1-\sqrt{D_{\mathrm{JS}}(p,q)},
+\]
+with base-2 logarithms, so that \(\operatorname{JSS}\in[0,1]\)
+\cite{lin1991jensen}. With
+\(s_p=\operatorname{JSS}(h_p(U),h_p(R))\),
+\(s_g=\operatorname{JSS}(h_g(U),h_g(R))\), and
+\(s_{\mathrm{proj}}\) the mean of the column and row similarities, the
+frozen specification is
+\[
+S_{\asds}=100\bigl(
+0.70\,s_p+0.15\,s_g+0.15\,s_{\mathrm{proj}}
+\bigr).
+\]
+ASDS was developed after the ratings of Sect.~\ref{sec:data-human} were
+available and its weights were selected on them
+(Sect.~\ref{sec:setup-human}). Because it consumes only the union silhouette, it does not use the direction
+semantics of the six-channel masks; whether those masks contribute anything
+to this scalar beyond their silhouette is tested by the direct-ink control
+(Sect.~\ref{sec:rq3}).
+
+\subsection{Localized evidence and feedback}
+\label{sec:evidence}
+
+Alongside the scores, the system preserves the selected transform, the
+pre-alignment centre distance and ink-area ratio, per-direction Dice, and
+endpoint agreement. Difference masks between the aligned stacks are
+summarized by direction channel, by type (reference ink missing from the
+learner versus extra learner ink), and by a \(3\times3\) region set;
+connected components are exposed as direction-classified regions, not as
+recovered strokes or stroke order.
+Deterministic rules rank centre, scale, endpoint, and local-direction
+findings. An optional text model receives only this structured contract; it may
+improve fluency but cannot change the score or add brushwork or stroke-order
+claims the evidence does not contain.

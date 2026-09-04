@@ -1,0 +1,106 @@
+\documentclass[pdflatex,sn-basic,Numbered]{sn-jnl}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Online Resource 1\par}
+\vspace{0.3em}
+{\normalsize Electronic Supplementary Material for\par}
+\vspace{0.5em}
+{\large Reference-Conditioned Structural Assessment of Low-Resource Chinese
+Calligraphy with Overlapping Stroke Parsing and Human-Audited Spatial
+Scoring\par}
+\vspace{0.5em}
+Xiaofan Liu, Ronghao Zhang, and Yuan Feng\par
+School of Software Engineering, East China Normal University, Shanghai,
+China\par
+Corresponding author: Xiaofan Liu
+(\texttt{10244602411@stu.ecnu.edu.cn})\par
+Journal: \textit{International Journal on Document Analysis and Recognition
+(IJDAR)}
+\end{center}
+
+\setcounter{table}{0}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\noindent This Online Resource contains the full controlled-perturbation statistics
+(Table~S1), the perturbation-level alignment ablation (Table~S2), the
+inactive-channel audit (Table~S3), the cross-reference test (Table~S4), the
+ASDS candidate search (Note~S5), and the integrity hashes of the frozen
+artifacts (Note~S6). All
+values are computed from the same frozen artifacts as the main text.
+
+\input{tables/supplementary_controlled_perturbation_full}
+\input{tables/supplementary_alignment_ablation_breakdown}
+\input{tables/supplementary_inactive_channels}
+\input{tables/supplementary_cross_reference}
+
+\section*{Note S5: ASDS candidate search}
+
+The aligned spatial-distribution similarity (ASDS) was developed after the
+original 150-pair ratings were available, and those ratings served as its
+development set. Three fixed distribution families were considered: polar
+occupancy, \(3\times3\) grid occupancy, and projection profiles. Component
+weights were evaluated on a coarse non-negative simplex with step 0.025
+against the three-rater mean. The full-grid apparent optimum is
+\((w_g,w_p,w_{\mathrm{proj}})=(0.225,0.700,0.075)\) with Spearman
+\(\rho=0.557\). Rather than retain the sample-specific secondary weights, the
+search-selected polar weight was kept and the remaining 0.30 was split
+equally, giving the frozen specification \((0.15,0.70,0.15)\) with
+\(\rho=0.556\). Five-fold internal validation groups pairs by character
+identity, selects the weights of each fold on the other characters only, and
+yields the character-grouped out-of-fold estimate \(\rho=0.540\) reported in
+the main text. The individual components reach \(\rho=0.547\) (polar),
+\(0.447\) (grid), and \(0.445\) (projection). All of these are development or
+internal-validation results on one retrospective cohort; none is an external
+or prospective confirmation. The search grid and its selected optimum are recorded in the frozen
+development report so that post-rating researcher degrees of freedom remain
+visible.
+
+\clearpage
+\section*{Note S6: integrity hashes of frozen artifacts}
+
+The following SHA-256 values identify the frozen contracts and result files
+from which the manuscript values are computed. The digests were computed on
+the original files with CRLF line endings; a text file checked out with LF
+line endings must be re-encoded to CRLF before its digest is compared.
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Artifact & SHA-256 (printed as two 32-character halves) \\
+\midrule
+Recovered legacy acquisition archive & \texttt{b9924007099033cc8b62128dc2139ea9} \\
+ & \texttt{cb04a66a48e56c46518407677254450d} \\[2pt]
+Dataset QC exclusion contract & \texttt{bd2b0641d0e6f53f6f18f6604232c02f} \\
+ & \texttt{f99e9d989eb39125f6a9af41e8573a1a} \\[2pt]
+Character-disjoint split (before QC) & \texttt{eec9bf5c0910a2e9f6046991f1458519} \\
+ & \texttt{cd903d31deea3e0a4d33c555ff53a09e} \\[2pt]
+QC-clean character-disjoint split & \texttt{e9303314d1b70d3f92efcdc5c0807f83} \\
+ & \texttt{3148cbe64c2702379f0ac951ed2a1e2b} \\[2pt]
+Task 1 per-seed result table & \texttt{c6d27f365fab15b71914c6ae1ccaf723} \\
+ & \texttt{b02e236c28dc2b4a656ad7c50ea7934e} \\[2pt]
+Task 1 checkpoint manifest & \texttt{f49c4fc8b364abe62eade730dc6f9b14} \\
+ & \texttt{e35d6baf809d5d7e5e6fb3d7462b391e} \\[2pt]
+Reference cache index & \texttt{6d14374fda04de3957b29a874d16cbf9} \\
+ & \texttt{86ccbc1f1d8be1bcfab8285f0fd9f00d} \\[2pt]
+SegFormer-B2 v1 checkpoint & \texttt{64df27aafc0eeecc07c0ac52c6ff00ee} \\
+ & \texttt{f6b290ae7baf964cd5cf786262f395ce} \\[2pt]
+Frozen human-validation pair file & \texttt{810d35e4e4bd0208de9608054daabaec} \\
+ & \texttt{c3613859f3a34c5a16e5141e266d8e66} \\[2pt]
+Frozen ASDS development specification & \texttt{da79ace3dca2793f586ef721689cbb96} \\
+ & \texttt{e1a0e614155a8c94ff48f6cb7872fa4e} \\[2pt]
+ASDS development report & \texttt{01fe8d62f368fbc45d5a4451a3d833ed} \\
+ & \texttt{1d75c7a4896c943e8c8590e790ec3083} \\[2pt]
+Direct-ink ASDS report & \texttt{44403497fd4980c834946b761b8352a1} \\
+ & \texttt{b05f49249f14c4a8f668affac36ac895} \\[2pt]
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

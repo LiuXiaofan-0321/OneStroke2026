@@ -1,0 +1,31 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We formulated the assessment of a handwritten Chinese character against a
+same-character reference as overlapping document parsing,
+discrepancy-preserving registration, and human-audited comparison, and
+answered four research questions under limited labelled data. For RQ1 (representation and generalization), six independently activated
+channels let U-Net, DeepLabV3+, and SegFormer-B2 recover overlapping
+direction and endpoint masks from a 769-sample quality-controlled corpus; DeepLabV3+ leads standard-split
+direction parsing, SegFormer-B2 leads character-disjoint direction parsing, and U-Net leads strict endpoint localization. For RQ2 (registration and score behaviour), constrained similarity
+registration reduces
+nuisance sensitivity by 30.118 points relative to no alignment while
+preserving 11.189 additional points of structural penalty, and a wider search
+does not improve the trade-off; the claim is relative and conditional on
+clipping-safe references. For RQ3 (human validity), blinded structural ratings by three
+domain-qualified raters, two of them authors, associate modestly with the frozen production score, more strongly with the
+coverage-aware score, and most strongly with ASDS, whose \(\rho=0.556\) is a
+retrospective development result and whose \(\rho=0.540\) is a
+character-grouped internal-validation estimate with an unresolved advantage
+over the coverage-aware score; direct-ink and annotated-mask-union ASDS are equivalent, so the parser's
+justification is directional, overlap, endpoint, and localized evidence
+rather than the scalar. For RQ4 (localized diagnosis), the evidence layer usually surfaces the
+required finding but does not reliably localize it to one cell; in 53.9\% of exact-cell failures
+the true change spans several cells, which the exact-one-cell metric cannot
+credit.
+
+The contribution is an auditable framework for reference-conditioned
+structural assessment in the direct-digital modality: semantic quality
+control, character-disjoint testing, bounded registration, score-semantics
+audits, blinded human association with honest labelling of retrospective
+development, and structured evidence kept upstream of language. It is not a universal aesthetic score.

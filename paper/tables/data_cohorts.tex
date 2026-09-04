@@ -1,0 +1,21 @@
+\begin{table*}[t]
+\caption{Data resources, their label status, and the research question (RQ)
+each serves. GT denotes manual six-channel ground truth.}
+\label{tab:cohorts}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{2.6cm}p{4.2cm}p{3.6cm}p{3.5cm}c@{}}
+\toprule
+Resource & Origin & Size & Label status & RQ \\
+\midrule
+Project corpus & commissioned direct-digital acquisition & 769 QC-clean of 840 complete; 40 identities & GT & 1, 3 \\
+Standard split & frozen sample assignment & 530/119/120 train/val/test & GT & 1 \\
+Character-disjoint split & frozen identity assignment, 28/6/6 & 539/114/116 train/val/test & GT & 1 \\
+Reference library & Calli-Tongji Beta, two style categories & 200 images & model-derived mask cache, not GT & 2, 4 \\
+Perturbation / diagnostic cohort & deterministic edits of cached masks & 200 references \(\times\) 11 perturbations (5 nuisance, 6 structural) & known intervention & 2, 4 \\
+Cross-reference cohort & reference library & 7 positive, 50 negative pairs & pair type only & 2 \\
+Human-rating cohort & natural pairs from the project corpus & 150 pairs + 15 repeats, 3 raters & blinded ratings; development data & 3 \\
+\bottomrule
+\end{tabular}
+\end{table*}

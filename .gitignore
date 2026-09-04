@@ -42,6 +42,7 @@ paper/*.fdb_latexmk
 paper/*.synctex.gz
 paper/*_build.pdf
 paper/manuscript.pdf
+paper/ESM_1.pdf
 paper/supplementary.pdf
 paper/deliverables/
 paper/tmp/
