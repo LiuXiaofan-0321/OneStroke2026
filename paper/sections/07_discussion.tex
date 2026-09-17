@@ -1,52 +1,70 @@
 \section{General Discussion and Limitations}
 \label{sec:discussion}
 
-\subsection{What the four answers imply together}
+\subsection{Implications for structural assessment}
 
-Read together, the answers describe a measurement design rather than a
-single model. First, low-resource dense parsing must be evaluated on the
-generalization axis the application needs, since in-corpus fit did not
-predict transfer to unseen characters, and only overlapping labels can
-express the crossing evidence of Fig.~\ref{fig:segmentation-qualitative}.
-Second, registration is part of the measurement, not neutral preprocessing:
-the transform family decides which differences remain visible, and the
-bounded search was chosen so that global placement, size, and tilt are
-compensated while local structural loss stays in view.
+The four research questions jointly define how structural differences are
+represented, compensated, scored, and localized. Low-resource parsing must
+be evaluated on the generalization axis relevant to the application,
+because the best in-corpus parser did not transfer best to unseen
+characters. These rankings describe the tested training protocols,
+including their different initialization schemes. Overlapping labels retain
+crossing evidence that a mutually exclusive pixel partition cannot express
+(Fig.~\ref{fig:segmentation-qualitative}).
 
-Third, the scalar and the diagnostics have different justifications. A direction-label swap that preserves the silhouette would leave ASDS
-unchanged while altering every direction-level, endpoint, and localized
-output; a system that needs only a scalar silhouette comparison may use
-thresholded ink, whereas a diagnostic system requires the parser.
+Registration shapes the measurement because the transform family
+determines which discrepancies remain visible. The bounded search reduces
+global nuisance penalties while retaining penalties for structural edits.
+The increase in structural penalties can partly reflect centroid-based
+refitting after a local edit; it does not independently establish better
+measurement fidelity. The tested wider search also uses coarser sampling,
+so its comparison does not isolate transform range. Residual sensitivity
+prevents a claim of complete invariance under either search.
 
-The next steps follow: the frozen ASDS specification should be tested
-without modification on new writers, characters, and raters; and diagnostic localization should be reported with a region-overlap or
-pixel-overlap metric that credits multi-cell truth.
+Scalar agreement and localized diagnostics require different evidence.
+ASDS depends on the union silhouette, so permuting direction labels leaves
+it unchanged. Such a change can alter directional comparisons and
+localized attributions while leaving the separate endpoint mask unchanged.
+The direct-ink control supports thresholded ink as an input for scalar
+silhouette comparison in this cohort. Within this framework, the parser
+supplies direction-specific and endpoint evidence unavailable from the
+silhouette alone.
+
+The frozen ASDS specification now requires evaluation without modification
+on new writers, characters, and raters. Diagnostic localization also
+requires region-overlap or pixel-overlap metrics that credit multi-cell
+truth.
 
 \subsection{Limitations}
 
 The segmentation corpus contains 40 labelled character identities from one
-recovered acquisition source; character-disjoint evaluation is not
-writer-disjoint evaluation (Sect.~\ref{sec:data-corpus}), and
-collection-specific regularities may survive the semantic quality control.
+recovered acquisition source. Character-disjoint evaluation does not
+establish writer-disjoint generalization (Sect.~\ref{sec:data-corpus}), and
+collection-specific regularities may survive semantic quality control.
 
 Controlled perturbations operate on cached reference masks predicted by
-the v1 checkpoint, which predates the semantic quality control and the
-formal comparison; any systematic parsing error in those masks propagates
-into every RQ2 and RQ4 statistic, and an end-to-end failure may combine
-parsing, registration, and comparison errors. Scale-up and compound summaries are
-conditional on clipping-safe references because of their high invalid
-fractions, and the external library supports only seven same-character
-cross-style pairs.
+the v1 checkpoint, which predates semantic quality control and the formal
+comparison. Systematic parsing errors in those masks can propagate into
+RQ2 and RQ4 statistics. Perturbed masks are compared directly without
+rerunning the parser, so this benchmark does not measure end-to-end
+performance on perturbed images. Scale-up and compound summaries are
+conditional on clipping-safe references because their invalid fractions are
+high. The external library supports only seven same-character cross-style
+pairs, limiting conclusions about discrimination across styles.
 
 The human cohort contains 150 pairs rated by three domain-qualified raters,
-two of whom are authors; single-rater reliability is poor and the
-three-rater mean moderate; all scores on the cohort are computed from
-annotated masks, so parser error in deployment is not included; ASDS was
-developed after the ratings were available, so its association is
-retrospective and its validation character-grouped rather than external;
-the contribution of registration to ASDS was not isolated (the polar term
-is centroid- and scale-normalized, so much of its association may survive
-without alignment); and the direct-ink control reuses the same cohort.
-Agreement at multi-label crossing pixels is not measured separately. The diagnostic benchmark uses engineered interventions rather than teacher
-judgments. Finally, the target modality is clean direct digital writing; camera
-capture lies outside the claims (Sect.~\ref{sec:introduction}).
+two of whom are authors. Single-rater reliability is poor, while reliability
+of the three-rater mean is moderate. The primary score comparison uses
+annotated masks, so it excludes deployment parser error; the direct-ink
+control bypasses parsing. ASDS feature design followed inspection of the
+ratings, making its association retrospective and its character-grouped
+validation internal. The direct-ink control reuses this cohort and provides
+no independent confirmation.
+
+The contribution of registration to ASDS was not isolated. Its polar term
+is centroid- and scale-normalized, so part of the observed association may
+persist without alignment. Agreement at multi-label crossing pixels is not
+measured separately, and diagnostic ground truth comes from engineered
+interventions rather than teacher judgments. The supported modality remains
+clean direct digital writing; robustness to camera capture has not been
+evaluated (Sect.~\ref{sec:introduction}).

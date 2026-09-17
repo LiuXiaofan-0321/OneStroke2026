@@ -1,49 +1,54 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Chinese calligraphy (\emph{shufa}) is both a writing practice and an
-important form of Chinese traditional culture. Two handwritten instances of
-the same character are often equally legible, yet a calligraphy teacher
-would mark different things on each: a
-horizontal stroke that stops short, a hook that departs from the wrong point,
-a component placed too low, an endpoint that fails to meet its neighbour.
-Figure~\ref{fig:pipeline}(a) shows such a pair, a regular-script reference
-and a running-script candidate of one character: both are recognizable, yet
-they differ in stroke proportion, in where strokes meet or cross, and in the
-space between components. A learner benefits from knowing which of these
-differences matter and where they are.
+Calligraphy---the writing of Chinese characters with a brush---is a
+foundational form of traditional Chinese culture. Its principal script styles,
+seal (\emph{zhuan}), clerical (\emph{li}), regular (\emph{kai}), running
+(\emph{xing}), and cursive (\emph{cao}), employ distinct stroke techniques and
+convey a wide range of qualities, from dignified and elegant to vigorous,
+unrestrained, archaic, and lively. Two handwritten instances of the same
+Chinese character can be equally
+legible yet differ in the local structure relevant to calligraphy
+(\emph{shufa}) instruction. A teacher may identify a shortened horizontal
+stroke, a displaced hook, a low component, or an endpoint that fails to meet
+its neighbour. Figure~\ref{fig:pipeline}(a) illustrates structural differences
+using a regular-script reference and a running-script candidate of the same
+character. Both are recognizable, but their stroke proportions, junctions,
+and component spacing differ. These cross-style differences illustrate the
+comparison task; they do not establish that either instance is incorrect.
+Useful feedback must identify the relevant discrepancies and their locations
+relative to the selected reference.
 
-Not every difference is an error. The character may be written slightly
-larger, shifted on the canvas, or tilted by a degree or two without any
-change of structure; a missing terminal fragment, an over-wide stroke, or a
-misproportioned component is exactly what assessment should retain. A
-reference-conditioned assessment therefore has to compensate global placement
-while preserving local discrepancy, and to expose that discrepancy as
-inspectable evidence rather than as a number alone.
+Global placement can vary without changing the local structure being
+assessed. A character may be slightly larger, shifted on the canvas, or
+tilted by a degree or two. Missing terminal fragments, over-wide strokes,
+and misproportioned components should remain visible after such differences
+are compensated. Reference-conditioned assessment must therefore separate
+global placement from local discrepancy and return inspectable evidence
+alongside a scalar score.
 
-Recognition, style classification, and generation reduce a character image
-to an identity, a category, or a plausible glyph
-\cite{liu2013casia,zhang2026callinet,xu2026unicalli}; none of them returns
-the spatially resolved, direction-specific comparison that this question
-requires. Treated as a document-analysis problem, same-character structural
-comparison exposes four computer-vision challenges.
+Recognition, style classification, and generation address character
+identity, style category, and glyph synthesis, respectively
+\cite{liu2013casia,zhang2026callinet,xu2026unicalli}. These objectives do not
+directly evaluate spatially resolved, direction-specific discrepancies
+between two instances. Formulating same-character structural comparison as
+a document-analysis task exposes four computer-vision challenges.
 \begin{enumerate}
   \item[C1] \emph{Overlapping labels under scarce annotation.} At crossings
-  and adhesions one pixel belongs to more than one stroke, so a mutually
-  exclusive partition cannot represent the label geometry; endpoint evidence
-  is sparse; and dense labels are scarce (769 quality-controlled observations
-  of 40 character identities, with no trustworthy writer identity).
+  and adhesions, a pixel can carry multiple direction labels, which a
+  mutually exclusive partition cannot represent. Endpoint evidence is sparse,
+  and dense annotation is limited to 769 quality-controlled observations of
+  40 character identities, without reliable writer identities.
   \item[C2] \emph{Global nuisance versus local structure.} Direct overlap
-  confounds structure with translation, scale, and rotation; flexible
-  registration can erase the proportion or placement error that assessment
-  should retain; and an overlap score can reward direction channels that are
-  empty in both images.
+  confounds structure with translation, scale, and rotation. Flexible
+  registration can erase proportion or component-placement errors, while an
+  overlap score can reward direction channels that are empty in both images.
   \item[C3] \emph{Stability is not validity.} A score that is stable under
   allowed transforms may still disagree with how trained readers perceive
   structural similarity.
-    \item[C4] \emph{A scalar does not localize.} Feedback must name the
-  direction family, the region, and whether ink is missing or extra; fluent
-  text cannot repair a wrong attribution.
+  \item[C4] \emph{A scalar does not localize.} Feedback must identify the
+  direction family, the affected region, and whether ink is missing or extra.
+  Fluent text cannot make an incorrect structural attribution reliable.
 \end{enumerate}
 
 \begin{figure*}[!t]
@@ -52,84 +57,80 @@ comparison exposes four computer-vision challenges.
   \caption{Reference-conditioned structural assessment on one same-character
   pair. (a)~A regular-script reference and a running-script candidate of the
   same character are recognizable but structurally different. (b)~The candidate
-  parsed into overlapping direction channels vec1--vec5 (the reference is
-  parsed identically); black pixels carry more than one direction label,
-  cyan outlines mark endpoints, and the framed inset shows the bounding box
-  of the multi-label pixels at reduced scale. (c)~The reference is
-  registered to the candidate with a bounded global transform (here isotropic
-  scale 1.20 and rotation \(3^\circ\)), which compensates global size and
-  tilt; the residual is shown as overlap (dark grey), reference ink missing from
-  the candidate (blue, hatched), and extra candidate ink (red,
-  counter-hatched), and is the discrepancy that assessment preserves. (d)~The aligned silhouette on the
+  is parsed into overlapping direction channels vec1--vec5; the reference
+  follows the same procedure. Black pixels carry multiple direction labels,
+  and cyan outlines mark endpoints. The framed inset shows the multi-label
+  bounding box at reduced scale. (c)~A bounded global transform registers the
+  reference to the candidate, compensating global size and tilt (here scale
+  1.20 and rotation \(3^\circ\)). The residual comprises overlap (dark grey),
+  missing reference ink (blue, hatched), and extra candidate ink (red,
+  counter-hatched). (d)~The aligned silhouette on the
   \(3\times3\) grid used for localized evidence; the values beneath it are
   the three ASDS spatial-distribution similarities of
-  Sect.~\ref{sec:scores}. (e)~The returned contract: production score, weakest direction family
-  with its own Dice (not the five-channel mean), ink IoU, endpoint F1,
-  transform, and missing/extra regions, all available before any text is
-  generated. The cross-style pair is for illustration; the human study uses
+  Sect.~\ref{sec:scores}. (e)~The structured output includes the production
+  score, weakest direction family and its Dice, ink IoU, endpoint F1,
+  transform, and missing/extra regions. The reported direction Dice belongs
+  to that family, rather than the five-channel mean. All evidence is
+  available before text generation. The cross-style pair is illustrative;
+  the human study uses
   natural same-character, different-instance pairs from the project corpus. Source images: Calli-Tongji open subset \cite{yunmo_jixin_2025},
   CC~BY-NC~4.0.}
   \label{fig:pipeline}
 \end{figure*}
 
-Figure~\ref{fig:pipeline} outlines the formulation studied here: the learner
-image and the reference are parsed into overlapping structural channels, the
-reference is registered to the learner with a bounded global transform, and
-the aligned pair yields a scalar agreement together with directional and
-spatial evidence that precedes any text realization. Parsing addresses C1 and registration C2; the score and the evidence
-outputs are the objects of C3 and C4, tested by the human study and the
-diagnostic benchmark. The paper asks four corresponding research
-questions.
+Figure~\ref{fig:pipeline} outlines the framework, from overlapping structural
+parsing and bounded registration to scalar agreement and localized evidence.
+Parsing addresses C1, while registration and the score-semantics audit
+address C2. The human study and diagnostic benchmark evaluate C3 and C4,
+respectively, through the following research questions.
 \begin{description}
   \item[RQ1 (representation and generalization).] Can convolutional and
   transformer parsers trained on the quality-controlled corpus of
   Sect.~\ref{sec:data} recover overlapping direction masks and sparse
-  endpoint masks, and how much does
-  performance drop for character identities never seen in training?
+  endpoint masks? How much does performance decline for character identities
+  absent from training?
   \item[RQ2 (registration and score behaviour).] Relative to no alignment,
   does a constrained similarity registration reduce sensitivity to nuisance
-  transforms while preserving penalties for controlled structural changes;
-  does a wider search improve that trade-off; and how do the frozen score's
-  channel-coverage semantics and same-character discrimination behave on
-  real references?
-  \item[RQ3 (human validity).] How strongly do three fixed scores of the
-  aligned pair, the frozen production score, the coverage-aware score, and
-  aligned spatial-distribution similarity (ASDS), associate with blinded
-  human ratings of same-character structural similarity, and does the ASDS
-  scalar depend on six-channel parsing?
+  transforms while preserving penalties for controlled structural changes?
+  Does a wider search improve this trade-off? How do channel-coverage
+  semantics affect the frozen score, and does it distinguish same-character
+  pairs on real references?
+  \item[RQ3 (human validity).] How strongly do the frozen production score,
+  the coverage-aware score, and aligned spatial-distribution similarity
+  (ASDS) associate with blinded ratings of same-character structural
+  similarity? Does the ASDS scalar depend on six-channel parsing?
   \item[RQ4 (localized diagnosis).] Which localized diagnostic outputs are
   reliable on interventions with known ground truth, and why do they fail?
 \end{description}
 
-The contributions follow the research questions.
+The study makes four contributions aligned with these research questions.
 \begin{enumerate}
-  \item For RQ1, a six-channel representation with five independently
-  activated direction-family channels and an endpoint channel, needing no
-  per-character prior at inference (unlike Stroke-Seg's stroke instances,
-  Sect.~\ref{sec:related}), a semantic quality-control protocol, and a
-  matched three-seed comparison of U-Net, DeepLabV3+, and SegFormer-B2 on
-  standard and character-disjoint splits. Ranking depends on
+  \item For RQ1, we define five independently activated direction-family
+  channels and an endpoint channel, without a per-character prior at
+  inference. The representation differs from Stroke-Seg's stroke instances
+  (Sect.~\ref{sec:related}). Semantic quality control supports a matched
+  three-seed comparison of U-Net, DeepLabV3+, and SegFormer-B2 on standard
+  and character-disjoint splits. Ranking depends on
   target and protocol: DeepLabV3+ leads in-corpus direction parsing,
   SegFormer-B2 unseen-character direction parsing, and U-Net strict endpoint
   localization.
-  \item For RQ2, a constrained similarity registration evaluated with
-  controlled nuisance and structural perturbations of 200 real references,
-  paired comparisons against no alignment and a wider search, and an
-  inactive-channel audit of the score. Constrained registration
-  substantially reduces nuisance sensitivity relative to no alignment while
-  preserving structural penalties, with residual sensitivity and
-  clipping-conditional summaries reported explicitly.
-    \item For RQ3, a blinded three-rater association study of the frozen
-  production score, the coverage-aware score, and ASDS, reported as
-  retrospective development with character-grouped internal validation,
-  plus a paired direct-ink control. ASDS associates most strongly with the
-  ratings but is a silhouette measure that does not justify the six-channel
-  parser, whose value lies in direction-level evidence.
-  \item For RQ4, localized structured evidence with a diagnostic failure
-  taxonomy. The required finding is usually surfaced, but exact-cell
-  localization is unreliable, mainly because multi-cell truth is scored by a
-  single-cell metric and direction attribution errs; language generation
-  stays downstream of the evidence.
+  \item For RQ2, we evaluate constrained similarity registration using
+  controlled nuisance and structural perturbations of 200 real references.
+  Paired comparisons cover no alignment and the tested wider, coarser search, alongside an
+  inactive-channel score audit. Constrained registration
+  substantially reduces nuisance penalties relative to no alignment, while
+  structural edits remain penalized. Residual sensitivity and clipping-conditional
+  summaries delimit this result.
+  \item For RQ3, we compare the three scores in a blinded three-rater study
+  and add a paired direct-ink control. ASDS development is retrospective,
+  with character-grouped internal validation. Its observed association is
+  strongest, but the direct-ink control supports a silhouette interpretation;
+  direction-level evidence provides the rationale for the parser.
+  \item For RQ4, we evaluate localized structured evidence and classify its
+  failures. Required findings are usually surfaced, but exact-cell
+  localization remains unreliable because of multi-cell truth and direction
+  attribution errors. Language generation remains downstream of the
+  structured evidence.
 \end{enumerate}
 
 The intended input is a raster exported from a direct digital writing canvas,

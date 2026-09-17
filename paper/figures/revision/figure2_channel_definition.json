@@ -1,0 +1,154 @@
+{
+  "manuscript_figure": 2,
+  "core_claim": "Five independently composed direction masks preserve overlapping labels; the sixth mask marks stroke termini.",
+  "archetype": "schematic-led composite",
+  "source": "figures/figure3_channel_definition.pdf",
+  "source_sha256": "66de44b517c6d5dca5ebb66ab3674da727bdf06da7ccf50fb1a0ab056e785a1f",
+  "backend": "python",
+  "size_inches": [
+    6.3,
+    3.12
+  ],
+  "sample": "33/18",
+  "tiles": [
+    {
+      "tile_index": 0,
+      "xref": 13,
+      "shape": [
+        705,
+        458,
+        3
+      ],
+      "decoded_rgb_sha256": "61d84ca9ac31e30209983b9bdf1d9d8c1d7951864999c9d6f02e9b840c8da504"
+    },
+    {
+      "tile_index": 1,
+      "xref": 14,
+      "shape": [
+        705,
+        609,
+        3
+      ],
+      "decoded_rgb_sha256": "be60c52bcbb44171bb05ce7d1eb7a8906a4974e20606b9f1d0cf2a10b20c6f7f"
+    },
+    {
+      "tile_index": 2,
+      "xref": 15,
+      "shape": [
+        705,
+        609,
+        3
+      ],
+      "decoded_rgb_sha256": "d88223b5f56c1f257f5f629423c489e2e7dabe98ec55fb78a6629ac8e494a744"
+    },
+    {
+      "tile_index": 3,
+      "xref": 16,
+      "shape": [
+        565,
+        634,
+        3
+      ],
+      "decoded_rgb_sha256": "1f4e12619fecbab57f0298271e1d4f16b011960805362b339e318ccc6d4216be"
+    },
+    {
+      "tile_index": 4,
+      "xref": 17,
+      "shape": [
+        696,
+        634,
+        3
+      ],
+      "decoded_rgb_sha256": "e2763e7de3179cd67088747178215fc3da13699a72760324eb99dc15aee03d66"
+    },
+    {
+      "tile_index": 5,
+      "xref": 18,
+      "shape": [
+        641,
+        553,
+        3
+      ],
+      "decoded_rgb_sha256": "fb74bd7e2c3c4bf1509517c42ab55cd59fc9922a34c87cb2292826975dd7f3cb"
+    },
+    {
+      "tile_index": 6,
+      "xref": 19,
+      "shape": [
+        641,
+        553,
+        3
+      ],
+      "decoded_rgb_sha256": "c487bd2f60a09236873b846a34c2aca253c66129d280089efc23d0ef7450a4b7"
+    },
+    {
+      "tile_index": 7,
+      "xref": 20,
+      "shape": [
+        641,
+        553,
+        3
+      ],
+      "decoded_rgb_sha256": "8d8b006242297bee3ecab04580cd01e85f55e2d635ce653d3e0dabf6d747173c"
+    },
+    {
+      "tile_index": 8,
+      "xref": 21,
+      "shape": [
+        641,
+        553,
+        3
+      ],
+      "decoded_rgb_sha256": "cae69b4f9b7d8ca9c46351131f56ee7d7426ac186876e37d35236313d06bd1cc"
+    },
+    {
+      "tile_index": 9,
+      "xref": 22,
+      "shape": [
+        641,
+        553,
+        3
+      ],
+      "decoded_rgb_sha256": "31859d3dc4cee93dd31620249a7a3670092b4d917d000c8ed8c7fa9b5a099e23"
+    },
+    {
+      "tile_index": 10,
+      "xref": 23,
+      "shape": [
+        641,
+        553,
+        3
+      ],
+      "decoded_rgb_sha256": "f507d67fbea9cfdbdab9f4e0d7ed32b55f5d6225361f44fb3072f9bad01f038b"
+    }
+  ],
+  "layout_mapping": {
+    "a": [
+      1,
+      0
+    ],
+    "b": [
+      2
+    ],
+    "c": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "omitted_redundant_source_tiles": {
+    "3": "The old broad crossing crop is replaced by an exact local crop of tile 2.",
+    "4": "The duplicate full-character endpoint context is omitted; both isolated termini and the entire endpoint channel remain shown."
+  },
+  "crop_xyxy_on_composed_tile": [
+    350,
+    340,
+    465,
+    445
+  ],
+  "image_integrity": "Decoded source pixels unchanged. No brightness, contrast, recolouring, smoothing, model inference, or new masks. Existing endpoint dilation is inherited from frozen display tiles; added endpoint circles and ROI rectangle are vector display marks only.",
+  "limitations": "The repository lacks the source masks. This is a faithful re-layout of frozen figure tiles, not a reconstruction or revalidation of ground truth. Enlarged raster crossing intentionally retains visible pixels."
+}

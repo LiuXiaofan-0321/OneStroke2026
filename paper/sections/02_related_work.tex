@@ -1,33 +1,31 @@
 \section{Related Work}
 \label{sec:related}
 
-
-
 \subsection{Recognition, document segmentation, and stroke parsing}
 
 Large databases such as CASIA-HWDB established benchmarks for online and
 offline handwritten Chinese character recognition \cite{liu2013casia}.
-Recognition maps an image to a character identity and returns no spatial
-account of the strokes that compose it. Dense prediction supplies such an
-account. U-Net introduced an encoder--decoder with skip connections
+Recognition assigns character identities; assessing local structure
+additionally requires spatially resolved outputs. Dense prediction provides
+a basis for representing the regions that compose a document image.
+U-Net introduced an encoder--decoder with skip connections
 \cite{ronneberger2015unet};
 DeepLabV3+ combines atrous spatial pyramids with a decoder
 \cite{chen2018deeplabv3plus}; and SegFormer pairs hierarchical transformer
 features with a lightweight multilayer-perceptron decoder
 \cite{xie2021segformer}. In document analysis, dhSegment showed that one generic
 segmentation formulation can serve many page-level tasks
-\cite{oliveira2018dhsegment}, and a recent IJDAR study found that label
-scarcity, source--target mismatch, and the pretraining protocol materially
-affect handwritten document segmentation \cite{baloun2025selfsupervision}. Standard semantic segmentation assigns
+\cite{oliveira2018dhsegment}. A recent IJDAR study found that label
+scarcity, source--target mismatch, and pretraining protocol affect handwritten
+document segmentation \cite{baloun2025selfsupervision}. Standard semantic segmentation assigns
 each pixel one class \cite{chen2018deeplabv3plus,xie2021segformer}.
 
-Stroke-level analysis of Chinese characters has been addressed by Stroke-Seg,
-a framework compatible with several segmentation backbones that adds a
-multi-label output so that pixels in intersection regions can be assigned
-to more than one stroke and supplies character-specific stroke-composition
-information to the network as a prior vector; it is evaluated by the true
-stroke rate on a brush-calligraphy stroke-segmentation dataset
-\cite{gong2024strokeseg}.
+Stroke-Seg addresses stroke-level analysis through a multi-label framework
+compatible with several segmentation backbones \cite{gong2024strokeseg}.
+Its output assigns intersection pixels to multiple strokes, and a prior
+vector supplies character-specific stroke-composition information. The
+framework is evaluated by true stroke rate on a brush-calligraphy
+stroke-segmentation dataset \cite{gong2024strokeseg}.
 
 \subsection{Computational calligraphy and handwriting-quality evaluation}
 
@@ -35,30 +33,31 @@ Early computational calligraphy work represented style with local and
 global shape features
 \cite{zhang2015calligraphic,gao2017calligraphic}; CalliNet advances style
 classification with metric learning and triplet supervision
-\cite{zhang2026callinet}. Other systems extract artistic regions from a
-calligraphy work relative to a reference image \cite{wang2018artistic},
-beautify handwritten glyphs toward a Kai-style template
-\cite{xia2009beautification}, or evaluate robotic writing with designed
-aesthetic features \cite{ma2017aesthetics}. Large recent resources such as
+\cite{zhang2026callinet}. Other systems extract artistic regions relative
+to a reference image \cite{wang2018artistic} or beautify handwritten glyphs
+toward a Kai-style template \cite{xia2009beautification}. Designed aesthetic
+features have also been used to evaluate robotic writing
+\cite{ma2017aesthetics}. Large recent resources such as
 UniCalli support column-level generation and recognition
 \cite{xu2026unicalli}.
 
-Quality evaluation of handwritten Chinese characters has been surveyed as
-three families, rule-based geometric measures, template comparison, and
-learned methods, with the difficulty of defining quality labels and
-explaining model decisions identified as open problems
-\cite{chen2024qualitysurvey}. Siamese networks learn pairwise quality from
+A survey groups handwritten Chinese character quality evaluation into
+rule-based geometric measures, template comparison, and learned methods
+\cite{chen2024qualitysurvey}. Defining quality labels and explaining model
+decisions remain open problems \cite{chen2024qualitysurvey}. Siamese networks learn pairwise quality from
 labelled examples \cite{chen2025siamhcc}, and a recent shared task combined
 writing-quality grading with comment generation on an expert-annotated
-dataset \cite{liu2025calligraphyeval}. Across these studies, quality is
-not a single observable: legibility, geometric correctness, similarity to a
-reference, brushwork, and artistic appeal can disagree.
+dataset \cite{liu2025calligraphyeval}. Across these studies, quality spans
+several constructs, including legibility, geometric correctness, reference
+similarity, brushwork, and artistic appeal. These constructs can disagree,
+making the assessment target consequential for its interpretation.
 
 \subsection{Registration, shape description, and human validation}
 
 Image registration ranges from parametric geometric alignment to learned
-spatial transformers \cite{zitova2003registration,jaderberg2015stn}. Registration surveys distinguish rigid, similarity, and affine models from
-elastic and deformable models by how much shape difference they absorb
+spatial transformers \cite{zitova2003registration,jaderberg2015stn}.
+Registration surveys distinguish rigid, similarity, and affine models from
+elastic and deformable models by the shape differences they can absorb
 \cite{zitova2003registration}. Shape contexts describe the
 spatial distribution of contour points in log-polar bins
 \cite{belongie2002shapecontext}, and spatial pyramids retain coarse layout
@@ -66,9 +65,9 @@ that an orderless representation would discard
 \cite{lazebnik2006spatialpyramid}. Distributions of this kind can be compared
 with the bounded, symmetric Jensen--Shannon divergence \cite{lin1991jensen}.
 
-Automated assessment meant to stand in for human judgment requires both an
-association with that judgment and an account of rater reliability, for
-which two-way random-effects, absolute-agreement intraclass correlations are
-the established statistics \cite{mcgraw1996icc,koo2016icc}; bootstrap
-resampling provides uncertainty for correlation estimates
+Assessment against human judgment requires both a measure of association
+and an account of rater reliability. Two-way random-effects,
+absolute-agreement intraclass correlations quantify agreement among raters
+\cite{mcgraw1996icc,koo2016icc}, while bootstrap resampling estimates
+uncertainty in score--rating associations
 \cite{efron1993bootstrap}.

@@ -9,6 +9,14 @@
 
 \newcommand{\asds}{\mathrm{ASDS}}
 
+% Tighter float and caption spacing to keep the two-column text compact.
+\setlength{\textfloatsep}{9pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{9pt plus 2pt minus 2pt}
+\setlength{\floatsep}{11pt plus 2pt minus 2pt}
+\setlength{\dblfloatsep}{11pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{4pt}
+
 \begin{document}
 
 \title[Reference-conditioned Chinese calligraphy assessment]
@@ -28,40 +36,35 @@ Scoring}
   \orgaddress{\city{Shanghai}, \country{China}}}
 
 \abstract{%
-\textbf{Purpose:} Computer-vision systems for handwriting commonly assume
-mutually exclusive semantic regions, optimize recognition or style
-classification, or compare images without separating global placement from
-local structural error. None returns what assessing a handwritten Chinese
-character against a same-character reference requires: two instances can be
-equally recognizable yet differ in the local stroke structure a learner
-should revise. We formulate reference-conditioned structural assessment as
-an auditable document-analysis problem under limited labelled data.
+\textbf{Purpose:} Two handwritten instances of a Chinese character can be
+equally legible yet differ in local stroke structure. We formulate
+reference-conditioned structural assessment as an auditable
+document-analysis task under limited labelled data.
 \par
-\textbf{Methods:} An overlapping six-channel parser predicts five
-independently activated direction masks and an endpoint mask; U-Net,
-DeepLabV3+, and SegFormer-B2 are compared with three seeds on standard and
-character-disjoint splits of 769 quality-controlled samples. Constrained
-similarity registration, three structural scores, and localized diagnostic
-evidence are evaluated on 200 references under controlled perturbations and
-on 150 natural pairs rated blindly by three calligraphy-domain raters, two of
-them authors.
+\textbf{Methods:} A six-channel parser predicts five overlapping direction
+masks and an endpoint mask. U-Net, DeepLabV3+, and SegFormer-B2 are compared
+over three seeds on standard and character-disjoint splits of 769
+quality-controlled samples. We evaluate constrained similarity registration
+and diagnostic evidence on cached masks from 200 references under controlled
+perturbations.
+Three structural scores are assessed on 150 natural pairs rated blindly by
+three domain-qualified raters, two of them authors.
 \par
-\textbf{Results:} DeepLabV3+ reaches \(0.9630\pm0.0006\) standard-split
-Macro Dice, SegFormer-B2 leads character-disjoint direction parsing at
-\(0.8866\pm0.0008\), and U-Net leads strict endpoint F1. Registration
+\textbf{Results:} DeepLabV3+ leads standard-split direction Macro Dice
+(\(0.9630\pm0.0006\)); SegFormer-B2 leads character-disjoint direction
+parsing (\(0.8866\pm0.0008\)); U-Net leads strict endpoint F1. Registration
 reduces nuisance penalties by 30.118 points relative to no alignment on
-clipping-safe cases while preserving 11.189 additional points of structural
-penalty. The frozen production score, a coverage-aware score, and a
+clipping-safe cases while increasing structural penalties by 11.189 points.
+The frozen production score, a coverage-aware score, and a
 retrospectively developed aligned spatial-distribution similarity (ASDS)
-reach Spearman correlations of 0.297, 0.429, and 0.556;
-character-grouped out-of-fold ASDS retains 0.540, and direct-ink ASDS is
-nearly equivalent (\(\Delta\rho=0.0004\)), so direction-level evidence, not
-the scalar, justifies the parser. Localized evidence reaches Recall@3 of
+reach Spearman correlations of 0.297, 0.429, and 0.556, respectively.
+Character-grouped out-of-fold ASDS retains 0.540; direct-ink ASDS shows
+nearly identical association (\(\Delta\rho=0.0004\)). Localized evidence reaches Recall@3 of
 0.701 but exact-cell localization of 0.109.
 \par
-\textbf{Conclusion:} We deliver a reproducible framework for overlapping
-parsing, discrepancy-preserving registration, and human-audited localized
-feedback.}
+\textbf{Conclusion:} The framework separates scalar structural agreement
+from direction-specific diagnostic evidence, with explicit limits on
+generalization, human validity, and localization.}
 
 \keywords{Chinese calligraphy, document analysis, multi-label segmentation,
 reference-based assessment, human validation, explainable feedback}

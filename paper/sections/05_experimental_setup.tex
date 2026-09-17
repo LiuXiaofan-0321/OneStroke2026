@@ -70,9 +70,13 @@ Table~S1.
 
 The identical reference/perturbation/severity tuples are then scored under
 three alignment policies: no alignment, the production constrained search of
-Sect.~\ref{sec:alignment-method}, and a wider similarity search over the same grid with
+Sect.~\ref{sec:alignment-method}, and a wider similarity search with the same
+number of grid points (nine scales and seven rotations), spanning
 \(s\in[0.6,1.4]\) and \(\phi\in[-12^\circ,12^\circ]\), fixed in the
-frozen experiment contract before any result was computed.
+frozen experiment contract before any result was computed. The wider grid
+therefore also has coarser spacing (0.10 in scale and \(4^\circ\) in rotation,
+versus 0.05 and \(1^\circ\) in the production grid); this comparison does not
+isolate search range from discretization.
 Comparisons are paired by reference. Confidence intervals resample
 references; Wilcoxon signed-rank tests \cite{wilcoxon1945} and rank-biserial
 correlation (RBC) effect sizes use per-reference mean paired differences. Family-level
@@ -92,8 +96,10 @@ with \(S_{\mathrm{prod}}\) and summarizes their separation with Cliff's
 
 Each score is compared with the three-rater mean on the 150 canonical pairs
 by Spearman correlation, with 95\% intervals from 10,000 bootstrap resamples
-clustered by target character \cite{efron1993bootstrap}. Two-sided \(p\) values for
-\(\rho=0\) are reported for the two frozen scores. Inter-rater
+clustered by target character \cite{efron1993bootstrap}. The two frozen
+scores also have nominal, unclustered two-sided Spearman \(p\) values for
+\(\rho=0\); interpretation emphasizes the character-cluster intervals.
+Inter-rater
 reliability uses two-way random-effects, absolute-agreement intraclass
 correlation coefficients ICC(2,1) and ICC(2,\(k\))
 \cite{mcgraw1996icc,koo2016icc}. Hidden repeats are excluded from

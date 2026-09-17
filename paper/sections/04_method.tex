@@ -124,10 +124,11 @@ across the canvas. ASDS therefore compares three spatial distributions of
 the union silhouette \(M(\cdot)\) after the same frozen registration. \emph{Polar occupancy} centres the foreground at
 its ink centroid, divides radius by the 95th percentile of foreground radius
 (clipped to \([0,1)\)), and assigns pixels to four radial and eight angular
-bins, giving a normalized 32-bin histogram \(h_p\); by construction,
-centroid and radius normalization make it insensitive to residual
-translation and isotropic rescaling of the aligned silhouette, a property
-not separately measured here. \emph{Grid occupancy} \(h_g\) counts normalized foreground over a
+bins, giving a normalized 32-bin histogram \(h_p\). Centroid and radius
+normalization reduce sensitivity to residual translation and isotropic
+scale, although rasterization and bin boundaries can still affect the
+histogram; this component's invariance is not separately measured here.
+\emph{Grid occupancy} \(h_g\) counts normalized foreground over a
 \(3\times3\) partition of the canvas and retains coarse location and
 balance. \emph{Projection profiles} \(h_x\) and \(h_y\) are the normalized
 column and row sums. For distributions \(p\) and \(q\) with \(m=(p+q)/2\), the

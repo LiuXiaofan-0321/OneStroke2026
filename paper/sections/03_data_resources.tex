@@ -1,11 +1,10 @@
 \section{Data Resources}
 \label{sec:data}
 
-The experiments draw on three sources: a project corpus with manual ground
-truth (GT) after quality control (QC), an external reference library whose
-model-parsed masks feed three derived cohorts, and a human-rating cohort.
-Table~\ref{tab:cohorts} lists the resulting resources and the research
-question each serves; the subsections define them.
+The experiments use a project corpus with manual ground truth (GT), an
+external reference library, and a human-rating cohort selected from the
+quality-controlled (QC) project corpus. Table~\ref{tab:cohorts} distinguishes
+their annotation sources and the research questions they support.
 
 \input{tables/data_cohorts}
 
@@ -30,18 +29,17 @@ by any model evaluated in this paper.
 
 \begin{figure*}[!t]
   \centering
-  \includegraphics[width=\textwidth]{figures/redrawn/figure3_channel_definition.pdf}
+  \includegraphics[width=\textwidth]{figures/revision/figure2_channel_definition.pdf}
   \caption{Six-channel overlapping annotation contract on one project
-  sample. (a)~Direction families: \(\mathrm{vec1}\) vertical,
-  \(\mathrm{vec2}\) rising diagonal, \(\mathrm{vec3}\) horizontal,
-  \(\mathrm{vec4}\) falling diagonal, \(\mathrm{vec5}\) compound, curved,
-  or otherwise non-cardinal strokes. (b)~An isolated stroke source with its
-  two marked endpoints (circles are display only); (c)~the complete character; (d)~the composed
-  annotation, where black pixels carry simultaneous direction labels; (e)~the
-  boxed region of (d) enlarged, the arrow marking a pixel that carries two
-  direction labels at once; (f)~the endpoint channel, the union of the marked stroke
-  endpoints (cyan outlines and dilation are display only); (g)--(l)~the six
-  channels. The software schema stores the channels as
+  sample (33/18). (a)~The complete character and one independently acquired
+  stroke with two manually marked termini; cyan circles are display outlines.
+  (b)~The composed annotation and an enlarged crossing of \(\mathrm{vec1}\)
+  and \(\mathrm{vec3}\). Black pixels retain both direction labels rather
+  than an exclusive class. (c)~The five direction channels and the endpoint
+  channel, shown on a shared crop. The \(\mathrm{vec5}\) family includes
+  compound, curved, and other non-cardinal strokes; the endpoint channel is
+  the union of manually marked stroke termini, with dilation for display only.
+  The software schema stores the channels as
   \((\mathrm{vec1},\ldots,\mathrm{vec5},\mathtt{keypoint})\); the last
   identifier is retained for backward compatibility and denotes this endpoint
   channel.}
@@ -64,25 +62,32 @@ pseudo-labelled. A frozen semantic quality-control pass then identified 12
 source-image/ground-truth mismatches and 59 non-canonical members of exact
 image-and-mask duplicate groups. The two exclusion sets do not overlap,
 leaving 769 unique QC-clean observations of 40 identities
-(Fig.~\ref{fig:data-resources}e,f). All exclusion decisions were fixed before
+(Fig.~\ref{fig:data-resources}a,b). All exclusion decisions were fixed before
 the formal model comparison.
 
 \begin{figure*}[!t]
   \centering
-  \includegraphics[width=0.92\textwidth]{figures/redrawn/figure2_dataset_overview.pdf}
-  \caption{Corpus, quality control, and external reference library.
-  (a)--(d)~The acquisition contract (as in Fig.~\ref{fig:channel-definition});
-  (e)~the quality-control audit (bar length proportional to sample count:
-  894 recovered, 840 with complete six-channel ground truth for identities
-  0--39, 769 QC-clean after removing 12 image/GT mismatches and 59
-  non-canonical exact duplicates), with no exact-duplicate group crossing
-  either frozen split; (f)~one deterministic QC-clean observation per
-  identity (IDs 0--39); (g)~all seven natural same-character cross-style pairs in the
-  external library, represented by cached masks from the frozen v1 parser,
-  not by segmentation ground truth. Source images: Calli-Tongji open
-  subset \cite{yunmo_jixin_2025}, CC~BY-NC~4.0.}
+  \includegraphics[width=\textwidth]{figures/revision/figure3_dataset_overview.pdf}
+  \caption{Data resources and quality control. (a)~Recovery and exclusion
+  audit: 54 of 894 recovered samples lack a direction mapping, leaving
+  840 with complete six-channel ground truth. Removing 12 image/GT mismatches
+  and 59 non-canonical exact duplicates yields 769 QC-clean observations of
+  40 identities. No exact-duplicate group crosses either frozen split.
+  (b)~One deterministic QC-clean observation per identity (IDs 0--39).
+  (c)~All seven natural same-character cross-style pairs in the external
+  library, represented by cached v1 parser masks, not segmentation ground
+  truth. Source images: Calli-Tongji open subset \cite{yunmo_jixin_2025},
+  CC~BY-NC~4.0.}
   \label{fig:data-resources}
 \end{figure*}
+
+Figure~\ref{fig:data-resources} shows the same audit graphically:
+panel~(a) gives the exclusion flow and the retained identity count,
+panel~(b) one deterministic QC-clean observation per retained identity so
+that the character coverage of the corpus is visible at a glance, and
+panel~(c) the seven natural cross-style pairs of the separate reference
+library, whose cached masks are parser outputs rather than annotated ground
+truth.
 
 Two split protocols are used. The \emph{standard} assignment was frozen
 before quality control by per-character sample index, with the same index
@@ -116,7 +121,7 @@ Sect.~\ref{sec:setup-registration} to every reference, so that registration
 and score behaviour can be studied without a second parser inference. The
 \emph{cross-reference cohort} contains all seven natural
 same-character cross-style pairs that the library supports
-(Fig.~\ref{fig:data-resources}g) and 50 different-character negatives selected independently of any model score; the
+(Fig.~\ref{fig:data-resources}c) and 50 different-character negatives selected independently of any model score; the
 library contains no same-style, different-instance reference pair. The perturbation cohort also serves as the diagnostic cohort of
 Sect.~\ref{sec:setup-diagnostic}, where each known intervention is the
 ground truth.
@@ -136,9 +141,10 @@ a five-point ordinal scale, each rating the 150 canonical pairs plus 15
 interspersed hidden repeats. The panel comprised two author-raters
 with prior calligraphy study, one of whom holds a Level-9 calligraphy
 certificate, and one non-author rater with master's-level training in Fine
-Arts (Calligraphy). The paper describes them as domain-qualified,
-calligraphy-domain raters; the panel is small and partly author-involved, so
-it is not an independent expert cohort. All scores on this cohort are computed from the annotated six-channel masks
-of both instances, with no parser in the loop, so they measure score
-validity without parser error. The ratings are the ASDS development data of
+Arts (Calligraphy). The panel is small, domain-qualified, and partly
+author-involved; it is not an independent expert cohort. The main score
+comparisons use the annotated masks of both instances, and the paired
+direct-ink control uses thresholded source rasters. Neither includes parser
+inference, so these comparisons assess score validity without parser error.
+The ratings are the ASDS development data of
 Sect.~\ref{sec:setup-human}, not an external test set.

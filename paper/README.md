@@ -41,6 +41,17 @@ PDF from being mistaken for the current source. Audited frozen snapshots are
 stored under `releases/<date>/`; routine builds should be downloaded from the
 corresponding GitHub Actions run.
 
+Revision log:
+
+- `2026-09-17` *submission*: Introduction opening sentence on calligraphy as
+  traditional Chinese culture and its script styles; in-figure and
+  body-text explanation for Fig. 3; tightened float spacing so the
+  manuscript stays within 20 pages. See `REVISION_2026-09-17.md` and
+  `releases/2026-09-17-submission/`.
+- `2026-09-05` Fable 5.1 revision: redrawn Figs. 2, 3, and 6. See
+  `REVISION_2026-09-05.md`.
+- `2026-08-22` v2 and `2026-08-21`: earlier audited drafts.
+
 The three-author branch and review procedure is documented in
 `COLLABORATION.md`. Do not edit the GitHub and online-editor copies
 independently; merge accepted edits into GitHub before starting another
@@ -144,35 +155,34 @@ This command writes vector PDF, high-resolution PNG, and
 its builder requires all six formal checkpoints and validates every recorded
 SHA-256 before using either inference or a prediction cache.
 
-The manuscript includes the redrawn vector versions in `figures/redrawn/`
-(same file stems). Each `figures/redraw/redraw_<stem>.py` script recovers the
-glyph and mask panels pixel-exactly from the frozen high-resolution PNG in
-`figures/`, recomposes them with native vector typography at the two-column
-text width (6.3 in), and prints only numbers taken from
-`figure_provenance_manifest.json` and the frozen result files; the scatter
-panels of Fig. 6 are plotted from `artifacts/paper_ijdar/direct_ink_asds/`.
-Rebuild them with (requires matplotlib, numpy, Pillow, and fontTools; the
-Latin Modern Sans OpenType fonts shipped with TeX Live and the WenQuanYi Zen Hei
-font must be installed; the two Latin Modern faces are converted once to
-TrueType outlines in `figures/redraw/fonts/`, ignored by Git, so that the PDFs
-embed conformant CID TrueType fonts):
+The active manuscript uses the retained vector figures in `figures/redrawn/`
+and the 2026-09-05 revisions of manuscript Figures 2, 3, and 6 in
+`figures/revision/`. The new revisions provide native vector text and
+reproducible Python builders:
 
-```powershell
-cd paper/figures/redraw
-python redraw_figure1_pipeline.py   # likewise for the other six stems
+```bash
+python paper/figures/revision/build_figure2.py
+python paper/figures/revision/build_figure3.py
+python paper/figures/revision/build_figure6.py
 ```
 
-The 2026-09-03 redesign applies one design system to all seven figures
-(`figures/redraw/toolkit.py`): Latin Modern Sans, bold lowercase panel
-letters, 0.5 pt rules, one unframed chip legend per figure, and semantic
-colours only (vec1--vec5 unchanged; simultaneous labels black; overlap dark
-neutral; missing reference ink blue with a dashed outline or hatch; extra
-candidate ink red with a solid outline or counter-hatch; endpoints cyan).
-Every colour is paired with a non-colour cue so grayscale prints survive.
-`figures/redrawn/qa/` holds the QA deliverables: `FIGURE_QA_REPORT.md`/`.pdf`,
-the before/after contact sheet, grayscale versions, printed-size previews, and
-`qa_metrics.json`; regenerate them with `python figures/redraw/qa_report.py`
-after compiling the manuscript.
+Run these commands from the repository root. They use the frozen PDF image
+objects and, for Figure 6, the tracked 150-pair result table. They do not
+require missing image datasets or model checkpoints. Each builder records
+source hashes and the mapping of original tiles to revised panels. They
+recompose existing observations; they do not revalidate the underlying masks.
+
+The historical `figures/redraw/` scripts named in the previous README are
+not present in this checkout. Their outputs in `figures/redrawn/` remain
+frozen. Do not claim that all seven historical figures can be regenerated
+from the missing scripts. Current revision notes document this boundary.
+
+The revisions retain the semantic channel colours and use sans-serif vector
+labels, direct channel names, and a restrained hierarchy. Figure 2 groups
+annotation sources, overlapping labels, and the six channels into three
+panels. Figure 3 separates quality control, the 40 project identities, and
+all seven external cross-style pairs. Figure 6 retains all 150 observations
+and distinguishes observed association from formal equivalence.
 
 The frozen renders in `figures/` are kept unchanged as the provenance source.
 
@@ -237,10 +247,13 @@ Seven formal figures are used, numbered by first reference: the pipeline and
 motivating pair (Fig. 1, Introduction), the six-channel annotation contract
 (Fig. 2, Data Resources), the corpus/QC/library overview (Fig. 3, Data
 Resources), and one figure per research question (Figs. 4--7). Table 1
-summarizes the data cohorts and their label status. Figure file names keep
-their pre-2026-09-02 numbering: `figures/figure3_channel_definition.*` is
-manuscript Fig. 2 and `figures/figure2_dataset_overview.*` is manuscript
-Fig. 3; `figure_provenance_manifest.json` uses the file names. Supplementary
+summarizes the data cohorts and their label status. Frozen source filenames keep their pre-2026-09-02 numbering:
+`figures/figure3_channel_definition.*` is manuscript Fig. 2 and
+`figures/figure2_dataset_overview.*` is manuscript Fig. 3. The new
+`figures/revision/figure2_channel_definition.*` and
+`figures/revision/figure3_dataset_overview.*` use the manuscript numbering.
+The legacy provenance manifest uses the frozen file names; each revision
+has a separate provenance record. Supplementary
 tables live only in `tables/supplementary_*.tex`. The supplementary PDF
 contains the full perturbation statistics (S1), the perturbation-level
 alignment ablation (S2), the inactive-channel audit (S3), the cross-reference test (S4), the ASDS

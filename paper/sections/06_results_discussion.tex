@@ -1,12 +1,9 @@
 \section{Results and Discussion by Research Question}
 \label{sec:results}
 
-Each subsection names the experiments it draws on, reports and interprets
-the results, and closes with a direct answer to the research question and
-the boundary of the corresponding contribution. All values are computed
-from frozen experiment artifacts; Online Resource~1, Note~S6, lists the integrity hashes of those included in the
-code release, and none was adjusted after
-inspection.
+Results are organized by research question. All reported values come from
+frozen experiment artifacts; Online Resource~1, Note~S6, lists the integrity
+hashes of those included in the code release.
 
 \subsection{RQ1 (representation and generalization)}
 \label{sec:rq1}
@@ -23,7 +20,7 @@ On the standard split, DeepLabV3+ obtains the highest direction Macro Dice
 (\(0.8443\pm0.0028\)). U-Net is weaker on direction and boundary
 metrics yet gives the best strict endpoint F1 (\(0.7562\pm0.0038\)). Dense
 direction segmentation and sparse endpoint localization therefore favour
-different architectures.
+different model configurations.
 
 
 
@@ -36,7 +33,10 @@ percentage points, versus 9.664 for DeepLabV3+ and 9.360 for U-Net.
 DeepLabV3+ remains second for direction overlap, and U-Net retains the
 highest strict endpoint F1 (\(0.6972\pm0.0045\)). Near-saturated in-corpus
 overlap thus does not imply transfer to unseen character structures, and the
-architecture that transfers best is not the one that fits the corpus best.
+best-performing configuration on held-out identities differs from the
+standard-split leader. These comparisons include the initialization and
+training choices of Sect.~\ref{sec:setup-parser}, rather than isolating
+architecture alone.
 
 \begin{figure*}[!t]
   \centering
@@ -62,17 +62,12 @@ characteristic of an identity absent from training.
 
 \medskip
 \noindent\textbf{Answer to RQ1.}
-Trained on the 530- and 539-sample training partitions of a 769-sample
-quality-controlled corpus, all three parsers reach in-corpus Macro Dice of at least 0.9196; agreement
-at multi-label crossing pixels is not measured separately and is shown only
-qualitatively in Fig.~\ref{fig:segmentation-qualitative}; strict endpoint localization is harder
-(best F1 0.7562). Holding out identities costs between 7.150 and
-9.664 Macro-Dice points. The best model depends on the target and on the
-protocol: DeepLabV3+ for in-corpus direction parsing, SegFormer-B2 for
-unseen-character direction parsing, and U-Net for strict endpoints. No
-architecture is best on every metric of both split protocols. This is the first contribution; its
-boundary is that character-disjoint evaluation measures transfer to unseen
-identities within one acquisition source, not to unseen writers.
+The best model configuration depends on the target and split:
+DeepLabV3+ leads in-corpus direction parsing, SegFormer-B2 unseen-character
+direction parsing, and U-Net strict endpoint localization. Holding out
+identities costs 7.150--9.664 Macro-Dice points. Crossing agreement is shown
+qualitatively, not measured separately; character-disjoint testing measures
+transfer within one acquisition source, not to unseen writers.
 
 \subsection{RQ2 (registration and score behaviour)}
 \label{sec:rq2}
@@ -99,16 +94,16 @@ monotonic in severity.
 
 The paired comparison isolates what registration buys. Relative to no
 alignment, the constrained search reduces the nuisance penalty by 30.118
-points (reference-bootstrap 95\% CI 29.506--30.727) and simultaneously
-preserves 11.189 additional points of structural penalty (10.094--12.322);
+points (reference-bootstrap 95\% CI 29.506--30.727) and increases the penalty
+for the tested structural interventions by 11.189 points (10.094--12.322);
 both per-reference signed-rank comparisons are nonzero with rank-biserial
 effect size 1.0. Without alignment the same structural edits cost only 3.677 points on
 average against 14.865 under registration
 (Fig.~\ref{fig:alignment-ablation}c), so the constrained search does not
 suppress structural penalties; part of the increase may reflect the centroid-derived translation re-fitting
-the whole reference after a local edit. The wider search incurs a 2.896-point higher nuisance
+the whole reference after a local edit. The wider, coarser search incurs a 2.896-point higher nuisance
 penalty (2.757--3.034) while preserving only 0.284
-additional points of structural penalty, so enlarging the transform range
+additional points of structural penalty. This tested search configuration
 does not improve the measured trade-off (perturbation-level results in
 Online Resource~1, Table~S2).
 
@@ -149,16 +144,12 @@ positive set and the missing same-style condition preclude a broader claim.
 
 \medskip
 \noindent\textbf{Answer to RQ2.}
-Relative to no alignment, the constrained similarity registration
-substantially reduces nuisance sensitivity (30.118 points) while preserving
-structural penalties (11.189 additional points), and the wider search does
-not improve this trade-off. The claim is relative and bounded: rotation and
-scale retain residual penalties, and the scale-up and compound summaries are
-conditional on clipping-safe references. On real references the frozen
-score separates same-character from different-character pairs, but its
-macro overlap rewards channels that are empty in both images, so
-label-coverage semantics must be audited whenever the active multi-label set
-varies across samples. This is the second contribution.
+Constrained registration reduces nuisance penalties while retaining
+sensitivity to structural edits. The tested wider, coarser search does not
+improve this trade-off. Residual rotation and scale penalties and clipping
+exclusions bound the claim. The cross-reference test shows same-character
+signal, while the inactive-channel audit exposes credit for absent
+structure, motivating explicit coverage semantics.
 
 \subsection{RQ3 (human validity)}
 \label{sec:rq3}
@@ -199,45 +190,44 @@ the ratings, so neither value is an external or prospective confirmation.
 
 \input{tables/direct_ink_asds}
 
-The direct-ink control settles what the six-channel masks contribute to
-this scalar. Annotated-mask-union and direct-ink ASDS reach
+The direct-ink control tests whether an annotated-mask union improves ASDS
+association over thresholded source ink. Annotated-mask-union and direct-ink ASDS reach
 \(\rho=0.55623\) and \(0.55583\);
 their difference is \(\Delta\rho=0.00040\) (95\% CI
 \(-0.01011\)--\(0.01030\); Table~\ref{tab:direct-ink-asds} rounds to
 three decimals), and the two score vectors have rank association 0.9973
-(Fig.~\ref{fig:asds-direct-ink}). On clean direct-digital input, ASDS is a silhouette score for which
-thresholded ink and the annotated-mask union are interchangeable.
+(Fig.~\ref{fig:asds-direct-ink}). On these clean direct-digital development pairs, thresholded ink and the
+annotated-mask union yield closely matched human associations and score
+rankings. This result supports the silhouette interpretation of ASDS, but
+does not establish formal equivalence or transfer to degraded input.
 
-\begin{figure*}[!t]
+\begin{figure*}[p]
   \centering
-  \includegraphics[width=\textwidth]{figures/redrawn/figure6_asds_direct_ink.pdf}
-  \caption{ASDS mechanism and direct-ink control. Panels (a)--(f) decompose
-  one natural pair into aligned silhouettes, polar and \(3\times3\)
-  occupancy differences (darker cells mark larger
-  \(|\text{candidate}-\text{reference}|\)), projection profiles (candidate
-  red, reference blue; rows solid, columns dashed), and the frozen formula; panel (g) plots the 150-pair comparison: mean human rating against the annotated-mask-union ASDS (the union of the five annotated direction masks of the project samples, not a parser output) and against the direct-ink ASDS, and the two scores against each other; the filled marker is the pair shown
-  in (a)--(f) and the dashed line the identity. The two inputs have nearly
-  identical human association and score ordering.}
+  \includegraphics[width=\textwidth]{figures/revision/figure6_asds_direct_ink.pdf}
+  \caption{ASDS mechanism and direct-ink control. (a)--(b)~A natural pair
+  and its aligned silhouettes. (c)--(d)~Absolute polar (four radial by eight
+  angular bins) and \(3\times3\) occupancy differences, each normalized
+  to its own maximum; intensities are not comparable between maps.
+  (e)~Projection profiles: rows solid, columns dashed; candidate red,
+  reference blue. (f)~Frozen formula and example score. (g)~All 150 pairs
+  from 40 identities. Annotated-mask union uses five manual direction masks,
+  not parser predictions. Brackets are character-cluster bootstrap 95\% CIs;
+  \(\Delta\rho\) is annotated-mask-union minus direct-ink association.
+  Filled points identify the example; the right-hand dashed line is the
+  identity. Observed associations and rankings are closely matched.}
   \label{fig:asds-direct-ink}
 \end{figure*}
 
 \medskip
 \noindent\textbf{Answer to RQ3.}
-Blinded ratings of same-character structural similarity associate modestly
-with the frozen production score (\(\rho=0.297\)), more strongly with the
-coverage-aware score (0.429), and most strongly with ASDS (0.556 in
-retrospective development; 0.540 under character-grouped internal
-validation, where its advantage over the coverage-aware score is not
-resolved, paired 95\% CI \(-0.003\)--0.224). The ASDS scalar does not depend on six-channel parsing: computed from
-thresholded ink or from the union of the annotated direction masks, it is
-equivalent within \(\Delta\rho=0.0004\). The scalar therefore cannot
-justify the parser. The parser's role is to supply the direction-level,
-overlap, endpoint, and localized evidence that a silhouette cannot; its
-accuracy is measured in RQ1 and the reliability of its localized outputs in
-RQ4. This is the
-third contribution. Its boundary is that the supported construct is
-human-audited structural agreement judged by three domain-qualified raters,
-two of them authors, on one retrospective cohort; it is not an aesthetic grade.
+ASDS has the strongest observed human association, but its internally
+validated advantage over the coverage-aware score remains unresolved
+(paired 95\% CI \(-0.003\)--0.224). Its silhouette formulation and the
+direct-ink control separate scalar agreement from the parser's role in
+direction and endpoint evidence. RQ1 evaluates parser accuracy; RQ4 tests
+the downstream diagnostic mechanism under controlled mask interventions.
+Human validity remains limited to structural agreement on one retrospective
+cohort with three raters, two of them authors.
 
 \subsection{RQ4 (localized diagnosis)}
 \label{sec:rq4}
@@ -248,46 +238,35 @@ Fig.~\ref{fig:diagnostic-cases}).
 
 \input{tables/feedback_failure_taxonomy}
 
-Required Recall@3 is 0.701, whereas exact grid localization is 0.109. Among
-exact-region failures, 53.9\% arise because the true change spans several
-cells and the metric demands a single exact cell, 24.6\% attribute the
-finding to the wrong direction channel, and 20.1\% omit the local finding
-from the top three. Figure~\ref{fig:diagnostic-cases} shows one exact
+Required Recall@3 is 0.701, whereas exact grid localization is 0.109. Under the fixed-order taxonomy, 53.9\% of exact-region failures are assigned
+to multi-cell or grid-boundary truth, 24.6\% to wrong direction attribution,
+and 20.1\% to a local finding absent from the top three. Figure~\ref{fig:diagnostic-cases} shows one exact
 success and one audited failure of the first kind: the returned cell
 overlaps the multi-cell change, and the frozen metric still records a
-failure. The dominant failure is thus a mismatch between the localization
-representation and the evaluation metric, and the second is direction
-attribution; neither is a wording problem.
+failure. The largest assigned category therefore reflects a mismatch between
+spatial extent and the exact-cell metric, followed by direction attribution.
+These categories concern structured evidence rather than wording.
 
-\begin{figure*}[!t]
+\begin{figure*}[p]
   \centering
   \includegraphics[width=\textwidth]{figures/redrawn/figure7_diagnostic_cases.pdf}
-  \caption{Frozen diagnostic evidence: one exact-localization success and one
-  audited failure caused by multi-cell truth under an exact-one-cell metric.
-  Findings are printed as finding type~$|$ direction channel~$|$
-  missing/extra type~$|$ cell, where rXcY indexes the row and column of the
-  \(3\times3\) grid and \texttt{user} denotes the candidate
-  (Sect.~\ref{sec:method}). Dark grey denotes overlap, blue (dashed outline) missing reference ink,
-  and red (solid outline) extra candidate ink; a solid black frame encloses
-  the truth cells and a dashed black frame the predicted cell. Each card
-  states the audit verdict, the returned findings, and the truth. The bottom
-  strip restates the primary-cause taxonomy of
-  Table~\ref{tab:feedback-failures} over the 3,565 exact-region failures;
-  case (b) belongs to its largest class.}
+  \caption{Frozen diagnostic evidence: (a)~an exact-localization success
+  and (b)~multi-cell truth classified as failure by the exact-one-cell metric.
+  Findings report type~$|$ direction~$|$ missing/extra~$|$ cell; rXcY indexes
+  the \(3\times3\) grid and \texttt{user} denotes the candidate.
+  Dark grey is overlap, blue (dashed) missing reference ink, and red (solid)
+  extra candidate ink. Solid and dashed black frames mark truth and predicted
+  cells, respectively. Cards state the findings, truth, and audit verdict.
+  The bottom strip summarizes Table~\ref{tab:feedback-failures} over
+  3,565 exact-region failures; case (b) is in the largest assigned category.}
   \label{fig:diagnostic-cases}
 \end{figure*}
 
 \medskip
 \noindent\textbf{Answer to RQ4.}
-The evidence layer usually surfaces the required finding (Recall@3 of
-0.701) but does not reliably pin it to one \(3\times3\) cell (0.109).
-Among the exact-cell failures, single-cell scoring of multi-cell truth and
-wrong direction attribution dominate; a wrong missing/extra type is the
-primary cause of only 1.1\%, a lower bound on type errors because each
-failure carries one cause in a fixed order. This is the fourth contribution: a diagnostic
-failure taxonomy that separates structured evidence from language
-realization. The direction-level findings evaluated here, together with the endpoint
-agreement measured in RQ1, are precisely the outputs that the direct-ink
-control of RQ3 cannot provide. Because the truth
-is an engineered intervention rather than a teacher's judgment, the result
-bounds the mechanism, not pedagogical usefulness.
+The evidence layer usually surfaces the required finding but does not
+reliably assign it to one \(3\times3\) cell. Multi-cell truth and direction
+attribution dominate the assigned failures. Wrong missing/extra type is the
+primary category in 1.1\%, a lower bound under the fixed-order taxonomy.
+These controlled interventions evaluate the diagnostic mechanism, not
+teacher agreement or pedagogical usefulness.

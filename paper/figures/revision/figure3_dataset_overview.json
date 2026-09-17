@@ -1,0 +1,947 @@
+{
+  "schema_version": 1,
+  "figure": "manuscript Figure 3",
+  "source_pdf": "paper\\figures\\redrawn\\figure2_dataset_overview.pdf",
+  "source_pdf_sha256": "3429f0c500e68fb661a67af08963968cae39eb1e2df415e7a77c459bc87aead7",
+  "source_manifest_sha256": "e1f49517613f7515983df91549f133dc7e117001badb29bf67cff377fba470c9",
+  "character_map_sha256": "d9426c8dd50f4ea067ddb41aa428768f611ee540d76259764a84badd402628ba",
+  "size_inches": [
+    6.3,
+    4.35
+  ],
+  "latin_font": "Arial",
+  "chinese_font": {
+    "source_pdf_xref": 87,
+    "sha256": "3aaa4390d177a4c9e0f9b75367348d81d193f5e86998f17c4ec3d4155a76c423",
+    "family": "WenQuanYi Zen Hei",
+    "note": "Existing PDF's Chinese subset; also embedded into SVG."
+  },
+  "image_integrity": {
+    "source": "Decoded image XObjects from the existing frozen figure PDF.",
+    "crop": "Unchanged; no additional crop or padding in source arrays.",
+    "intensity_adjustment": "None",
+    "pixel_resampling": "None in embedded source arrays; nearest/no interpolation for display.",
+    "selection": "All original 40 representatives and all original seven reference pairs.",
+    "omitted_panels": "Only four repeated acquisition illustrations; explained in Figure 2."
+  },
+  "qc": {
+    "recovered": 894,
+    "missing_mapping": 54,
+    "complete": 840,
+    "mismatches": 12,
+    "duplicate_noncanonical": 59,
+    "clean": 769,
+    "identity_count": 40,
+    "source": "Data Resources subsection, frozen counts; no recomputation.",
+    "check": "894 - 54 = 840; 840 - 12 - 59 = 769"
+  },
+  "images": [
+    {
+      "xref": 17,
+      "native_width": 130,
+      "native_height": 124,
+      "decoded_rgb_sha256": "1f939c1a111e216ed3d0fca97eb1518cf18faec6100307ec77d1a957c485ecc9",
+      "extracted_image_sha256": "179bbc403ba3413e5d65995eb1e069ccf789cff763668e6c246d6a21940cff59",
+      "display_inches": [
+        0.33548387096774196,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 0,
+      "target_char": "禾",
+      "sample_id": "0/0"
+    },
+    {
+      "xref": 18,
+      "native_width": 106,
+      "native_height": 124,
+      "decoded_rgb_sha256": "5ffce2e7323456e1e114c5b939cf32cb3f7f54e9f2e921900452d6d21849182f",
+      "extracted_image_sha256": "57bdc237b6f7d6f1b83594cdbcd15ad7edeaa1287782e6a82b0d4fa787f8ee77",
+      "display_inches": [
+        0.2735483870967742,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 1,
+      "target_char": "汗",
+      "sample_id": "1/0"
+    },
+    {
+      "xref": 19,
+      "native_width": 204,
+      "native_height": 119,
+      "decoded_rgb_sha256": "24baa43000473df474fca065f75820a9a2c8fa6b96d66a6d53e0c89a7a5327ec",
+      "extracted_image_sha256": "a4ed1c10d0510736ac4df0806d2a6462fe8fc45c00ddd6dce31b099da5e2ad64",
+      "display_inches": [
+        0.535,
+        0.3120833333333333
+      ],
+      "effective_resolution_ppi": 381.31,
+      "panel": "b",
+      "identity": 2,
+      "target_char": "心",
+      "sample_id": "2/0"
+    },
+    {
+      "xref": 20,
+      "native_width": 104,
+      "native_height": 124,
+      "decoded_rgb_sha256": "b5eb9b0ef06c8ca0dbf1c0c12f214bb5776cabf0eea76013410ea394d99eede0",
+      "extracted_image_sha256": "dc03c8a944bfc4d85c395cc02636a084f7b82cbcbc37e3f9f49bf84eca0f0baf",
+      "display_inches": [
+        0.26838709677419353,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 3,
+      "target_char": "火",
+      "sample_id": "3/0"
+    },
+    {
+      "xref": 21,
+      "native_width": 146,
+      "native_height": 124,
+      "decoded_rgb_sha256": "81372a05fcc92c58985aaa9aa721974f14208e99d1a36079314e221e288d2117",
+      "extracted_image_sha256": "954bbe6133784c38dcc7e7899aac967172c6882009ddd480b0acd262cb5017d8",
+      "display_inches": [
+        0.3767741935483871,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 4,
+      "target_char": "粒",
+      "sample_id": "4/0"
+    },
+    {
+      "xref": 22,
+      "native_width": 106,
+      "native_height": 124,
+      "decoded_rgb_sha256": "e16d12bddbe75c65a491b5a6b65515ef45a555d2b3068aad0556fa94299106bc",
+      "extracted_image_sha256": "3bc391949f2c2715e52d002d989361ed13c05b90b4ba03780198c316110c1fdf",
+      "display_inches": [
+        0.2735483870967742,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 5,
+      "target_char": "梓",
+      "sample_id": "5/0"
+    },
+    {
+      "xref": 23,
+      "native_width": 84,
+      "native_height": 124,
+      "decoded_rgb_sha256": "6b719300330ed89999ee0f3b13d21ebd1b40ba48a523d710cc3d92c559f2c8b5",
+      "extracted_image_sha256": "85d9ccfb1b3217a9cf3c37c2ea17866cf3230f11a019c0c8d75fbed8aacbaeec",
+      "display_inches": [
+        0.2167741935483871,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 6,
+      "target_char": "苦",
+      "sample_id": "6/0"
+    },
+    {
+      "xref": 24,
+      "native_width": 120,
+      "native_height": 124,
+      "decoded_rgb_sha256": "19b7dd1883969ad5727a10e43032423be464217062fceef37172267710d897c8",
+      "extracted_image_sha256": "b9e11a5ea78514d7a1410cde88a8cc332110414131626d0f9eee89a527b8b65e",
+      "display_inches": [
+        0.3096774193548387,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 7,
+      "target_char": "头",
+      "sample_id": "7/0"
+    },
+    {
+      "xref": 25,
+      "native_width": 98,
+      "native_height": 124,
+      "decoded_rgb_sha256": "552a0a01ce91bded3afc720a5c53f60362877e10374f1be30fc47b1a2cda3250",
+      "extracted_image_sha256": "c852b964bd599042846017bfd3a84dfba8922614c8bf8e358efb056cdd6a6861",
+      "display_inches": [
+        0.25290322580645164,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 8,
+      "target_char": "手",
+      "sample_id": "8/0"
+    },
+    {
+      "xref": 26,
+      "native_width": 120,
+      "native_height": 124,
+      "decoded_rgb_sha256": "423e9e33aaac53b730366b72fb28720a9a0088354eb56faea14ea457c5024bc1",
+      "extracted_image_sha256": "941045dcc4e74bcb07788bab967872d809f6d6777266cc2d793eefebe34fe8d1",
+      "display_inches": [
+        0.3096774193548387,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 9,
+      "target_char": "划",
+      "sample_id": "9/0"
+    },
+    {
+      "xref": 27,
+      "native_width": 168,
+      "native_height": 124,
+      "decoded_rgb_sha256": "666b26018ebff3dbaf269b844bfb48fe26841b4a8670aa11a7b6a9d90b20cf5a",
+      "extracted_image_sha256": "a29cc377249efb9ffa7a7a7d1ace8b3ba05ffd0832b3ba0ab6c0f9efabf4aac6",
+      "display_inches": [
+        0.4335483870967742,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 10,
+      "target_char": "水",
+      "sample_id": "10/0"
+    },
+    {
+      "xref": 28,
+      "native_width": 96,
+      "native_height": 124,
+      "decoded_rgb_sha256": "595c0c8cb279d8390dcc190557f078bf622e913834b937d52e24903e5305b20e",
+      "extracted_image_sha256": "cbbf3eb557b93d3e07083f865d9e79efa8c1f0474d60f0a2b4fc88f490620fd8",
+      "display_inches": [
+        0.24774193548387097,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 11,
+      "target_char": "李",
+      "sample_id": "11/0"
+    },
+    {
+      "xref": 29,
+      "native_width": 98,
+      "native_height": 124,
+      "decoded_rgb_sha256": "38457f1b2578dd9c9ca6057d184e91f4c89ffa123ef87496f1872f9371c7f510",
+      "extracted_image_sha256": "0a8d794505be7244af20c3093ff34471574777816b41563dde6a271113e13d62",
+      "display_inches": [
+        0.25290322580645164,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 12,
+      "target_char": "云",
+      "sample_id": "12/0"
+    },
+    {
+      "xref": 30,
+      "native_width": 112,
+      "native_height": 124,
+      "decoded_rgb_sha256": "2b05b070a69a4b99ca4760d245b797bb09c567c327364f33e5e612024a813b8d",
+      "extracted_image_sha256": "54d6b4205ba7b3301b5a30d4226ab7ae0747908c7de7bc6dec3b94f6eb736c28",
+      "display_inches": [
+        0.28903225806451616,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 13,
+      "target_char": "冷",
+      "sample_id": "13/0"
+    },
+    {
+      "xref": 31,
+      "native_width": 146,
+      "native_height": 124,
+      "decoded_rgb_sha256": "411794ce1e42448f738f8f3d780f1a696a7e62e72fa07894b24d7239a52c3e58",
+      "extracted_image_sha256": "cbbf925c9105efb81d3c834567d2e09effa413bcb1cbe7202e30b54d431a2459",
+      "display_inches": [
+        0.3767741935483871,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 14,
+      "target_char": "风",
+      "sample_id": "14/0"
+    },
+    {
+      "xref": 32,
+      "native_width": 108,
+      "native_height": 124,
+      "decoded_rgb_sha256": "8983ebb61e8dfe6bc8fba884299c7a37a85bb0ab0a2f3a4456db43b5e2f08ca4",
+      "extracted_image_sha256": "0afa58f02cf57045dc882e1079fa37566f0c709295ff5cf536f89af1bd6a169d",
+      "display_inches": [
+        0.2787096774193548,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 15,
+      "target_char": "外",
+      "sample_id": "15/0"
+    },
+    {
+      "xref": 33,
+      "native_width": 168,
+      "native_height": 124,
+      "decoded_rgb_sha256": "f0a357665d583b99e1eb439909e0207907e54f1f6f745eb6a9a31f60a2a8725b",
+      "extracted_image_sha256": "e87a3b19100204dfa45d68ffa53fcdceeb381f5917c6eb771ab8aa365ca1b58a",
+      "display_inches": [
+        0.4335483870967742,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 16,
+      "target_char": "比",
+      "sample_id": "16/0"
+    },
+    {
+      "xref": 34,
+      "native_width": 116,
+      "native_height": 124,
+      "decoded_rgb_sha256": "781aec28d942f213de13cba07aadffc2337dbf71f3bdf8ab825c7f1b491509c9",
+      "extracted_image_sha256": "be2c2d3c92d8afa1ad6e09b1165bc278289aefd0258f413168aa17c5c6d87501",
+      "display_inches": [
+        0.29935483870967744,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 17,
+      "target_char": "的",
+      "sample_id": "17/0"
+    },
+    {
+      "xref": 35,
+      "native_width": 86,
+      "native_height": 124,
+      "decoded_rgb_sha256": "15d381ae092fcf304abf16f493a1c4f473c0c45f609fbfc518730087dce2355a",
+      "extracted_image_sha256": "bff1aafb9793794db908708c6df96809255ae15a670818a2479fef54d66b5e0f",
+      "display_inches": [
+        0.22193548387096773,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 18,
+      "target_char": "事",
+      "sample_id": "18/0"
+    },
+    {
+      "xref": 36,
+      "native_width": 108,
+      "native_height": 124,
+      "decoded_rgb_sha256": "334ec72be5fd42a7daa78b8fc9536103b5ae2222af474e1dcfd43251a6931e0c",
+      "extracted_image_sha256": "44d77166212f7539c069c7b5f5f12501ec4834c666ac61ca503c01611407ee90",
+      "display_inches": [
+        0.2787096774193548,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 19,
+      "target_char": "餐",
+      "sample_id": "19/0"
+    },
+    {
+      "xref": 37,
+      "native_width": 76,
+      "native_height": 124,
+      "decoded_rgb_sha256": "1965d72c3efb3de7f247e7e64fc8151b956818be8f759d3e079fb92b30363d0e",
+      "extracted_image_sha256": "f68abc3a652a841834e48ae33146ad0c44d01d029ab026fcbecafa57d7431885",
+      "display_inches": [
+        0.19612903225806452,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 20,
+      "target_char": "卢",
+      "sample_id": "20/0"
+    },
+    {
+      "xref": 38,
+      "native_width": 122,
+      "native_height": 124,
+      "decoded_rgb_sha256": "8d4d64bb1a17d640477068009689ccb52db536f0a16a2229b267dc531788306b",
+      "extracted_image_sha256": "47976ec1c9700bd0448879b4d292fdc287f313052a72a366a89871e54b48ff8c",
+      "display_inches": [
+        0.31483870967741934,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 21,
+      "target_char": "文",
+      "sample_id": "21/0"
+    },
+    {
+      "xref": 39,
+      "native_width": 108,
+      "native_height": 124,
+      "decoded_rgb_sha256": "eea65dbef453ef9e89b426f55cf7fa8d3ab7d323dce53c7f611a4477361260a2",
+      "extracted_image_sha256": "74025962859f028123d060ac2fcb0b3f94523103d66fca9ab022738698903b9d",
+      "display_inches": [
+        0.2787096774193548,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 22,
+      "target_char": "仃",
+      "sample_id": "22/0"
+    },
+    {
+      "xref": 40,
+      "native_width": 142,
+      "native_height": 124,
+      "decoded_rgb_sha256": "dd001000683913d42ed96a346f1520a0a3bd7bb9e3dfe24294038324a0f30cab",
+      "extracted_image_sha256": "59d0f4a2d5a1552d5f9d469f8e2480cd03744c80d421bd79cd823c432807e14a",
+      "display_inches": [
+        0.3664516129032258,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 23,
+      "target_char": "杆",
+      "sample_id": "23/0"
+    },
+    {
+      "xref": 41,
+      "native_width": 102,
+      "native_height": 124,
+      "decoded_rgb_sha256": "7eaf8a522d35eee1c5a187948418036287f76d7ce6e0019828bd837157de6407",
+      "extracted_image_sha256": "e7ce0a0609ed67e732430b72beda00d1a14a57671e8b66b0319018c70d52bf79",
+      "display_inches": [
+        0.2632258064516129,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 24,
+      "target_char": "才",
+      "sample_id": "24/0"
+    },
+    {
+      "xref": 42,
+      "native_width": 104,
+      "native_height": 124,
+      "decoded_rgb_sha256": "92e1bedfe145b26c79d3b1fc99b10b469012cd30894ee8d55f4218f29e41a610",
+      "extracted_image_sha256": "15ad7e595bd01d989b3f34c572732c1fde0ee55d921c5ea8fbc55f845d0857a6",
+      "display_inches": [
+        0.26838709677419353,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 25,
+      "target_char": "尽",
+      "sample_id": "25/0"
+    },
+    {
+      "xref": 43,
+      "native_width": 80,
+      "native_height": 124,
+      "decoded_rgb_sha256": "2793489341ce0efb5607b264cb85f4cd4d25ca55d72361a01525a0fbebad3bed",
+      "extracted_image_sha256": "00211d4e70d9ef26dbe8ba2b0fe2e29f06bacff2a18a6be5df9e06db8e883719",
+      "display_inches": [
+        0.2064516129032258,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 26,
+      "target_char": "半",
+      "sample_id": "26/0"
+    },
+    {
+      "xref": 44,
+      "native_width": 116,
+      "native_height": 124,
+      "decoded_rgb_sha256": "53be77edbf1b28ca894c28f484331281f7c6ff795662f580fbca16d4ba9656ee",
+      "extracted_image_sha256": "6d2ac65a00bc70ab6acbc83ed66857bfbe04b6ef865e96c5d36e595cfc71989d",
+      "display_inches": [
+        0.29935483870967744,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 27,
+      "target_char": "何",
+      "sample_id": "27/0"
+    },
+    {
+      "xref": 45,
+      "native_width": 68,
+      "native_height": 124,
+      "decoded_rgb_sha256": "4546ebadd5590df55a3e9c7193730e98a3a2472a21b9f3ada1102e67e1dd5862",
+      "extracted_image_sha256": "91c490b205e2e01f2a9b83fd12cf53f04c52f50ae5b562cd2840259329fb3b56",
+      "display_inches": [
+        0.17548387096774193,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 28,
+      "target_char": "亲",
+      "sample_id": "28/0"
+    },
+    {
+      "xref": 46,
+      "native_width": 104,
+      "native_height": 124,
+      "decoded_rgb_sha256": "7ae0abde85391009e6677b68e2e38c455210c118c0092282cac35d424d610d3e",
+      "extracted_image_sha256": "fad458216032deaf524b65670736d076a8f0e0406f3588df6ffbbe349c1bebd1",
+      "display_inches": [
+        0.26838709677419353,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 29,
+      "target_char": "走",
+      "sample_id": "29/0"
+    },
+    {
+      "xref": 47,
+      "native_width": 142,
+      "native_height": 124,
+      "decoded_rgb_sha256": "ccc7e28b8b0c166a9fe373caa441c4617fed76e08bddaf5a6ea17971f0a02fa7",
+      "extracted_image_sha256": "598cc45f5ac4f68ca33628aa16da9f30abf502dd43965392dbc2c83d6b599772",
+      "display_inches": [
+        0.3664516129032258,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 30,
+      "target_char": "级",
+      "sample_id": "30/0"
+    },
+    {
+      "xref": 48,
+      "native_width": 92,
+      "native_height": 124,
+      "decoded_rgb_sha256": "e74e2098732ee5019b54a4492f96074d99c1426525174d33a71ee392ca5af18d",
+      "extracted_image_sha256": "26093fa78f33bf93077c0bd2e8fa4e583876a71cd442d99caec766f6ea993e74",
+      "display_inches": [
+        0.23741935483870968,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 31,
+      "target_char": "卖",
+      "sample_id": "31/0"
+    },
+    {
+      "xref": 49,
+      "native_width": 108,
+      "native_height": 124,
+      "decoded_rgb_sha256": "2fb37359fc3e9a947c730c788560edca0aaabf51f8fb756707c48fe53a1cf935",
+      "extracted_image_sha256": "1971f132a7567b021b09471b0ca6f9e8871ff67920e655ea968a4335def02480",
+      "display_inches": [
+        0.2787096774193548,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 32,
+      "target_char": "废",
+      "sample_id": "32/0"
+    },
+    {
+      "xref": 50,
+      "native_width": 102,
+      "native_height": 124,
+      "decoded_rgb_sha256": "6ac777acef2bec3326de05915d41056526310fc97460214e24a80ea6c0d3c9bb",
+      "extracted_image_sha256": "24e9c31c364a0e6401805592e601afeddc58ccc178380df93e93918dd1e6b638",
+      "display_inches": [
+        0.2632258064516129,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 33,
+      "target_char": "鲦",
+      "sample_id": "33/0"
+    },
+    {
+      "xref": 51,
+      "native_width": 90,
+      "native_height": 124,
+      "decoded_rgb_sha256": "35b0ab29f225163f6535b60c107bab55c1e802a2724dabcf9bf62b764910b8c5",
+      "extracted_image_sha256": "65a9fc50713bbf4f97afeaa3246e1fbaf8307dbe23d6a6095fa08405b07bf4b3",
+      "display_inches": [
+        0.23225806451612904,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 34,
+      "target_char": "氢",
+      "sample_id": "34/0"
+    },
+    {
+      "xref": 52,
+      "native_width": 94,
+      "native_height": 124,
+      "decoded_rgb_sha256": "452ac4cbcd2ff8b6025b5221cb7a2699a0f8d72d269aa83950d91451f0701bd7",
+      "extracted_image_sha256": "cc64308a58a639d007f1ed0d5b08f272c0ec739ce52e02ba52862a67fb71c18c",
+      "display_inches": [
+        0.24258064516129033,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 35,
+      "target_char": "陈",
+      "sample_id": "35/0"
+    },
+    {
+      "xref": 53,
+      "native_width": 122,
+      "native_height": 124,
+      "decoded_rgb_sha256": "6554f88935c483d9e3e7ca0c36156ea27b9f8b42b2b36e4b66a91ebe35fdec6c",
+      "extracted_image_sha256": "c9e981f942867ca3ac111a6179a1bd9b31731165859fd89c280a3d9ef4e87c34",
+      "display_inches": [
+        0.31483870967741934,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 36,
+      "target_char": "畅",
+      "sample_id": "36/0"
+    },
+    {
+      "xref": 54,
+      "native_width": 138,
+      "native_height": 124,
+      "decoded_rgb_sha256": "bcd4029d9098469cb3642d534558e170fac4fc01ae7481a54e94e76d20d79f3d",
+      "extracted_image_sha256": "9ba6c813314bdd0b9b30804aff71023f4a824a2f3faef3e0bee3b7d27a5e67e8",
+      "display_inches": [
+        0.3561290322580645,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 37,
+      "target_char": "欢",
+      "sample_id": "37/0"
+    },
+    {
+      "xref": 55,
+      "native_width": 166,
+      "native_height": 124,
+      "decoded_rgb_sha256": "b90128faad57f5684297a5d527207fdc48362b3a23279fed820eb3cd75903674",
+      "extracted_image_sha256": "2642344dad189f4b9a6f6a1dbb5504dea7b5aabe645c0ce4d024dcc281455ab4",
+      "display_inches": [
+        0.42838709677419357,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 38,
+      "target_char": "尴",
+      "sample_id": "38/0"
+    },
+    {
+      "xref": 56,
+      "native_width": 164,
+      "native_height": 124,
+      "decoded_rgb_sha256": "35006324f871cf2ee40eab76163c7143e33cc81245c37976fa847ed6edee029a",
+      "extracted_image_sha256": "a4a97b1aab0f85c6ac26cf25b0728ca27fb3e4c314f42cfddc1a75490d6be200",
+      "display_inches": [
+        0.4232258064516129,
+        0.32
+      ],
+      "effective_resolution_ppi": 387.5,
+      "panel": "b",
+      "identity": 39,
+      "target_char": "她",
+      "sample_id": "39/0"
+    },
+    {
+      "xref": 57,
+      "native_width": 99,
+      "native_height": 132,
+      "decoded_rgb_sha256": "07c9648c63ade89acfefe0902c40b157d2e39d3d7419efec1043d85ddbcc8d03",
+      "extracted_image_sha256": "3cb0bba878ceeafe7f3d2eb52c55db679da2515388aded0d47f210e486df4439",
+      "display_inches": [
+        0.22875,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "regular script",
+      "calligrapher": "Ouyang Xun",
+      "target_char": "嵗",
+      "pair_id": "080936f0a446112ff23f"
+    },
+    {
+      "xref": 58,
+      "native_width": 163,
+      "native_height": 132,
+      "decoded_rgb_sha256": "03653fb6caa5891f90e3b2b677c138348ae8b87df63cdf2b433bebb54fcb7064",
+      "extracted_image_sha256": "40b402e992c5ba0fe94e9520d5d248f0c8b5a2f080d25e5b64d48bc2c114fd47",
+      "display_inches": [
+        0.3766287878787879,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "regular script",
+      "calligrapher": "Ouyang Xun",
+      "target_char": "功",
+      "pair_id": "649252c5a9f3e488d8ab"
+    },
+    {
+      "xref": 59,
+      "native_width": 118,
+      "native_height": 132,
+      "decoded_rgb_sha256": "b3fa6dcb5e82f8c360c9e29309afc580ce1913b01f48e83eca186fba46c65413",
+      "extracted_image_sha256": "4b40c258786cb0e20979d2068e8686d5d27efbdd3b1620dedbf6ee8ce26f062b",
+      "display_inches": [
+        0.27265151515151514,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "regular script",
+      "calligrapher": "Ouyang Xun",
+      "target_char": "亮",
+      "pair_id": "806c8dd63c9c24245b68"
+    },
+    {
+      "xref": 60,
+      "native_width": 120,
+      "native_height": 132,
+      "decoded_rgb_sha256": "b31d320141241ec783f1f989ff95b24c4d7a1b30a3282c7de2038e558d04989d",
+      "extracted_image_sha256": "9e3ba58abc1e6f3638880117889103204d4565aa0fa0f5c71a3bdd003cf8c592",
+      "display_inches": [
+        0.2772727272727273,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "regular script",
+      "calligrapher": "Ouyang Xun",
+      "target_char": "息",
+      "pair_id": "9907da94cfec341f1633"
+    },
+    {
+      "xref": 61,
+      "native_width": 130,
+      "native_height": 132,
+      "decoded_rgb_sha256": "03f16183143340227c002077f81f79e4e8dbd6d46e16e6ce551be617c1c8fa69",
+      "extracted_image_sha256": "27944dacf6bc86d307c87fec2ad4483cb9634b5b58955140eebf66e96db5a936",
+      "display_inches": [
+        0.3003787878787879,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "regular script",
+      "calligrapher": "Ouyang Xun",
+      "target_char": "尉",
+      "pair_id": "d0832d3ecb8fbe7bacc0"
+    },
+    {
+      "xref": 62,
+      "native_width": 127,
+      "native_height": 132,
+      "decoded_rgb_sha256": "cc48af589f172a6439fd8b36b920ebef7f7712cf62a0083376df5878ceca2712",
+      "extracted_image_sha256": "d0e47b0522fc8d527c403a56ee26b00930dcce210c9aac9e1ee82f2a8f7be14f",
+      "display_inches": [
+        0.2934469696969697,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "regular script",
+      "calligrapher": "Ouyang Xun",
+      "target_char": "勅",
+      "pair_id": "d6c12ccb18d7037415c4"
+    },
+    {
+      "xref": 63,
+      "native_width": 105,
+      "native_height": 132,
+      "decoded_rgb_sha256": "15bee5710d831039dda2df9e5ed0a2a6a2e1dd40c935b527bdf07a205c845444",
+      "extracted_image_sha256": "6443f362cbd6097f155464f15123bfe0e161b50f28542d020998af2a174d6dcb",
+      "display_inches": [
+        0.24261363636363636,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "regular script",
+      "calligrapher": "Ouyang Xun",
+      "target_char": "弃",
+      "pair_id": "eaf995355599529b7884"
+    },
+    {
+      "xref": 64,
+      "native_width": 103,
+      "native_height": 132,
+      "decoded_rgb_sha256": "820e8013db6d187a40fa680aa33667187a9389f78b8152299b4c9caa88f7dad1",
+      "extracted_image_sha256": "9ca6f4e6e7c3c4f622c83899f809421079e052d64ce9f8f4a30a52186d3ce818",
+      "display_inches": [
+        0.23799242424242426,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "running script",
+      "calligrapher": "Wang Xizhi",
+      "target_char": "嵗",
+      "pair_id": "080936f0a446112ff23f"
+    },
+    {
+      "xref": 65,
+      "native_width": 180,
+      "native_height": 132,
+      "decoded_rgb_sha256": "0ba100652d501f546fc7afcefb8b27595a44943d6662d0c86068ca80e0f5635d",
+      "extracted_image_sha256": "4c85e562263b2f7ec9202f7a85c784fcb5372f3ff1ee84791831d42f4b6c7760",
+      "display_inches": [
+        0.41590909090909095,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "running script",
+      "calligrapher": "Wang Xizhi",
+      "target_char": "功",
+      "pair_id": "649252c5a9f3e488d8ab"
+    },
+    {
+      "xref": 66,
+      "native_width": 106,
+      "native_height": 132,
+      "decoded_rgb_sha256": "37c5206d32175063525a2cbc9b458d46ef687868c3c7d0148e08af0113254918",
+      "extracted_image_sha256": "a45b532d15703ab903776ca03eb4f8a1f7fed86851e6f8cc120332a5b1431514",
+      "display_inches": [
+        0.24492424242424243,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "running script",
+      "calligrapher": "Wang Xizhi",
+      "target_char": "亮",
+      "pair_id": "806c8dd63c9c24245b68"
+    },
+    {
+      "xref": 67,
+      "native_width": 134,
+      "native_height": 132,
+      "decoded_rgb_sha256": "810a8b8600d110765da4b3ec119b3db3b56a9181bca2a8959c4ba66fb1884ce5",
+      "extracted_image_sha256": "78dca06426ff3e48d2042dda0f556b2739ebc5626a79982de6c3228ece234c78",
+      "display_inches": [
+        0.30962121212121213,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "running script",
+      "calligrapher": "Wang Xizhi",
+      "target_char": "息",
+      "pair_id": "9907da94cfec341f1633"
+    },
+    {
+      "xref": 68,
+      "native_width": 118,
+      "native_height": 132,
+      "decoded_rgb_sha256": "54ad6435637913e646a2d3e5bd1c68c07ecd836813174a381c68a21429eecef7",
+      "extracted_image_sha256": "28ad312d217eee0a89296c98bd148050ed252a82cf980885a079a34a4996070b",
+      "display_inches": [
+        0.27265151515151514,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "running script",
+      "calligrapher": "Wang Xizhi",
+      "target_char": "尉",
+      "pair_id": "d0832d3ecb8fbe7bacc0"
+    },
+    {
+      "xref": 69,
+      "native_width": 93,
+      "native_height": 132,
+      "decoded_rgb_sha256": "33c74e7b193acd42bafa796335326c7875e7555785c078621290159729558c0d",
+      "extracted_image_sha256": "7006d519b5cd0979c611cba15707b022d0b456d9980d27d511bd64e70a79bf02",
+      "display_inches": [
+        0.21488636363636365,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "running script",
+      "calligrapher": "Wang Xizhi",
+      "target_char": "勅",
+      "pair_id": "d6c12ccb18d7037415c4"
+    },
+    {
+      "xref": 70,
+      "native_width": 64,
+      "native_height": 132,
+      "decoded_rgb_sha256": "a5e6657bcf00bedaf053ddf4fbb5f6196407183493a30a77217957c9afc2fc19",
+      "extracted_image_sha256": "83d41872b2b52d8e317f4899411b0bfc0fc5cadd4795619d882c55f672ba58f4",
+      "display_inches": [
+        0.1478787878787879,
+        0.305
+      ],
+      "effective_resolution_ppi": 432.79,
+      "panel": "c",
+      "style": "running script",
+      "calligrapher": "Wang Xizhi",
+      "target_char": "弃",
+      "pair_id": "eaf995355599529b7884"
+    }
+  ],
+  "verification": {
+    "native_rgb_hash_multiset_matches_source": true,
+    "pdf_storage_row_reversals_corrected_by_page_transform": 54,
+    "embedded_images": 54,
+    "all_identity_labels_selectable_in_pdf": true,
+    "final_pdf_inches": [
+      6.3000000847710504,
+      4.350000169542101
+    ],
+    "svg_contains_editable_text": true,
+    "svg_embeds_cjk_font": true,
+    "png_dpi": 600,
+    "counts_reconcile": true,
+    "no_inferential_statistics": true
+  },
+  "outputs": {
+    "pdf": {
+      "file": "figure3_dataset_overview.pdf",
+      "sha256": "e85c8f7bd5e6ac469275826b4204dda0820d4edd438400eb780bf69a05d5a3e1"
+    },
+    "svg": {
+      "file": "figure3_dataset_overview.svg",
+      "sha256": "17ac7c93b2b08f90aed032a86e1521f997793fa304a13d4638fdac407f769d9b"
+    },
+    "png": {
+      "file": "figure3_dataset_overview.png",
+      "sha256": "e2e8d7bdbee60487201f77aa515d0879fd0b2f2a97c8b2d8e3848efcb9b59b2f"
+    }
+  }
+}

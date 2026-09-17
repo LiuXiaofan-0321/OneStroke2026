@@ -1,0 +1,134 @@
+{
+  "figure_contract": {
+    "conclusion": "On this retrospective clean direct-digital cohort, annotated-mask-union and direct-ink ASDS have closely matched observed human associations and score ordering.",
+    "archetype": "schematic-led composite",
+    "backend": "Python/matplotlib",
+    "dimensions_inches": [
+      6.3,
+      3.08
+    ]
+  },
+  "sources": {
+    "paper/figures/figure6_asds_direct_ink.pdf": "8969df2e18e899afc55598036cebfc43dcb37e5463a7d5811f6ca1830bdb40ea",
+    "paper/figures/redrawn/figure6_asds_direct_ink.pdf": "5325daba3e3d13ff6ac1e4948eba01e63a7181c3c028688b265785274a3fd0c0",
+    "artifacts/paper_ijdar/direct_ink_asds/direct_ink_asds_pairs.csv": "a84e135444804b560ae00b5068f2b008782d1023c376d0f70d57fb527d35f6dc",
+    "artifacts/paper_ijdar/direct_ink_asds/direct_ink_asds_report.json": "22159f3981d4a054d2316fd2657bfd99258b083dfb1b71cd47971c9c18e9ba61",
+    "artifacts/paper_ijdar/spatial_score_development/development_features_and_predictions.csv": "a394b442ff9b316d3db806754370394218b6ec050d49bb8777917b851f9a7c54",
+    "paper/figures/revision/build_figure6.py": "f39f39b60b2906847f7c52134c6add8a091ddca27ad877c4441c849046969bc0"
+  },
+  "source_field_mapping": {
+    "parsed_asds_score": "annotated-mask-union ASDS, score/100; legacy column name does not mean model prediction",
+    "direct_ink_asds_score": "thresholded-ink ASDS, score/100",
+    "human_mean": "mean of three human ratings, 1–5",
+    "source_pair_id": "observation identifier",
+    "char_id": "bootstrap cluster"
+  },
+  "observations": {
+    "before": 150,
+    "after": 150,
+    "excluded": 0,
+    "characters": 40,
+    "jitter": false,
+    "downsampling": false
+  },
+  "example": {
+    "source_pair_id": "NAT-18-a8c4efc6a5ce",
+    "selection_rule": "smallest absolute distance of direct-minus-parsed score to cohort median, tie by source_pair_id",
+    "annotated_mask_union_asds": 83.12943175318604,
+    "direct_ink_asds": 82.78523105816166,
+    "human_mean": 3.3333333333333335,
+    "components": {
+      "polar_js_similarity": 0.8086749981375652,
+      "grid_js_similarity": 0.9404873082864169,
+      "projection_js_similarity": 0.827658150617349
+    }
+  },
+  "frozen_image_adaptation": {
+    "natural_pair": {
+      "pdf": "original",
+      "xref": 13,
+      "reference_split_x": [
+        0,
+        287
+      ],
+      "candidate_split_x": [
+        296,
+        583
+      ],
+      "reference_crop": [
+        71,
+        43,
+        231,
+        267
+      ],
+      "candidate_crop": [
+        73,
+        35,
+        195,
+        216
+      ],
+      "adjustments": "blank-margin crop only; no color/contrast changes"
+    },
+    "overlay": {
+      "pdf": "redrawn",
+      "xref": 15,
+      "adjustments": "none; reuse existing red/blue/gray display"
+    },
+    "heatmaps": {
+      "pdf": "original",
+      "xrefs": [
+        15,
+        16
+      ],
+      "adjustments": "exact central RGB of each uniform cell redrawn as vector rectangles; white cell separators added",
+      "colorbars": "normalized display key 0–1; each map is divided by its own maximum by the original vmin=0/autovmax rendering; absolute occupancy maxima unavailable",
+      "underlying_values_reconstructed": false
+    },
+    "projection_profiles": {
+      "pdf": "original",
+      "native_path_count": 4,
+      "source_item_counts": [
+        197,
+        201,
+        141,
+        152
+      ],
+      "source_rectangle_pt": [
+        634.6244506835938,
+        36.720001220703125,
+        765.7403564453125,
+        176.6255645751953
+      ],
+      "adjustments": "native path coordinates affine-remapped into a new rectangle; all four profiles vertically rescaled together for display, preserving relative amplitudes; line widths restyled; no raw probability magnitudes inferred"
+    }
+  },
+  "statistics": {
+    "recomputed_spearman": [
+      0.5562290124897076,
+      0.5558310017217053,
+      0.9973225476687853
+    ],
+    "agrees_with_frozen_report": true,
+    "ci_source": "unchanged frozen character-cluster bootstrap report, 10000 iterations",
+    "paired_difference_ci": [
+      -0.010110434586378761,
+      0.010300613916220183
+    ],
+    "interpretation": "observed closeness, not a formal equivalence test; development-set results"
+  },
+  "qa": {
+    "no_text_outside_canvas": true,
+    "native_text": "editable PDF TrueType / SVG text",
+    "min_label_font_pt": 6.5,
+    "score_callout_font_pt": 12,
+    "raster_export_dpi": 600,
+    "raw_masks_reconstructed": false,
+    "all_150_points_rendered_per_scatter": true
+  },
+  "exports": {
+    "pdf": "1f0daa07ba4d23b3ad44e166d9f66323a15ed1c75446dbd1b466479377f1a849",
+    "svg": "527040dc20c00fc1882e21c439637e2c59bffecf0db3d79d16422c350980aba9",
+    "png": "24629af25561922ad5c0270cebfb52fd9e8f37510d12d8a79949371e1c4c1026",
+    "tiff": "a417dd2b6e3b006e790e4534fd570023a99c3a51007535e17bc202bc89f70811"
+  }
+}

@@ -1,6 +1,6 @@
 # IJDAR Special Issue submission checklist
 
-Status date: 2026-08-22
+Status date: 2026-09-17
 
 ## P0: required before submission
 
@@ -58,6 +58,12 @@ Status date: 2026-08-22
 - [x] Remove every red placeholder.
 - [x] Re-run complete 19-page main-PDF and one-page Supplementary visual
   inspection for the 2026-08-22 second version.
+- [x] Re-run the page-count and overfull-box check for the 2026-09-17
+  submission build: 20 main pages, 4 ESM pages, zero overfull boxes and zero
+  undefined references; snapshot in `releases/2026-09-17-submission/`.
+- [x] Open the manuscript with the cultural framing of calligraphy and its
+  script styles, and make Fig. 3 self-explanatory in both the figure and the
+  body text (2026-09-17).
 - [x] Verify the second-version page count against the Special Issue
   instruction.
 - [x] Keep the final manuscript at or below 20 pages, including references,
