@@ -7,9 +7,9 @@ Submission-ready build of the IJDAR manuscript, prepared for the
 
 | File | Pages | SHA-256 |
 | --- | --- | --- |
-| `OneStroke2026_manuscript_submission.pdf` | 20 | `fd96ca271a5e9932f4142973bec70a15fc32ed81c09fedfc58565e1650bf2003` |
-| `OneStroke2026_ESM_1_submission.pdf` | 4 | `c7382f515c01aeecfe0c1de2a20ffd10d6b81a9dc15f747a3f0c036b30d16267` |
-| `OneStroke2026_online_latex_submission.zip` | 102 entries | `2b794200958ef8f8db50702c38433985691ca0f330981e71e2559ec99a9c4f80` |
+| `OneStroke2026_manuscript_submission.pdf` | 20 | `24dd44ce5ddf31a680246dc089c2722cacf37345e5287d219ec853fdad225011` |
+| `OneStroke2026_ESM_1_submission.pdf` | 4 | `42f3a3579373e8d9c9872c414cd6a81671836f159476871539afcb5479381693` |
+| `OneStroke2026_online_latex_submission.zip` | 108 entries | `961b73f4e050e1d1be374644a01704a3b576b08cb6915ef93c47519cac7a583c` |
 
 The zip is a self-contained LaTeX source package (`manuscript.tex`,
 `ESM_1.tex`, `sn-jnl.cls`, `sn-basic.bst`, `references.bib`, `sections/`,
@@ -26,7 +26,21 @@ The zip is a self-contained LaTeX source package (`manuscript.tex`,
    still differ in the local structure that instruction attends to. The
    existing sentence on legibility versus local structure is retained
    immediately after it, so no claim is duplicated or weakened.
-2. **Figure 3 explanatory text.** Panel (a) now carries the note
+2. **Abstract opening.** The Purpose sentence carries the same framing in
+   condensed form (brush-written art, five script styles, two legible
+   instances that still differ locally). Redundant wording elsewhere in the
+   abstract was trimmed by the same number of words so the abstract stays
+   inside the 150--250 word limit (228 words).
+3. **Figure 1 panel (a).** Panel (a) now shows three of the seven natural
+   same-character cross-style pairs instead of one, with the target character
+   as the row and the style role (Ouyang Xun regular-script reference, Wang
+   Xizhi running-script candidate) as the column. Row 1 is the previously
+   published pair and reuses its frozen tiles unchanged; rows 2 and 3 are the
+   next pairs in the frozen pair file. Panels (b)--(e) are the frozen vector
+   artwork: the builder places the original page, removes the old panel (a) by
+   redaction, and adds only the gallery. At 600 dpi the (b)--(e) region is
+   pixel-identical to the frozen figure, and the page size is unchanged.
+4. **Figure 3 explanatory text.** Panel (a) now carries the note
    "Semantic audit; exclusions frozen before any evaluation", panel (b)
    identifies itself as the training and evaluation corpus, and panel (c)
    is labelled as a separate external library. A short paragraph was added
@@ -34,7 +48,7 @@ The zip is a self-contained LaTeX source package (`manuscript.tex`,
    interpretable without the caption. No sample pixels, counts, or panel
    contents were changed; the builder re-verified all 54 embedded images
    against their source hashes.
-3. **Whitespace and length.** Float and caption separation was tightened
+5. **Whitespace and length.** Float and caption separation was tightened
    (`\textfloatsep`/`\dbltextfloatsep` 9 pt, `\floatsep`/`\dblfloatsep`
    11 pt, `\abovecaptionskip` 2 pt, `\belowcaptionskip` 4 pt) so that the
    two added passages fit without pushing the manuscript past the 20-page
@@ -42,11 +56,14 @@ The zip is a self-contained LaTeX source package (`manuscript.tex`,
 
 ## Build verification
 
-- `pdflatex` + `bibtex` + `pdflatex` + `pdflatex`: 20 pages, no undefined
-  references or citations.
+- `pdflatex` + `bibtex` + `pdflatex` + `pdflatex`: 20 pages, abstract 228
+  words, no undefined references or citations.
 - Zero `Overfull` boxes in `manuscript.log` and `ESM_1.log`.
 - Last text block of the final page ends at 672 pt of 842 pt, i.e. the
   document fills the page without trailing blank space.
+- Figure 1 rebuilt with `figures/revision/build_figure1.py`; panels (b)--(e)
+  are pixel-identical to the frozen figure at 600 dpi and the page size is
+  unchanged.
 - Figure 3 rebuilt with `figures/revision/build_figure3.py`; the builder
   asserts native pixel-hash equality for every embedded tile and reports
   zero text overlaps.

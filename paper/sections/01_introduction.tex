@@ -53,10 +53,14 @@ a document-analysis task exposes four computer-vision challenges.
 
 \begin{figure*}[!t]
   \centering
-  \includegraphics[width=\textwidth]{figures/redrawn/figure1_pipeline.pdf}
-  \caption{Reference-conditioned structural assessment on one same-character
-  pair. (a)~A regular-script reference and a running-script candidate of the
-  same character are recognizable but structurally different. (b)~The candidate
+  \includegraphics[width=\textwidth]{figures/revision/figure1_pipeline.pdf}
+  \caption{Reference-conditioned structural assessment.
+  (a)~Three of the seven natural same-character cross-style pairs of the
+  external reference library (Fig.~\ref{fig:data-resources}c), labelled with
+  their target character; the left column holds the regular-script Ouyang Xun
+  reference and the right column the running-script Wang Xizhi candidate of
+  each pair. Each row is recognizable yet structurally different, and the
+  first row is followed through panels (b)--(e). (b)~The candidate
   is parsed into overlapping direction channels vec1--vec5; the reference
   follows the same procedure. Black pixels carry multiple direction labels,
   and cyan outlines mark endpoints. The framed inset shows the multi-label
@@ -71,7 +75,7 @@ a document-analysis task exposes four computer-vision challenges.
   score, weakest direction family and its Dice, ink IoU, endpoint F1,
   transform, and missing/extra regions. The reported direction Dice belongs
   to that family, rather than the five-channel mean. All evidence is
-  available before text generation. The cross-style pair is illustrative;
+  available before text generation. The cross-style pairs are illustrative;
   the human study uses
   natural same-character, different-instance pairs from the project corpus. Source images: Calli-Tongji open subset \cite{yunmo_jixin_2025},
   CC~BY-NC~4.0.}

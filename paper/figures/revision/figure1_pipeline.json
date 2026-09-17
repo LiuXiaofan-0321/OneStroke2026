@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "figure": "manuscript Figure 1",
+  "source_pdf": "paper/figures/redrawn/figure1_pipeline.pdf",
+  "source_pdf_sha256": "1922e8440ef306466c80e865a84370ff8eefb430f1df1740be0768f4cd6cca33",
+  "page_size_inches": [
+    6.295,
+    1.9031
+  ],
+  "reused_frozen_tiles": true,
+  "panel_a": {
+    "arrangement": "rows are target characters, columns are style roles",
+    "glyph_points": 25.0,
+    "label_column_points": 9.0,
+    "columns": [
+      "Ouyang Xun regular-script reference",
+      "Wang Xizhi running-script candidate"
+    ],
+    "selection_rule": "the frozen pipeline pair (亮) followed by the next pairs in the frozen cross_reference_pairs.csv order",
+    "rows": [
+      {
+        "row": 1,
+        "target_char": "亮",
+        "pair_id": "806c8dd63c9c24245b68",
+        "tiles": [
+          {
+            "column": 0,
+            "role": "reference",
+            "reference_id": "ouyang_xun_regular_calli_tongji_beta:4eae:716778b42f72",
+            "origin": "frozen tile xref 13",
+            "native_size": [
+              194,
+              194
+            ],
+            "decoded_rgb_sha256": "b177bf13cbdd778a6a3da54534fabe9f9b12ed273c4d70c7fca79ad3d5222e18",
+            "target_points": [
+              13.0,
+              12.0,
+              38.0,
+              37.0
+            ]
+          },
+          {
+            "column": 1,
+            "role": "candidate",
+            "reference_id": "wang_xizhi_running_calli_tongji_beta:4eae:f07498f75446",
+            "origin": "frozen tile xref 14",
+            "native_size": [
+              194,
+              194
+            ],
+            "decoded_rgb_sha256": "95339350392d6e42473a3d3150d0dfd2fe1a0dd9402e2fb327289b4ce1454288",
+            "target_points": [
+              40.5,
+              12.0,
+              65.5,
+              37.0
+            ]
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "target_char": "息",
+        "pair_id": "9907da94cfec341f1633",
+        "tiles": [
+          {
+            "column": 0,
+            "role": "reference",
+            "reference_id": "ouyang_xun_regular_calli_tongji_beta:606f:31f6add0e832",
+            "origin": "source image images/calli_tongji_beta/ouyang_xun_regular_calli_tongji_beta/息_31f6add0e832.png",
+            "native_size": [
+              194,
+              194
+            ],
+            "decoded_rgb_sha256": "b1d8c16afeff93c50fca08664257de82d516d752d5df3580ddccf7eb773f07b9",
+            "target_points": [
+              13.0,
+              40.5,
+              38.0,
+              65.5
+            ]
+          },
+          {
+            "column": 1,
+            "role": "candidate",
+            "reference_id": "wang_xizhi_running_calli_tongji_beta:606f:4b80138cec9c",
+            "origin": "source image images/calli_tongji_beta/wang_xizhi_running_calli_tongji_beta/息_4b80138cec9c.png",
+            "native_size": [
+              194,
+              194
+            ],
+            "decoded_rgb_sha256": "560dfaea7ea0668eef14c029e6884febb2642369dc84f9bf3c25947c64d6aa84",
+            "target_points": [
+              40.5,
+              40.5,
+              65.5,
+              65.5
+            ]
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "target_char": "尉",
+        "pair_id": "d0832d3ecb8fbe7bacc0",
+        "tiles": [
+          {
+            "column": 0,
+            "role": "reference",
+            "reference_id": "ouyang_xun_regular_calli_tongji_beta:5c09:024c3d10ca10",
+            "origin": "source image images/calli_tongji_beta/ouyang_xun_regular_calli_tongji_beta/尉_024c3d10ca10.png",
+            "native_size": [
+              194,
+              194
+            ],
+            "decoded_rgb_sha256": "0acb38dce9e4ee57db16d45d686c0b29b6fd0abd77ef8355d72b32f9062dd2ba",
+            "target_points": [
+              13.0,
+              69.0,
+              38.0,
+              94.0
+            ]
+          },
+          {
+            "column": 1,
+            "role": "candidate",
+            "reference_id": "wang_xizhi_running_calli_tongji_beta:5c09:2efaaddf5000",
+            "origin": "source image images/calli_tongji_beta/wang_xizhi_running_calli_tongji_beta/尉_2efaaddf5000.png",
+            "native_size": [
+              194,
+              194
+            ],
+            "decoded_rgb_sha256": "e75f1030ae8a2fcae66e8c91489155dd925987b3df57b2397e38106521513211",
+            "target_points": [
+              40.5,
+              69.0,
+              65.5,
+              94.0
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "preserved_panels": "b--e are the frozen vector artwork, copied unchanged",
+  "fonts": {
+    "regular": {
+      "source_name": "LMSansTT8-Regular",
+      "sha256": "7bfe1f3add970dc233dc0a42d6e021556a4605f11335aadd6fd965005a4b6250"
+    },
+    "bold": {
+      "source_name": "LMSansTT10-Bold",
+      "sha256": "caffe8f9e600d7d50e8f65b45e3a37f1bdc17087bd85164af0383a2daf0d402b"
+    },
+    "cjk": {
+      "file": "msyh.ttc",
+      "name": "Microsoft YaHei Regular"
+    }
+  },
+  "inference": "none; cached masks and source tiles only",
+  "verification": {
+    "page_size_preserved": true,
+    "labels_present": true,
+    "glyph_tiles": 6,
+    "frozen_tiles_reused": true,
+    "no_inferential_statistics": true
+  },
+  "outputs": {
+    "pdf": {
+      "file": "figure1_pipeline.pdf",
+      "sha256": "89318fed82c156578c72a40432349f3eface0d502f6d20a741277d7a0d5e4904"
+    },
+    "png": {
+      "file": "figure1_pipeline.png",
+      "sha256": "eb08a724387aaf90aac374ab44fed43c9be62e4c8ff99c82e88f92ff99b082a4"
+    }
+  }
+}

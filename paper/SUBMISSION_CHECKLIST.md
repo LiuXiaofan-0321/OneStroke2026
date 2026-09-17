@@ -64,6 +64,9 @@ Status date: 2026-09-17
 - [x] Open the manuscript with the cultural framing of calligraphy and its
   script styles, and make Fig. 3 self-explanatory in both the figure and the
   body text (2026-09-17).
+- [x] Condense the same framing into the first abstract sentence and show
+  three same-character cross-style pairs in Fig. 1(a) instead of one
+  (2026-09-17); abstract 228 words, still inside 150--250.
 - [x] Verify the second-version page count against the Special Issue
   instruction.
 - [x] Keep the final manuscript at or below 20 pages, including references,

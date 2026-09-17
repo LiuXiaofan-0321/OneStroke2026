@@ -45,8 +45,10 @@ Revision log:
 
 - `2026-09-17` *submission*: Introduction opening sentence on calligraphy as
   traditional Chinese culture and its script styles; in-figure and
-  body-text explanation for Fig. 3; tightened float spacing so the
-  manuscript stays within 20 pages. See `REVISION_2026-09-17.md` and
+  body-text explanation for Fig. 3; the same cultural framing condensed into
+  the first abstract sentence; Fig. 1 panel (a) extended from one to three
+  same-character cross-style pairs; tightened float spacing so the manuscript
+  stays within 20 pages. See `REVISION_2026-09-17.md` and
   `releases/2026-09-17-submission/`.
 - `2026-09-05` Fable 5.1 revision: redrawn Figs. 2, 3, and 6. See
   `REVISION_2026-09-05.md`.
@@ -156,11 +158,12 @@ its builder requires all six formal checkpoints and validates every recorded
 SHA-256 before using either inference or a prediction cache.
 
 The active manuscript uses the retained vector figures in `figures/redrawn/`
-and the 2026-09-05 revisions of manuscript Figures 2, 3, and 6 in
-`figures/revision/`. The new revisions provide native vector text and
+and the revisions in `figures/revision/`: manuscript Figures 2, 3, and 6
+(2026-09-05) and Figure 1 (2026-09-17). The new revisions provide native vector text and
 reproducible Python builders:
 
 ```bash
+python paper/figures/revision/build_figure1.py
 python paper/figures/revision/build_figure2.py
 python paper/figures/revision/build_figure3.py
 python paper/figures/revision/build_figure6.py
@@ -171,6 +174,11 @@ objects and, for Figure 6, the tracked 150-pair result table. They do not
 require missing image datasets or model checkpoints. Each builder records
 source hashes and the mapping of original tiles to revised panels. They
 recompose existing observations; they do not revalidate the underlying masks.
+`build_figure1.py` additionally requires the frozen reference cache
+(`references/cache/segformer_b2_v1/`) and the Calli-Tongji source images,
+which are not tracked in Git; without them only the PDF/JSON provenance can be
+inspected. It carries panels (b)--(e) over as vector PDF content and rebuilds
+panel (a) only.
 
 The historical `figures/redraw/` scripts named in the previous README are
 not present in this checkout. Their outputs in `figures/redrawn/` remain
@@ -244,7 +252,8 @@ sections/08_conclusion.tex          conclusion by RQ
 ```
 
 Seven formal figures are used, numbered by first reference: the pipeline and
-motivating pair (Fig. 1, Introduction), the six-channel annotation contract
+the motivating cross-style pairs (Fig. 1, Introduction; three of the seven
+pairs of the external reference library), the six-channel annotation contract
 (Fig. 2, Data Resources), the corpus/QC/library overview (Fig. 3, Data
 Resources), and one figure per research question (Figs. 4--7). Table 1
 summarizes the data cohorts and their label status. Frozen source filenames keep their pre-2026-09-02 numbering:
