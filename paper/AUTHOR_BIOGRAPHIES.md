@@ -41,27 +41,29 @@ keep it to 50--100 words each; all three drafts are already inside that range.
 ## Xiaofan Liu
 
 Xiaofan Liu is an undergraduate student in the Software Engineering Institute
-at East China Normal University. His interests include computer vision,
-document image analysis, semantic segmentation, and the engineering
-deployment of machine-learning systems. He leads the OneStroke undergraduate
-innovation project and is responsible for the model pipeline, structural
-assessment methodology, statistical analysis, visualization, and project
-coordination.
+at East China Normal University. His main research interest is AI for Science
+(AI4Sci), particularly computer vision, document image analysis, and semantic
+segmentation for cultural-heritage data. He leads the OneStroke undergraduate
+innovation project and is responsible for the model pipeline, the
+structural-assessment methodology, the statistical analysis, the
+visualization, and the project coordination.
 
 ## Ronghao Zhang
 
 Ronghao Zhang is an undergraduate student in the Software Engineering
-Institute at East China Normal University. His interests include deep
-learning, Transformer architectures, image segmentation, and reproducible
-experimental evaluation. In the OneStroke project, he contributes to data
-curation, model implementation, baseline evaluation, validation, and the
-quality-control workflow for the recovered stroke-structure corpus.
+Institute at East China Normal University. His interests lie in systems for
+machine learning: deep-learning systems engineering, Transformer
+architectures, image segmentation, and reproducible experimental evaluation.
+In the OneStroke project he contributes to data curation, model
+implementation, baseline evaluation, validation, and the quality-control
+workflow for the recovered stroke-structure corpus.
 
 ## Yuan Feng
 
 Yuan Feng is an undergraduate student in the Software Engineering Institute at
-East China Normal University. Her interests include full-stack software
-engineering, interactive intelligent applications, and the deployment of
-machine-learning services. In the OneStroke project, she develops the Web and
-backend integration, supports model-service validation, and contributes to
-the application-level delivery of structural scores and diagnostic feedback.
+East China Normal University. Her interests are in software engineering,
+spanning full-stack development, interactive intelligent applications, and the
+deployment of machine-learning services. In the OneStroke project she develops
+the Web and backend integration, supports model-service validation, and
+contributes to the application-level delivery of structural scores and
+diagnostic feedback.

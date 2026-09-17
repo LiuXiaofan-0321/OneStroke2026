@@ -11,7 +11,7 @@ Submission-ready build of the IJDAR manuscript, prepared for the
 | `OneStroke2026_ESM_1_submission.pdf` | 4 | `56789a089bcf5a11154b4121ee86111e000a1ebd092e1af4a5730f5b6030f64c` |
 | `OneStroke2026_cover_letter.pdf` | 2 | `89803ef714a64fb84b9505963816c086c359ed59cd6ba6d1d93f5c25a89a3d08` |
 | `OneStroke2026_manuscript_latex.zip` | 33 entries | `1d22cdc97598dd777a1c977b5329cc43aa1a6253f46927aaec5bcd9f9c5a1ba7` |
-| `OneStroke2026_online_latex_submission.zip` | 109 entries | `f1f96b73d830f83d629c208025f092f7b9d2eda60b50d13b6d6d7e85396550a5` |
+| `OneStroke2026_online_latex_submission.zip` | 109 entries | `b5e544d42a83cf8530e2b80489fb09b50d0426bfccb9ec184e9ec653254022e8` |
 
 ## Which file goes into which submission slot
 
@@ -44,6 +44,27 @@ figures, tables, and the reference list are identical to the first build of
 this snapshot. Only the three files above were edited, and the three
 artifacts were rebuilt, so the SHA-256 values in the table replace the
 previous ones.
+
+## Corrections applied to this snapshot (2026-09-17, third build)
+
+9. **Cover letter.** The paragraph on third-party material and permission was
+   removed at the authors' request, so the letter no longer raises the
+   Calli-Tongji licence with the editorial office. Attribution and the
+   licence statement remain in the manuscript, its figure captions, and the
+   Data Availability statement, which is what the licence requires.
+10. **Author biographies.** Each biography now states the author's
+    specialisation: AI for Science (AI4Sci) for Xiaofan Liu, systems for
+    machine learning for Ronghao Zhang, and software engineering for Yuan
+    Feng. Word counts remain inside the 50--100 word requirement (63, 58 and
+    60 words).
+11. **Ethics wording.** Settled without change: all three ethics-related
+    statements keep their "Not applicable" wording.
+
+Only `AUTHOR_BIOGRAPHIES.md`, `cover_letter.tex` and the explanatory notes
+changed in this build, so the manuscript PDF, the ESM PDF, the submission
+LaTeX package and the cover letter PDF are byte-identical to the previous
+build: their SHA-256 values above are unchanged. The only rebuilt artifact is
+the Overleaf collaboration zip, which carries the biographies.
 
 ## Changes relative to the 2026-09-05 package
 
@@ -115,13 +136,15 @@ previous ones.
 
 These are author or institution actions, not build issues:
 
-- confirm Ethics Approval / Informed Consent wording and the
-  data-availability statement;
-- approve author biographies and supply black-and-white passport-size
-  photographs (see `AUTHOR_BIOGRAPHIES.md` for the format and the delivery
-  route);
+- approve author biographies and, if production ever asks, supply
+  black-and-white passport-size photographs (see `AUTHOR_BIOGRAPHIES.md` for
+  the format and the delivery route);
 - confirm the originality statement in the cover letter, and in particular
   that no prior publication by the same authors requires declaring.
+
+The ethics statements are settled: `Ethics Approval`, `Informed Consent` and
+`Consent for Publication` keep their "Not applicable" wording, with no
+institutional exemption reference. Nothing in the manuscript changed for this.
 
 The CC BY-NC 4.0 question for the Calli-Tongji reference images is no longer
 raised in the cover letter, at the authors' request. Attribution and the

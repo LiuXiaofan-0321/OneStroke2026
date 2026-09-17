@@ -108,15 +108,16 @@ institutional e-mail addresses, chosen from the related-work areas
 (document image analysis, computational calligraphy, human-validated
 assessment). Exclude anyone at East China Normal University.
 
-## Two items that still need a decision before you submit
+## One item that still needs a decision before you submit
 
-1. **Ethics wording.** The manuscript states "Not applicable" and cites no
-   institutional reference. Confirm with your supervisor or the school office
-   whether ECNU wants its own exemption wording here; if so, tell me and I
-   will change both the manuscript and this file.
-2. **Data archive identifier.** Springer encourages depositing supporting
+1. **Data archive identifier.** Springer encourages depositing supporting
    data in a public repository and citing its identifier. If you deposit the
    QC contract, the two split files, and the 769-sample corpus (the
    third-party reference images must stay out of that deposit), send me the
    DOI and I will add it to the Data Availability statement in the manuscript
    and here.
+
+The ethics wording is settled: at the authors' decision, `Ethics Approval`,
+`Informed Consent` and `Consent for Publication` all keep the "Not applicable"
+wording shown above, with no institutional exemption reference and no further
+confirmation. Nothing in this file or the manuscript changed for it.

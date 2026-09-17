@@ -9,7 +9,7 @@
 | --- | --- | --- |
 | **Manuscript file** | `OneStroke2026_manuscript_latex.zip` | LaTeX 源码包，33 个文件、2.8 MB，主文件是 `manuscript.tex` |
 | **Supplementary material** | `OneStroke2026_ESM_1_submission.pdf` | 4 页 Online Resource 1：表 S1–S4 + 注 S5–S6 |
-| **Related files** | `OneStroke2026_cover_letter.pdf` | 给编辑的投稿信；拿到图片许可回复后再加上许可邮件 |
+| **Related files** | `OneStroke2026_cover_letter.pdf` | 给编辑的投稿信（已按作者要求删去图片许可那一段） |
 | **Details / Authors / Declarations 标签页** | 粘贴 `DECLARATIONS.md` 里的文本 | 界面里填的才会进最终版，正文里的声明不算 |
 | **Figures and tables** | 初始阶段可留空 | 系统写明"接受后再提供高分辨率原图" |
 
@@ -55,11 +55,11 @@ figures/.../*.pdf               <- 正文实际引用的 7 张图
    我通过精简 Funding 里一句冗余表述、并把参考文献条目间距设为 2pt，
    重新压回 **20 页**，没有删任何研究内容或数值。
 2. **投稿信** `OneStroke2026_cover_letter.pdf`（2 页，字体全嵌入）。
-   里面写清了：特刊匹配点、四项贡献、原创性声明、第三方图片许可说明、
-   20 页/228 词摘要/6 个关键词的格式合规说明、以及声明汇总。
+   里面写清了：特刊匹配点、四项贡献、原创性声明、20 页/228 词摘要/6 个
+   关键词的格式合规说明、以及声明汇总。
 3. **声明粘贴文本** `DECLARATIONS.md`，与正文逐字一致。
 
-## 四、投稿前需要你们处理的 3 件事
+## 四、投稿前需要你们处理的 2 件事
 
 这几件我做不了，但都会直接影响投稿：
 
@@ -68,12 +68,13 @@ figures/.../*.pdf               <- 正文实际引用的 7 张图
    确认措辞并提供照片。注意冯缘那份我已经改成女性代词。黑白照怎么交、
    交什么规格，见 `AUTHOR_BIOGRAPHIES.md` 末尾的说明。
 
-2. **跟院里确认伦理声明措辞**。现在写的是 "Not applicable" 且未引用校内
-   规定。若华师大要求写具体的豁免依据，告诉我改哪里。
-
-3. **原创性声明确认**。投稿信里写了"未发表、未他投、没有需要申报的同作者
+2. **原创性声明确认**。投稿信里写了"未发表、未他投、没有需要申报的同作者
    会议论文"。请确认这与事实一致；如果去年那个项目有对外发表的论文，这
    一段必须改。
+
+> 伦理声明一项已结：按作者决定，`Ethics Approval`、`Informed Consent` 与
+> `Consent for Publication` 三条均保持 "Not applicable" 原样，不再向院里
+> 另行确认措辞。正文与 `DECLARATIONS.md` 都未改动。
 
 ## 四之二、关于第三方图片：已按你的要求处理
 
