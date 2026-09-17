@@ -32,7 +32,9 @@
               194,
               194
             ],
-            "decoded_rgb_sha256": "b177bf13cbdd778a6a3da54534fabe9f9b12ed273c4d70c7fca79ad3d5222e18",
+            "source_rgb_sha256": "b177bf13cbdd778a6a3da54534fabe9f9b12ed273c4d70c7fca79ad3d5222e18",
+            "plated_rgb_sha256": "b1776143f4e9bc46c4affb8d85e6f042f29e3fde5c676002804d933972faabb5",
+            "ink_coverage_max_deviation": 0.002016353099944433,
             "target_points": [
               13.0,
               12.0,
@@ -49,7 +51,9 @@
               194,
               194
             ],
-            "decoded_rgb_sha256": "95339350392d6e42473a3d3150d0dfd2fe1a0dd9402e2fb327289b4ce1454288",
+            "source_rgb_sha256": "95339350392d6e42473a3d3150d0dfd2fe1a0dd9402e2fb327289b4ce1454288",
+            "plated_rgb_sha256": "cbf13c2bc6d0f56389f5528b88285a8d3f573af6dbd2a02d8b7b06ab3c632934",
+            "ink_coverage_max_deviation": 0.002016353099944433,
             "target_points": [
               40.5,
               12.0,
@@ -73,7 +77,9 @@
               194,
               194
             ],
-            "decoded_rgb_sha256": "b1d8c16afeff93c50fca08664257de82d516d752d5df3580ddccf7eb773f07b9",
+            "source_rgb_sha256": "b1d8c16afeff93c50fca08664257de82d516d752d5df3580ddccf7eb773f07b9",
+            "plated_rgb_sha256": "84870f670b0d8dea881ba3b0d5204a89263ccbfdfb9e6d56fb1e35fc3ec56ff5",
+            "ink_coverage_max_deviation": 0.002016353099944433,
             "target_points": [
               13.0,
               40.5,
@@ -90,7 +96,9 @@
               194,
               194
             ],
-            "decoded_rgb_sha256": "560dfaea7ea0668eef14c029e6884febb2642369dc84f9bf3c25947c64d6aa84",
+            "source_rgb_sha256": "560dfaea7ea0668eef14c029e6884febb2642369dc84f9bf3c25947c64d6aa84",
+            "plated_rgb_sha256": "70f8963f0e3e493cfef2aed87c24de976659582930956b422df10f50f4bac4d3",
+            "ink_coverage_max_deviation": 0.002016353099944433,
             "target_points": [
               40.5,
               40.5,
@@ -114,7 +122,9 @@
               194,
               194
             ],
-            "decoded_rgb_sha256": "0acb38dce9e4ee57db16d45d686c0b29b6fd0abd77ef8355d72b32f9062dd2ba",
+            "source_rgb_sha256": "0acb38dce9e4ee57db16d45d686c0b29b6fd0abd77ef8355d72b32f9062dd2ba",
+            "plated_rgb_sha256": "75b717869bb83f2e4630806f1aa3c2c80720dc5fcacd95e3ac17d2b45724980f",
+            "ink_coverage_max_deviation": 0.002016353099944433,
             "target_points": [
               13.0,
               69.0,
@@ -131,7 +141,9 @@
               194,
               194
             ],
-            "decoded_rgb_sha256": "e75f1030ae8a2fcae66e8c91489155dd925987b3df57b2397e38106521513211",
+            "source_rgb_sha256": "e75f1030ae8a2fcae66e8c91489155dd925987b3df57b2397e38106521513211",
+            "plated_rgb_sha256": "32cf06489ffade89b2dc90a4b212b4d553662e7b09813c35417e193d6c9e2241",
+            "ink_coverage_max_deviation": 0.002016353099944433,
             "target_points": [
               40.5,
               69.0,
@@ -144,6 +156,19 @@
     ]
   },
   "preserved_panels": "b--e are the frozen vector artwork, copied unchanged",
+  "panel_a_card": {
+    "facecolor": "#F7F8FA",
+    "frame_color": "#D7DCE1",
+    "frame_width_points": 0.55,
+    "paper_mapping": "out = round(C * plate / 255) per channel; white paper maps to the plate colour and black ink is fixed",
+    "strip_restored": [
+      4.0,
+      107.5,
+      72.4,
+      121.0
+    ],
+    "note": "Tiles keep their geometry, scale, and ink coverage; only the paper colour changes, so panel (a) matches the framed cards of panels (b)--(e)"
+  },
   "fonts": {
     "regular": {
       "source_name": "LMSansTT8-Regular",
@@ -169,11 +194,11 @@
   "outputs": {
     "pdf": {
       "file": "figure1_pipeline.pdf",
-      "sha256": "8efc865fc6906fb3c0da59a6fdec3821dff23425255b54326f502f129d4cb344"
+      "sha256": "9faab79c8f239c3943d90f91f3ac0216892a81f28615486f103dfb9db91c7f34"
     },
     "png": {
       "file": "figure1_pipeline.png",
-      "sha256": "eb08a724387aaf90aac374ab44fed43c9be62e4c8ff99c82e88f92ff99b082a4"
+      "sha256": "8dcd7854b9f0c77c546f94548a7ec37a8b9719269ddd6615c986337ff5ade381"
     }
   }
 }

@@ -67,6 +67,10 @@ Status date: 2026-09-17
 - [x] Condense the same framing into the first abstract sentence and show
   three same-character cross-style pairs in Fig. 1(a) instead of one
   (2026-09-17); abstract 228 words, still inside 150--250.
+- [x] Re-plate Fig. 1(a) on the figure's card grey with matching hairline
+  frames and run the stage-label strip across the input column, so the input
+  card matches the framed panels beside it (2026-09-17). Paper colour only;
+  ink density preserved to within one 8-bit level and asserted at build time.
 - [x] Verify the second-version page count against the Special Issue
   instruction.
 - [x] Keep the final manuscript at or below 20 pages, including references,

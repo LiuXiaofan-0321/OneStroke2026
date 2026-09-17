@@ -7,9 +7,9 @@ Submission-ready build of the IJDAR manuscript, prepared for the
 
 | File | Pages | SHA-256 |
 | --- | --- | --- |
-| `OneStroke2026_manuscript_submission.pdf` | 20 | `c52f1f5a5347587823c0b22e4872ff01ae4d5c96a9d0196a24c5209209e3e1c0` |
-| `OneStroke2026_ESM_1_submission.pdf` | 4 | `46ffd225c07bbdc0185a5216e3bc1eacd8e807414988e1563b5f4ba7b9f53165` |
-| `OneStroke2026_online_latex_submission.zip` | 108 entries | `304495574f0fbe6a09cb919cb662255c93e38fd301a2e2cfa036785acbf0b8ca` |
+| `OneStroke2026_manuscript_submission.pdf` | 20 | `6a2b7766550668895db3e01608a081cc670866fabc3e059e711457e844e891a5` |
+| `OneStroke2026_ESM_1_submission.pdf` | 4 | `c3ac04ec6ac5e2f2257a41b77e2dd93f634f4ffea80bede23ba4204dba1fed5b` |
+| `OneStroke2026_online_latex_submission.zip` | 108 entries | `85c0dc51a27f1f9ce6023e2dad64b42302b4eed8ed51b484e18aef68cb831cfa` |
 
 The zip is a self-contained LaTeX source package (`manuscript.tex`,
 `ESM_1.tex`, `sn-jnl.cls`, `sn-basic.bst`, `references.bib`, `sections/`,
@@ -40,7 +40,16 @@ The zip is a self-contained LaTeX source package (`manuscript.tex`,
    artwork: the builder places the original page, removes the old panel (a) by
    redaction, and adds only the gallery. At 600 dpi the (b)--(e) region is
    pixel-identical to the frozen figure, and the page size is unchanged.
-4. **Figure 3 explanatory text.** Panel (a) now carries the note
+4. **Figure 1 plate treatment.** The input card no longer reads as a bare white
+   cut-out: each tile now sits on the figure's card grey (247, 248, 250)
+   inside a 0.55 pt hairline frame (215, 220, 225), matching the framed cards
+   of panels (b)--(d), and the bottom stage-label strip (238, 240, 242) runs
+   unbroken across the panel-(a) column. Tile papers are mapped by one uniform
+   linear function that sends white paper to the plate colour and fixes black
+   ink, so the ink density relative to the paper is preserved to within one
+   8-bit level (maximum recorded deviation 2.1e-3); no contrast, gamma,
+   threshold, or crop operation is applied.
+5. **Figure 3 explanatory text.** Panel (a) now carries the note
    "Semantic audit; exclusions frozen before any evaluation", panel (b)
    identifies itself as the training and evaluation corpus, and panel (c)
    is labelled as a separate external library. A short paragraph was added
@@ -48,7 +57,7 @@ The zip is a self-contained LaTeX source package (`manuscript.tex`,
    interpretable without the caption. No sample pixels, counts, or panel
    contents were changed; the builder re-verified all 54 embedded images
    against their source hashes.
-5. **Whitespace and length.** Float and caption separation was tightened
+6. **Whitespace and length.** Float and caption separation was tightened
    (`\textfloatsep`/`\dbltextfloatsep` 9 pt, `\floatsep`/`\dblfloatsep`
    11 pt, `\abovecaptionskip` 2 pt, `\belowcaptionskip` 4 pt) so that the
    two added passages fit without pushing the manuscript past the 20-page

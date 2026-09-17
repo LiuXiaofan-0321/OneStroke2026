@@ -47,8 +47,9 @@ Revision log:
   traditional Chinese culture and its script styles; in-figure and
   body-text explanation for Fig. 3; the same cultural framing condensed into
   the first abstract sentence; Fig. 1 panel (a) extended from one to three
-  same-character cross-style pairs; tightened float spacing so the manuscript
-  stays within 20 pages. See `REVISION_2026-09-17.md` and
+  same-character cross-style pairs and re-plated on the figure's card grey so
+  the input column matches the framed cards beside it; tightened float spacing
+  so the manuscript stays within 20 pages. See `REVISION_2026-09-17.md` and
   `releases/2026-09-17-submission/`.
 - `2026-09-05` Fable 5.1 revision: redrawn Figs. 2, 3, and 6. See
   `REVISION_2026-09-05.md`.

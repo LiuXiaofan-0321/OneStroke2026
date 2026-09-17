@@ -22,25 +22,52 @@ next pairs in the frozen `cross_reference_pairs.csv` order. No pair was chosen
 by visual preference, and the three pairs are a subset of the seven already
 shown in manuscript Figure 3, panel (c).
 
+Panel (a) also adopts the plate treatment of the rest of the figure, so the
+input card no longer reads as a bare white cut-out beside the framed cards of
+panels (b)--(e):
+
+```text
+tile paper            white        ->  247, 248, 250  (PANEL_BG card grey)
+tile outline          none         ->  hairline, 0.55 pt, 215, 220, 225 (GRID)
+stage-label strip     white pill   ->  continuous 238, 240, 242 grey
+```
+
+The tile papers are mapped by one uniform linear function per channel,
+``out = round(C * plate / 255)``, which sends white paper exactly to the plate
+colour and leaves black ink fixed. No contrast, gamma, threshold, crop, or
+resampling operation is applied. Because the mapping is linear and ink is
+anchored at zero, the ink density relative to the paper,
+``(paper - min(RGB)) / paper``, is preserved; the build asserts this and
+records the maximum deviation per tile (2.1e-3, i.e. within one 8-bit level).
+
 Panels (b)--(e) and the shared direction legend are the frozen vector artwork,
 carried over as PDF content rather than re-rendered as raster: the original
-page is placed, panel (a) is removed with a PDF redaction, and only the gallery
-and its labels are added. Type, hairlines, and colours of the pipeline panels
-are therefore byte-for-byte the published ones.
+page is placed, panel (a) is removed with a PDF redaction, and only the gallery,
+its labels, and the strip repair are added. Type, hairlines, and colours of the
+pipeline panels are therefore byte-for-byte the published ones.
 
 ## Checks completed
 
-- Panel (b)--(e) region rasterised at 600 dpi and compared with the frozen
-  figure: 0 pixels differ. All differences on the page are confined to
-  x 4.6--67.7 pt and y 4.9--117.8 pt, i.e. panel (a) and its recentred title.
-- Row 1 reuses the two frozen embedded tiles (the previous figure's 亮 pair) so
-  the pair already discussed in the text is unchanged; rows 2 and 3 use the
-  matching 256 × 256 source images of the reference cache, reduced to 194 × 194
-  with the same Lanczos rule already applied to the frozen tiles.
+- Every part of the page outside panel (a) and the strip repair is rasterised
+  at 600 dpi and compared with the frozen figure: 0 pixels differ for
+  x ≥ 74 pt and for y ≤ 106 pt; the only differences on the page fall in
+  x 4.6--72.4 pt and y 4.9--121 pt, i.e. panel (a), its recentred title, and the
+  strip segment the redaction had cleared.
+- Row 1 reuses the two frozen embedded tiles (the previous figure's 亮 pair) as
+  its ink source, so the pair already discussed in the text carries the same
+  ink; only its paper colour changes. Rows 2 and 3 use the matching 256 × 256
+  source images of the reference cache, reduced to 194 × 194 with the same
+  Lanczos rule already applied to the frozen tiles.
 - The superseded panel-(a) tiles are removed by redaction rather than covered,
   so the page carries no hidden duplicate images. Verified: the rebuilt page
   contains exactly four images from the frozen artwork plus the six gallery
   tiles.
+- The input card is now visually continuous with the rest of the figure: each
+  tile sits on the card grey inside a GRID hairline of the same width as the
+  window spines of panels (b)--(d), and the stage-label strip runs unbroken
+  across the panel-(a) column instead of stopping at a white pill. Measured on
+  the rebuilt page: tile plate 247/248/250, frame 215/220/225, strip
+  238/240/242 under the "Input pair" label.
 - Labels keep the frozen wording ("reference", "candidate", "Input pair"),
   size, and colour. They are re-drawn with the source PDF's own embedded font
   subsets (LMSansTT8-Regular, LMSansTT10-Bold), extracted by the build script;

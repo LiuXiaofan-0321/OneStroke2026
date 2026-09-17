@@ -49,6 +49,16 @@ HEADER_SIZE = 5.8
 CJK_SIZE = 8.0
 TITLE_SIZE = 7.2
 MUTED = (0.38, 0.42, 0.45)
+
+# Plate treatment copied from the frozen figure: panels (b)--(d) are framed on
+# the shared plate grey, panel (e) is the same grey card, and the bottom
+# stage-label strip is a hair darker. Panel (a) adopts the card treatment so
+# the source images no longer sit as bare white cut-outs beside them.
+PLATE = (247, 248, 250)  # PANEL_BG in figure_style.py
+FRAME = (215, 220, 225)  # GRID in figure_style.py
+FRAME_WIDTH = 0.55  # clean_image_axis spine width
+STRIP = (238, 240, 242)  # measured stage-label strip colour
+STRIP_FILL = fitz.Rect(4.0, 107.5, 72.4, 121.0)
 REGULAR_STYLE = "ouyang_xun_regular_calli_tongji_beta"
 RUNNING_STYLE = "wang_xizhi_running_calli_tongji_beta"
 CJK_FONT = Path(r"C:\Windows\Fonts\msyh.ttc")
@@ -104,6 +114,24 @@ def png_bytes(array: np.ndarray) -> bytes:
     return buffer.getvalue()
 
 
+def on_plate(tile: np.ndarray) -> np.ndarray:
+    """Map the tile's white paper onto the figure's card grey.
+
+    The mapping is a single uniform linear function per channel,
+    ``out = round(C * plate / 255)``: white paper becomes exactly the plate
+    colour and black ink stays black. No contrast, gamma, threshold, or crop
+    operation is applied, and the ink density relative to the paper,
+    ``(paper - min(RGB)) / paper``, is unchanged up to one 8-bit level.
+    """
+
+    scaled = tile.astype(np.uint16) * np.asarray(PLATE, dtype=np.uint16)
+    return ((scaled + 127) // 255).astype(np.uint8)
+
+
+def ink_coverage(tile: np.ndarray, paper: float) -> np.ndarray:
+    return (paper - tile.min(axis=-1).astype(np.float64)) / paper
+
+
 def main() -> None:
     source = fitz.open(SOURCE)
     source_page = source[0]
@@ -141,6 +169,9 @@ def main() -> None:
         images=fitz.PDF_REDACT_IMAGE_REMOVE,
         graphics=fitz.PDF_REDACT_LINE_ART_REMOVE_IF_COVERED,
     )
+    # The redaction also cleared the stage-label strip beneath the panel-(a)
+    # label; restore it so the strip runs continuously like its neighbours.
+    page.draw_rect(STRIP_FILL, color=None, fill=_rgb_tuple(STRIP), overlay=True)
 
     reference_font = ("fig1", str(font_regular[0]))
     title_font = ("fig1b", str(font_bold[0]))
@@ -181,6 +212,20 @@ def main() -> None:
             "rows": [],
         },
         "preserved_panels": "b--e are the frozen vector artwork, copied unchanged",
+        "panel_a_card": {
+            "facecolor": "#%02X%02X%02X" % PLATE,
+            "frame_color": "#%02X%02X%02X" % FRAME,
+            "frame_width_points": FRAME_WIDTH,
+            "paper_mapping": (
+                "out = round(C * plate / 255) per channel; white paper maps to the "
+                "plate colour and black ink is fixed"
+            ),
+            "strip_restored": [round(v, 2) for v in STRIP_FILL],
+            "note": (
+                "Tiles keep their geometry, scale, and ink coverage; only the paper "
+                "colour changes, so panel (a) matches the framed cards of panels (b)--(e)"
+            ),
+        },
         "fonts": {
             "regular": {"source_name": font_regular[1], "sha256": sha256(font_regular[2])},
             "bold": {"source_name": font_bold[1], "sha256": sha256(font_bold[2])},
@@ -206,16 +251,25 @@ def main() -> None:
                 tile = tile_from_image(ROOT / "references" / entry["source_image_path"])
                 origin = f"source image {entry['source_image_path']}"
             target = fitz.Rect(x0, top, x1, top + GLYPH)
-            page.insert_image(target, stream=png_bytes(tile), keep_proportion=False)
+            plated = on_plate(tile)
+            deviation = float(
+                np.abs(ink_coverage(tile, 255.0) - ink_coverage(plated, float(min(PLATE)))).max()
+            )
+            page.insert_image(target, stream=png_bytes(plated), keep_proportion=False)
+            page.draw_rect(target, color=_rgb_tuple(FRAME), width=FRAME_WIDTH)
             row_record["tiles"].append({
                 "column": column,
                 "role": "reference" if column == 0 else "candidate",
                 "reference_id": reference_id,
                 "origin": origin,
                 "native_size": list(tile.shape[:2]),
-                "decoded_rgb_sha256": sha256(tile.tobytes()),
+                "source_rgb_sha256": sha256(tile.tobytes()),
+                "plated_rgb_sha256": sha256(plated.tobytes()),
+                "ink_coverage_max_deviation": deviation,
                 "target_points": [round(v, 2) for v in target],
             })
+            if deviation > 1.0 / 255.0 + 1e-9:
+                raise AssertionError("Plate mapping changed the ink coverage.")
         provenance["panel_a"]["rows"].append(row_record)
         character = pair["candidate_char"]
         page.insert_text(
@@ -308,6 +362,10 @@ def _extract_font(document: fitz.Document, page: fitz.Page, name: str) -> tuple[
 
 def _rgb(value: int) -> tuple[float, float, float]:
     return ((value >> 16 & 255) / 255, (value >> 8 & 255) / 255, (value & 255) / 255)
+
+
+def _rgb_tuple(value: tuple[int, int, int]) -> tuple[float, float, float]:
+    return tuple(channel / 255 for channel in value)
 
 
 def _fit_size(font: fitz.Font, text: str, limit: float, preferred: float) -> float:
