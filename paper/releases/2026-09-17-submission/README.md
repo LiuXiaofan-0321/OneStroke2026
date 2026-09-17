@@ -7,13 +7,27 @@ Submission-ready build of the IJDAR manuscript, prepared for the
 
 | File | Pages | SHA-256 |
 | --- | --- | --- |
-| `OneStroke2026_manuscript_submission.pdf` | 20 | `e3207b6dc8bc0d3ee2c63f9e14356a1369bc08e66df6c101c7124fb6203767d9` |
-| `OneStroke2026_ESM_1_submission.pdf` | 4 | `73058fe0b14ea8a99c9ec37a085010ec58541b616be325437dbd0c6bd76d576c` |
-| `OneStroke2026_online_latex_submission.zip` | 108 entries | `c6ed1a3bc42d4b6a23cc6fcea5ff882f784cf1e07f14ac56757cdb85373befda` |
+| `OneStroke2026_manuscript_submission.pdf` | 20 | `d2ffc8b96e88e3e8aa64fecdc49e5c2eb26a39e528145fce34cdb82d920dc5da` |
+| `OneStroke2026_ESM_1_submission.pdf` | 4 | `56789a089bcf5a11154b4121ee86111e000a1ebd092e1af4a5730f5b6030f64c` |
+| `OneStroke2026_online_latex_submission.zip` | 108 entries | `8f9619d8073e981924a8a672049bd187dd5f5feb218273d21a5fe3c12588c974` |
 
 The zip is a self-contained LaTeX source package (`manuscript.tex`,
 `ESM_1.tex`, `sn-jnl.cls`, `sn-basic.bst`, `references.bib`, `sections/`,
 `tables/`, and `figures/`) and can be imported into an online editor.
+
+## Correction applied to this snapshot (2026-09-17, second build)
+
+7. **Affiliation name.** The affiliation was corrected from
+   ``School of Software Engineering'' to ``Software Engineering Institute''
+   in `manuscript.tex`, `ESM_1.tex`, and `AUTHOR_BIOGRAPHIES.md`.
+8. **Author biography pronoun.** Yuan Feng's biography now uses feminine
+   pronouns, consistent with the author's own account.
+
+Nothing else changed: page counts, section order, all reported values,
+figures, tables, and the reference list are identical to the first build of
+this snapshot. Only the three files above were edited, and the three
+artifacts were rebuilt, so the SHA-256 values in the table replace the
+previous ones.
 
 ## Changes relative to the 2026-09-05 package
 

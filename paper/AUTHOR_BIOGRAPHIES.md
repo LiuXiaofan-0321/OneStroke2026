@@ -6,7 +6,7 @@ separate portrait photograph before submission.
 
 ## Xiaofan Liu
 
-Xiaofan Liu is an undergraduate student in the School of Software Engineering
+Xiaofan Liu is an undergraduate student in the Software Engineering Institute
 at East China Normal University. His interests include computer vision,
 document image analysis, semantic segmentation, and the engineering
 deployment of machine-learning systems. He leads the OneStroke undergraduate
@@ -16,8 +16,8 @@ coordination.
 
 ## Ronghao Zhang
 
-Ronghao Zhang is an undergraduate student in the School of Software
-Engineering at East China Normal University. His interests include deep
+Ronghao Zhang is an undergraduate student in the Software Engineering
+Institute at East China Normal University. His interests include deep
 learning, Transformer architectures, image segmentation, and reproducible
 experimental evaluation. In the OneStroke project, he contributes to data
 curation, model implementation, baseline evaluation, validation, and the
@@ -25,9 +25,9 @@ quality-control workflow for the recovered stroke-structure corpus.
 
 ## Yuan Feng
 
-Yuan Feng is an undergraduate student in the School of Software Engineering at
-East China Normal University. His interests include full-stack software
+Yuan Feng is an undergraduate student in the Software Engineering Institute at
+East China Normal University. Her interests include full-stack software
 engineering, interactive intelligent applications, and the deployment of
-machine-learning services. In the OneStroke project, he develops the Web and
+machine-learning services. In the OneStroke project, she develops the Web and
 backend integration, supports model-service validation, and contributes to
 the application-level delivery of structural scores and diagnostic feedback.
