@@ -1,0 +1,138 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.4cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\renewcommand{\labelitemi}{--}
+
+\begin{document}
+
+\noindent
+17 September 2026
+
+\medskip
+\noindent
+The Editors\\
+Special Issue on \emph{Computer Vision Systems for Document Analysis and
+Recognition}\\
+\emph{International Journal on Document Analysis and Recognition (IJDAR)}
+
+\medskip
+\noindent
+Dear Editors,
+
+\noindent
+We are pleased to submit our manuscript, \textbf{``Reference-Conditioned
+Structural Assessment of Low-Resource Chinese Calligraphy with Overlapping
+Stroke Parsing and Human-Audited Spatial Scoring''}, by Xiaofan Liu, Ronghao
+Zhang and Yuan Feng (Software Engineering Institute, East China Normal
+University), for consideration in the above special issue. Xiaofan Liu is the
+corresponding author.
+
+\textbf{Fit to the special issue.} The special issue invites work that goes
+beyond narrowly defined benchmarks and addresses document heterogeneity,
+low-resource learning, and explainable evidence. Our manuscript studies a
+document-analysis problem that is deliberately difficult on all three axes:
+the inputs are brush-based Chinese calligraphy, the structural annotation is
+scarce (769 quality-controlled samples over 40 character identities, without
+reliable writer identities), and the intended output is not a single number
+but inspectable evidence. We formulate
+\emph{reference-conditioned structural assessment}---comparing a learner
+instance against an approved reference of the same character---and report
+where the approach works, where it does not, and under which conditions each
+claim holds.
+
+\textbf{Contributions.} The manuscript is organized around four research
+questions.
+\begin{itemize}
+  \item \emph{RQ1.} We define an overlapping six-channel representation
+  (five direction families that may overlap, plus a separate endpoint
+  channel) and compare U-Net, DeepLabV3+ and SegFormer-B2 across three seeds
+  on both a standard and a character-disjoint split, showing that the best
+  in-corpus parser is not the best parser for unseen characters.
+  \item \emph{RQ2.} Using controlled nuisance and structural perturbations of
+  200 real references, we quantify what a bounded similarity registration
+  buys: nuisance penalties fall substantially relative to no alignment while
+  structural edits remain penalized. We also report a wider-search
+  comparator and a channel-coverage score audit.
+  \item \emph{RQ3.} Three blinded domain-qualified raters scored 150 natural
+  same-character pairs. We report inter-rater reliability, the association of
+  three scores, and a direct-ink control that isolates how much the scalar
+  score depends on the parser. Retrospective development is explicitly
+  separated from character-grouped internal validation.
+  \item \emph{RQ4.} We evaluate localized diagnostic evidence under
+  interventions with known ground truth and publish a failure taxonomy
+  rather than an aggregate accuracy.
+\end{itemize}
+All reported values are computed from frozen artifacts whose SHA-256 digests
+are listed in the Online Resource.
+
+\textbf{Originality.} This submission is original work. It has not been
+published previously and is not under consideration elsewhere. It does not
+extend a prior conference or journal publication by the same authors, so
+there is no companion paper to declare or to supply for comparison.
+
+\textbf{Third-party material and permission.} Three figures reproduce
+handwriting images from the Calli-Tongji open subset (Ouyang Xun
+regular-script and Wang Xizhi running-script categories), which is
+distributed under CC~BY-NC~4.0. These images are used with full attribution,
+at reduced resolution, and only as illustrative examples; the dataset itself
+is not redistributed, and the manuscript states this under Data Availability.
+Because the licence is non-commercial while the journal is published by a
+commercial publisher, we flag this explicitly here and will supply
+documentation of reproduction permission if the editorial office requires
+it.
+%
+% --- HOW TO UPDATE THIS PARAGRAPH: keep one version, delete the rest. ---
+% After the dataset providers reply in writing, append:
+%   We have obtained the written permission of the dataset providers to
+%   reproduce these images in this article, and the correspondence is
+%   uploaded as a related file.
+% While a reply is still pending, append:
+%   We have written to the dataset providers to request permission to
+%   reproduce these images in this article and will forward their reply as
+%   soon as it is received.
+% If permission is refused, remove those figures and their captions and
+%   re-run the figure builders before submitting.
+
+\textbf{Format.} The manuscript is 20 pages in the IJDAR two-column format,
+including references, figures and tables, and therefore within the journal's
+20-page guidance. It uses a structured abstract of 228 words (Purpose,
+Methods, Results, Conclusion) and six keywords. Complete editable LaTeX
+source, including the class file and all figures, is uploaded as a single
+archive named \texttt{OneStroke2026\_manuscript\_latex.zip}, in which
+\texttt{manuscript.tex} is the main document. The Electronic Supplementary
+Material (four tables and two notes) is uploaded separately as
+\texttt{OneStroke2026\_ESM\_1\_submission.pdf} and is cited in the text as
+Online Resource~1.
+
+\textbf{Declarations.} All authors have approved the submission and agree to
+its content. The authors declare no competing interests. The work received no
+external funding. The study involved no clinical, medical, or behavioural
+intervention; the handwriting corpus was commissioned without recording
+writer identities, and the similarity ratings were provided under evaluator
+codes by two of the authors and one collaborating specialist. Data and code
+availability statements are given in the manuscript and entered in the
+submission interface.
+
+\textbf{Reviewer suggestions.} We respectfully suggest reviewers with
+expertise in document image analysis and in computational calligraphy, and we
+ask that experts from the authors' institution be excluded.
+%
+% OPTIONAL: replace the sentence above with two to four named experts and
+% their institutional e-mail addresses if the editors accept suggestions.
+
+\medskip
+\noindent
+We would be glad to provide any additional material the editors require.
+Thank you for considering our manuscript.
+
+\medskip
+\noindent
+Sincerely,\\
+Xiaofan Liu\\
+on behalf of all authors\\
+Software Engineering Institute, East China Normal University, Shanghai, China\\
+\href{mailto:10244602411@stu.ecnu.edu.cn}{10244602411@stu.ecnu.edu.cn}
+
+\end{document}

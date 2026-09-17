@@ -7,9 +7,25 @@ Submission-ready build of the IJDAR manuscript, prepared for the
 
 | File | Pages | SHA-256 |
 | --- | --- | --- |
-| `OneStroke2026_manuscript_submission.pdf` | 20 | `d2ffc8b96e88e3e8aa64fecdc49e5c2eb26a39e528145fce34cdb82d920dc5da` |
+| `OneStroke2026_manuscript_submission.pdf` | 20 | `8715f6cd60064145f9fcd1a70f6029656b7173ab7eaf763a011125a1fbfe3988` |
 | `OneStroke2026_ESM_1_submission.pdf` | 4 | `56789a089bcf5a11154b4121ee86111e000a1ebd092e1af4a5730f5b6030f64c` |
-| `OneStroke2026_online_latex_submission.zip` | 108 entries | `8f9619d8073e981924a8a672049bd187dd5f5feb218273d21a5fe3c12588c974` |
+| `OneStroke2026_cover_letter.pdf` | 2 | `5f1ad59522e8084d3d3a58ddf11c58b75527f5dae6018b0cb227e2cf0086a6f5` |
+| `OneStroke2026_manuscript_latex.zip` | 33 entries | `1d22cdc97598dd777a1c977b5329cc43aa1a6253f46927aaec5bcd9f9c5a1ba7` |
+| `OneStroke2026_online_latex_submission.zip` | 109 entries | `3e5cfdd53d712662ed83e406b15455d307a264e438bfc4952fe6311ac3b264c6` |
+
+## Which file goes into which submission slot
+
+| Submission slot | File |
+| --- | --- |
+| Manuscript file | `OneStroke2026_manuscript_latex.zip` (main document `manuscript.tex`) |
+| Supplementary material | `OneStroke2026_ESM_1_submission.pdf` |
+| Related files | `OneStroke2026_cover_letter.pdf` |
+| Details / Authors / Declarations tabs | text in `DECLARATIONS.md` |
+
+Per-slot instructions, the clean-room compile acceptance test, and the
+outstanding author actions are in `SUBMISSION_UPLOAD_GUIDE.md`.
+`OneStroke2026_online_latex_submission.zip` is the collaboration package for
+Overleaf, not the submission package.
 
 The zip is a self-contained LaTeX source package (`manuscript.tex`,
 `ESM_1.tex`, `sn-jnl.cls`, `sn-basic.bst`, `references.bib`, `sections/`,
