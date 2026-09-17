@@ -7,9 +7,9 @@ Submission-ready build of the IJDAR manuscript, prepared for the
 
 | File | Pages | SHA-256 |
 | --- | --- | --- |
-| `OneStroke2026_manuscript_submission.pdf` | 20 | `24dd44ce5ddf31a680246dc089c2722cacf37345e5287d219ec853fdad225011` |
-| `OneStroke2026_ESM_1_submission.pdf` | 4 | `42f3a3579373e8d9c9872c414cd6a81671836f159476871539afcb5479381693` |
-| `OneStroke2026_online_latex_submission.zip` | 108 entries | `961b73f4e050e1d1be374644a01704a3b576b08cb6915ef93c47519cac7a583c` |
+| `OneStroke2026_manuscript_submission.pdf` | 20 | `c52f1f5a5347587823c0b22e4872ff01ae4d5c96a9d0196a24c5209209e3e1c0` |
+| `OneStroke2026_ESM_1_submission.pdf` | 4 | `46ffd225c07bbdc0185a5216e3bc1eacd8e807414988e1563b5f4ba7b9f53165` |
+| `OneStroke2026_online_latex_submission.zip` | 108 entries | `304495574f0fbe6a09cb919cb662255c93e38fd301a2e2cfa036785acbf0b8ca` |
 
 The zip is a self-contained LaTeX source package (`manuscript.tex`,
 `ESM_1.tex`, `sn-jnl.cls`, `sn-basic.bst`, `references.bib`, `sections/`,

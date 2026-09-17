@@ -46,6 +46,9 @@ are therefore byte-for-byte the published ones.
   subsets (LMSansTT8-Regular, LMSansTT10-Bold), extracted by the build script;
   character labels use Microsoft YaHei for CJK coverage. All injected text is
   vector and remains selectable.
+- All embedded fonts are subset to the glyphs actually used before saving, so
+  the delivered figure is 371 kB rather than megabytes; the character labels
+  still extract and render correctly afterwards.
 - The "Input pair" title was recentred under the widened panel so that it stays
   centred beneath its panel, as in the frozen layout.
 - Page size, text layer, and the shared legend row were re-checked after the

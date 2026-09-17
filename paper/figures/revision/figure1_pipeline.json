@@ -169,7 +169,7 @@
   "outputs": {
     "pdf": {
       "file": "figure1_pipeline.pdf",
-      "sha256": "89318fed82c156578c72a40432349f3eface0d502f6d20a741277d7a0d5e4904"
+      "sha256": "8efc865fc6906fb3c0da59a6fdec3821dff23425255b54326f502f129d4cb344"
     },
     "png": {
       "file": "figure1_pipeline.png",

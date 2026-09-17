@@ -247,6 +247,9 @@ def main() -> None:
         title, fontname=title_font[0], fontsize=TITLE_SIZE, color=title_colour,
     )
 
+    # Subset every embedded font to the glyphs actually used; the CJK face that
+    # supplies the character labels is otherwise stored almost in full.
+    output.subset_fonts()
     output.save(STEM.with_suffix(".pdf"), garbage=4, deflate=True)
     output.close()
     source.close()
