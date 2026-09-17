@@ -139,12 +139,16 @@ These are author or institution actions, not build issues:
 - approve author biographies and, if production ever asks, supply
   black-and-white passport-size photographs (see `AUTHOR_BIOGRAPHIES.md` for
   the format and the delivery route);
-- confirm the originality statement in the cover letter, and in particular
-  that no prior publication by the same authors requires declaring.
 
 The ethics statements are settled: `Ethics Approval`, `Informed Consent` and
 `Consent for Publication` keep their "Not applicable" wording, with no
 institutional exemption reference. Nothing in the manuscript changed for this.
+
+The originality statement is settled too: the authors confirmed on 2026-09-18
+that the earlier manuscript they submitted was not accepted. A rejected
+submission is not a publication and is not a prior publication, so the cover
+letter's claim stands unchanged, there is no companion paper to declare, and
+there is no duplicate submission.
 
 The CC BY-NC 4.0 question for the Calli-Tongji reference images is no longer
 raised in the cover letter, at the authors' request. Attribution and the
