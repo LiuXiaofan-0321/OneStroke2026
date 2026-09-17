@@ -162,11 +162,84 @@
     "frame_width_points": 0.55,
     "paper_mapping": "out = round(C * plate / 255) per channel; white paper maps to the plate colour and black ink is fixed",
     "strip_restored": [
-      4.0,
+      1.44,
       107.5,
       72.4,
-      121.0
+      121.18
     ],
+    "arrow_band_restored": [
+      60.4,
+      107.5,
+      68.6,
+      121.18
+    ],
+    "arrow_geometry_in_source": {
+      "shapes": [
+        {
+          "operation": "s",
+          "stroke_width": 1.100000023841858,
+          "colour": [
+            0.1216,
+            0.1373,
+            0.1569
+          ],
+          "points": [
+            [
+              61.92,
+              114.34
+            ],
+            [
+              64.08,
+              114.34
+            ],
+            [
+              65.83,
+              114.34
+            ],
+            [
+              67.17,
+              114.34
+            ]
+          ]
+        },
+        {
+          "operation": "fs",
+          "stroke_width": 1.100000023841858,
+          "colour": [
+            0.1216,
+            0.1373,
+            0.1569
+          ],
+          "points": [
+            [
+              63.97,
+              112.74
+            ],
+            [
+              67.17,
+              114.34
+            ],
+            [
+              67.17,
+              114.34
+            ],
+            [
+              63.97,
+              115.94
+            ],
+            [
+              63.97,
+              115.94
+            ],
+            [
+              63.97,
+              112.74
+            ]
+          ]
+        }
+      ],
+      "note": "re-inserted verbatim from the frozen figure"
+    },
     "note": "Tiles keep their geometry, scale, and ink coverage; only the paper colour changes, so panel (a) matches the framed cards of panels (b)--(e)"
   },
   "fonts": {
@@ -189,16 +262,17 @@
     "labels_present": true,
     "glyph_tiles": 6,
     "frozen_tiles_reused": true,
+    "strip_arrow_band_matches_frozen_figure": true,
     "no_inferential_statistics": true
   },
   "outputs": {
     "pdf": {
       "file": "figure1_pipeline.pdf",
-      "sha256": "9faab79c8f239c3943d90f91f3ac0216892a81f28615486f103dfb9db91c7f34"
+      "sha256": "384dfd90623de218efc2a8524d2b7ce4aba576ed6369ddd6fd388b9b1fbc9ef2"
     },
     "png": {
       "file": "figure1_pipeline.png",
-      "sha256": "8dcd7854b9f0c77c546f94548a7ec37a8b9719269ddd6615c986337ff5ade381"
+      "sha256": "cf8031e434dda8e4bb1cb6296c10e515ebf3fa60314ee9245b39b52648f1d7f5"
     }
   }
 }

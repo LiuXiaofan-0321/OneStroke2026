@@ -58,7 +58,12 @@ PLATE = (247, 248, 250)  # PANEL_BG in figure_style.py
 FRAME = (215, 220, 225)  # GRID in figure_style.py
 FRAME_WIDTH = 0.55  # clean_image_axis spine width
 STRIP = (238, 240, 242)  # measured stage-label strip colour
-STRIP_FILL = fitz.Rect(4.0, 107.5, 72.4, 121.0)
+STRIP_FILL = fitz.Rect(1.44, 107.5, 72.4, 121.18)
+# The stage-label strip carries a small arrow between consecutive labels. The
+# first of them (between "Input pair" and "Overlapping parse") lies inside the
+# redacted area, so that band of the frozen vector artwork is re-inserted
+# verbatim after the repair instead of being approximated.
+ARROW_BAND = fitz.Rect(60.4, 107.5, 68.6, 121.18)
 REGULAR_STYLE = "ouyang_xun_regular_calli_tongji_beta"
 RUNNING_STYLE = "wang_xizhi_running_calli_tongji_beta"
 CJK_FONT = Path(r"C:\Windows\Fonts\msyh.ttc")
@@ -172,6 +177,10 @@ def main() -> None:
     # The redaction also cleared the stage-label strip beneath the panel-(a)
     # label; restore it so the strip runs continuously like its neighbours.
     page.draw_rect(STRIP_FILL, color=None, fill=_rgb_tuple(STRIP), overlay=True)
+    # Put the frozen strip band back so the "Input pair -> Overlapping parse"
+    # arrow reappears with its original geometry, colour, and line width.
+    source_arrow = _arrow_band_geometry(source_page)
+    page.show_pdf_page(ARROW_BAND, source, 0, clip=ARROW_BAND)
 
     reference_font = ("fig1", str(font_regular[0]))
     title_font = ("fig1b", str(font_bold[0]))
@@ -221,6 +230,8 @@ def main() -> None:
                 "plate colour and black ink is fixed"
             ),
             "strip_restored": [round(v, 2) for v in STRIP_FILL],
+            "arrow_band_restored": [round(v, 2) for v in ARROW_BAND],
+            "arrow_geometry_in_source": source_arrow,
             "note": (
                 "Tiles keep their geometry, scale, and ink coverage; only the paper "
                 "colour changes, so panel (a) matches the framed cards of panels (b)--(e)"
@@ -318,11 +329,26 @@ def main() -> None:
             raise AssertionError(f"Label missing after recomposition: {expected!r}")
     if abs(rebuilt_page.rect.width - width) > 0.01 or abs(rebuilt_page.rect.height - height) > 0.01:
         raise AssertionError("Recomposition changed the page size.")
+    # The strip arrow must survive the repair: the band is compared with the
+    # frozen figure at 600 dpi and has to match exactly, so the rebuilt strip
+    # carries the same chevrons as its neighbours.
+    frozen_pixels = np.frombuffer(
+        _band_pixmap(SOURCE, ARROW_BAND).samples, dtype=np.uint8
+    )
+    rebuilt_pixels = np.frombuffer(
+        _band_pixmap(STEM.with_suffix(".pdf"), ARROW_BAND).samples, dtype=np.uint8
+    )
+    if frozen_pixels.shape != rebuilt_pixels.shape:
+        raise AssertionError("Arrow band rasterisation changed shape.")
+    deviation = int(np.abs(frozen_pixels.astype(int) - rebuilt_pixels.astype(int)).max())
+    if deviation != 0:
+        raise AssertionError(f"Arrow band no longer matches the frozen figure (max {deviation}/255).")
     provenance["verification"] = {
         "page_size_preserved": True,
         "labels_present": True,
         "glyph_tiles": 6,
         "frozen_tiles_reused": provenance["reused_frozen_tiles"],
+        "strip_arrow_band_matches_frozen_figure": True,
         "no_inferential_statistics": True,
     }
     pixmap = rebuilt_page.get_pixmap(dpi=600)
@@ -348,6 +374,48 @@ def _spans(page: fitz.Page) -> list[dict]:
     return spans
 
 
+def _arrow_band_geometry(page: fitz.Page) -> dict[str, object]:
+    """Describe the frozen strip arrow inside ``ARROW_BAND``.
+
+    The arrow is a stroked shaft plus a filled head, both vector art. Recording
+    the geometry lets the provenance file document exactly which artwork the
+    repair re-inserts, and the count assertion fails loudly if the frozen
+    figure ever stops containing it.
+    """
+
+    shapes = []
+    for drawing in page.get_drawings():
+        rect = drawing["rect"]
+        # ``intersects`` misses the zero-height shaft rectangle, so overlap is
+        # tested on the coordinate intervals as well.
+        overlaps = (
+            min(rect.x1, ARROW_BAND.x1) - max(rect.x0, ARROW_BAND.x0) >= -0.01
+            and min(rect.y1, ARROW_BAND.y1) - max(rect.y0, ARROW_BAND.y0) >= -0.01
+        )
+        if not overlaps:
+            continue
+        if rect.x1 > ARROW_BAND.x1 + 0.5 or rect.y1 > ARROW_BAND.y1 + 0.5:
+            continue
+        shapes.append(
+            {
+                "operation": drawing["type"],
+                "stroke_width": drawing.get("width"),
+                "colour": [round(v, 4) for v in (drawing.get("color") or drawing.get("fill") or ())],
+                "points": [
+                    [round(v, 2) for v in (point.x, point.y)]
+                    for item in drawing["items"]
+                    for point in item[1:]
+                    if hasattr(point, "x")
+                ],
+            }
+        )
+    if len(shapes) != 2:
+        raise ValueError(
+            f"Expected the frozen strip arrow (shaft and head) in {ARROW_BAND}, found {len(shapes)} shapes."
+        )
+    return {"shapes": shapes, "note": "re-inserted verbatim from the frozen figure"}
+
+
 def _extract_font(document: fitz.Document, page: fitz.Page, name: str) -> tuple[Path, str, bytes]:
     matches = [item for item in page.get_fonts(full=True) if name in item[3]]
     if len(matches) != 1:
@@ -362,6 +430,14 @@ def _extract_font(document: fitz.Document, page: fitz.Page, name: str) -> tuple[
 
 def _rgb(value: int) -> tuple[float, float, float]:
     return ((value >> 16 & 255) / 255, (value >> 8 & 255) / 255, (value & 255) / 255)
+
+
+def _band_pixmap(path: Path, rect: fitz.Rect):
+    document = fitz.open(path)
+    try:
+        return document[0].get_pixmap(dpi=600, clip=rect)
+    finally:
+        document.close()
 
 
 def _rgb_tuple(value: tuple[int, int, int]) -> tuple[float, float, float]:

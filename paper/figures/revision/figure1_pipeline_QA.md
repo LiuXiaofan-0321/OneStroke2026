@@ -68,6 +68,13 @@ pipeline panels are therefore byte-for-byte the published ones.
   across the panel-(a) column instead of stopping at a white pill. Measured on
   the rebuilt page: tile plate 247/248/250, frame 215/220/225, strip
   238/240/242 under the "Input pair" label.
+- The stage-label strip carries a small chevron between consecutive labels. The
+  first chevron, between "Input pair" and "Overlapping parse", sits inside the
+  redacted area and was lost when panel (a) was cleared; the build now
+  re-inserts that band from the frozen vector artwork (`show_pdf_page` clipped
+  to x 60.4--68.6 pt, y 107.5--121.18 pt). All four chevrons then match the
+  frozen figure at 600 dpi with 0/255 difference and identical dark-pixel
+  counts (933, 946, 943, 938), and the build asserts the match.
 - Labels keep the frozen wording ("reference", "candidate", "Input pair"),
   size, and colour. They are re-drawn with the source PDF's own embedded font
   subsets (LMSansTT8-Regular, LMSansTT10-Bold), extracted by the build script;

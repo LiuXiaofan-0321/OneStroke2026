@@ -7,9 +7,9 @@ Submission-ready build of the IJDAR manuscript, prepared for the
 
 | File | Pages | SHA-256 |
 | --- | --- | --- |
-| `OneStroke2026_manuscript_submission.pdf` | 20 | `6a2b7766550668895db3e01608a081cc670866fabc3e059e711457e844e891a5` |
-| `OneStroke2026_ESM_1_submission.pdf` | 4 | `c3ac04ec6ac5e2f2257a41b77e2dd93f634f4ffea80bede23ba4204dba1fed5b` |
-| `OneStroke2026_online_latex_submission.zip` | 108 entries | `85c0dc51a27f1f9ce6023e2dad64b42302b4eed8ed51b484e18aef68cb831cfa` |
+| `OneStroke2026_manuscript_submission.pdf` | 20 | `e3207b6dc8bc0d3ee2c63f9e14356a1369bc08e66df6c101c7124fb6203767d9` |
+| `OneStroke2026_ESM_1_submission.pdf` | 4 | `73058fe0b14ea8a99c9ec37a085010ec58541b616be325437dbd0c6bd76d576c` |
+| `OneStroke2026_online_latex_submission.zip` | 108 entries | `c6ed1a3bc42d4b6a23cc6fcea5ff882f784cf1e07f14ac56757cdb85373befda` |
 
 The zip is a self-contained LaTeX source package (`manuscript.tex`,
 `ESM_1.tex`, `sn-jnl.cls`, `sn-basic.bst`, `references.bib`, `sections/`,
@@ -49,6 +49,10 @@ The zip is a self-contained LaTeX source package (`manuscript.tex`,
    ink, so the ink density relative to the paper is preserved to within one
    8-bit level (maximum recorded deviation 2.1e-3); no contrast, gamma,
    threshold, or crop operation is applied.
+   The strip band carrying the "Input pair -> Overlapping parse" chevron falls
+   inside the redacted area, so that band is re-inserted from the frozen vector
+   artwork; all four strip chevrons now match the frozen figure with 0/255
+   pixel difference.
 5. **Figure 3 explanatory text.** Panel (a) now carries the note
    "Semantic audit; exclusions frozen before any evaluation", panel (b)
    identifies itself as the training and evaluation corpus, and panel (c)
