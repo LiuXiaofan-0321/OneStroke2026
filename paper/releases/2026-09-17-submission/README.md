@@ -9,9 +9,9 @@ Submission-ready build of the IJDAR manuscript, prepared for the
 | --- | --- | --- |
 | `OneStroke2026_manuscript_submission.pdf` | 20 | `8715f6cd60064145f9fcd1a70f6029656b7173ab7eaf763a011125a1fbfe3988` |
 | `OneStroke2026_ESM_1_submission.pdf` | 4 | `56789a089bcf5a11154b4121ee86111e000a1ebd092e1af4a5730f5b6030f64c` |
-| `OneStroke2026_cover_letter.pdf` | 2 | `5f1ad59522e8084d3d3a58ddf11c58b75527f5dae6018b0cb227e2cf0086a6f5` |
+| `OneStroke2026_cover_letter.pdf` | 2 | `89803ef714a64fb84b9505963816c086c359ed59cd6ba6d1d93f5c25a89a3d08` |
 | `OneStroke2026_manuscript_latex.zip` | 33 entries | `1d22cdc97598dd777a1c977b5329cc43aa1a6253f46927aaec5bcd9f9c5a1ba7` |
-| `OneStroke2026_online_latex_submission.zip` | 109 entries | `3e5cfdd53d712662ed83e406b15455d307a264e438bfc4952fe6311ac3b264c6` |
+| `OneStroke2026_online_latex_submission.zip` | 109 entries | `f1f96b73d830f83d629c208025f092f7b9d2eda60b50d13b6d6d7e85396550a5` |
 
 ## Which file goes into which submission slot
 
@@ -117,6 +117,15 @@ These are author or institution actions, not build issues:
 
 - confirm Ethics Approval / Informed Consent wording and the
   data-availability statement;
-- confirm that the CC BY-NC 4.0 Calli-Tongji reference images may be
-  reproduced in a commercial publisher's article, or replace them;
-- approve author biographies and supply portrait photographs.
+- approve author biographies and supply black-and-white passport-size
+  photographs (see `AUTHOR_BIOGRAPHIES.md` for the format and the delivery
+  route);
+- confirm the originality statement in the cover letter, and in particular
+  that no prior publication by the same authors requires declaring.
+
+The CC BY-NC 4.0 question for the Calli-Tongji reference images is no longer
+raised in the cover letter, at the authors' request. Attribution and the
+licence statement remain in the manuscript, its figure captions, and the Data
+Availability statement, which is what the licence itself requires. See
+`SUBMISSION_UPLOAD_GUIDE.md`, section "四之二", for the underlying-rights
+assessment and the residual risk.
