@@ -24,6 +24,24 @@ All three authors are marked as contributing equally. The manuscript carries
 the footnote "These authors contributed equally to this work" on all three
 names.
 
+## ORCID iDs
+
+Enter each author's ORCID in the `Authors` tab of the submission interface, in
+the ORCID field of that author's entry. The published article takes the ORCIDs
+from these interface fields, not from the LaTeX source. Use the 16-digit form,
+for example `0000-0002-1825-0097` (the last character may be `X`).
+
+Fill in here for your own reference before you start the wizard:
+
+- Xiaofan Liu:
+- Ronghao Zhang:
+- Yuan Feng:
+
+The manuscript source currently contains no ORCID field. Adding one is optional
+and is not required for submission; see `SUBMISSION_UPLOAD_GUIDE.md`, section
+"四之三", for the two verified pitfalls if you do want the iDs to appear in the
+PDF as well.
+
 ## Competing Interests
 
 The authors declare no competing interests.
