@@ -30,6 +30,9 @@ Overleaf, not the submission package.
 For the end-to-end walkthrough of the submission wizard itself, from sign-in
 to the Submit button, see `SUBMIT_STEP_BY_STEP.md`.
 
+`DETAILS_TAB_TEXT.md` holds the exact plain-text title, abstract and keywords
+for the Details tab, extracted verbatim from the typeset PDF.
+
 The zip is a self-contained LaTeX source package (`manuscript.tex`,
 `ESM_1.tex`, `sn-jnl.cls`, `sn-basic.bst`, `references.bib`, `sections/`,
 `tables/`, and `figures/`) and can be imported into an online editor.

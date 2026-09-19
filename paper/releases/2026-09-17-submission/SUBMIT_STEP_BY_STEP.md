@@ -20,7 +20,7 @@
 | --- | --- |
 | `OneStroke2026_manuscript_latex.zip` | **正文**（投稿系统的 Manuscript file 槽） |
 | `OneStroke2026_ESM_1_submission.pdf` | 补充材料（Supplementary 槽） |
-| `OneStroke2026_cover_letter.pdf` | 投稿信（Related files 槽） |
+| `OneStroke2026_cover_letter.pdf` | 投稿信（**Details 页的 Cover letter 栏**） |
 
 > ⚠️ **不要上传 `OneStroke2026_online_latex_submission.zip`**。那是给我们
 > 三个和 Claude 在 Overleaf 上协作用的包（109 个文件，含内部说明和历史修订
@@ -105,12 +105,23 @@ Calligraphy with Overlapping Stroke Parsing and Human-Audited Spatial
 Scoring
 ```
 
-注意 `Reference-Conditioned`、`Low-Resource`、`Human-Audited` 三个连字符
-不能丢。
+标题粘成**一行**（上面为排版折行，不要粘进换行）。注意
+`Reference-Conditioned`、`Low-Resource`、`Human-Audited` 三个连字符不能丢。
+完整可复制版见 `DETAILS_TAB_TEXT.md` 第 1 节。
 
-**摘要：** 结构化摘要，228 词，含 Purpose / Methods / Results / Conclusion
-四段。直接从 `OneStroke2026_manuscript_submission.pdf` 第 1 页复制，或从
-`manuscript.tex` 的 `\abstract{}` 段取。
+**摘要：** 结构化摘要，约 228 词，含 Purpose / Methods / Results / Conclusion
+四段。**完整纯文本已备好，见 `DETAILS_TAB_TEXT.md` 第 2 节，直接整块复制**。
+四处需要核对：`±` 出现两次（在 `(0.9630 ± 0.0006)` 与
+`(0.8866 ± 0.0008)`），`Δρ` 出现一次（在 `(Δρ = 0.0004)`）。若某个符号粘成
+乱码，用界面的插入符号功能补，**不要**改成 `+/-` 或 `Drho` 之类写法。
+
+**Cover letter（同一页下方）：** 点 **Upload cover letter**，上传
+
+```
+C:\Users\18963\Downloads\OneStroke2026_submission_20260917\OneStroke2026_cover_letter.pdf
+```
+
+系统在本页给了投稿信专用入口，所以它**不**走 Files 页的 Related files。
 
 **关键词（6 个，逗号分隔）：**
 
@@ -123,7 +134,7 @@ reference-based assessment, human validation, explainable feedback
 
 ---
 
-## 第 5 步：Files 标签页（上传文件）
+## 第 5 步：Files 标签页（上传正文和补充材料）
 
 这是核心一步。按槽位对应：
 
@@ -132,15 +143,15 @@ reference-based assessment, human validation, explainable feedback
 | **Manuscript file** | `OneStroke2026_manuscript_latex.zip` | 系统会**自己编译**成 PDF 送审 |
 | **Figures and tables** | **留空** | 系统写明"接受后再提供高分辨率原图" |
 | **Supplementary material** | `OneStroke2026_ESM_1_submission.pdf` | 4 页，表 S1–S4 + 注 S5–S6 |
-| **Related files** | `OneStroke2026_cover_letter.pdf` | 给编辑的投稿信 |
+| **Related files** | **留空** | 这一栏是给"同作者在审论文、实验室验证报告、私人通信"用的，我们没有这类材料。**投稿信不在这里**——Details 页有专用上传入口，见第 4 步。 |
 
 **为什么正文传 zip 而不是 PDF：** 该页原文写明"LaTeX documents with figures
 and tables compressed into a zip format. **We will compile these into a PDF
 for peer review**"。所以传 zip 是它要求的做法。
 
-**可选保险动作：** 把 `OneStroke2026_manuscript_submission.pdf` 也放到
-**Related files** 里，这样编辑不编译也能立刻看到我们的排版效果。低风险，
-可做可不做。
+**可选保险动作：** 若希望编辑不编译也能立刻看到排版效果，可把
+`OneStroke2026_manuscript_submission.pdf` 放进 **Related files**。低风险，
+可做可不做；不做更干净。
 
 **上传后系统会显示它编译的结果**，务必点开看一眼：应该是 20 页、参考文献
 是数字引用（如 [1]）、没有 `[?]` 问号。如果看到 `[?]`，说明它只编译了一遍，
