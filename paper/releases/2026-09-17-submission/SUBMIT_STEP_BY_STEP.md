@@ -252,6 +252,21 @@ hybrid journal，意味着**接受后**你要在"立即金色开放获取（付 
 和"订阅制（读者付费，有禁售期）"之间二选一。**现在不用做这个选择，也不
 产生费用**，只是确认你知道了。我们经费有限，到时候选订阅制即可。
 
+**关于"选订阅制就不用交钱"——这个判断是对的，已核实（2026-09-19）：**
+
+- 期刊官网写明：*"Authors can also choose to publish under the **subscription
+  publishing model (no APC charges apply)**"*（订阅制**不收 APC**）；
+- 走开放获取才要付费，当前 APC 为 **£2290 / $3290 / €2590**（不含税）；
+- 官网同时写明：*"both options will be offered after the paper has been
+  **accepted**"* ——**两个选项都是接受之后才让你正式选**。
+
+所以**投稿这一刻没有任何付费动作**，这一页的勾选框只是"我已了解"的确认，
+不是签约。等接受后系统会让你正式选，届时选订阅制即可，一分钱不付。
+
+> 一个附带影响值得知道：订阅制下文章不会立即免费公开，读者需订阅或付费，
+> 通常还有个禁售期（embargo），期满后可自存档。这对我们没影响——我们并不
+> 承担"必须立刻开放"的资助方义务（项目无外部资助，见第 6 步第 8 块）。
+
 **2. Competing interests（单选）**
 
 选 **No, I declare that the authors have no competing interests**。
@@ -388,6 +403,35 @@ Declarations}` 加上 `\bmhead{...}` 小标题。`\section*` 不产生 PDF 书�
 警告，在截稿前一天承担"改坏包"的风险，不划算。系统自己也写的是
 *"These suggestions may be worth correcting"*（建议，非必须）。
 
+## 第 6 步之三：Share your work as a preprint —— 选 No
+
+投稿流程里会出现一屏 **"Share your work as a preprint (optional)"**，是
+Springer Nature 与 Research Square 合作的预印本服务（In Review）。两个单选：
+
+| 选项 | 建议 |
+| --- | --- |
+| Yes, all authors agree to post this work as a preprint on Research Square | **不选** |
+| **No, we don't want to post our work as a preprint at this time** | **← 选这个** |
+
+**为什么选 No：**
+
+1. **它是纯可选的。** 界面自己写明 *"In Review is an optional service and is
+   not required for your manuscript to be considered by the journal for
+   publication."* 选 No **不影响送审、不影响评审、不影响录用**。
+2. **选了就不可撤回。** 页面写明预印本 *"remain permanently available"*
+   （永久公开），并且要我们授予 Research Square **"the right to post your
+   manuscript publicly and permanently as a preprint under a CC-BY License
+   Agreement 4.0"**。CC-BY 是最宽松的许可，等于允许任何人自由转载使用。
+3. **要三位作者全体同意。** 选项原文是 *"all authors agree"*。为一件可选
+   的事去凑齐三人同意、并开一次不可撤回的授权，不划算。
+4. **我们不需要它。** 预印本的主要好处是"抢占优先权"和"提前获得社区反馈"。
+   我们是本科创新项目论文，既无同类竞争压力，也不需要靠预印本争取时间戳；
+   而代码仓库已经公开（Code Availability 指向 GitHub），透明度不依赖预印本。
+
+> **选 No 不会失去什么。** 预印本本来就允许作者日后自行发布，真想要，发表
+> 后（或自行决定时）随时可以再传，不需要在这一屏做决定。反过来，此刻选了
+> Yes 就是永久授权，改不回来。
+
 ## 第 7 步：Review 标签页（提交前最后检查）
 
 系统会生成一份 PDF 预览。**逐项核对这几点**：
@@ -408,6 +452,7 @@ Declarations}` 加上 `\bmhead{...}` 小标题。`\section*` 不产生 PDF 书�
 - [ ] **冯缘的邮箱**已跟她确认（校内邮箱更好，个人邮箱也不阻塞投稿）
 - [ ] **ORCID** 若在 Authors 的 Edit 表单里找得到就填上（选填，找不到跳过）
 - [ ] **Warnings 框里的三条 hyperref 书签警告不用管**（见第 6 步之二）
+- [ ] **Preprint 那一屏选了 No**（见第 6 步之三）
 
 **任何一项不对，先别点 Submit**，回上一步改，或告诉我。
 
@@ -516,6 +561,6 @@ files**。两处都是同一个文件，**不冲突、不影响送审**。系统
 
 登录 SNAPP → 选特刊 → 填三位作者（含 ORCID）→ 粘标题摘要关键词 →
 上传 **zip + ESM PDF + 投稿信 PDF** 三个文件 → 粘声明 →
-预览确认 20 页无误 → Submit。
+**preprint 选 No** → 预览确认 20 页无误 → Submit。
 
 卡在任何一步，把界面截图发我。
