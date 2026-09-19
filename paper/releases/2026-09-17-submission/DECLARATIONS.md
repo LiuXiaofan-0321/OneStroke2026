@@ -80,6 +80,10 @@ Innovation Training Incubation Project (Entrepreneurship Training category),
 "OneStroke: A Vision-Model-Based Intelligent Feedback System for Chinese
 Calligraphy". No external funding or grant number is recorded.
 
+Interface answer (decided 2026-09-19): **No, this research did not receive
+funding.** The project carries no grant number and no external funding, which
+matches this statement. Nothing in the manuscript changes.
+
 ## Ethics Approval
 
 Not applicable. The study analysed images of handwritten characters and
@@ -144,7 +148,7 @@ manuscript, and accept responsibility for the work.
 
 ## Acknowledgements
 
-The authors thank Chengcheng Wan for project supervision.
+
 
 ## Suggested reviewers
 

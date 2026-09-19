@@ -224,7 +224,7 @@ for peer review**"。所以传 zip 是它要求的做法。
 | 5 | **Third party material** | 选第一项 **No**（见下方专段） |
 | 6 | **Data availability** | 选 **Yes. I used or generated research data**，然后粘贴声明 |
 | 7 | **Acknowledgements**（可选） | 粘贴致谢那句 |
-| 8 | **Research funding** | 见下方专段，需你确认一个事实 |
+| 8 | **Research funding** | 选 **No**（已定，与正文一致） |
 
 **贯穿全页的一条铁律：界面上填的才会进最终发表的文章。** 界面上多个区块都
 写着 *"This replaces any statement written within the manuscript and is the
@@ -289,7 +289,11 @@ The authors thank Chengcheng Wan for project supervision.
 界面还提示 *"Make sure you get permission from those mentioned in the
 acknowledgements section."* —— 请跟万老师（Chengcheng Wan）说一声要写进致谢。
 
-**8. Research funding（单选 + 可能的文本框）→ 见下方专段**
+**8. Research funding（单选）**
+
+选 **No, this research did not receive funding.** 与正文的
+*"No external funding or grant number is recorded."* 一致，正文无需改动。
+详见下方专段。
 
 ### 第 5 块：Third party material —— 这是个有分量的选择
 
@@ -321,34 +325,25 @@ Publisher."* 它要求我们**已经取得了许可**并能应出版商要求出
 自有语料——但这两张图的意义恰恰是"跨书体对照"，自有语料没有王羲之行书，
 换掉会失去论证点。**我的建议是保持现状，选 No。**
 
-### 第 8 块：Research funding —— 需要你确认一个事实
+### 第 8 块：Research funding —— 已定：选 No
 
 界面问：*"Is the research described in this manuscript supported by
-funding?"* 并提示 *"If the research did not receive any funding, make sure
-you state so as well in your manuscript."*
+funding?"*
 
-**这一项取决于一个只有你知道的事实：大创项目实际拨过经费吗？**
+**作者已决定（2026-09-19）：选 `No, this research did not receive
+funding.`** 理由：该大创项目没有 grant number，属于校内孵化项目，未设外部
+资助。这一选择**与正文完全一致**，因为正文的 Funding 声明本来就写着
+*"No external funding or grant number is recorded."*
 
-你之前提过"我们经费不多"（在讨论要不要租 GPU 时），这暗示项目是**有经费**
-的；而正文的 Funding 声明已经写明本工作是在
-"East China Normal University Undergraduate Innovation Training Incubation
-Project (Entrepreneurship Training category)" 下完成的。
+因此：
 
-两种情形这样选：
+- 本项选 **No**；
+- **正文一字不用改**，无需重新编译，**无需重新上传 zip**；
+- 若选了 No，系统不会再追问出资方名称与编号，跳过即可。
 
-| 事实 | 选 | 说明 |
-| --- | --- | --- |
-| 项目**拨过**经费（哪怕只报销了 GPU、委托书写等） | **Yes** | 出资方填栏时填上面那个项目名；grant number 无则留空或填 Not applicable |
-| 项目**从未**拨钱，只是挂名孵化 | **No** | 与正文"No external funding or grant number is recorded"完全一致 |
-
-**我倾向选 Yes**，理由是它更安全：正文已经点名了这个项目，把项目写成资助方
-是**属实**的陈述；而选 No 一旦项目实际拨过钱，就是漏报。两者其实不矛盾——
-正文那句强调的是"没有**外部**资助、没有 grant number"，而大创是校内项目，
-不是 external。
-
-**请你看一眼立项书或问一下指导老师，告诉我实际是哪种。** 如果选 Yes，
-正文那句 Funding 声明我建议微调得更清楚（要改正文就得重新编译并重新上传
-zip）；如果选 No，则一个字都不用动。
+> 留档备查（不改动，仅记录推理）：作者曾为租 GPU 索取发票，理论上存在从
+> 项目账报销的可能，那样严格说应算受资助。作者确认项目无编号、按 No 处理，
+> 且与正文陈述一致，故按 No 执行。
 
 ---
 
@@ -365,7 +360,7 @@ zip）；如果选 No，则一个字都不用动。
 - [ ] **Declarations 页八块都处理了**：两个勾选框已勾，Competing interests
       选 No，Dual publication 选 No，Third party material 选 No，
       Data availability 选 Yes 并**粘贴了整段声明**，Acknowledgements 已填，
-      Research funding 已选
+      Research funding 选 No
 - [ ] **Data availability 的文本框不是空的**（选了 Yes 却没填文本 =
       最终文章里这条声明会缺失）
 - [ ] 特刊选对了
