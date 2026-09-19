@@ -31,11 +31,29 @@ the ORCID field of that author's entry. The published article takes the ORCIDs
 from these interface fields, not from the LaTeX source. Use the 16-digit form,
 for example `0000-0002-1825-0097` (the last character may be `X`).
 
-Fill in here for your own reference before you start the wizard:
+## Author data worksheet
 
-- Xiaofan Liu:
-- Ronghao Zhang:
-- Yuan Feng:
+Fill this in **before** starting the wizard, then copy the values into the
+`Authors` tab. Getting the family name and given name the right way round
+matters most: `Liu`, `Zhang` and `Feng` are the family names.
+
+| # | Given names | Family name | Email | ORCID iD |
+| --- | --- | --- | --- | --- |
+| 1 | Xiaofan | Liu | 10244602411@stu.ecnu.edu.cn | |
+| 2 | Ronghao | Zhang | | |
+| 3 | Yuan | Feng | | |
+
+Corresponding author: Xiaofan Liu (only). Equal contribution: all three.
+
+Affiliation entered once, in the Institutions block, then selected as each
+author's primary affiliation:
+
+| Field | Value |
+| --- | --- |
+| Institution name | East China Normal University |
+| Country or territory | China |
+| City | Shanghai |
+| Institution details | Software Engineering Institute |
 
 The manuscript source currently contains no ORCID field. Adding one is optional
 and is not required for submission; see `SUBMISSION_UPLOAD_GUIDE.md`, section

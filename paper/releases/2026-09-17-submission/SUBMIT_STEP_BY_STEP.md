@@ -67,28 +67,80 @@ Special Issue / Section 字样就选上。
 
 ---
 
-## 第 3 步：Authors 标签页（填作者）
+## 第 3 步：Authors 标签页（先填机构，再填作者）
 
-**逐个添加三位作者**，顺序按正文：Xiaofan Liu → Ronghao Zhang → Yuan Feng。
+这一页分成上下两段：**Affiliated institutions**（机构）和
+**Authors' information**（作者）。**先填机构并保存，再去作者的
+Primary affiliation 下拉框里选它**——机构没保存前，下拉框是空的。
 
-每位作者填写：
+### 3.1 Affiliated institutions（机构）
 
-| 字段 | 怎么填 |
+四个字段这样填：
+
+| 字段 | 填什么 |
 | --- | --- |
-| Given name / Surname | Xiaofan / Liu，依此类推 |
-| E-mail | 各自学校邮箱；通讯作者用 `10244602411@stu.ecnu.edu.cn` |
-| **ORCID** | **每位都填**，16 位 iD，不用加网址前缀 |
-| Affiliation | Software Engineering Institute, East China Normal University, Shanghai, China |
-| Corresponding author | **只勾 Xiaofan Liu 一位** |
+| **Institution name** | `East China Normal University` |
+| **Institution country or territory** | 下拉框选 `China` |
+| **Institution city** | `Shanghai` |
+| **Institution details**（可选） | `Software Engineering Institute` |
 
-**三位是同等贡献（equal contribution）。** 这一条：
+**要点：机构名填大学，学院填在 details 里。** 系统的示例就是
+"Institution details (E.g. Department of Physics)"，说明这一栏是放院系的。
+把 `Software Engineering Institute` 放这里，最终拼出来才是
+"Software Engineering Institute, East China Normal University, Shanghai,
+China"，与正文第 1 页的署名一致。
 
-- 正文里已经用脚注 "These authors contributed equally to this work."
-  标在三个人名字上；
-- 如果系统有"Equal contribution"勾选框，三位都勾；没有就跳过，正文脚注
-  已经说明。
+> 若 Institution name 输入时弹出联想列表（带 ROR ID 的那种），**选列表里
+> 的官方条目**，别手打后直接保存——手打容易和官方名称有细微出入。
 
-> 作者顺序如有调整，务必告诉我对齐正文，不能让界面和 PDF 不一致。
+填完点 **Save institution information** 保存。系统写明每位作者最多挂两个
+机构，我们每位只挂这一个。
+
+### 3.2 Authors' information（作者）
+
+系统要求 "Add all author names in the order they should appear in the
+published manuscript"，所以顺序必须是：
+
+**Author 1 Xiaofan Liu → Author 2 Ronghao Zhang → Author 3 Yuan Feng**
+
+| 作者 | Given names | Family name | Email |
+| --- | --- | --- | --- |
+| Author 1 | `Xiaofan` | `Liu` | `10244602411@stu.ecnu.edu.cn` |
+| Author 2 | `Ronghao` | `Zhang` | **待你提供**（见下方提醒） |
+| Author 3 | `Yuan` | `Feng` | **待你提供**（见下方提醒） |
+
+**🚨 最危险的坑：Given names 和 Family name 不能填反。**
+
+中国人姓名在这里最容易出事。**Family name（姓）是 Liu / Zhang / Feng，
+Given names（名）是 Xiaofan / Ronghao / Yuan。** 填反了，最终发表出来就是
+"Liu Xiaofan"、"Zhang Ronghao"、"Feng Yuan"——国外读者看不出，但国内一看
+就知道错了，而且**发表后很难改**。填完逐个核对一遍。
+
+**🚨 另两位作者的邮箱现在缺。** 我查了整个仓库，只有刘小凡的
+`10244602411@stu.ecnu.edu.cn` 有记录，张荣昊和冯缘的邮箱没有。这一栏标注
+的是 "Institutional email if you have one"——优先用学校邮箱。**请你现在去
+问他们两位要邮箱**，这一页填不下去就卡住了。
+
+**每位作者的 Primary affiliation** 在下拉框里选刚保存的那一个
+（East China Normal University）。Other affiliation 留空。
+
+### 3.3 三个必须找一找的字段
+
+这张截图里还看不到下面三项，它们**可能每位作者展开后才出现，也可能在
+保存作者后出现在别处**，务必找到：
+
+1. **ORCID**：**三位都要填**，16 位 iD，末位可能是字母 `X`，不用加
+   `https://orcid.org/` 前缀。最终发表文章上的 ORCID 就取自这里，**不取自
+   我们的 LaTeX 源码**。先把三个 iD 抄进 `DECLARATIONS.md` 的自查栏，免得
+   现场翻手机。
+2. **Corresponding author（通讯作者）**：**只标 Xiaofan Liu 一位。**
+   正文第 1 页的星号 `*` 就在他名字上（`Xiaofan Liu1*†`），必须一致。
+3. **Equal contribution（同等贡献）**：正文有脚注 "These authors
+   contributed equally to this work." 标在三人名字上。系统若有该勾选框，
+   **三位都勾**；完全没有就跳过，正文脚注已经说明。
+
+> 作者顺序、姓名拼写、通讯作者标记这三项，一旦和正文 PDF 不一致就是硬伤。
+> 填完回 `OneStroke2026_manuscript_submission.pdf` 第 1 页对一遍。
 
 ---
 
