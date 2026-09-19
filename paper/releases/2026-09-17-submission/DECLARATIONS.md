@@ -64,10 +64,16 @@ author's primary affiliation:
 | City | Shanghai |
 | Institution details | Software Engineering Institute |
 
-The manuscript source currently contains no ORCID field. Adding one is optional
-and is not required for submission; see `SUBMISSION_UPLOAD_GUIDE.md`, section
-"四之三", for the two verified pitfalls if you do want the iDs to appear in the
-PDF as well.
+ORCID is **optional at submission**: the journal's Instructions for Authors
+say *"If available, the 16-digit ORCID of the author(s)"*. In the interface it
+lives in the author edit form behind the Authors section's **Edit** button and
+does not appear in the read-only summary. If you cannot find the field at all,
+nothing is lost: Springer collects and links ORCIDs at the production stage
+after acceptance.
+
+The manuscript source currently contains no ORCID field. Adding one there is
+also optional; see `SUBMISSION_UPLOAD_GUIDE.md`, section "四之三", for the two
+verified pitfalls if you do want the iDs to appear in the PDF as well.
 
 ## Competing Interests
 

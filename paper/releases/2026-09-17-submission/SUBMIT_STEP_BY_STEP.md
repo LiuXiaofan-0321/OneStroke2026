@@ -8,10 +8,11 @@
 
 ## 第 0 步：开投前 5 分钟的准备
 
-**手边要有这三样：**
+**手边要有这几样：**
 
-1. 三位作者的 ORCID iD（16 位，末位可能是 `X`）；
-2. 通讯作者能收到邮件的邮箱：`10244602411@stu.ecnu.edu.cn`；
+1. 三位作者的邮箱（通讯作者用 `10244602411@stu.ecnu.edu.cn`）；
+2. 三位作者的 ORCID iD（16 位，末位可能是 `X`）——**选填**，有就填，
+   见 3.3 节；
 3. 本目录下的三个投稿文件（见第 5 步）。
 
 **要上传的文件（三个，别搞混）：**
@@ -129,10 +130,21 @@ Given names（名）是 Xiaofan / Ronghao / Yuan。** 填反了，最终发表�
 这张截图里还看不到下面三项，它们**可能每位作者展开后才出现，也可能在
 保存作者后出现在别处**，务必找到：
 
-1. **ORCID**：**三位都要填**，16 位 iD，末位可能是字母 `X`，不用加
-   `https://orcid.org/` 前缀。最终发表文章上的 ORCID 就取自这里，**不取自
-   我们的 LaTeX 源码**。先把三个 iD 抄进 `DECLARATIONS.md` 的自查栏，免得
-   现场翻手机。
+1. **ORCID**：在作者列表**只读视图里看不到**，要点 Authors 区块右上角的
+   **Edit（铅笔图标）**展开作者表单，逐位作者的编辑框里才有。
+
+   **更正一处此前的说法：ORCID 不是投稿必填项。** 期刊自己的
+   Instructions for Authors 写的是 *"If available, the 16-digit ORCID of the
+   author(s)"*——**"if available"，有就填**。所以：
+
+   - 能在 Edit 表单里找到 → 三位都填（16 位，末位可能是字母 `X`，不用加
+     `https://orcid.org/` 前缀）；
+   - 整个投稿流程里都找不到该字段 → **不必纠结**，投稿不受影响。Springer
+     会在**接受后的生产阶段**收集并链接 ORCID，那时补也来得及；
+   - 无论哪种情况，最终发表文章上的 ORCID 都**不取自**我们的 LaTeX 源码，
+     所以正文里从来不写它也没有任何损失。
+
+   三个 iD 仍建议先抄进 `DECLARATIONS.md` 的自查栏，免得现场翻手机。
 2. **Corresponding author（通讯作者）**：**只标 Xiaofan Liu 一位。**
    正文第 1 页的星号 `*` 就在他名字上（`Xiaofan Liu1*†`），必须一致。
 3. **Equal contribution（同等贡献）**：正文有脚注 "These authors
@@ -347,6 +359,35 @@ funding.`** 理由：该大创项目没有 grant number，属于校内孵化项�
 
 ---
 
+## 第 6 步之二：系统显示的 Warnings 要不要管？——不用管
+
+传完正文 zip 后，Files 页会出现一个橙色 **Warnings** 框。你会看到三条，
+形式都是：
+
+```
+./manuscript.tex  Line #0  Package hyperref Warning: Difference (4) between
+bookmark levels is greater than one, level fixed on input line 94.
+```
+
+（另有 `Difference (3)` 与 `Difference (2)` 两条，分别指向 100、103 行。）
+
+**结论：这是纯装饰性的书签警告，不必处理，不影响送审。**
+
+原因：正文末尾的声明区用的是无编号标题 `\section*{Statements and
+Declarations}` 加上 `\bmhead{...}` 小标题。`\section*` 不产生 PDF 书签，
+而 `\bmhead` 会产生，于是书签层级出现跳级，hyperref 提示一句并**自己把
+层级修正了**（"level fixed"）。它只影响 PDF 阅读器的侧边目录结构，
+**不影响任何正文文字、分页、图表或参考文献**。
+
+我已经在干净目录里实测过：解压 zip 后跑两遍 pdflatex，得到 **20 页、
+0 处未解析引用、0 个 Overfull 警告**。系统这里的 "Line #0" 也说明它没能
+定位到具体行，属于它解析日志时的常规提示。
+
+**为什么不去"修"它：** 要消掉这三条需要动 `manuscript.tex` 的标题设置，
+改完必须重新编译、重新上传 zip、重新做一遍验收。为一条不影响内容的外观
+警告，在截稿前一天承担"改坏包"的风险，不划算。系统自己也写的是
+*"These suggestions may be worth correcting"*（建议，非必须）。
+
 ## 第 7 步：Review 标签页（提交前最后检查）
 
 系统会生成一份 PDF 预览。**逐项核对这几点**：
@@ -364,6 +405,9 @@ funding.`** 理由：该大创项目没有 grant number，属于校内孵化项�
 - [ ] **Data availability 的文本框不是空的**（选了 Yes 却没填文本 =
       最终文章里这条声明会缺失）
 - [ ] 特刊选对了
+- [ ] **冯缘的邮箱**已跟她确认（校内邮箱更好，个人邮箱也不阻塞投稿）
+- [ ] **ORCID** 若在 Authors 的 Edit 表单里找得到就填上（选填，找不到跳过）
+- [ ] **Warnings 框里的三条 hyperref 书签警告不用管**（见第 6 步之二）
 
 **任何一项不对，先别点 Submit**，回上一步改，或告诉我。
 
@@ -378,6 +422,54 @@ funding.`** 理由：该大创项目没有 grant number，属于校内孵化项�
 **提交后系统通常锁定稿件，不能再改。** 所以第 7 步别省。
 
 ---
+
+## 附：2026-09-19 已填内容复核记录
+
+对着界面逐项核过一遍，结论如下。
+
+| 位置 | 状态 |
+| --- | --- |
+| Files → Manuscript | `OneStroke2026_manuscript_latex.zip`（33 files）✓ 正确的那一个 |
+| Files → Supplementary files | `OneStroke2026_ESM_1_submission.pdf` ✓ |
+| Files → Related files | `OneStroke2026_cover_letter.pdf` ✓（与 Details 的 Cover letter 栏重复，见下） |
+| Details → Article type | **Research** ✓ 正确，没选成 Survey |
+| Details → Collection | **Special issue on Computer Vision Systems for Document Analysis and Recognition** ✓ **最关键的一项，正确** |
+| Details → Title | 与正文一致 ✓ |
+| Details → Abstract | 四段完整，`±` 与 `Δρ` 都正常显示 ✓ |
+| Details → Cover letter | `OneStroke2026_cover_letter.pdf` ✓ |
+| Authors → 顺序与通讯作者 | Liu → Zhang → Feng；Liu 标 Primary corresponding author ✓ |
+| Authors → 机构 | 三位均为 East China Normal University … Software Engineering Institute (Primary) ✓ |
+| Authors → Author Contributions | 与正文逐字一致，破折号正常 ✓ |
+| Declarations → 七个区块 | 全部按计划填妥（含 Data Availability 选 Yes 并粘贴整段）✓ |
+| Keywords | 界面**没有**关键词栏——期刊要求 4--6 个关键词写在稿件里，我们的
+`\keywords{}` 已含 6 个 ✓ 无需处理 |
+
+### 需要看一眼的一处：冯缘的邮箱
+
+界面显示：
+
+| 作者 | 邮箱 |
+| --- | --- |
+| Xiaofan Liu | `10244602411@stu.ecnu.edu.cn` |
+| Ronghao Zhang | `10245101445@stu.ecnu.edu.cn` |
+| Yuan Feng | `yuan_feng_fy@163.com` |
+
+前两位都是校内邮箱，**冯缘用的是 163 个人邮箱**。这栏的原文是
+*"Email (Institutional email if you have one)"*，所以填个人邮箱**不算错**，
+不构成投稿障碍。但两点值得考虑：
+
+1. **最终发表的文章会印这个邮箱。** 三位作者同校，若她也有
+   `@stu.ecnu.edu.cn` 的校内邮箱，用它更一致、也更便于日后联系；
+2. 若她确实没有校内邮箱，**保持现状即可**，不必为此改动。
+
+**请跟她确认一句。** 要改的话在 Authors 的 Edit 表单里改，几秒钟的事。
+
+### 一处无害的重复：投稿信传了两个地方
+
+投稿信同时出现在 **Details 的 Cover letter 栏**和 **Files 的 Related
+files**。两处都是同一个文件，**不冲突、不影响送审**。系统既然有专用栏，
+留在那里就够；Related files 那份可删可留，**我建议不动**——删文件比留文件
+更容易误操作。
 
 ## 提交后会发生什么
 
@@ -395,15 +487,18 @@ funding.`** 理由：该大创项目没有 grant number，属于校内孵化项�
 ## 常见坑（都踩过了，照着避）
 
 1. **特刊没选** → 稿子进普通通道，可能被退回重投。第 2 步务必确认。
-2. **文章类型选成 Survey** → 综述与研究论文的评审预期完全不同；我们是一手
+2. **看到 Warnings 框就慌了** → 那三条 hyperref 书签警告是装饰性的，
+   不影响送审，**不要**为此去改正文重传（见"第 6 步之二"）。
+3. **文章类型选成 Survey** → 综述与研究论文的评审预期完全不同；我们是一手
    研究，必须选 `Research`。
-3. **传错 zip** → 别传 109 个文件那个协作包。
-4. **声明字段留空或与正文不一致** → 界面里的才会进终版，必须照抄
+4. **传错 zip** → 别传 109 个文件那个协作包。
+5. **声明字段留空或与正文不一致** → 界面里的才会进终版，必须照抄
    `DECLARATIONS.md`。
-5. **ORCID 末位 `X` 当成数字打错** → 填完核对一遍。
-6. **别在正文里加 `\orcid{}`** → 我们的 `sn-jnl.cls` 缺少 `Orcidlogo.eps`，
+6. **ORCID 找不到字段** → 它在 Authors 的 Edit 表单里；如果确实没有，
+   不必纠结，它是选填项（见 3.3 节）。末位 `X` 别打成数字。
+7. **别在正文里加 `\orcid{}`** → 我们的 `sn-jnl.cls` 缺少 `Orcidlogo.eps`，
    会导致系统编译失败、投稿当场挂掉。ORCID 走界面填就够了。
-7. **系统编译出 `[?]`** → 多数是只编译一遍，刷新看看；持续存在就告诉我。
+8. **系统编译出 `[?]`** → 多数是只编译一遍，刷新看看；持续存在就告诉我。
 
 ---
 
