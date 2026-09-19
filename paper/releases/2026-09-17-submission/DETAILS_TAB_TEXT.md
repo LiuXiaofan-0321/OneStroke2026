@@ -69,3 +69,29 @@ C:\Users\18963\Downloads\OneStroke2026_submission_20260917\OneStroke2026_cover_l
 （2 页，80 KB，字体全嵌入。）Files 标签页的 **Related files 留空**即可
 ——那一栏是给"同作者在审论文、实验室验证报告、私人通信"用的，我们没有
 这类材料。
+
+---
+
+## 5. Author Contributions Statement（声明页）
+
+界面原文：*"This replaces any statement written within the manuscript and is
+the one that we will publish. Use initials to refer to each author's
+contribution."*
+
+两件事因此确定：
+
+1. **界面里填的才是最终发表的那份**，正文里的同名声明会被它取代（意味着
+   界面版比正文版更重要，不能留空）；
+2. **必须用首字母指代作者**（X.L. / R.Z. / Y.F.）。下面这段正好是首字母
+   格式，与正文逐字一致，**整块复制**：
+
+```
+X.L.: Conceptualization, methodology, software, formal analysis, visualization, writing—original draft, project administration. R.Z.: Data curation, methodology, software, validation, writing—review and editing. Y.F.: Software, system integration, validation, writing—review and editing. All authors contributed to the investigation, approved the submitted manuscript, and accept responsibility for the work.
+```
+
+里面的 `—` 是破折号（U+2014）。若粘成乱码，**换成普通连字符 `-` 即可**，
+例如 `writing - original draft`，含义不变。这是本页唯一需要注意的字符。
+
+这段采用的是 CRediT 贡献分类法（Conceptualization / Methodology /
+Software / Validation / Visualization / Writing 等标准术语），是 Springer
+接受的写法，不需要改写成界面示例那种散文句式。

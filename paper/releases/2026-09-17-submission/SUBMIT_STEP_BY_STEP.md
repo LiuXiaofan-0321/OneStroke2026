@@ -229,6 +229,13 @@ for peer review**"。所以传 zip 是它要求的做法。
 这是最容易被审稿人/编辑抓的细节。`DECLARATIONS.md` 里的文本与正文逐字
 一致，直接复制即可。
 
+**Author Contributions 这一栏要特别对待。** 界面原文写着它是
+"the one that we will publish"，并且**会取代正文里的同名声明**，同时要求
+"Use initials to refer to each author's contribution"。我们的文本正好是
+`X.L.` / `R.Z.` / `Y.F.` 首字母 + CRediT 标准术语，符合要求，整块复制即可
+（可复制版见 `DETAILS_TAB_TEXT.md` 第 5 节）。**这一栏不能留空**——它比正文
+里那份更重要。
+
 ---
 
 ## 第 7 步：Review 标签页（提交前最后检查）

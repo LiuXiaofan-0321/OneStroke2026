@@ -2,8 +2,17 @@
 
 The submission system states that author-contribution and competing-interest
 information entered in the interface is what appears in the published
-article. The blocks below match the manuscript verbatim, so the PDF and the
-interface cannot drift apart. Copy each block into the matching field.
+article, and that the interface statement **replaces** any statement written
+inside the manuscript. The blocks below match the manuscript verbatim, so the
+PDF and the interface cannot drift apart. Copy each block into the matching
+field.
+
+**These blocks are literal text.** They contain no markup that should survive
+the paste: there are no backticks, asterisks or LaTeX dashes in any block
+below. The only non-ASCII characters are the em dash in the author
+contributions and the curly quotes in the Funding statement; both match the
+typeset PDF. If either arrives garbled, substitute a plain hyphen or plain
+quotes, which changes nothing that is being stated.
 
 ## Title
 
@@ -98,14 +107,14 @@ reported.
 The frozen data contracts and result tables that support the reported values
 are in the code repository named under Code Availability: the quality-control
 audit and exclusion contract and both split assignments
-(`artifacts/data_qc`, `artifacts/data_audit`,
-`artifacts/paper_ijdar/character_disjoint`); the per-seed segmentation
-results and checkpoint manifest (`artifacts/paper_ijdar/task1`); the ASDS
+(artifacts/data_qc, artifacts/data_audit,
+artifacts/paper_ijdar/character_disjoint); the per-seed segmentation
+results and checkpoint manifest (artifacts/paper_ijdar/task1); the ASDS
 development features, character-grouped folds, frozen specification, and
-report (`artifacts/paper_ijdar/spatial_score_development`); the 150-pair
-direct-ink ASDS table (`artifacts/paper_ijdar/direct_ink_asds`); the
+report (artifacts/paper_ijdar/spatial_score_development); the 150-pair
+direct-ink ASDS table (artifacts/paper_ijdar/direct_ink_asds); the
 reference-library manifest with per-image source paths and SHA-256 digests
-(`references/calli_tongji_beta_manifest.csv`); and the figure provenance
+(references/calli_tongji_beta_manifest.csv); and the figure provenance
 manifest. Online Resource 1, Note S6, lists the digests of every frozen
 artifact. The external reference images are the Ouyang Xun regular-script and
 Wang Xizhi running-script categories (100 images each) of the Calli-Tongji
@@ -127,9 +136,9 @@ copy will be supplied if anonymous review is required.
 ## Author Contributions
 
 X.L.: Conceptualization, methodology, software, formal analysis,
-visualization, writing---original draft, project administration. R.Z.: Data
-curation, methodology, software, validation, writing---review and editing.
-Y.F.: Software, system integration, validation, writing---review and
+visualization, writing—original draft, project administration. R.Z.: Data
+curation, methodology, software, validation, writing—review and editing.
+Y.F.: Software, system integration, validation, writing—review and
 editing. All authors contributed to the investigation, approved the submitted
 manuscript, and accept responsibility for the work.
 
